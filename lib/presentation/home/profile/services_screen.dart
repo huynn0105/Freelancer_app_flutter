@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:freelance_app/domain/models/service.dart';
+import 'package:freelance_app/presentation/home/profile/profile_controller.dart';
+import 'package:freelance_app/presentation/home/widgets/search_box.dart';
+import 'package:get/get.dart';
+
+class ServiceScreen extends StatefulWidget {
+  const ServiceScreen({Key key}) : super(key: key);
+
+  @override
+  _ServiceScreenState createState() => _ServiceScreenState();
+
+
+}
+
+
+class _ServiceScreenState extends State<ServiceScreen> {
+  final controller = Get.find<ProfileController>();
+  var _searchEdit = new TextEditingController();
+
+  bool _isSearch = true;
+
+  String _searchText = "";
+
+  List<Service> _searchListItems;
+
+  _ServiceScreenState() {
+    _searchEdit.addListener(() {
+      if (_searchEdit.text.isEmpty) {
+        setState(() {
+          _isSearch = true;
+          _searchText = "";
+        });
+      } else {
+        setState(() {
+          _isSearch = false;
+          _searchText = _searchEdit.text;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    _isSearch = false;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Select Skills',
+            style: TextStyle(color: Colors.black),
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+              onPressed:  () {
+                controller.selectedServices();
+                  Get.back();
+              },
+              child: Text(
+                'Done',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+        body: Obx(
+          () => controller.services.isNotEmpty
+              ? Container(
+                  padding: EdgeInsets.all(30),
+                  child: Column(children: [
+                    SearchBox(
+                      controller: _searchEdit,
+                    ),
+                    Expanded(
+                      child: _isSearch
+                          ? ListView.builder(
+                              itemCount: controller.services.length,
+                              itemBuilder: (context, index) {
+                                var service = controller.services[index];
+                                return CheckboxListTile(
+                                    title: new Text(service.name),
+                                    value: service.isValue,
+                                    onChanged: (bool value) {
+                                      controller.changeValueService(
+                                          service.copyWith(isValue: value),controller.services);
+                                    });
+                              })
+                          : _searchListView(),
+                    )
+                  ]),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ));
+  }
+
+  Widget _searchListView() {
+    _searchListItems = new List<Service>();
+    for (int i = 0; i < controller.services.length; i++) {
+      var item = controller.services[i];
+      if (item.name.toLowerCase().contains(_searchText.toLowerCase())) {
+        _searchListItems.add(item);
+      }
+    }
+    return _searchAddList();
+  }
+
+  Widget _searchAddList() {
+    return ListView.builder(
+        itemCount: _searchListItems.length,
+        itemBuilder: (BuildContext context, int index) {
+          var services = _searchListItems[index];
+          return CheckboxListTile(
+              title: Text(services.name),
+              value: services.isValue,
+              onChanged: (bool value) {
+                controller.changeValueService(services.copyWith(isValue: value),controller.services);
+              });
+        });
+  }
+}
