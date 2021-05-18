@@ -22,15 +22,15 @@ class HomeController extends GetxController {
 
 
   @override
-  void onReady() async {
-    await loadAccount();
-    await getLevelFromId();
+  void onReady() {
+
     super.onReady();
   }
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
-
+    await loadAccount();
+    await getLevelFromId();
   }
 
   Future<void> loadAccount() async {
@@ -39,7 +39,7 @@ class HomeController extends GetxController {
      if(user!=null){
        account.value = user;
        print('account: ${account.value.name}');
-     }else{
+     }else if(user == null){
        print('lỗi: user null');
        Get.offAllNamed(Routes.login);
      }
@@ -58,7 +58,7 @@ class HomeController extends GetxController {
 
   Future<void> logOut() async {
     await apiRepositoryInterface.logout();
-    await localRepositoryInterface.clearAllData();
+    await localRepositoryInterface.clearData();
   }
 
 

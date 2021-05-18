@@ -46,8 +46,6 @@ class PostJobController extends GetxController {
   final locationTextController = TextEditingController();
 
   Future<bool> postJob() async{
-
-
     try {
       final response = await apiRepositoryInterface.postJob(PostJobRequest(
         name: nameTextController.text,
@@ -78,8 +76,8 @@ class PostJobController extends GetxController {
   }
 
   @override
-  void onInit() {
-    loadSpecialties();
+  void onInit() async {
+    await loadSpecialties();
     deadlineTextController.text =
         '${today.value.day}/${today.value.month}/${today.value.year}';
     super.onInit();
@@ -91,41 +89,41 @@ class PostJobController extends GetxController {
     super.onReady();
   }
 
-  void loadSpecialties() async {
+  Future loadSpecialties() async {
     specialties.clear();
     final result = await apiRepositoryInterface.getSpecialties();
     specialties.assignAll(result);
   }
 
-  void getSpecialtyServices(int specialtyId) async {
+  Future getSpecialtyServices(int specialtyId) async {
     services.clear();
     final result = await apiRepositoryInterface.getSpecialtyServices(specialtyId);
     services.assignAll(result);
   }
 
-  void getSkills() async {
+  Future getSkills() async {
     skills.clear();
     final result = await apiRepositoryInterface.getSkills();
     skills.assignAll(result);
   }
 
-  void getTypeOfWorks() async {
+  Future getTypeOfWorks() async {
     typeOfWorks.clear();
     final result = await apiRepositoryInterface.getTypeOfWorks();
     typeOfWorks.assignAll(result);
   }
 
-  void getFormOfWorks() async {
+  Future getFormOfWorks() async {
     final result = await apiRepositoryInterface.getFormOfWorks();
     formOfWorks.assignAll(result);
   }
 
-  void getPayForms() async {
+  Future getPayForms() async {
     final result = await apiRepositoryInterface.getPayForms();
     payForms.assignAll(result);
   }
 
-  void getProvinces() async {
+  Future getProvinces() async {
     final result = await apiRepositoryInterface.getProvinces();
     provinces.assignAll(result);
   }

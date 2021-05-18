@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/home/browse/browse_controller.dart';
-import 'package:freelance_app/presentation/home/browse/widgets/selected_box.dart';
+import 'package:freelance_app/presentation/home/browse/widgets/item_selected.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
 import 'package:get/get.dart';

@@ -20,7 +20,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future<Account> getAccountFromToken() async {
     var rs = await HttpService.get(ACCOUNT, bearerToken: TOKEN);
-    print("code: ${rs.statusCode}");
+    print("codeAccount: ${rs.statusCode}");
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
       Account account = Account.fromJson(jsonObject);
@@ -68,7 +68,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     };
 
     var rs = await HttpService.post(AVATAR, input, bearerToken: TOKEN);
-    print('code ${rs.statusCode}');
+    print('codeAvatar ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
       return jsonObject['url'];
@@ -92,6 +92,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getSpecialties() async {
     var rs = await HttpService.get(SPECIALTIES, bearerToken: TOKEN);
+    print('codeSpecialties ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var specialties = jsonList.map((e) => Specialty.fromJson(e)).toList();
@@ -104,6 +105,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getSpecialtyServices(int specialtyId) async {
     var rs = await HttpService.get('$SPECIALTYSERVICE/$specialtyId', bearerToken: TOKEN);
+    print('codeSpecialtiesServices ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var services = jsonList.map((e) => Service.fromJson(e)).toList();
@@ -115,7 +117,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getServices() async {
     var rs = await HttpService.get(SERVICE, bearerToken: TOKEN);
-    print('code: ${rs.statusCode}');
+    print('codeServices: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var services = jsonList.map((e) => Service.fromJson(e)).toList();
@@ -129,6 +131,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('data: ${postJobRequest.toJson()}');
     var rs = await HttpService.post(
         JOB, postJobRequest.toJson(), bearerToken: TOKEN);
+    print('codepostJob: ${rs.statusCode}');
     if (rs.statusCode == 201) {
       print("Thành công: ${rs.body}");
       return true;
@@ -139,6 +142,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getFormOfWorks() async {
     var rs = await HttpService.get(FORMOFWORKS, bearerToken: TOKEN);
+    print('codeFormOfWorks: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var formOfWorks = jsonList.map((e) => FormOfWork.fromJson(e)).toList();
@@ -150,6 +154,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getPayForms() async {
     var rs = await HttpService.get(PAYFORMS, bearerToken: TOKEN);
+    print('codePayForms: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var payForms = jsonList.map((e) => PayForm.fromJson(e)).toList();
@@ -173,6 +178,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getTypeOfWorks() async {
     var rs = await HttpService.get(TYPEOFWORKS, bearerToken: TOKEN);
+    print('codeTypeOfWorks: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var typeOfWorks = jsonList.map((e) => TypeOfWork.fromJson(e)).toList();
@@ -216,7 +222,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getLevels() async {
     var rs = await HttpService.get(LEVELS, bearerToken: TOKEN);
-    print('code ${rs.statusCode}');
+    print('codeLV ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var level = jsonList.map((e) => Level.fromJson(e)).toList();
@@ -226,7 +232,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getLevelFromId(int id) async {
     var rs = await HttpService.get('$LEVELS/$id', bearerToken: TOKEN);
-    print('codeLV ${rs.statusCode}');
+    print('codeLVID ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var js = jsonDecode(rs.body);
       var level = Level.fromJson(js);

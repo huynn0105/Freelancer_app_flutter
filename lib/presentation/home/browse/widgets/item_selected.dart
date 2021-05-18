@@ -1,41 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance_app/presentation/widgets/nav_item.dart';
 
-class SelectedBox extends StatelessWidget {
-  int itemCount;
-  String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          'Skill',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Wrap(
-          runSpacing: 5,
-          spacing: 5,
-          children: List.generate(
-            itemCount,
-            (index) => ItemSelected(
-              active: 1,
-              onTap: (){
-
-              },
-              index: index,
-              name: name,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class ItemSelected extends StatelessWidget {
   const ItemSelected({

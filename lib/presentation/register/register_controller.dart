@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -44,16 +45,18 @@ class RegisterController extends GetxController {
 
     try {
       registerState(sState.loading);
-      Response response = await apiRepositoryInterface.register(RegisterRequest(
+      var response = await apiRepositoryInterface.register(RegisterRequest(
           name: name,
           email: email,
           password: password,
           role: roleSelected.value));
+      print('codeRegister ${response.statusCode}');
       if (response.statusCode == 200) {
         registerState(sState.initial);
         var jsonObject = jsonDecode(response.body);
-        var token = jsonObject['token'];
-        await localRepositoryInterface.saveToken(token);
+        TOKEN = jsonObject['token'];
+        await localRepositoryInterface.saveToken(TOKEN);
+        print('token: $TOKEN');
         return true;
       }
       if (response.statusCode == 400) {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
@@ -11,6 +12,10 @@ class BrowseController extends GetxController {
   RxInt levelId = 0.obs;
   RxList<Level> levels = <Level>[].obs;
   RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
+
+  TextEditingController searchQueryController = TextEditingController();
+  RxBool isSearching = false.obs;
+  RxString searchQuery = "Search query".obs;
 
   Future getLevel() async{
     try{

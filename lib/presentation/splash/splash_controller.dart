@@ -26,7 +26,7 @@ class SplashController extends GetxController {
 
   void validateSession() async{
     TOKEN = await localRepositoryInterface.getToken();
-    if(TOKEN!=null || TOKEN.isNotEmpty){
+    if(TOKEN!=null){
       print('home');
       print('token: $TOKEN');
       Get.offAllNamed(Routes.home);

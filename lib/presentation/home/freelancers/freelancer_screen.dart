@@ -1,43 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/freelancer.dart';
+import 'package:freelance_app/presentation/home/browse/browse_controller.dart';
+import 'package:freelance_app/presentation/home/browse/filter_search_screen.dart';
+import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
 import 'package:freelance_app/presentation/home/freelancers/freelancer_detail/freelancer_detail_screen.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:get/get.dart';
 
 class FreelancersScreen extends StatelessWidget {
+  final controller = Get.find<BrowseController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Freelancer',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.blue,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Container(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: Obx(
+                        ()=> SearchBoxFilter(
+                          controller: controller,
+                          searchQueryController: controller.searchQueryController,
+                          isSearching: controller.isSearching.value,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.red.shade400),
+                      child: IconButton(
+                        icon: Icon(
+                          FontAwesomeIcons.slidersH,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (builder) {
+                                return FilterSearchScreen();
+                              });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10,),
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: freelancers.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Freelancer freelancer = freelancers[index];
+                    return ItemFreelancer(
+                      avatar: freelancer.avatar,
+                      name: freelancer.name,
+                      serviceName: freelancer.work,
+                      city: freelancer.city,
+                      rate: freelancer.rate,
+                      money: freelancer.money,
+                      skills: freelancer.skills,
+                      onTap: () {
+                        Get.to(FreelancerDetailScreen(
+                          account: Account(),
+                        ));
+                      },
+                    );
+                  }),
+            ],
+          ),
         ),
       ),
-      body: ListView.builder(
-          itemCount: freelancers.length,
-          itemBuilder: (context, index) {
-            Freelancer freelancer = freelancers[index];
-                return ItemFreelancer(
-                  avatar: freelancer.avatar,
-                  name: freelancer.name,
-                  serviceName: freelancer.work,
-                  city: freelancer.city,
-                  rate: freelancer.rate,
-                  money: freelancer.money,
-                  skills: freelancer.skills,
-                  onTap: (){
-                    Get.to(FreelancerDetailScreen(account: Account(),));
-                  },
-                );
-      }),
       backgroundColor: Colors.grey[100],
     );
   }
@@ -69,82 +119,88 @@ class ItemFreelancer extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage: avatar != null ? AssetImage(avatar) : AssetImage('assets/images/avatarnull.png'),
+
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: avatar != null
+                            ? AssetImage(avatar)
+                            : AssetImage('assets/images/avatarnull.png'),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      name,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        name,
+                        style:
+                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(city),
+                      Text(serviceName),
+                      Rate(rate: rate),
+                      Text(
+                        '$money VNĐ',
+                        style: TextStyle(
+                            color: Color(0xFF0fe19b),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(Icons.keyboard_arrow_right),
                     ),
-                    Text(city),
-                    Text(serviceName),
-                    Rate(rate: rate),
-                    Text(
-                      '$money VNĐ',
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, left: 10),
+                child: Wrap(
+                  runSpacing: 5,
+                  spacing: 5,
+                  children: List.generate(
+                    skills.length,
+                    (index) => NavItem(
+                      title: skills[index],
                       style: TextStyle(
-                          color: Color(0xFF0fe19b),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.keyboard_arrow_right),
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4, left: 10),
-              child: Wrap(
-                runSpacing: 5,
-                spacing: 5,
-                children: List.generate(
-                  skills.length,
-                  (index) => NavItem(
-                    title: skills[index],
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black.withOpacity(0.65),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black.withOpacity(0.65),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-
