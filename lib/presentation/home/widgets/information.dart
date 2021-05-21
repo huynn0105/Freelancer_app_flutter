@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 
 class Information extends StatelessWidget {
   const Information({
@@ -16,7 +17,6 @@ class Information extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 8,),
         Text(
           'Information',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -45,7 +45,10 @@ class Information extends StatelessWidget {
             SizedBox(width: 10,),
             Text(contract, style: TextStyle(fontSize: 16),)
           ],
-        ): const SizedBox.shrink()
+        ): const SizedBox.shrink(),
+        SizedBox(
+          height: kDefaultPadding,
+        ),
       ],
     );
   }

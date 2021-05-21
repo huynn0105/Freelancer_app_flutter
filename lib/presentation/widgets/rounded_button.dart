@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   final VoidCallback onTap;
-  final String buttonName;
+  final Widget child;
   final EdgeInsets padding;
   final Color backgroundColor;
 
   const RoundedButton(
       {Key key,
       @required this.onTap,
-      @required this.buttonName,
+      @required this.child,
       this.backgroundColor = Colors.blue,
       this.padding = const EdgeInsets.all(16.0)})
       : super(key: key);
@@ -29,14 +29,7 @@ class RoundedButton extends StatelessWidget {
         height: size.height * 0.073,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          child: Text(
-            buttonName,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
+          child: child,
         ),
       ),
     );

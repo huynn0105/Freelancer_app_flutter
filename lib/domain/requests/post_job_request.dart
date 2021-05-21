@@ -12,7 +12,7 @@ class PostJobRequest {
    int specialtyId;
    String provinceId;
    int serviceId;
-   List skillIds;
+   List skills;
 
   PostJobRequest({
     this.name,
@@ -28,26 +28,11 @@ class PostJobRequest {
     this.specialtyId,
     this.serviceId,
     this.provinceId,
-    this.skillIds,
+    this.skills,
   });
 
 
-  PostJobRequest.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    details = json['details'];
-    typeId = json['typeId'];
-    formId = json['formId'];
-    workatId = json['workatId'];
-    payformId = json['payformId'];
-    floorprice = json['floorprice'];
-    cellingprice = json['cellingprice'];
-    deadline = json['deadline'];
-    isPrivate = json['isPrivate'];
-    specialtyId = json['specialtyId'];
-    serviceId = json['serviceId'];
-    provinceId = json['provinceId'];
-    skillIds = json['skillIds'];
-  }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -64,7 +49,7 @@ class PostJobRequest {
     data['specialtyId'] = this.specialtyId;
     data['serviceId'] = this.serviceId;
     data['provinceId'] = this.provinceId;
-    data['skillIds'] = this.skillIds;
+    data['skills'] = this.skills;
     return data;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
 import 'package:get/get.dart';
-
 
 const logoSize = 45.0;
 
@@ -48,14 +48,27 @@ class ForgetPassword extends StatelessWidget {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(kDefaultPadding),
             child: Column(
               children: [
-                SizedBox(height: 10,),
-                Icon(Icons.vpn_key,size: 40,color: Colors.blue,),
-                SizedBox(height: 30,),
-                Text("Please enter your registered email",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17,color: Colors.blue),),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(
+                  Icons.vpn_key,
+                  size: 40,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
+                Text(
+                  "Please enter your registered email",
+                  style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.blue),
+                ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
                 TextFormField(
                   validator: MultiValidator([
                     EmailValidator(errorText: 'Enter a valid email address'),
@@ -67,8 +80,16 @@ class ForgetPassword extends StatelessWidget {
                       ),
                       hintText: 'Email'),
                 ),
-                SizedBox(height: 50,),
-                RoundedButton(onTap: (){}, buttonName: 'Reset password'),
+                SizedBox(
+                  height: 50,
+                ),
+                RoundedButton(
+                  onTap: () {},
+                  child: Text(
+                    'Reset password',
+                    style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),
+                  ),
+                )
               ],
             ),
           ),
@@ -90,6 +111,4 @@ class ForgetPassword extends StatelessWidget {
       ),
     );
   }
-
-
 }

@@ -30,7 +30,7 @@ class InputText extends StatelessWidget {
         validator: validator,
         style: TextStyle(fontSize: 18),
         decoration: InputDecoration(
-          labelText: hint,
+          labelText: label,
           prefixIcon: icon,
           hintText: hint,
           border: OutlineInputBorder(

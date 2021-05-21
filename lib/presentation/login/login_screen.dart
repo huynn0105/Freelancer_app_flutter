@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/presentation/forget_password/forget_password_screen.dart';
-import 'package:freelance_app/presentation/register/register_controller.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
-
+import 'package:freelance_app/constant.dart';
 import 'login_controller.dart';
 
 const logoSize = 45.0;
@@ -74,7 +73,7 @@ class LoginScreen extends GetWidget<LoginController> {
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: RoundedButton(
                       onTap: login,
-                      buttonName: "Đăng nhập",
+                      child: Text('Login',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
                     )),
                 Container(
                   alignment: Alignment.centerRight,

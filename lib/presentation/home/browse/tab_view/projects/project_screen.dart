@@ -6,6 +6,7 @@ import 'package:freelance_app/presentation/home/browse/job_detail/job_detail_scr
 import 'package:freelance_app/presentation/home/browse/widgets/item_card.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProjectScreen extends StatelessWidget {
   final controller = Get.find<BrowseController>();
@@ -25,7 +26,7 @@ class ProjectScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Obx(
-                      ()=> SearchBoxFilter(
+                      () => SearchBoxFilter(
                         controller: controller,
                         searchQueryController: controller.searchQueryController,
                         isSearching: controller.isSearching.value,
@@ -39,18 +40,23 @@ class ProjectScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         color: Colors.red.shade400),
-                    child: IconButton(
-                      icon: Icon(
-                        FontAwesomeIcons.slidersH,
-                        color: Colors.white,
+                    child: SizedBox(
+                      height: 44.0,
+                      width: 44.0,
+                      child: IconButton(
+                        icon: Icon(
+                          FontAwesomeIcons.slidersH,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          showCupertinoModalBottomSheet(
+                              expand: false,
+                              context: context,
+                              builder: (builder) {
+                                return FilterSearchScreen();
+                              });
+                        },
                       ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (builder) {
-                              return FilterSearchScreen();
-                            });
-                      },
                     ),
                   ),
                 ],

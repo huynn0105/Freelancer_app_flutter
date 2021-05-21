@@ -5,17 +5,16 @@ import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 import 'package:get/get.dart';
 
 class ServiceScreen extends StatefulWidget {
-  const ServiceScreen({Key key}) : super(key: key);
-
+   ServiceScreen({Key key,this.controller}) : super(key: key);
   @override
   _ServiceScreenState createState() => _ServiceScreenState();
 
-
+  final controller ;
 }
 
 
 class _ServiceScreenState extends State<ServiceScreen> {
-  final controller = Get.find<ProfileController>();
+
   var _searchEdit = new TextEditingController();
 
   bool _isSearch = true;
@@ -48,10 +47,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = widget.controller;
     return new Scaffold(
         appBar: AppBar(
           title: Text(
-            'Select Skills',
+            'Select Service',
             style: TextStyle(color: Colors.black),
           ),
           iconTheme: IconThemeData(
@@ -93,7 +93,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           service.copyWith(isValue: value),controller.services);
                                     });
                               })
-                          : _searchListView(),
+                          : _searchListView(controller),
                     )
                   ]),
                 )
@@ -103,7 +103,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         ));
   }
 
-  Widget _searchListView() {
+  Widget _searchListView(controller) {
     _searchListItems = new List<Service>();
     for (int i = 0; i < controller.services.length; i++) {
       var item = controller.services[i];
@@ -111,10 +111,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
         _searchListItems.add(item);
       }
     }
-    return _searchAddList();
+    return _searchAddList(controller);
   }
 
-  Widget _searchAddList() {
+  Widget _searchAddList(controller) {
     return ListView.builder(
         itemCount: _searchListItems.length,
         itemBuilder: (BuildContext context, int index) {

@@ -1,7 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_app/presentation/home/messages/chats_screen.dart';
 import 'browse/browse_screen.dart';
-import 'freelancers/freelancer_screen.dart';
+import 'browse/tab_view/freelancers/freelancer_screen.dart';
 import 'home_controller.dart';
 import 'job/job_screen.dart';
 import 'post_job/post_job_screen.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends GetWidget<HomeController>  {
             children: [
               JobScreen(),
               BrowseScreen(),
-              FreelancersScreen(),
+              ChatsScreen(),
               ProfileScreen(),
               PostJobScreen(),
             ],

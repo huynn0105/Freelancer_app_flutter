@@ -7,7 +7,6 @@ class ProfileBinding extends Bindings{
   void dependencies() {
     Get.lazyPut(() => ProfileController(
       apiRepositoryInterface: Get.find(),
-      localRepositoryInterface: Get.find(),
     ));
   }
 }

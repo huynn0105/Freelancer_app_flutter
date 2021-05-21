@@ -9,19 +9,19 @@ import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 
 class ProfileController extends GetxController {
   final ApiRepositoryInterface apiRepositoryInterface;
-  final LocalRepositoryInterface localRepositoryInterface;
 
   ProfileController(
-      {this.apiRepositoryInterface, this.localRepositoryInterface});
+      {this.apiRepositoryInterface});
 
   var isLoading = false.obs;
   RxString imageURL = ''.obs;
   RxList<Service> services = <Service>[].obs;
   RxList<Service> servicesSelected = <Service>[].obs;
-
+  var progressState = sState.initial.obs;
   RxList<Skill> skills = <Skill>[].obs;
   RxList<Skill> skillsSelected = <Skill>[].obs;
   RxList<Level> levels = <Level>[].obs;
@@ -32,31 +32,32 @@ class ProfileController extends GetxController {
   TextEditingController ctrlTile = TextEditingController();
   TextEditingController ctrlWebsite = TextEditingController();
   TextEditingController ctrlDescription = TextEditingController();
-  TextEditingController ctrlSpecializeId = TextEditingController();
+  TextEditingController ctrlSpecialty = TextEditingController();
   RxInt specialtyId = 0.obs;
   RxBool isReady = true.obs;
   RxBool isChange = false.obs;
-  RxInt formOnWorkId = 0.obs;
+  RxInt formOfWorkId = 0.obs;
   RxInt levelId = 0.obs;
 
 
   Future<void> uploadProfile(int id) async {
     try {
+      progressState(sState.loading);
       await apiRepositoryInterface.putAccount(
           id,
           AccountRequest(
             name: ctrlName.text,
-            description: ctrlDescription.text,
-            onReady: isReady.value,
-            formOnWorkId: formOnWorkId.value,
-            levelId: levelId.value,
-            phone: ctrlPhoneNumber.text,
             roleId: 2,
-            website: ctrlWebsite.text,
-            services: servicesSelected,
-            skills: skillsSelected,
-            speccializeid: specialtyId.value,
+            phone: ctrlPhoneNumber.text,
             tile: ctrlTile.text,
+            description: ctrlDescription.text,
+            website: ctrlWebsite.text,
+            specialtyId: specialtyId.value,
+            levelId: levelId.value,
+            onReady: isReady.value,
+            formOfWorkId: formOfWorkId.value,
+            skills: skillsSelected,
+            services: servicesSelected,
           ));
     } catch (e) {
       print('Lỗi $e');
@@ -121,14 +122,36 @@ class ProfileController extends GetxController {
   }
 
   Future getServices() async{
-    services.clear();
-    final result = await apiRepositoryInterface.getServices();
+    List<Service> result = await apiRepositoryInterface.getServices();
+     result.forEach((element) {
+      servicesSelected.forEach((e){
+        if(e.id == element.id){
+          element.isValue = true;
+          return;
+        }
+      });
+    });
+    // final List<Service> list = result.map((e){
+    //   if(servicesSelected.every((selected) => selected.id == e.id)){
+    //     e.isValue = true;
+    //     return e;
+    //   }
+    // }).toList();
+
     services.assignAll(result);
+
   }
 
   Future getSkills() async {
-    skills.clear();
     final result = await apiRepositoryInterface.getSkills();
+    result.forEach((element) {
+      skillsSelected.forEach((e){
+        if(e.id == element.id){
+          element.isValue = true;
+          return;
+        }
+      });
+    });
     skills.assignAll(result);
   }
 

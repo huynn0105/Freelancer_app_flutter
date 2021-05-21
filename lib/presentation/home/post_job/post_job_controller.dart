@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/province.dart';
@@ -23,7 +24,7 @@ class PostJobController extends GetxController {
   RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
   RxList<PayForm> payForms = <PayForm>[].obs;
   RxList<Province> provinces = <Province>[].obs;
-
+  var progressState = sState.initial.obs;
   RxList<Skill> skillsSelected = <Skill>[].obs;
   RxInt specialtyId = 0.obs;
   RxInt typeId = 0.obs;
@@ -45,8 +46,9 @@ class PostJobController extends GetxController {
   final deadlineTextController = TextEditingController();
   final locationTextController = TextEditingController();
 
-  Future<bool> postJob() async{
+  Future<bool> postJob() async {
     try {
+      progressState(sState.loading);
       final response = await apiRepositoryInterface.postJob(PostJobRequest(
         name: nameTextController.text,
         details: descriptionTextController.text,
@@ -61,16 +63,16 @@ class PostJobController extends GetxController {
         serviceId: serviceId.value,
         provinceId: provinceId.value,
         payformId: payFormId.value,
-        skillIds: skillsSelected,
+        skills: skillsSelected,
       ));
-
-      if(response!=null){
+      progressState(sState.initial);
+      if (response != null) {
         return true;
       }
       return false;
-
     } catch (e) {
       print("Lỗi: ${e.toString()}");
+      progressState(sState.initial);
       return false;
     }
   }
@@ -90,42 +92,70 @@ class PostJobController extends GetxController {
   }
 
   Future loadSpecialties() async {
-    specialties.clear();
-    final result = await apiRepositoryInterface.getSpecialties();
-    specialties.assignAll(result);
+    try {
+      specialties.clear();
+      final result = await apiRepositoryInterface.getSpecialties();
+      specialties.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getSpecialtyServices(int specialtyId) async {
-    services.clear();
-    final result = await apiRepositoryInterface.getSpecialtyServices(specialtyId);
-    services.assignAll(result);
+    try {
+      final result =
+          await apiRepositoryInterface.getSpecialtyServices(specialtyId);
+      services.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getSkills() async {
-    skills.clear();
-    final result = await apiRepositoryInterface.getSkills();
-    skills.assignAll(result);
+    try {
+      skills.clear();
+      final result = await apiRepositoryInterface.getSkills();
+      skills.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getTypeOfWorks() async {
-    typeOfWorks.clear();
-    final result = await apiRepositoryInterface.getTypeOfWorks();
-    typeOfWorks.assignAll(result);
+    try {
+      typeOfWorks.clear();
+      final result = await apiRepositoryInterface.getTypeOfWorks();
+      typeOfWorks.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getFormOfWorks() async {
-    final result = await apiRepositoryInterface.getFormOfWorks();
-    formOfWorks.assignAll(result);
+    try {
+      final result = await apiRepositoryInterface.getFormOfWorks();
+      formOfWorks.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getPayForms() async {
-    final result = await apiRepositoryInterface.getPayForms();
-    payForms.assignAll(result);
+    try {
+      final result = await apiRepositoryInterface.getPayForms();
+      payForms.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   Future getProvinces() async {
-    final result = await apiRepositoryInterface.getProvinces();
-    provinces.assignAll(result);
+    try {
+      final result = await apiRepositoryInterface.getProvinces();
+      provinces.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
   }
 
   void changeValue(Skill skill, List<Skill> skillList) {

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
-import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
 import 'package:freelance_app/presentation/home/widgets/avatar.dart';
+import 'package:freelance_app/presentation/home/widgets/c_profile.dart';
+import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
 import 'package:freelance_app/presentation/home/widgets/record.dart';
 import 'package:freelance_app/presentation/home/widgets/service.dart';
@@ -13,8 +14,8 @@ import 'package:freelance_app/presentation/home/widgets/summary.dart';
 import 'package:get/get.dart';
 
 class FreelancerDetailScreen extends StatelessWidget {
-  final Account account;
-  FreelancerDetailScreen({this.account});
+  final Account freelancer;
+  FreelancerDetailScreen({this.freelancer});
 
   final controller = Get.find<HomeController>();
 
@@ -49,73 +50,40 @@ class FreelancerDetailScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                SizedBox(height: 10,),
-                Avatar(url: 'assets/images/avatarnull.jpg',),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'account.name',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  me.work,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    color: Colors.black54,
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.black54,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      me.city,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black54,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 15,),
+                Header(avatarUrl: freelancer.avatarUrl,name: freelancer.name,tile: freelancer.tile,level: freelancer.level,),
                 Information(
-                  email: account.email,
-                  contract: 'me.contract',
-                  phoneNumber: account.phone,
+                  email: freelancer.email,
+                  contract: freelancer.website,
+                  phoneNumber: freelancer.phone,
                 ),
-                SizedBox(height: 15),
-                About(
-                  description: 'me.description',
-                ),
-                SizedBox(height: 15),
-                // Skills(
-                //   skillsList: me.skills,
-                // ),
-                SizedBox(height: 15),
-                Service(
-                  servicesList: me.services,
-                ),
-                SizedBox(height: 15),
-                Record(),
-                SizedBox(height: 15),
+                freelancer.description != null
+                    ? About(
+                  description: '${freelancer.description}',
+                )
+                    : const SizedBox.shrink(),
+                freelancer.freelancerSkills != null
+                    ? freelancer.capacityProfiles.isNotEmpty
+                    ? Skills(
+                  skillsList: freelancer.freelancerSkills,
+                )
+                    : const SizedBox.shrink():const SizedBox.shrink(),
+
+                freelancer.freelancerServices != null
+                    ? freelancer.capacityProfiles.isNotEmpty
+                    ? Services(
+                  freelancerServices: freelancer.freelancerServices,
+                )
+                    : const SizedBox.shrink():const SizedBox.shrink(),
+                CProfile(capacityProfiles: freelancer.capacityProfiles,),
                 Summary(
                   rate: me.rate,
-                  totalMoney: me.money,
+                  totalMoney: freelancer.balance,
                   totalVote: 3,
                   workValue: 99,
                 ),
-                SizedBox(height: 100,),
+                SizedBox(
+                  height: 100,
+                ),
 
               ],
             ),

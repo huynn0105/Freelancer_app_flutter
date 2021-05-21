@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:freelance_app/presentation/home/freelancers/freelancer_screen.dart';
+import 'file:///F:/Code/freelance_app/lib/presentation/home/browse/tab_view/freelancers/freelancer_screen.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'browse_controller.dart';
-import 'tab_view/project_screen.dart';
+import 'filter_search_screen.dart';
+import 'tab_view/projects/project_screen.dart';
 
 class BrowseScreen extends StatelessWidget {
 
@@ -47,6 +49,20 @@ class BrowseScreen extends StatelessWidget {
 
           ],
         ),
+          // floatingActionButton: FloatingActionButton(
+          //   heroTag: 'search',
+          //   onPressed: () {
+          //     showCupertinoModalBottomSheet(
+          //         expand: false,
+          //         context: context,
+          //         builder: (builder) {
+          //           return FilterSearchScreen();
+          //         });
+          //   },
+          //   child: Icon(
+          //     Icons.search,
+          //   ),
+          // )
       ),
     );
   }

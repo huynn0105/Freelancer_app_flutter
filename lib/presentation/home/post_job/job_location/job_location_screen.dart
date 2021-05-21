@@ -78,10 +78,15 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
                         return ItemLocation(
                           name: province.name,
                           onTap: () {
-                            controller.getPayForms();
                             controller.provinceId.value = province.provinceId;
+                            print('provinceId ${province.provinceId}');
                             controller.locationTextController.text = province.name;
-                            widget.id == 1 ? Get.to(() => PayFormScreen()) : Get.back();
+                            if(widget.id == 1){
+                              controller.getPayForms();
+                              Get.to(() => PayFormScreen());
+                            }else{
+                              Get.back();
+                            }
                           },
                         );
                       },

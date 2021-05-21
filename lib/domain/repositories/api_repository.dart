@@ -1,4 +1,5 @@
 import 'package:freelance_app/domain/models/account.dart';
+import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
@@ -15,6 +16,7 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> updateProfile(Account account);
   Future<dynamic> getSpecialties();
   Future<dynamic> postJob(PostJobRequest postJobRequest);
+  Future<dynamic> getJobs();
   Future<dynamic> getTypeOfWorks();
   Future<dynamic> getSkills();
   Future<dynamic> getPayForms();
@@ -22,9 +24,11 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getServices();
   Future<dynamic> getSpecialtyServices(int specialtyId);
   Future<dynamic> getProvinces();
-  Future<dynamic> getImage(String url);
   Future<dynamic> getLevels();
-  Future<dynamic> getLevelFromId(int id);
   Future<dynamic> putAccount(int id, AccountRequest request);
+  Future<dynamic> postCapacityProfile(CapacityProfile capacityProfile);
+  Future<dynamic> putCapacityProfile(int id,CapacityProfile capacityProfile);
+  Future<dynamic> getCapacityProfiles();
+  Future<dynamic> getAccountsPagination({int page, int count});
 
 }

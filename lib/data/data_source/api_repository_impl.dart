@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:freelance_app/domain/models/account.dart';
+import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
@@ -83,10 +84,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     };
     var rs = await HttpService.put(
         ACCOUNT, account.toJson(), bearerToken: TOKEN, parameters: parameters);
-    if (rs.statusCode == 200) {
-      var jsonObject = jsonDecode(rs.body);
-      print('Dữ liệu, ${jsonObject.toString()}');
-    }
+    print('codeUpdateProfile ${rs.statusCode}');
   }
 
   @override
@@ -104,7 +102,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getSpecialtyServices(int specialtyId) async {
-    var rs = await HttpService.get('$SPECIALTYSERVICE/$specialtyId', bearerToken: TOKEN);
+    var rs = await HttpService.get('$SPECIALTY_SERVICE/$specialtyId', bearerToken: TOKEN);
     print('codeSpecialtiesServices ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -120,7 +118,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('codeServices: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var services = jsonList.map((e) => Service.fromJson(e)).toList();
+      var services = jsonList.map((e) => Service.fromJsonNoValue(e)).toList();
       return services;
     }
     return null;
@@ -128,20 +126,31 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future postJob(PostJobRequest postJobRequest) async {
-    print('data: ${postJobRequest.toJson()}');
+
     var rs = await HttpService.post(
         JOB, postJobRequest.toJson(), bearerToken: TOKEN);
-    print('codepostJob: ${rs.statusCode}');
-    if (rs.statusCode == 201) {
-      print("Thành công: ${rs.body}");
+    print('codeJob: ${rs.statusCode}');
+    if(rs.statusCode==200)
       return true;
-    }
     return false;
+
+  }
+
+  @override
+  Future getJobs() async {
+    var rs = await HttpService.get(JOB, bearerToken: TOKEN);
+    print('codeFormOfWorks: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      // var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      // return formOfWorks;
+    }
+    return null;
   }
 
   @override
   Future getFormOfWorks() async {
-    var rs = await HttpService.get(FORMOFWORKS, bearerToken: TOKEN);
+    var rs = await HttpService.get(FORM_OF_WORKS, bearerToken: TOKEN);
     print('codeFormOfWorks: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -153,7 +162,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getPayForms() async {
-    var rs = await HttpService.get(PAYFORMS, bearerToken: TOKEN);
+    var rs = await HttpService.get(PAY_FORMS, bearerToken: TOKEN);
     print('codePayForms: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -169,7 +178,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('codeSkill: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var skills = jsonList.map((e) => Skill.fromJson(e)).toList();
+      var skills = jsonList.map((e) => Skill.fromJsonNoValue(e)).toList();
       return skills;
     }
     return null;
@@ -177,7 +186,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getTypeOfWorks() async {
-    var rs = await HttpService.get(TYPEOFWORKS, bearerToken: TOKEN);
+    var rs = await HttpService.get(TYPE_OF_WORKS, bearerToken: TOKEN);
     print('codeTypeOfWorks: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -198,25 +207,12 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-  @override
-  Future getImage(String url) async {
-    var rs = await HttpService.get('$IMAGE/$url', bearerToken: TOKEN);
-    print('code ${rs.statusCode}');
-    if (rs.statusCode == 200) {
-      // var json = jsonDecode(rs.body) ;
-      // print('response ${json}');
-      return rs.body;
-    }
-  }
+
 
   @override
   Future putAccount(int id, AccountRequest request) async {
     var rs = await HttpService.put('api/Accounts/$id', request.toJson(),bearerToken: TOKEN);
     print('code ${rs.statusCode}');
-    print('body ${request.toJson()}');
-    if(rs.statusCode == 204){
-
-    }
   }
 
   @override
@@ -229,14 +225,45 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       return level;
     }
   }
+
+
   @override
-  Future getLevelFromId(int id) async {
-    var rs = await HttpService.get('$LEVELS/$id', bearerToken: TOKEN);
-    print('codeLVID ${rs.statusCode}');
+  Future postCapacityProfile(CapacityProfile capacityProfile) async{
+    var rs = await HttpService.post(CAPACITY_PROFILE,capacityProfile.toJson(), bearerToken: TOKEN);
+    print('codeCapacityProfiles ${rs.statusCode}');
+  }
+
+  @override
+  Future putCapacityProfile(int id,CapacityProfile capacityProfile) async{
+    var rs = await HttpService.put('CAPACITYPROFILE/$id',capacityProfile.toJson(), bearerToken: TOKEN);
+    print('js :${capacityProfile.toJson()}');
+    print('codeCapacityProfiles ${rs.statusCode}');
+  }
+
+  @override
+  Future getCapacityProfiles() async{
+    var rs = await HttpService.get(CAPACITY_PROFILE, bearerToken: TOKEN);
+    print('codeCapacityProfiles ${rs.statusCode}');
     if (rs.statusCode == 200) {
-      var js = jsonDecode(rs.body);
-      var level = Level.fromJson(js);
-      return level;
+      var jsonList = jsonDecode(rs.body) as List;
+      var capacityProfiles = jsonList.map((e) => CapacityProfile.fromJson(e)).toList();
+      return capacityProfiles;
+    }
+    return null;
+  }
+
+  @override
+  Future getAccountsPagination({int page, int count}) async{
+
+    print('urlllir ${Uri.https(DOMAIN, '/api/Accounts', {'page':'$page','count' : '$count'})}');
+    var rs = await HttpService.get(ACCOUNT_PAGINATION, bearerToken: TOKEN,parameters: {'page':'$page','count' : '$count'});
+    print('codeAccountsPagination ${rs.statusCode}');
+
+    if(rs.statusCode == 200){
+      var jsonObject = jsonDecode(rs.body);
+      var jsonList = jsonObject['list'] as List;
+      var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
+      return accounts;
     }
     return null;
   }

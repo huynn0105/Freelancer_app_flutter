@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/browse/browse_controller.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/item_selected.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
 import 'package:get/get.dart';
 
-class FilterSearchScreen extends StatelessWidget {
-  final controller = Get.put<BrowseController>(BrowseController(
-    apiRepositoryInterface: Get.find(),
-  ));
+import 'widgets/search_box_filter.dart';
+
+class FilterSearchScreen extends GetWidget<BrowseController> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,10 @@ class FilterSearchScreen extends StatelessWidget {
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SearchBoxFilter(
+                controller: controller,
+                searchQueryController: controller.searchQueryController,
+                isSearching: controller.isSearching.value,),
               SizedBox(
                 height: 10,
               ),
@@ -26,24 +31,53 @@ class FilterSearchScreen extends StatelessWidget {
                 'Salary range',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
+              Row(
+                children: [
+                    Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: controller.floorPriceTextController,
+                      decoration: InputDecoration(
+                        suffixIcon: Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              'VNĐ',
+                              style: TextStyle(color: Colors.black54),
+                            )),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.cellingPriceTextController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        suffixIcon: Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              'VNĐ',
+                              style: TextStyle(color: Colors.black54),
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                'Job type',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Wrap(
-                runSpacing: 12,
-                spacing: 12,
-                children: List.generate(
+              ItemFilter(
+                title: 'Form of work',
+                controller: controller,
+                list: List.generate(
                   controller.formOfWorks.length,
-                  (index) {
+                      (index) {
                     var jobType = controller.formOfWorks[index];
                     return ItemSelected(
+                      activeColor: Colors.red.shade400,
                       active: controller.jobTypeId.value,
                       onTap: () {
                         controller.jobTypeId(jobType.id);
@@ -57,21 +91,38 @@ class FilterSearchScreen extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Text(
-                'Job type',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ItemFilter(
+                title: 'Type of work',
+                controller: controller,
+                list: List.generate(
+                  controller.typeOfWorks.length,
+                      (index) {
+                    var typeOfWork = controller.typeOfWorks[index];
+                    return ItemSelected(
+                      activeColor: Colors.red.shade400,
+                      active: controller.typeOfWorkId.value,
+                      onTap: () {
+                        controller.typeOfWorkId(typeOfWork.id);
+                      },
+                      index: typeOfWork.id,
+                      name: typeOfWork.name,
+                    );
+                  },
+                ),
               ),
+
               SizedBox(
-                height: 10,
+                height: 20,
               ),
-              Wrap(
-                runSpacing: 5,
-                spacing: 5,
-                children: List.generate(
+              ItemFilter(
+                title: 'Level',
+                controller: controller,
+                list: List.generate(
                   controller.levels.length,
-                  (index) {
+                      (index) {
                     var lv = controller.levels[index];
                     return ItemSelected(
+                      activeColor: Colors.red.shade400,
                       active: controller.levelId.value,
                       onTap: () {
                         controller.levelId(lv.id);
@@ -82,15 +133,53 @@ class FilterSearchScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 20,),
+
+              SizedBox(
+                height: 220,
+              ),
               RoundedButton(
                 onTap: () {},
-                buttonName: 'Show results',
+                backgroundColor: Colors.red.shade400,
+                child: Text('Show result',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ItemFilter extends StatelessWidget {
+  const ItemFilter({
+    Key key,
+    @required this.controller,
+    this.title,
+    this.list,
+  }) : super(key: key);
+
+  final BrowseController controller;
+  final String title;
+  final List<Widget> list;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: TEXT_STYLE_PRIMARY,
+        ),
+        SizedBox(
+          height: 6,
+        ),
+        Wrap(
+          runSpacing: 6,
+          spacing: 6,
+          children: list,
+        ),
+      ],
     );
   }
 }

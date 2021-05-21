@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance_app/presentation/home/freelancers/freelancer_detail/freelancer_detail_screen.dart';
+import 'file:///F:/Code/freelance_app/lib/presentation/home/browse/tab_view/freelancers/freelancer_detail/freelancer_detail_screen.dart';
 import 'package:freelance_app/presentation/home/home_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 import 'package:get/get.dart';

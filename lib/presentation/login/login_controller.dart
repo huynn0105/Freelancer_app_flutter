@@ -1,11 +1,10 @@
 import 'dart:convert';
-
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/register/register_controller.dart';
 import 'package:get/get.dart';
 
 

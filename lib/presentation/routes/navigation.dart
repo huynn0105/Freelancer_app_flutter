@@ -14,6 +14,8 @@ class Routes {
   static final String login = '/login';
   static final String home = '/home';
   static final String register = '/register';
+
+
 }
 
 class Pages {
@@ -38,5 +40,6 @@ class Pages {
       page: () => HomeScreen(),
       binding: HomeBinding(),
     ),
+
   ];
 }

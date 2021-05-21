@@ -1,13 +1,19 @@
 class Skill {
   int id;
   String name;
-  bool isValue = false;
+  bool isValue;
 
   Skill({this.id, this.name, this.isValue});
 
   Skill.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
+    id = json['id'] as int;
+    name = json['name'] as String;
+    isValue = true;
+  }
+  Skill.fromJsonNoValue(Map<String, dynamic> json) {
+    id = json['id'] as int;
+    name = json['name'] as String;
+    isValue = false;
   }
 
   Map<String, dynamic> toJson() {
@@ -23,5 +29,10 @@ class Skill {
       id: id ?? this.id,
       name: name ?? this.name,
     );
+  }
+
+  @override
+  String toString() {
+    return '{id: $id, name: $name}';
   }
 }

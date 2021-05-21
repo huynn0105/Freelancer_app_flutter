@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
@@ -25,7 +26,7 @@ class JobOffersScreen extends StatelessWidget {
 
             SizedBox(height: 15,),
 
-            RoundedButton(onTap: (){}, buttonName: 'Gửi chào giá'),
+            RoundedButton(onTap: (){}, child: Text('Send offer',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),)),
 
             SizedBox(height: 30,),
           ],

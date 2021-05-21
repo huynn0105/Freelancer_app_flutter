@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
@@ -7,7 +8,7 @@ import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-enum sState { loading, initial }
+
 
 class RegisterController extends GetxController {
   final LocalRepositoryInterface localRepositoryInterface;
