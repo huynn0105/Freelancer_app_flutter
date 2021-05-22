@@ -209,7 +209,7 @@ class JobDetailScreen extends StatelessWidget {
                                       height: 12,
                                     ),
                                     Text(
-                                      '2020/3/21',
+                                      '2020-3-21',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
