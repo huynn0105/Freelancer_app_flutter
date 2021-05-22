@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///F:/Code/freelance_app/lib/presentation/home/browse/tab_view/freelancers/freelancer_detail/freelancer_detail_screen.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_detail/freelancer_detail_screen.dart';
 import 'package:freelance_app/presentation/home/home_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 import 'package:get/get.dart';
@@ -52,7 +52,7 @@ class _RecommendState extends State<RecommendScreen> {
                     rate: 5,
                     titleButton: isInvite ? 'Đã mời' : 'Mời',
                     onTap: () {
-                      Get.to(FreelancerDetailScreen());
+                      Get.to(()=>FreelancerDetailScreen());
                     },
                     onPress: (){
                       setState(() {

@@ -8,7 +8,7 @@ import 'package:freelance_app/presentation/home/post_job/successful/successful_s
 import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:get/get.dart';
 
-class JobDetailScreen extends GetWidget<PostJobController> {
+class PostJobDetailScreen extends GetWidget<PostJobController> {
 
   void postJob() async {
       final bool result = await controller.postJob();

@@ -1,4 +1,5 @@
 import 'package:freelance_app/domain/models/capacity_profile.dart';
+import 'package:freelance_app/domain/models/job.dart';
 
 import 'form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
@@ -31,6 +32,7 @@ class Account {
   List<Service> freelancerServices;
   List<Skill> freelancerSkills;
   List<CapacityProfile> capacityProfiles;
+  List<Job> jobRenters;
 
 
   Account({
@@ -53,6 +55,7 @@ class Account {
     this.freelancerServices,
     this.freelancerSkills,
     this.capacityProfiles,
+    this.jobRenters,
 });
 
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);

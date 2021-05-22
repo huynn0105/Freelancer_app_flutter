@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///F:/Code/freelance_app/lib/presentation/home/browse/tab_view/freelancers/freelancer_screen.dart';
 import 'package:get/get.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'browse_controller.dart';
-import 'filter_search_screen.dart';
+import 'tab_view/freelancers/freelancer_screen.dart';
 import 'tab_view/projects/project_screen.dart';
 
 class BrowseScreen extends StatelessWidget {
@@ -13,9 +11,7 @@ class BrowseScreen extends StatelessWidget {
     'Freelancer'
   ];
 
-  final controller = Get.put<BrowseController>(BrowseController(
-    apiRepositoryInterface: Get.find(),
-  ));
+
 
   @override
   Widget build(BuildContext context) {

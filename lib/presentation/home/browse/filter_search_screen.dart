@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 
 import 'widgets/search_box_filter.dart';
 
-class FilterSearchScreen extends GetWidget<BrowseController> {
-
+class FilterSearchScreen extends StatelessWidget {
+  final controller = Get.put<BrowseController>(BrowseController(
+    apiRepositoryInterface: Get.find(),
+  ));
 
   @override
   Widget build(BuildContext context) {

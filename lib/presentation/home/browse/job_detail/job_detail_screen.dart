@@ -1,11 +1,23 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/browse/job_detail/job_offers/job_offers_screen.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class JobDetailScreen extends StatelessWidget {
+
+  final Job job;
+  JobDetailScreen({@required this.job});
+
   @override
   Widget build(BuildContext context) {
+    final df = new DateFormat('dd-MM-yyyy');
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -27,7 +39,7 @@ class JobDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Cần tuyển lập trình viên mobile cho dự án freelancer',
+                        job.name,
                         style: TextStyle(
                             fontSize: 27, fontWeight: FontWeight.bold),
                       ),
@@ -36,14 +48,14 @@ class JobDetailScreen extends StatelessWidget {
                       ),
                       RichText(
                         text: TextSpan(
-                            text: "Dịch vụ cần thuê: ",
+                            text: "Specialty: ",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: "Thiết kế ứng dụng moble",
+                                  text: job.specialty.name,
                                   style: TextStyle(
                                       color: Color(0xff3277D8), fontSize: 20))
                             ]),
@@ -52,14 +64,14 @@ class JobDetailScreen extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        'Mô tả',
+                        'Description',
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w500),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
-                          'Bên mình cần 1 bạn làm cứng về WebRTC, công việc nhanh gọn. Bên mình cần 1 bạn làm cứng về WebRTC, công việc nhanh gọn. Bên mình cần 1 bạn làm cứng về WebRTC, công việc nhanh gọn. Bên mình cần 1 bạn làm cứng về WebRTC, công việc nhanh gọn.',
+                          job.details,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w400),
                         ),
@@ -67,18 +79,7 @@ class JobDetailScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        'Đính kèm',
-                        style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.w500),
-                      ),
-                      TextField(
-                        enabled: false,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.attachment_outlined),
-                          hintText: 'JD'
-                        ),
-                      ),
+
                       SizedBox(
                         height: 20,
                       ),
@@ -88,7 +89,7 @@ class JobDetailScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(right: 10,bottom: 10),
                               child: Text(
-                                'Kỹ năng:',
+                                'Skills:',
                                 style: TextStyle(
                                     fontSize: 19,
                                     color: Color(0xff3277D8),
@@ -97,12 +98,12 @@ class JobDetailScreen extends StatelessWidget {
                             ),
 
                             Wrap(
-                              runSpacing: 5,
-                              spacing: 5,
+                              runSpacing: 8,
+                              spacing: 8,
                               children: List.generate(
-                                4,
+                                job.skills.length,
                                 (index) => NavItem(
-                                  title: 'Flutter',
+                                  title: job.skills[index].name,
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w600,
@@ -119,7 +120,7 @@ class JobDetailScreen extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        'Thông tin dự án',
+                        'Job information',
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w500),
                       ),
@@ -140,7 +141,7 @@ class JobDetailScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'ID dự án',
+                                      'ID Job',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
@@ -154,42 +155,42 @@ class JobDetailScreen extends StatelessWidget {
                                       height: 12,
                                     ),
                                     Text(
-                                      'Chỉ còn',
+                                      'Deadline',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Địa điểm',
+                                      'Location',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Ngân sách',
+                                      'Salary',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Hình thức làm việc',
+                                      'Form of work',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Loại hình công việc',
+                                      'Type of job',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Hình thức trả lương',
+                                      'Pay form',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                   ],
@@ -201,7 +202,7 @@ class JobDetailScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '123',
+                                      '${job.id}',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
@@ -215,14 +216,14 @@ class JobDetailScreen extends StatelessWidget {
                                       height: 12,
                                     ),
                                     Text(
-                                      '3',
+                                      '${df.format(job.deadline)}',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Hồ chí minh',
+                                      'job.province.name',
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
@@ -231,11 +232,11 @@ class JobDetailScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          '10M - ',
+                                          '${job.floorprice} - ',
                                           style: TextStyle(fontSize: 19),
                                         ),
                                         Text(
-                                          '20M',
+                                          '${job.cellingprice}',
                                           style: TextStyle(fontSize: 19),
                                         ),
                                       ],
@@ -244,19 +245,19 @@ class JobDetailScreen extends StatelessWidget {
                                       height: 12,
                                     ),
                                     Text(
-                                      'Làm Online',
+                                      job.formOfWork.name,
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(height: 12),
                                     Text(
-                                      'Part time',
+                                      job.typeOfWork.name,
                                       style: TextStyle(fontSize: 19),
                                     ),
                                     SizedBox(
                                       height: 12,
                                     ),
                                     Text(
-                                      'Theo dự án',
+                                      job.payform.name,
                                       style: TextStyle(fontSize: 19),
                                     ),
                                   ],
@@ -270,7 +271,7 @@ class JobDetailScreen extends StatelessWidget {
                         height: 20,
                       ),
                       Text(
-                        'Thông tin khách hàng',
+                        'Render infomation',
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w500),
                       ),
@@ -288,9 +289,27 @@ class JobDetailScreen extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/avatar.jpg'),
+                                      radius: 55,
+                                      foregroundColor: Colors.transparent,
+                                      backgroundColor: Colors.grey.shade300,
+                                      child: CachedNetworkImage(
+                                        imageUrl: '$IMAGE/',
+                                        httpHeaders: {
+                                          HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
+                                        },
+                                        placeholder: (context, url) =>
+                                            CupertinoActivityIndicator(),
+                                        imageBuilder: (context, image) => CircleAvatar(
+                                          backgroundImage: image,
+                                          radius: 50,
+                                        ),
+                                        errorWidget: (context, url, error) => CircleAvatar(
+                                          backgroundColor: Colors.grey,
+                                          backgroundImage:
+                                          AssetImage('assets/images/avatarnull.png'),
+                                          radius: 50,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -298,7 +317,7 @@ class JobDetailScreen extends StatelessWidget {
                                   width: 20,
                                 ),
                                 Text(
-                                  'Nguyễn Nhật Huy',
+                                  job.renter.name,
                                   style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700),

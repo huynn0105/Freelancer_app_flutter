@@ -10,10 +10,10 @@ import 'package:intl/intl.dart';
 class JobDescriptionScreen extends StatelessWidget {
   final controller = Get.find<PostJobController>();
   final dateTextController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         bottom: MyLinearProgressIndicator(
@@ -115,12 +115,12 @@ Future<void> selectDate(
   final DateTime pickedDate = await showDatePicker(
       context: context,
       initialDate: controller.today.value,
-      firstDate: DateTime(2015),
+      firstDate: DateTime(2021),
       lastDate: DateTime(2050));
   if (pickedDate != null &&
       pickedDate != controller.today.value &&
       pickedDate.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-    controller.today.value = pickedDate;
+    controller.today.value = pickedDate.add(Duration(days: 1)).subtract(Duration(seconds: 1));
     controller.deadlineTextController.text = df.format(controller.today.value);
   }
 }

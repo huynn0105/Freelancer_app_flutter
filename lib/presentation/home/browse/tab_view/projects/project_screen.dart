@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ProjectScreen extends StatelessWidget {
-  final controller = Get.find<BrowseController>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +24,15 @@ class ProjectScreen extends StatelessWidget {
             Container(
               child: Row(
                 children: [
-                  Expanded(
-                    child: Obx(
-                      () => SearchBoxFilter(
-                        controller: controller,
-                        searchQueryController: controller.searchQueryController,
-                        isSearching: controller.isSearching.value,
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Obx(
+                  //     () => SearchBoxFilter(
+                  //       controller: controller,
+                  //       searchQueryController: controller.searchQueryController,
+                  //       isSearching: controller.isSearching.value,
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     width: 15,
                   ),

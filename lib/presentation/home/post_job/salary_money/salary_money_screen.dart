@@ -23,7 +23,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
           TextButton(
             onPressed: () {
               formKey.currentState.validate()
-                  ? Get.to(() => JobDetailScreen())
+                  ? Get.to(() => PostJobDetailScreen())
                   : null;
             },
             child: Text(

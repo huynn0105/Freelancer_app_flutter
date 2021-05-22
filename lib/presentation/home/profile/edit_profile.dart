@@ -431,6 +431,7 @@ class EditProfileScreen extends StatelessWidget {
     controller.formOfWorkId.value =
         account.formOfWork != null ? account.formOfWork.id : 0;
     controller.levelId.value = account.level != null ? account.level.id : 0;
+    controller.specialtyId.value = account.specialty != null ? account.specialty.id : 0;
     controller.imageURL.value = account.avatarUrl;
     if (account.freelancerServices != null)
       controller.servicesSelected.assignAll(account.freelancerServices);

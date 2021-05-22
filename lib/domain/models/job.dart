@@ -1,54 +1,56 @@
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/province.dart';
+import 'package:freelance_app/domain/models/service.dart';
+import 'package:freelance_app/domain/models/skill.dart';
+import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/models/type_of_work.dart';
 
+import 'account.dart';
 import 'pay_form.dart';
+import 'renter.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'job.g.dart';
+
+@JsonSerializable()
 class Job {
-  final int id;
-  final int renterId;
-  final int freelancerId;
-  final String name;
-  final String details;
-  final int typeId;
-  final int formId;
-  final int workAtId;
-  final int payFormId;
-  final int deadline;
-  final int floorPrice;
-  final int cellingPrice;
-  final int isPrivate;
-  final int specialtyId;
-  final int serviceId;
-  final String provinceId;
-  final String status;
-  final FormOfWork form;
-  final PayForm payform;
-  final Province province;
-  final TypeOfWork type;
-
+  int id;
+  String name;
+  DateTime deadline;
+  String details;
+  Renter renter;
+  Account freelancer;
+  int floorprice;
+  int cellingprice;
+  PayForm payform;
+  Specialty specialty;
+  Service service;
+  TypeOfWork typeOfWork;
+  FormOfWork formOfWork;
+  Province province;
+  String status;
+  List<Skill> skills;
 
   Job({
     this.id,
-    this.renterId,
-    this.freelancerId,
     this.name,
-    this.details,
-    this.typeId,
-    this.formId,
-    this.workAtId,
-    this.payFormId,
     this.deadline,
-    this.floorPrice,
-    this.cellingPrice,
-    this.isPrivate,
-    this.specialtyId,
-    this.serviceId,
-    this.province,
-    this.provinceId,
-    this.type,
-    this.form,
+    this.details,
+    this.renter,
+    this.freelancer,
+    this.floorprice,
+    this.cellingprice,
     this.payform,
-    this.status
+    this.specialty,
+    this.service,
+    this.typeOfWork,
+    this.formOfWork,
+    this.province,
+    this.status,
+    this.skills,
   });
+
+  factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
+
+  Map<String, dynamic> toJson() => _$JobToJson(this);
 }

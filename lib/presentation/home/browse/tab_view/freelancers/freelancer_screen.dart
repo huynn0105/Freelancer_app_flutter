@@ -1,27 +1,22 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
-import 'package:freelance_app/domain/models/freelancer.dart';
-import 'package:freelance_app/domain/models/service.dart';
-import 'package:freelance_app/domain/models/skill.dart';
-import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/browse/browse_controller.dart';
 import 'package:freelance_app/presentation/home/browse/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_controller.dart';
-import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
-import 'file:///F:/Code/freelance_app/lib/presentation/home/browse/tab_view/freelancers/freelancer_detail/freelancer_detail_screen.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:get/get.dart';
 
+import 'freelancer_detail/freelancer_detail_screen.dart';
+
 class FreelancersScreen extends StatelessWidget {
-  final controllerBrowse = Get.find<BrowseController>();
+
 
   final controller = Get.put<FreelancerController>(FreelancerController(
     apiRepositoryInterface: Get.find(),
@@ -44,16 +39,16 @@ class FreelancersScreen extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Expanded(
-                      child: Obx(
-                        () => SearchBoxFilter(
-                          controller: controllerBrowse,
-                          searchQueryController:
-                              controllerBrowse.searchQueryController,
-                          isSearching: controllerBrowse.isSearching.value,
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Obx(
+                    //     () => SearchBoxFilter(
+                    //       controller: controllerBrowse,
+                    //       searchQueryController:
+                    //           controllerBrowse.searchQueryController,
+                    //       isSearching: controllerBrowse.isSearching.value,
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(
                       width: 15,
                     ),
@@ -88,11 +83,8 @@ class FreelancersScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Account freelancer = controller.freelancers[index];
                   return ItemFreelancer(
-                    avatarUrl: freelancer.avatarUrl,
-                    name: freelancer.name,
-                    specialty: freelancer.specialty,
+                    freelancer: freelancer,
                     rate: freelancers[index].rate,
-                    freelancerSkills: freelancer.freelancerSkills,
                     onTap: () {
                       Get.to(
                         () => FreelancerDetailScreen(freelancer: freelancer),
@@ -112,20 +104,14 @@ class FreelancersScreen extends StatelessWidget {
 
 class ItemFreelancer extends StatelessWidget {
   const ItemFreelancer({
-    @required this.avatarUrl,
-    @required this.name,
-    @required this.specialty,
     @required this.rate,
-    @required this.freelancerSkills,
+    @required this.freelancer,
     @required this.onTap,
     Key key,
   }) : super(key: key);
-
-  final String avatarUrl;
-  final String name;
-  final Specialty specialty;
+  final Account freelancer;
   final int rate;
-  final List<Skill> freelancerSkills;
+
   final GestureTapCallback onTap;
 
   @override
@@ -149,13 +135,13 @@ class ItemFreelancer extends StatelessWidget {
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: avatarUrl != null
+                      child: freelancer.avatarUrl != null
                           ? CircleAvatar(
-                              radius: 75,
+                              radius: 45,
                               foregroundColor: Colors.transparent,
                               backgroundColor: Colors.grey.shade300,
                               child: CachedNetworkImage(
-                                imageUrl: '$IMAGE/$avatarUrl',
+                                imageUrl: '$IMAGE/${freelancer.avatarUrl}',
                                 httpHeaders: {
                                   HttpHeaders.authorizationHeader:
                                       'Bearer $TOKEN'
@@ -164,14 +150,14 @@ class ItemFreelancer extends StatelessWidget {
                                     CupertinoActivityIndicator(),
                                 imageBuilder: (context, image) => CircleAvatar(
                                   backgroundImage: image,
-                                  radius: 70,
+                                  radius: 40,
                                 ),
                                 errorWidget: (context, url, error) =>
                                     CircleAvatar(
                                   backgroundColor: Colors.grey,
                                   backgroundImage: AssetImage(
                                       'assets/images/avatarnull.jpg'),
-                                  radius: 70,
+                                  radius: 40,
                                 ),
                               ),
                             )
@@ -183,18 +169,29 @@ class ItemFreelancer extends StatelessWidget {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        name,
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                        freelancer.name,
+                        style: TEXT_STYLE_PRIMARY,
                         maxLines: 1,
                         overflow: TextOverflow.fade,
                       ),
-                      specialty != null
-                          ? Text(specialty.name)
+
+                      freelancer.level != null
+                          ? Container(
+                              child: Text(freelancer.level.name,style: TextStyle(color: Colors.white),),
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(5)),
+                        padding: EdgeInsets.all(kDefaultPadding/5),
+                        margin: EdgeInsets.symmetric(vertical: kDefaultPadding/6),
+                            )
                           : SizedBox.shrink(),
+
+                      freelancer.specialty != null
+                          ? Text(freelancer.specialty.name)
+                          : SizedBox.shrink(),
+                      SizedBox(height: kDefaultPadding / 4),
                       Rate(rate: rate),
                     ],
                   ),
@@ -206,16 +203,16 @@ class ItemFreelancer extends StatelessWidget {
                   )
                 ],
               ),
-              freelancerSkills != null
+              freelancer.freelancerSkills != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 4, left: 10),
                       child: Wrap(
                         runSpacing: 5,
                         spacing: 5,
                         children: List.generate(
-                          freelancerSkills.length,
+                          freelancer.freelancerSkills.length,
                           (index) => NavItem(
-                            title: freelancerSkills[index].name,
+                            title: freelancer.freelancerSkills[index].name,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
