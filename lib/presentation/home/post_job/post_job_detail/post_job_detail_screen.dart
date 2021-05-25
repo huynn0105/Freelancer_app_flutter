@@ -29,13 +29,8 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
         Scaffold(
           appBar: AppBar(
             title: Text(
-              'Job Detail',
-              style: TextStyle(color: Colors.black),
+              'Post Job Detail',
             ),
-            iconTheme: IconThemeData(
-              color: Colors.black, //change your color here
-            ),
-            backgroundColor: Colors.white,
           ),
           body: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -99,9 +94,8 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                         Icons.location_on,
                       ),
                     ),
-                    onTap: (){
-                      Get.to(()=> JobLocationScreen(id: 0,));
-                    },
+                    onTap: ()=> Get.to(()=> JobLocationScreen(id: 0,controller: controller,))
+                    ,
                     readOnly: true,
                   ),
                   SizedBox(
@@ -330,7 +324,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                       minimumSize: Size(double.infinity, 40),
                     ),
                     child: Text(
-                      'Post job',
+                      'Post Job',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),

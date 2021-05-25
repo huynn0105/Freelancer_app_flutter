@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
@@ -45,8 +46,11 @@ class LoginController extends GetxController {
         loginState(sState.initial);
         var jsonObject = jsonDecode(response.body);
         TOKEN = jsonObject['token'];
+        var accountJs = jsonObject['account'];
+        Account account = Account.fromJson(accountJs);
         print('token: $TOKEN');
         await localRepositoryInterface.saveToken(TOKEN);
+        await localRepositoryInterface.saveAccount(account);
         return true;
       }
       if (response.statusCode == 400) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/province.dart';
+import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/pay_form/pay_form_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/home/widgets/search_box.dart';
@@ -10,12 +11,13 @@ class JobLocationScreen extends StatefulWidget {
   @override
   _JobLocationScreenState createState() => _JobLocationScreenState();
   final int id;
-  JobLocationScreen({this.id});
+  JobLocationScreen({this.id,this.controller});
+  final controller;
 }
 
 class _JobLocationScreenState extends State<JobLocationScreen> {
 
-  final controller = Get.find<PostJobController>();
+
   var _searchEdit = new TextEditingController();
   bool _isSearch = true;
   String _searchText = "";
@@ -39,16 +41,12 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = widget.controller;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
-          style: TextStyle(color: Colors.black),
+          'Location',
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
       ),
       body: Obx(
         ()=> controller.provinces.isNotEmpty ? Container(
@@ -56,7 +54,7 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
           child: Column(
             children: [
               Text(
-                'Cần tuyển freelance làm việc tại',
+                'Location',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -79,18 +77,17 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
                           name: province.name,
                           onTap: () {
                             controller.provinceId.value = province.provinceId;
-                            print('provinceId ${province.provinceId}');
                             controller.locationTextController.text = province.name;
                             if(widget.id == 1){
                               controller.getPayForms();
                               Get.to(() => PayFormScreen());
-                            }else{
+                            }else if(widget.id==0){
                               Get.back();
                             }
                           },
                         );
                       },
-                    ) : _searchListView(),
+                    ) : _searchListView(controller),
                   ),
                 ]),
               )
@@ -103,18 +100,18 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
     );
   }
 
-  Widget _searchListView() {
-    _searchListItems = new List<Province>();
+  Widget _searchListView(controller) {
+    _searchListItems = [];
     for (int i = 0; i < controller.provinces.length; i++) {
       var item = controller.provinces[i];
       if (item.name.toLowerCase().contains(_searchText.toLowerCase())) {
         _searchListItems.add(item);
       }
     }
-    return _searchAddList();
+    return _searchAddList(controller);
   }
 
-  Widget _searchAddList() {
+  Widget _searchAddList(controller) {
     return ListView.builder(
         itemCount: _searchListItems.length,
         itemBuilder: (BuildContext context, int index) {
@@ -122,10 +119,14 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
           return ItemLocation(
             name: province.name,
             onTap: () {
-              controller.getPayForms();
               controller.provinceId.value = province.provinceId;
               controller.locationTextController.text = province.name;
-              widget.id == 1 ? Get.to(() => PayFormScreen()) : Get.back();
+              if(widget.id == 1){
+                controller.getPayForms();
+                Get.to(() => PayFormScreen());
+              }else if(widget.id == 0){
+                Get.back();
+              }
             },
           );
         });

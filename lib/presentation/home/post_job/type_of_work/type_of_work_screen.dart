@@ -12,15 +12,10 @@ class TypeOfWorkScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Job',
+          'Post Job',
           style: TextStyle(color: Colors.black),
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
       body: Obx(
         ()=> controller.typeOfWorks.isNotEmpty ? Container(
           padding: EdgeInsets.all(25),

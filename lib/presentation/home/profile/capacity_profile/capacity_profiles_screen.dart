@@ -22,6 +22,7 @@ class CapacityProfilesScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: capacityProfiles.length,
         itemBuilder: (context, index) {
+          print('capa ${capacityProfiles[index].imageUrl}');
           return Padding(
             padding: const EdgeInsets.all(15.0),
             child: CapacityCard(

@@ -31,8 +31,7 @@ class PostJobController extends GetxController {
   RxInt formId = 0.obs;
   RxInt workAtId = 0.obs;
   RxInt payFormId = 0.obs;
-  RxInt cellingPrice = 0.obs;
-  RxInt floorPrice = 0.obs;
+
   RxInt serviceId = 0.obs;
   RxBool isPrivate = false.obs;
   RxString provinceId = ''.obs;
@@ -56,8 +55,8 @@ class PostJobController extends GetxController {
         formId: formId.value,
         workatId: workAtId.value,
         deadline: today.value,
-        floorprice: floorPrice.value,
-        cellingprice: cellingPrice.value,
+        floorprice: int.parse(floorPriceTextController.text),
+        cellingprice: int.parse(cellingPriceTextController.text),
         isPrivate: isPrivate.value ? 1 : 0,
         specialtyId: specialtyId.value,
         serviceId: serviceId.value,

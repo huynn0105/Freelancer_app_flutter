@@ -22,10 +22,7 @@ class CapacityProfileDetailScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.black
-          ),
+
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -130,6 +127,14 @@ class CapacityProfileDetailScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CachedNetworkImage(
+                              errorWidget: (context, url, error) => Container(
+                                child: Icon(Icons.error,size: 30,),
+                                margin: EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.grey[200],
+                                ),
+                              ),
                               imageUrl: '$IMAGE/${capacityProfile.imageUrl}',
                               httpHeaders: {
                                 HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
@@ -138,6 +143,7 @@ class CapacityProfileDetailScreen extends StatelessWidget {
                                   CupertinoActivityIndicator(),
                               fit: BoxFit.cover,
                             ),
+
                           ),
                         ),
                       )

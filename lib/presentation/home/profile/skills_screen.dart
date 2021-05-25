@@ -47,12 +47,9 @@ class _SkillsScreenState extends State<SkillsScreen> {
         appBar: AppBar(
           title: Text(
             'Select Skills',
-            style: TextStyle(color: Colors.black),
+
           ),
-          iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
+
           actions: [
             TextButton(
               onPressed: () {

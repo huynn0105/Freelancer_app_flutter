@@ -52,12 +52,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
         appBar: AppBar(
           title: Text(
             'Select Service',
-            style: TextStyle(color: Colors.black),
           ),
-          iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
+
           actions: [
             TextButton(
               onPressed:  () {

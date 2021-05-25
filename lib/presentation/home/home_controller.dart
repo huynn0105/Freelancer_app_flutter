@@ -1,3 +1,4 @@
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/skill.dart';
@@ -14,7 +15,7 @@ class HomeController extends GetxController {
 
   HomeController({this.apiRepositoryInterface,this.localRepositoryInterface});
 
-
+  var progressState = sState.initial.obs;
   Rx<Account> account = Account().obs;
   RxInt indexSelected = 0.obs;
   RxList<Skill> skillsFreelancer = <Skill>[].obs;
@@ -22,33 +23,45 @@ class HomeController extends GetxController {
 
 
   @override
-  void onReady() {
+  void onReady()  {
+    loadAccountLocal();
     super.onReady();
   }
   @override
-  void onInit() async{
+  void onInit() {
     super.onInit();
-    await loadAccount();
   }
 
-  Future<void> loadAccount() async {
-   try {
-     var user = await apiRepositoryInterface.getAccountFromToken();
-     if(user!=null){
-       account.value = user;
-       print('account: ${account.value.name}');
-     }else if(user == null){
-       print('lỗi: user null');
-       await apiRepositoryInterface.logout();
-       await localRepositoryInterface.clearData();
-       Get.offAllNamed(Routes.login);
-     }
-   }catch(e){
-     print('lỗi: user ${e.toString()}');
-     await apiRepositoryInterface.logout();
-     await localRepositoryInterface.clearData();
-     Get.offAllNamed(Routes.login);
-   }
+  // Future<void> loadAccountFromToken() async {
+  //  try {
+  //    progressState(sState.loading);
+  //    var user = await apiRepositoryInterface.getAccountFromToken();
+  //    progressState(sState.initial);
+  //    if(user!=null){
+  //      account(user);
+  //    }else if(user == null){
+  //      print('lỗi: user null');
+  //      await apiRepositoryInterface.logout();
+  //      await localRepositoryInterface.clearData();
+  //      Get.offAllNamed(Routes.login);
+  //    }
+  //  }catch(e){
+  //    print('lỗi: user ${e.toString()}');
+  //    progressState(sState.initial);
+  //    await apiRepositoryInterface.logout();
+  //    await localRepositoryInterface.clearData();
+  //    Get.offAllNamed(Routes.login);
+  //  }
+  // }
+
+  Future loadAccountLocal() async {
+    progressState(sState.loading);
+    await localRepositoryInterface.getAccount().then(
+          (value) {
+            account(value);
+      },
+    );
+    progressState(sState.initial);
   }
 
   void updateIndexSelected(int index) {
@@ -56,13 +69,10 @@ class HomeController extends GetxController {
     indexSelected(index);
   }
 
-
-
   Future<void> logOut() async {
     await apiRepositoryInterface.logout();
     await localRepositoryInterface.clearData();
   }
-
 
 
 }

@@ -13,12 +13,7 @@ class FormOfWorkScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Post Job',
-          style: TextStyle(color: Colors.black),
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
       ),
       body: Obx(
         () => controller.formOfWorks.isNotEmpty
@@ -46,7 +41,7 @@ class FormOfWorkScreen extends StatelessWidget {
                               onTap: () {
                                 controller.formId.value = formOfWork.id;
                                 controller.getProvinces();
-                                Get.to(() => JobLocationScreen(id: 1,));
+                                Get.to(() => JobLocationScreen(id: 1,controller: controller,));
                               });
                         })
                   ],

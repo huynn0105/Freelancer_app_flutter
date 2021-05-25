@@ -9,12 +9,9 @@ class MessagesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
         title: Row(
           children: [
-            BackButton(
-              color: Colors.blue,
-            ),
+            BackButton(),
             CircleAvatar(
               backgroundImage: AssetImage('assets/images/avatar.jpg'),
             ),
@@ -26,11 +23,11 @@ class MessagesScreen extends StatelessWidget {
               children: [
                 Text(
                   'Huy Hyun',
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 16),
                 ),
                 Text(
                   'Active 3m ago',
-                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                  style: TextStyle(fontSize: 12),
                 ),
               ],
             ),

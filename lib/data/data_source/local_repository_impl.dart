@@ -13,7 +13,7 @@ class LocalRepositoryImpl extends LocalRepositoryInterface {
   Future<void> clearData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.remove(_pref_token);
-    // sharedPreferences.remove(_pref_login);
+    sharedPreferences.remove(_pref_login);
 
   }
 
@@ -31,22 +31,23 @@ class LocalRepositoryImpl extends LocalRepositoryInterface {
   }
 
 
-  //
-  // @override
-  // Future saveAccount(Account account) async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   var rs = await pref.setString(_pref_login, jsonEncode(account));
-  // }
-  //
-  // @override
-  // Future<Account> getAccount() async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   var account = pref.getString(_pref_login);
-  //   if (account != null) {
-  //     return Account.fromJson(jsonDecode(account));
-  //   }
-  //   return null;
-  // }
+
+  @override
+  Future saveAccount(Account account) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var rs =  pref.setString(_pref_login, jsonEncode(account));
+  }
+
+  @override
+  Future<Account> getAccount() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var account = pref.getString(_pref_login);
+    if (account != null) {
+      var a = Account.fromJson(jsonDecode(account));
+      return a;
+    }
+    return null;
+  }
 
 
 }

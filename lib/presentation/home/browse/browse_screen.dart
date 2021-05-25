@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'browse_controller.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/jobs/jobs_screen.dart';
 import 'tab_view/freelancers/freelancer_screen.dart';
-import 'tab_view/projects/project_screen.dart';
+
 
 class BrowseScreen extends StatelessWidget {
 
-  List<String> tab = [
-    'Project',
-    'Freelancer'
-  ];
-
-
-
   @override
   Widget build(BuildContext context) {
+    List<String> tab = [
+      'Project',
+      'Freelancer'
+    ];
     return DefaultTabController(
       length: tab.length,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
           bottom: TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.blue,
@@ -34,13 +29,13 @@ class BrowseScreen extends StatelessWidget {
           ),
           title: Text(
             'Browse',
-            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
         ),
+        backgroundColor: Colors.white,
         body: TabBarView(
           children: [
-            ProjectScreen(),
+            JobsScreen(),
             FreelancersScreen(),
 
           ],

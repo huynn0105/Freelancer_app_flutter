@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_detail/post_job_detail_screen.dart';
 import 'package:get/get.dart';
@@ -12,13 +13,8 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Job',
-          style: TextStyle(color: Colors.black),
+          'Post Job',
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
         actions: [
           TextButton(
             onPressed: () {
@@ -39,7 +35,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
           key: formKey,
           child: Column(
             children: [
-              Text('Số tiền tối đa mà bạn có thể trả trong khoảng ',style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+              Text('Salary',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 24),),
               SizedBox(height: 20,),
               TextFormField(
                 controller: controller.floorPriceTextController,
@@ -51,7 +47,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                 validator: MinLengthValidator(1,
                     errorText: 'Pleases enter'),
                 decoration: InputDecoration(
-                  hintText: 'Từ...',
+                  hintText: 'From...',
                   suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
 
                 ),
@@ -67,7 +63,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                   fontSize: 20,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Đến...',
+                  hintText: 'To...',
                   suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
                 ),
               ),

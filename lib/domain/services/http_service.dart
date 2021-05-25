@@ -8,7 +8,7 @@ const DOMAIN = '10.0.2.2:5001';
 
 const LOGIN = '/api/Login';
 const REGISTER = '/api/Register';
-const ACCOUNT = '/api/Accounts/fromtoken';
+const ACCOUNT = '/api/Accounts';
 const AVATAR = '/api/Images/avatars';
 const SPECIALTIES = '/api/Specialties';
 const JOB = '/api/Jobs';
@@ -24,6 +24,7 @@ const IMAGE = 'https://10.0.2.2:5001/api/Images';
 const LEVELS = 'api/Levels';
 const CAPACITY_PROFILE = 'api/CapacityProfiles';
 const ACCOUNT_PAGINATION = '/api/Accounts/pagination';
+const OFFER_HISTORIES = '/api/OfferHistories';
 
 // ignore: non_constant_identifier_names
 String TOKEN = '';

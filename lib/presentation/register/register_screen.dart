@@ -9,46 +9,44 @@ import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 const logoSize = 45.0;
 
 class RegisterScreen extends GetWidget<RegisterController> {
-  final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(7, errorText: 'password must be at least 7 digits long'),
-  ]);
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  void register() async {
-    if (formKey.currentState.validate()) {
-      final bool result = await controller.register();
-      if (result) {
-        Get.snackbar('Success', 'Register Success ',
-            snackPosition: SnackPosition.BOTTOM);
-        Get.offAllNamed(Routes.home);
-      } else {
-        Get.snackbar('Error',controller.message.value,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.TOP);
-
-      }
-    } else {
-      Get.snackbar('Error', 'Kiểm tra lại thông tin',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final passwordValidator = MultiValidator([
+      RequiredValidator(errorText: 'password is required'),
+      MinLengthValidator(7, errorText: 'password must be at least 7 digits long'),
+    ]);
+
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    void register() async {
+      if (formKey.currentState.validate()) {
+        final bool result = await controller.register();
+        if (result) {
+          Get.snackbar('Success', 'Register Success ',
+              snackPosition: SnackPosition.BOTTOM);
+          Get.offAllNamed(Routes.home);
+        } else {
+          Get.snackbar('Error',controller.message.value,
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+
+        }
+      } else {
+        Get.snackbar('Error', 'Kiểm tra lại thông tin',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP);
+      }
+    }
+
+
     return Stack(
       children: [
         Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(
-              color: Colors.black, //change your color here
-            ),
-            elevation: 0,
           ),
           backgroundColor: Colors.white,
           body: SingleChildScrollView(

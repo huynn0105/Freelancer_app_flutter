@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/home/post_job/salary_money/salary_money_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/type_of_work/type_of_work_screen.dart';
@@ -13,14 +14,8 @@ class PayFormScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Job',
-          style: TextStyle(color: Colors.black),
+          'Post Job',
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
-
       ),
       body: Obx(
         ()=> controller.payForms.isNotEmpty ? Container(
@@ -29,8 +24,8 @@ class PayFormScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hình thức trả lương',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'Pay Form',
+                style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 24),
               ),
               SizedBox(
                 height: 20,

@@ -40,10 +40,12 @@ class ProfileController extends GetxController {
   RxInt levelId = 0.obs;
 
 
-  Future<void> uploadProfile(int id) async {
+    void uploadProfile(int id)  {
     try {
       progressState(sState.loading);
-      await apiRepositoryInterface.putAccount(
+      var freelancerSkills =  skillsSelected.where((e) => e.isValue == true).toList();
+      var freelancerServices =  servicesSelected.where((e) => e.isValue == true).toList();
+       apiRepositoryInterface.putAccount(
           id,
           AccountRequest(
             name: ctrlName.text,
@@ -56,8 +58,8 @@ class ProfileController extends GetxController {
             levelId: levelId.value,
             onReady: isReady.value,
             formOfWorkId: formOfWorkId.value,
-            skills: skillsSelected,
-            services: servicesSelected,
+            skills: freelancerSkills,
+            services: freelancerServices,
           ));
     } catch (e) {
       print('Lỗi $e');

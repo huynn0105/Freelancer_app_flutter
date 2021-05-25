@@ -26,13 +26,26 @@ class SplashController extends GetxController {
 
   void validateSession() async{
     TOKEN = await localRepositoryInterface.getToken();
-    if(TOKEN!=null){
-      print('home');
-      print('token: $TOKEN');
-      Get.offAllNamed(Routes.home);
-    }else{
-      print('login');
+    try {
+      if (TOKEN != null) {
+        print('home');
+        print('token: $TOKEN');
+        var account = await apiRepositoryInterface.getAccountFromToken();
+        await localRepositoryInterface.saveAccount(account);
+        Get.offAllNamed(Routes.home);
+      } else {
+        print('login');
+        Get.offAllNamed(Routes.login);
+      }
+    }catch(e){
+      print('lỗi: user ${e.toString()}');
+      await apiRepositoryInterface.logout();
+      await localRepositoryInterface.clearData();
       Get.offAllNamed(Routes.login);
     }
   }
+
+
+
 }
+

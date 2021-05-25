@@ -13,62 +13,63 @@ class HomeScreen extends GetWidget<HomeController>  {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      body: Obx(
-        (){
-          return IndexedStack(
-            index: controller.indexSelected.value,
-            children: [
-              DashboardScreen(),
-              BrowseScreen(),
-              ChatsScreen(),
-              ProfileScreen(),
-              PostJobScreen(),
-            ],
-          );
-        },
-      ),
-      bottomNavigationBar: getFooter(),
-        floatingActionButton: FloatingActionButton(
-          heroTag: "home",
-            onPressed: () {
-              controller.indexSelected.value = 4;
-            },
-            child: Icon(
-              Icons.add,
-              size: 25,
-            ),
-          //params
-        ),
-        floatingActionButtonLocation:
-        FloatingActionButtonLocation.centerDocked);
-  }
-
-  Widget getFooter() {
-    List<IconData> iconItems = [
-      Icons.dashboard,
-      Icons.work,
-      Icons.message,
-      Icons.person,
+    final List<Widget> _children = [
+      DashboardScreen(),
+      BrowseScreen(),
+      PostJobScreen(),
+      ChatsScreen(),
+      ProfileScreen(),
     ];
-
     return Obx(
-      ()=> AnimatedBottomNavigationBar(
-        activeColor: Colors.blue,
-        splashColor: Colors.white,
-        inactiveColor: Colors.black.withOpacity(0.5),
-        icons: iconItems,
-        activeIndex: controller.indexSelected.value,
-        gapLocation: GapLocation.center,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 10,
-        iconSize: 25,
-        rightCornerRadius: 10,
-        onTap: (index) {
-          controller.updateIndexSelected(index);
-        },
-      ),
+      ()=> Scaffold(
+        body: _children[controller.indexSelected.value],
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.black54,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          iconSize: 28,
+          onTap: (index){
+            controller.updateIndexSelected(index);
+          }, // new
+          currentIndex: controller.indexSelected.value, // new
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: 'Dashboard',),
+            BottomNavigationBarItem(icon: Icon(Icons.work),label: 'Browse',),
+            BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline),label:'Post Job',),
+            BottomNavigationBarItem(icon: Icon(Icons.message),label: 'Message',),
+            BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Profile',),
+          ],
+        ),),
     );
   }
+  //
+  // Widget getFooter() {
+  //   List<IconData> iconItems = [
+  //     Icons.dashboard,
+  //     Icons.work,
+  //     Icons.add_circle_outline,
+  //     Icons.message,
+  //     Icons.person,
+  //   ];
+  //
+  //
+  //
+  //   return Obx(
+  //     ()=> AnimatedBottomNavigationBar(
+  //       activeColor: Colors.blue,
+  //       splashColor: Colors.white,
+  //       inactiveColor: Colors.black.withOpacity(0.5),
+  //       icons: iconItems,
+  //       activeIndex: controller.indexSelected.value,
+  //
+  //       leftCornerRadius: 32,
+  //       rightCornerRadius: 32,
+  //
+  //       onTap: (index) {
+  //         controller.updateIndexSelected(index);
+  //       },
+  //     ),
+  //   );
+  // }
 }

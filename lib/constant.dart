@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-
-const TextStyle TEXT_STYLE_PRIMARY = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+enum sState { loading, initial, failure }
+const TextStyle TEXT_STYLE_PRIMARY =
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 const TextStyle TEXT_STYLE_ON_FOREGROUND = TextStyle(fontSize: 16);
-enum sState { loading, initial }
+const TextStyle TEXT_STYLE_FOREIGN =
+    TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black54);
 
-const kPrimaryColor = Color(0XFF6A62B7);
-const kBackgroundColor = Color(0XFFE5E5E5);
-const kTextColor = Color(0XFF2C2C2C);
-const kCardInfoBG = Color(0XFF686868);
-const kRatingStarColor = Color(0XFFF4D150);
-const kInputBackgroundColor = Color(0XFFF3F3F3);
+
+const kPrimaryColor = Color(0xFFFFFFFF);
+const kSecondaryColor = Color(0xFFFE9901);
+const kContentColorLightTheme = Color(0xFF1D1D35);
+const kContentColorDarkTheme = Color(0xFFF5FCF9);
+const kWarningColor = Color(0xFFF3BB1C);
+const kErrorColor = Color(0xFFF03738);
 const kDefaultPadding = 20.0;

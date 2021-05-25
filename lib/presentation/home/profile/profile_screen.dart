@@ -13,8 +13,6 @@ import 'package:freelance_app/presentation/home/widgets/skills.dart';
 import 'package:freelance_app/presentation/home/widgets/summary.dart';
 import 'package:get/get.dart';
 
-
-
 class ProfileScreen extends StatelessWidget {
   final controllerHome = Get.find<HomeController>();
 
@@ -24,14 +22,21 @@ class ProfileScreen extends StatelessWidget {
       var user = controllerHome.account.value;
       return Scaffold(
           appBar: AppBar(
-            title: Text('Hồ Sơ'),
+            title: Text(
+              'Hồ Sơ',
+            ),
           ),
           body: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
               child: Column(
                 children: [
-                  Header(avatarUrl: user.avatarUrl,name: user.name,tile: user.tile,level: user.level,),
+                  Header(
+                    avatarUrl: user.avatarUrl,
+                    name: user.name,
+                    tile: user.tile,
+                    level: user.level,
+                  ),
                   Information(
                     email: user.email,
                     contract: user.website,
@@ -42,20 +47,15 @@ class ProfileScreen extends StatelessWidget {
                           description: '${user.description}',
                         )
                       : const SizedBox.shrink(),
-                  user.freelancerSkills != null
-                      ? user.capacityProfiles.isNotEmpty
-                      ? Skills(
-                          skillsList: user.freelancerSkills,
-                        )
-                      : const SizedBox.shrink():const SizedBox.shrink(),
-
-                  user.freelancerServices != null
-                      ? user.capacityProfiles.isNotEmpty
-                      ? Services(
-                          freelancerServices: user.freelancerServices,
-                        )
-                      : const SizedBox.shrink():const SizedBox.shrink(),
-                  CProfile(capacityProfiles: user.capacityProfiles,),
+                  Skills(
+                    skillsList: controllerHome.account.value.freelancerSkills,
+                  ),
+                  Services(
+                    freelancerServices: user.freelancerServices,
+                  ),
+                  CProfile(
+                    capacityProfiles: user.capacityProfiles,
+                  ),
                   Summary(
                     rate: me.rate,
                     totalMoney: user.balance,
@@ -82,7 +82,3 @@ class ProfileScreen extends StatelessWidget {
     });
   }
 }
-
-
-
-

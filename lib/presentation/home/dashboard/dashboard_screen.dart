@@ -59,7 +59,7 @@ class DashboardScreen extends GetWidget<HomeController> {
                         ],
                       ),
                     ),
-                    Project(jobs: user.jobRenters,),
+                    Obx(()=> Project(jobs: controller.account.value.jobRenters,)),
                   ],
                 )
               : const SizedBox.shrink(),

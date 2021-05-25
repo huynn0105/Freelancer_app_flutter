@@ -21,7 +21,7 @@ class EditProfileScreen extends StatelessWidget {
 
   EditProfileScreen({@required this.account});
 
-  final controllerHome = Get.find<HomeController>();
+  // final controllerHome = Get.find<HomeController>();
   final controllerJob = Get.find<PostJobController>();
   final controller = Get.put<ProfileController>(ProfileController(
     apiRepositoryInterface: Get.find(),
@@ -29,8 +29,7 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    Future.delayed(Duration.zero, () async {
+    Future.delayed(Duration(microseconds: 1), () async {
       initValue(account);
     });
 
@@ -40,16 +39,15 @@ class EditProfileScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text(
               'Edit profile',
-              style: TextStyle(color: Colors.black),
             ),
             actions: [
               TextButton(
                 onPressed: () async {
                   await controller.uploadProfile(account.id);
-                  await controllerHome.loadAccount();
+                  // await controllerHome.loadAccountFromToken();
                   controller.progressState(sState.initial);
                   controller.isChange(true);
-                  Get.offAllNamed(Routes.home);
+                  Get.offAllNamed(Routes.splash);
                 },
                 child: Text(
                   'Done',
@@ -58,15 +56,13 @@ class EditProfileScreen extends StatelessWidget {
               ),
             ],
             backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
+            leading: BackButton(
               onPressed: () async {
                 if (controller.isChange.value) {
-                  await controllerHome.loadAccount();
-                  Get.offAllNamed(Routes.home);
-                } else {
+                  // await controllerHome.loadAccountFromToken();
+                  Get.offAllNamed(Routes.splash);
+                } else
                   Get.back();
-                }
               },
             ),
           ),
@@ -82,7 +78,9 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   Obx(() => Center(
                         child: Avatar(
-                          url: controller.imageURL.value!=''? controller.imageURL.value : account.avatarUrl,
+                          url: controller.imageURL.value != ''
+                              ? controller.imageURL.value
+                              : account.avatarUrl,
                           onTap: getImage,
                         ),
                       )),
@@ -94,8 +92,8 @@ class EditProfileScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -145,7 +143,8 @@ class EditProfileScreen extends StatelessWidget {
                     height: 5,
                   ),
                   InputText(
-                    hint: 'Experienced English - Vietnamese Translator & Editor',
+                    hint:
+                        'Experienced English - Vietnamese Translator & Editor',
                     controller: controller.ctrlDescription,
                     maxLines: 8,
                   ),
@@ -181,8 +180,8 @@ class EditProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Form Of Work',
-                          style:
-                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           height: 4,
@@ -217,8 +216,8 @@ class EditProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Level',
-                          style:
-                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
                           height: 4,
@@ -253,8 +252,8 @@ class EditProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Skill',
-                          style:
-                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         Obx(
                           () => controller.skillsSelected.isNotEmpty
@@ -263,7 +262,8 @@ class EditProfileScreen extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemCount: controller.skillsSelected.length,
                                   itemBuilder: (context, index) {
-                                    var skill = controller.skillsSelected[index];
+                                    var skill =
+                                        controller.skillsSelected[index];
                                     return CheckboxListTile(
                                       title: Text(skill.name),
                                       value: skill.isValue,
@@ -286,7 +286,8 @@ class EditProfileScreen extends StatelessWidget {
                           child: TextButton(
                             child: Text('Add more skill'),
                             onPressed: () {
-                              if (controller.skills.isEmpty) controller.getSkills();
+                              if (controller.skills.isEmpty)
+                                controller.getSkills();
                               Get.to(() => SkillsScreen());
                             },
                           ),
@@ -303,8 +304,8 @@ class EditProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Service',
-                          style:
-                              TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         Obx(
                           () => controller.servicesSelected.isNotEmpty
@@ -421,8 +422,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  void initValue(Account account) {
-
+  Future initValue(Account account) {
     controller.ctrlName.text = account.name;
     controller.ctrlPhoneNumber.text = account.phone;
     controller.ctrlDescription.text = account.description;
@@ -431,7 +431,8 @@ class EditProfileScreen extends StatelessWidget {
     controller.formOfWorkId.value =
         account.formOfWork != null ? account.formOfWork.id : 0;
     controller.levelId.value = account.level != null ? account.level.id : 0;
-    controller.specialtyId.value = account.specialty != null ? account.specialty.id : 0;
+    controller.specialtyId.value =
+        account.specialty != null ? account.specialty.id : 0;
     controller.imageURL.value = account.avatarUrl;
     if (account.freelancerServices != null)
       controller.servicesSelected.assignAll(account.freelancerServices);

@@ -7,17 +7,16 @@ import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/browse/filter_search_screen.dart';
+import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_controller.dart';
-import 'package:freelance_app/presentation/widgets/nav_item.dart';
+import 'package:freelance_app/presentation/home/browse/widgets/header.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'freelancer_detail/freelancer_detail_screen.dart';
 
 class FreelancersScreen extends StatelessWidget {
-
-
   final controller = Get.put<FreelancerController>(FreelancerController(
     apiRepositoryInterface: Get.find(),
   ));
@@ -25,119 +24,81 @@ class FreelancersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Expanded(
-                    //   child: Obx(
-                    //     () => SearchBoxFilter(
-                    //       controller: controllerBrowse,
-                    //       searchQueryController:
-                    //           controllerBrowse.searchQueryController,
-                    //       isSearching: controllerBrowse.isSearching.value,
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Colors.blue),
-                      child: IconButton(
-                        icon: Icon(
-                          FontAwesomeIcons.slidersH,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          showModalBottomSheet(
-                              context: context,
-                              builder: (builder) {
-                                return FilterSearchScreen();
-                              });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: controller.freelancers.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  Account freelancer = controller.freelancers[index];
-                  return ItemFreelancer(
-                    freelancer: freelancer,
-                    rate: freelancers[index].rate,
-                    onTap: () {
-                      Get.to(
-                        () => FreelancerDetailScreen(freelancer: freelancer),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
+      body: Obx(
+        ()=>  controller.progressState.value != sState.loading ? Scaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: controller.freelancers.isNotEmpty ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: controller.freelancers.length,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return FreelancerCard(
+                  freelancer:  controller.freelancers[index],
+                  rate: freelancers[index].rate,
+                );
+              },
+            ) : Center(child: Text('Empty',style: TEXT_STYLE_PRIMARY,),),
           ),
-        ),
+        ) : const Center(
+            child: CircularProgressIndicator(),
+      )),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            showCupertinoModalBottomSheet(
+                expand: true,
+                context: context,
+                builder: (builder) {
+                  return FilterSearchScreen();
+                });
+          },
+          child: Icon(
+              Icons.search
+          )
       ),
-      backgroundColor: Colors.grey[100],
     );
   }
 }
 
-class ItemFreelancer extends StatelessWidget {
-  const ItemFreelancer({
+
+
+class FreelancerCard extends StatelessWidget {
+  const FreelancerCard({
     @required this.rate,
     @required this.freelancer,
-    @required this.onTap,
     Key key,
   }) : super(key: key);
   final Account freelancer;
   final int rate;
 
-  final GestureTapCallback onTap;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+      onTap: () {
+        Get.to(
+          () => FreelancerDetailScreen(freelancerId: freelancer.id),
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: kDefaultPadding/2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kDefaultPadding/2),
         ),
+        elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          padding: EdgeInsets.all(kDefaultPadding/2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: freelancer.avatarUrl != null
                           ? CircleAvatar(
-                              radius: 45,
+                              radius: 36,
                               foregroundColor: Colors.transparent,
                               backgroundColor: Colors.grey.shade300,
                               child: CachedNetworkImage(
@@ -150,14 +111,14 @@ class ItemFreelancer extends StatelessWidget {
                                     CupertinoActivityIndicator(),
                                 imageBuilder: (context, image) => CircleAvatar(
                                   backgroundImage: image,
-                                  radius: 40,
+                                  radius: 33,
                                 ),
                                 errorWidget: (context, url, error) =>
                                     CircleAvatar(
                                   backgroundColor: Colors.grey,
                                   backgroundImage: AssetImage(
-                                      'assets/images/avatarnull.jpg'),
-                                  radius: 40,
+                                      'assets/images/avatarnull.png'),
+                                  radius: 33,
                                 ),
                               ),
                             )
@@ -165,7 +126,7 @@ class ItemFreelancer extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 20,
+                    width: kDefaultPadding/2,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,18 +137,20 @@ class ItemFreelancer extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.fade,
                       ),
-
                       freelancer.level != null
                           ? Container(
-                              child: Text(freelancer.level.name,style: TextStyle(color: Colors.white),),
+                              child: Text(
+                                freelancer.level.name,
+                                style: TextStyle(color: Colors.white),
+                              ),
                               decoration: BoxDecoration(
                                   color: Colors.blue,
                                   borderRadius: BorderRadius.circular(5)),
-                        padding: EdgeInsets.all(kDefaultPadding/5),
-                        margin: EdgeInsets.symmetric(vertical: kDefaultPadding/6),
+                              padding: EdgeInsets.all(kDefaultPadding / 5),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: kDefaultPadding / 6),
                             )
                           : SizedBox.shrink(),
-
                       freelancer.specialty != null
                           ? Text(freelancer.specialty.name)
                           : SizedBox.shrink(),
@@ -203,26 +166,7 @@ class ItemFreelancer extends StatelessWidget {
                   )
                 ],
               ),
-              freelancer.freelancerSkills != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 4, left: 10),
-                      child: Wrap(
-                        runSpacing: 5,
-                        spacing: 5,
-                        children: List.generate(
-                          freelancer.freelancerSkills.length,
-                          (index) => NavItem(
-                            title: freelancer.freelancerSkills[index].name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black.withOpacity(0.65),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
+
             ],
           ),
         ),

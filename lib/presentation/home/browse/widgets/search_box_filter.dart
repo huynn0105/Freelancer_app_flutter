@@ -8,7 +8,7 @@ class SearchBoxFilter extends StatelessWidget {
     this.searchQueryController,
     this.isSearching,
   }) : super(key: key);
-  final BrowseController controller;
+  final  controller;
   final TextEditingController searchQueryController;
   final bool isSearching;
 

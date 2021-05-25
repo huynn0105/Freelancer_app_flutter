@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
@@ -56,7 +57,9 @@ class RegisterController extends GetxController {
         registerState(sState.initial);
         var jsonObject = jsonDecode(response.body);
         TOKEN = jsonObject['token'];
+        Account account = Account.fromJson(jsonObject['account']);
         await localRepositoryInterface.saveToken(TOKEN);
+        await localRepositoryInterface.saveAccount(account);
         print('token: $TOKEN');
         return true;
       }

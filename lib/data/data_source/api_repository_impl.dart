@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/province.dart';
@@ -13,6 +14,7 @@ import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
+import 'package:freelance_app/domain/requests/offer_request.dart';
 import 'package:freelance_app/domain/requests/post_job_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
@@ -20,7 +22,7 @@ import 'package:freelance_app/domain/services/http_service.dart';
 class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future<Account> getAccountFromToken() async {
-    var rs = await HttpService.get(ACCOUNT, bearerToken: TOKEN);
+    var rs = await HttpService.get('$ACCOUNT/fromtoken', bearerToken: TOKEN);
     print("codeAccount: ${rs.statusCode}");
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
@@ -139,11 +141,22 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getJobs() async {
     var rs = await HttpService.get(JOB, bearerToken: TOKEN);
-    print('codeFormOfWorks: ${rs.statusCode}');
+    print('codeJobs: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      // var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
-      // return formOfWorks;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
+    }
+    return null;
+  }
+  @override
+  Future getJobFromId(int id) async {
+    var rs = await HttpService.get('$JOB/$id', bearerToken: TOKEN);
+    print('codeJobId: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonObject = jsonDecode(rs.body);
+      var job = Job.fromJson(jsonObject);
+      return job;
     }
     return null;
   }
@@ -199,6 +212,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future getProvinces() async {
     var rs = await HttpService.get(PROVINCES, bearerToken: TOKEN);
+    print('codeProvinces ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var provinces = jsonList.map((e) => Province.fromJson(e)).toList();
@@ -212,7 +226,8 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future putAccount(int id, AccountRequest request) async {
     var rs = await HttpService.put('api/Accounts/$id', request.toJson(),bearerToken: TOKEN);
-    print('code ${rs.statusCode}');
+    print('putAccount ${request.toJson()}');
+    print('codePutAccount ${rs.statusCode}');
   }
 
   @override
@@ -253,19 +268,35 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   }
 
   @override
-  Future getAccountsPagination({int page, int count}) async{
-
-    print('urlllir ${Uri.https(DOMAIN, '/api/Accounts', {'page':'$page','count' : '$count'})}');
-    var rs = await HttpService.get(ACCOUNT_PAGINATION, bearerToken: TOKEN,parameters: {'page':'$page','count' : '$count'});
-    print('codeAccountsPagination ${rs.statusCode}');
-
+  Future getAccounts() async{
+    var rs = await HttpService.get(ACCOUNT, bearerToken: TOKEN);
+    print('codeAccounts ${rs.statusCode}');
     if(rs.statusCode == 200){
-      var jsonObject = jsonDecode(rs.body);
-      var jsonList = jsonObject['list'] as List;
+      var jsonList = jsonDecode(rs.body) as List;
       var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
       return accounts;
     }
     return null;
   }
+
+  @override
+  Future getAccountFromId(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id', bearerToken: TOKEN);
+    print('codeAccountId: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonObject = jsonDecode(rs.body);
+      var account = Account.fromJson(jsonObject);
+      return account;
+    }
+    return null;
+  }
+
+  @override
+  Future postOfferHistories(OfferRequest offerRequest)async {
+    var rs = await HttpService.post(OFFER_HISTORIES,offerRequest.toJson(), bearerToken: TOKEN);
+    print('codeOfferHistories ${rs.statusCode}');
+  }
+
+
 
 }

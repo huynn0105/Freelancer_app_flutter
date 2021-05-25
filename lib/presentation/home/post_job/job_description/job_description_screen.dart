@@ -21,12 +21,8 @@ class JobDescriptionScreen extends StatelessWidget {
         ),
         title: Text(
           'Post Job',
-          style: TextStyle(color: Colors.black),
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
+
         actions: [
           TextButton(
             onPressed: () {

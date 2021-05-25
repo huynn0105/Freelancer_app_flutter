@@ -18,6 +18,7 @@ class CapacityProfile {
     this.imageName,
     this.services,
     this.imageBase64,
+    this.imageUrl,
   });
 
   CapacityProfile.fromJson(Map<String, dynamic> json) {
@@ -41,6 +42,7 @@ class CapacityProfile {
     data['imageName'] = this.imageName;
     data['imageBase64'] = this.imageBase64;
     data['services'] = this.services;
+    data['imageUrl'] = this.imageUrl;
     return data;
   }
 

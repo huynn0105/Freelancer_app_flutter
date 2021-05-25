@@ -32,21 +32,17 @@ class CProfile extends StatelessWidget {
                     capacityProfiles: capacityProfiles,
                   ));
                 },
-                child: capacityProfiles != null
-                    ? capacityProfiles.isNotEmpty
+                child:capacityProfiles.isNotEmpty
                     ? Text('Show all')
-                    : const SizedBox.shrink()
                     : const SizedBox.shrink(),
               ),
             ],
           ),
-          capacityProfiles != null
-              ? capacityProfiles.isNotEmpty
+          capacityProfiles.isNotEmpty
               ? Capacity(
-            capacityProfiles: capacityProfiles,
+            capacityProfiles: capacityProfiles
           )
-              : Text('My Capacity Profile is Empty',)
-              : const SizedBox.shrink(),
+              : Text('My Capacity Profile is Empty',),
           Center(
             child: TextButton(
               child: Text('Add more service'),

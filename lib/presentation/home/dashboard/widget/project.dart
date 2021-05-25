@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/job.dart';
-import 'package:freelance_app/presentation/home/browse/job_detail/job_detail_screen.dart';
-import 'package:freelance_app/presentation/home/post_job/post_job_detail/post_job_detail_screen.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -73,7 +72,7 @@ class JobCard extends StatelessWidget {
     final df = new DateFormat('MMM dd');
     return InkWell(
       onTap: (){
-        Get.to(()=>JobDetailScreen(job: job,));
+        Get.to(()=>JobDetailScreen());
       },
       child: Container(
         height: 130,
@@ -151,7 +150,7 @@ class JobCard extends StatelessWidget {
                               child: Text(
                                 '${job.specialty.name}',
                                 style:
-                                    TextStyle(color: Colors.purple, fontSize: 12),
+                                TextStyle(color: Colors.purple, fontSize: 12),
                               ),
                             ),
                           )

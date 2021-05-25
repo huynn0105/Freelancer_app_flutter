@@ -21,8 +21,7 @@ class Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          avatarUrl != null
-              ? CircleAvatar(
+          CircleAvatar(
             radius: 75,
             foregroundColor: Colors.transparent,
             backgroundColor: Colors.grey.shade300,
@@ -40,14 +39,14 @@ class Header extends StatelessWidget {
               errorWidget: (context, url, error) => CircleAvatar(
                 backgroundColor: Colors.grey,
                 backgroundImage:
-                AssetImage('assets/images/avatarnull.jpg'),
+                AssetImage('assets/images/avatarnull.png'),
                 radius: 70,
               ),
             ),
-          )
-              : CupertinoActivityIndicator(),
+          ),
+
           SizedBox(
-            height: 10,
+            height: kDefaultPadding/2,
           ),
           Text(
             '$name',

@@ -21,7 +21,6 @@ class PostJobScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Post Job'),
-          centerTitle: true,
         ),
         body: Obx(
           ()=> controller.specialties.isNotEmpty ? Container(

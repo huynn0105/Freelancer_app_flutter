@@ -15,12 +15,7 @@ class ServiceFreelancer extends StatelessWidget {
         elevation: 1,
         title: Text(
           'Post Job',
-          style: TextStyle(color: Colors.black),
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),

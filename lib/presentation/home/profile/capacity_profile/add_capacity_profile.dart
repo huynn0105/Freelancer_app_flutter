@@ -42,11 +42,6 @@ class AddCapacityProfile extends StatelessWidget {
           appBar: AppBar(
             title: Text(
               "${capacityProfile != null ? 'Edit' : 'Add'} Capacity Profile",
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(
-              color: Colors.black, //change your color here
             ),
           ),
           body: SingleChildScrollView(
@@ -206,7 +201,7 @@ class AddCapacityProfile extends StatelessWidget {
                         capacityProfile != null
                             ? await controller.putCapacityProfile(capacityProfile.id)
                             : await controller.postCapacityProfile();
-                        await controllerHome.loadAccount();
+                        // await controllerHome.loadAccountFromToken();
                         controller.progressState(sState.initial);
                         Get.offAndToNamed(Routes.home);
                       },

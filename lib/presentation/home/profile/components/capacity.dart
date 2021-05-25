@@ -36,12 +36,13 @@ class _CapacityState extends State<Capacity> {
               },
               controller: PageController(viewportFraction: 0.8, initialPage: 0),
               itemCount: widget.capacityProfiles.length + 1,
-              itemBuilder: (context, index) => index ==
-                      widget.capacityProfiles.length
-                  ? IconButton(icon: Icon(Icons.more_horiz), onPressed: () {})
-                  : CapacityCard(
-                      capacityProfile: widget.capacityProfiles[index],
-                    ),
+              itemBuilder: (context, index) {
+                return index ==
+                    widget.capacityProfiles.length
+                    ? IconButton(icon: Icon(Icons.more_horiz), onPressed: () {})
+                    : CapacityCard(
+                  capacityProfile: widget.capacityProfiles[index],);
+              }
             ),
           ),
           Expanded(
