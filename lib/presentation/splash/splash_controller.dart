@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
@@ -23,6 +24,7 @@ class SplashController extends GetxController {
     validateSession();
     super.onReady();
   }
+  
 
   void validateSession() async{
     TOKEN = await localRepositoryInterface.getToken();

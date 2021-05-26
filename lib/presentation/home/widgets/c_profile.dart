@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/add_capacity_profile.dart';
+import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profile_controller.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
 import 'package:freelance_app/presentation/home/profile/components/capacity.dart';
 import 'package:get/get.dart';
 class CProfile extends StatelessWidget {
+  final controller = Get.put<CapacityProfileController>(CapacityProfileController(
+    apiRepositoryInterface: Get.find(),
+  ));
 
   final List<CapacityProfile> capacityProfiles;
 
@@ -27,10 +31,9 @@ class CProfile extends StatelessWidget {
               ),
               Spacer(),
               TextButton(
-                onPressed: () {
-                  Get.to(() => CapacityProfilesScreen(
-                    capacityProfiles: capacityProfiles,
-                  ));
+                onPressed: () async {
+                  controller.getCapacityProfiles();
+                  Get.to(() => CapacityProfilesScreen());
                 },
                 child:capacityProfiles.isNotEmpty
                     ? Text('Show all')

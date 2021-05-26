@@ -32,27 +32,27 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  // Future<void> loadAccountFromToken() async {
-  //  try {
-  //    progressState(sState.loading);
-  //    var user = await apiRepositoryInterface.getAccountFromToken();
-  //    progressState(sState.initial);
-  //    if(user!=null){
-  //      account(user);
-  //    }else if(user == null){
-  //      print('lỗi: user null');
-  //      await apiRepositoryInterface.logout();
-  //      await localRepositoryInterface.clearData();
-  //      Get.offAllNamed(Routes.login);
-  //    }
-  //  }catch(e){
-  //    print('lỗi: user ${e.toString()}');
-  //    progressState(sState.initial);
-  //    await apiRepositoryInterface.logout();
-  //    await localRepositoryInterface.clearData();
-  //    Get.offAllNamed(Routes.login);
-  //  }
-  // }
+  Future<void> loadAccountFromToken() async {
+   try {
+     progressState(sState.loading);
+     var user = await apiRepositoryInterface.getAccountFromToken();
+     progressState(sState.initial);
+     if(user!=null){
+       account(user);
+     }else if(user == null){
+       print('lỗi: user null');
+       await apiRepositoryInterface.logout();
+       await localRepositoryInterface.clearData();
+       Get.offAllNamed(Routes.login);
+     }
+   }catch(e){
+     print('lỗi: user ${e.toString()}');
+     progressState(sState.initial);
+     await apiRepositoryInterface.logout();
+     await localRepositoryInterface.clearData();
+     Get.offAllNamed(Routes.login);
+   }
+  }
 
   Future loadAccountLocal() async {
     progressState(sState.loading);

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
@@ -27,7 +28,7 @@ class CapacityCard extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: '$IMAGE/${capacityProfile.imageUrl}',
         httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
-        placeholder: (context, url) => CircularProgressIndicator(),
+        placeholder: (context, url) => CupertinoActivityIndicator(),
         errorWidget: (context, url, error) => Container(
           child: Icon(Icons.error,size: 30,),
           margin: EdgeInsets.only(right: 10),

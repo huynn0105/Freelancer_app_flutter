@@ -11,6 +11,7 @@ import 'login_controller.dart';
 const logoSize = 45.0;
 
 class LoginScreen extends GetWidget<LoginController> {
+
   void login() async {
     if (formKey.currentState.validate()) {
       final bool result = await controller.login();
@@ -20,10 +21,10 @@ class LoginScreen extends GetWidget<LoginController> {
         Get.offAllNamed(Routes.home);
       } else {
         Get.snackbar(
-          'Error',controller.message.value,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white
+            'Error',controller.message.value,
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white
         );
       }
     } else {
@@ -37,9 +38,9 @@ class LoginScreen extends GetWidget<LoginController> {
     RequiredValidator(errorText: 'password is required'),
     MinLengthValidator(6, errorText: 'password must be at least 6 digits long'),
   ]);
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         children: [

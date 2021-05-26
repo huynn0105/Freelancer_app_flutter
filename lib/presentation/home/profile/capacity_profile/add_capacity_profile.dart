@@ -13,13 +13,10 @@ import 'package:freelance_app/presentation/home/profile/services_screen.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddCapacityProfile extends StatelessWidget {
-  final controller =
-      Get.put<CapacityProfileController>(CapacityProfileController(
-    apiRepositoryInterface: Get.find(),
-  ));
+  final controller = Get.find<CapacityProfileController>();
+
   final controllerHome = Get.find<HomeController>();
   final CapacityProfile capacityProfile;
 
@@ -197,13 +194,19 @@ class AddCapacityProfile extends StatelessWidget {
                       ],
                     ),
                   ), RoundedButton(
-                      onTap: () async {
+                      onTap: ()  {
                         capacityProfile != null
-                            ? await controller.putCapacityProfile(capacityProfile.id)
-                            : await controller.postCapacityProfile();
-                        // await controllerHome.loadAccountFromToken();
-                        controller.progressState(sState.initial);
-                        Get.offAndToNamed(Routes.home);
+                            ?  controller.putCapacityProfile(capacityProfile.id)
+                            :  controller.postCapacityProfile();
+                        controllerHome.loadAccountFromToken();
+                        if(controller.progressState.value == sState.initial)
+                          Get.snackbar('Success','', snackPosition: SnackPosition.TOP);
+                        else if(controller.progressState.value == sState.failure)
+                          Get.snackbar('Error','',
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                              snackPosition: SnackPosition.TOP);
+                        Get.offAllNamed(Routes.home);
                       },
                       child:  Text(
                               capacityProfile != null ? 'Update' : 'Apply',

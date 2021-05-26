@@ -3,7 +3,6 @@ import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
-import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class ProfileController extends GetxController {
   ProfileController(
       {this.apiRepositoryInterface});
 
-  var isLoading = false.obs;
+
   RxString imageURL = ''.obs;
   RxList<Service> services = <Service>[].obs;
   RxList<Service> servicesSelected = <Service>[].obs;
@@ -61,15 +60,17 @@ class ProfileController extends GetxController {
             skills: freelancerSkills,
             services: freelancerServices,
           ));
+      progressState(sState.initial);
     } catch (e) {
       print('Lỗi $e');
+      progressState(sState.failure);
     }
   }
 
   Future uploadAvatar(ImageSource imageSource) async {
     try {
       var pickedFile = await ImagePicker().getImage(source: imageSource);
-      isLoading(true);
+      isChange(false);
       final bytes = await pickedFile.readAsBytes();
       String base64Image = base64Encode(bytes);
       if (pickedFile != null) {
@@ -87,11 +88,11 @@ class ProfileController extends GetxController {
       } else {
         Get.snackbar('Failed', 'Image not selected',
             margin: EdgeInsets.only(top: 5, left: 10, right: 10));
+        isChange(false);
       }
     } catch (e) {
       print('lỗi ${e.toString()}');
-      isLoading(false);
-
+      isChange(false);
     }
   }
 
@@ -133,18 +134,13 @@ class ProfileController extends GetxController {
         }
       });
     });
-    // final List<Service> list = result.map((e){
-    //   if(servicesSelected.every((selected) => selected.id == e.id)){
-    //     e.isValue = true;
-    //     return e;
-    //   }
-    // }).toList();
+
 
     services.assignAll(result);
 
   }
 
-  Future getSkills() async {
+  void getSkills() async {
     final result = await apiRepositoryInterface.getSkills();
     result.forEach((element) {
       skillsSelected.forEach((e){

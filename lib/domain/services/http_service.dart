@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:freelance_app/domain/models/freelancer.dart';
 import 'package:http/http.dart' as http;
 
-const DOMAIN = '10.0.2.2:5001';
+String DOMAIN = '';
 
 const LOGIN = '/api/Login';
 const REGISTER = '/api/Register';
@@ -56,7 +56,11 @@ class HttpService {
       {String bearerToken, Map<String, dynamic> parameters}) async {
     var uri = Uri.https(DOMAIN, url, parameters);
     print("urllll: $uri");
-    return await http.get(uri,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer $bearerToken'});
+    return await http.get(
+      uri,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $bearerToken',
+      },
+    );
   }
 }

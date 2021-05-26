@@ -63,8 +63,9 @@ class LoginController extends GetxController {
         return false;
       }
 
-    } on Exception catch (_) {
+    } on Exception catch (e) {
       loginState(sState.initial);
+      print('lỗi: ${e.toString()}');
       return false;
     }
   }

@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_controller.dart';
-import 'package:freelance_app/presentation/home/browse/widgets/header.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -25,26 +23,34 @@ class FreelancersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        ()=>  controller.progressState.value != sState.loading ? Scaffold(
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-            child: controller.freelancers.isNotEmpty ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: controller.freelancers.length,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return FreelancerCard(
-                  freelancer:  controller.freelancers[index],
-                  rate: freelancers[index].rate,
-                );
-              },
-            ) : Center(child: Text('Empty',style: TEXT_STYLE_PRIMARY,),),
-          ),
-        ) : const Center(
-            child: CircularProgressIndicator(),
-      )),
+        () {
+          if (controller.progressState.value == sState.initial)
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              child: controller.freelancers.isNotEmpty
+                  ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.freelancers.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return FreelancerCard(
+                    freelancer: controller.freelancers[index],
+                    rate: freelancers[index].rate,
+                  );
+                },
+              )
+                  : Center(
+                child: Text('Empty', style: TEXT_STYLE_PRIMARY),
+              ),
+            );
+          else if (controller.progressState.value == sState.failure)
+            return Center(child: Text('Error',style: TEXT_STYLE_PRIMARY,));
+          else
+            return Center(child: CircularProgressIndicator());
+        }
+      ),
       floatingActionButton: FloatingActionButton(
-          onPressed: (){
+          onPressed: () {
             showCupertinoModalBottomSheet(
                 expand: true,
                 context: context,
@@ -52,15 +58,10 @@ class FreelancersScreen extends StatelessWidget {
                   return FilterSearchScreen();
                 });
           },
-          child: Icon(
-              Icons.search
-          )
-      ),
+          child: Icon(Icons.search)),
     );
   }
 }
-
-
 
 class FreelancerCard extends StatelessWidget {
   const FreelancerCard({
@@ -80,13 +81,13 @@ class FreelancerCard extends StatelessWidget {
         );
       },
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: kDefaultPadding/2),
+        margin: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kDefaultPadding/2),
+          borderRadius: BorderRadius.circular(kDefaultPadding / 2),
         ),
         elevation: 2,
         child: Padding(
-          padding: EdgeInsets.all(kDefaultPadding/2),
+          padding: EdgeInsets.all(kDefaultPadding / 2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -126,47 +127,45 @@ class FreelancerCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: kDefaultPadding/2,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        freelancer.name,
-                        style: TEXT_STYLE_PRIMARY,
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                      ),
-                      freelancer.level != null
-                          ? Container(
-                              child: Text(
-                                freelancer.level.name,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(5)),
-                              padding: EdgeInsets.all(kDefaultPadding / 5),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: kDefaultPadding / 6),
-                            )
-                          : SizedBox.shrink(),
-                      freelancer.specialty != null
-                          ? Text(freelancer.specialty.name)
-                          : SizedBox.shrink(),
-                      SizedBox(height: kDefaultPadding / 4),
-                      Rate(rate: rate),
-                    ],
+                    width: kDefaultPadding / 2,
                   ),
                   Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(Icons.keyboard_arrow_right),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          freelancer.name,
+                          style: TEXT_STYLE_PRIMARY,
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                        ),
+                        freelancer.level != null
+                            ? Container(
+                                child: Text(
+                                  freelancer.level.name,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(5)),
+                                padding: EdgeInsets.all(kDefaultPadding / 5),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding / 6),
+                              )
+                            : SizedBox.shrink(),
+                        freelancer.specialty != null
+                            ? Text(
+                                freelancer.specialty.name,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : SizedBox.shrink(),
+                        SizedBox(height: kDefaultPadding / 4),
+                        Rate(rate: rate),
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ),
-
             ],
           ),
         ),

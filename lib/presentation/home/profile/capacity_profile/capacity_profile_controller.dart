@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
-import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -66,10 +63,10 @@ class CapacityProfileController extends GetxController {
     }
   }
 
-  Future postCapacityProfile() async {
+  void postCapacityProfile()  {
     try{
       progressState(sState.loading);
-      await apiRepositoryInterface.postCapacityProfile(
+       apiRepositoryInterface.postCapacityProfile(
         CapacityProfile(
           name: ctrlName.text,
           description: ctrlDescription.text,
@@ -79,15 +76,18 @@ class CapacityProfileController extends GetxController {
           services: servicesSelected
         )
       );
+      progressState(sState.initial);
+      initValue();
     }catch(e){
       print('lỗi ${e.toString()}');
+      progressState(sState.failure);
     }
   }
 
-  Future putCapacityProfile(int id) async {
+  void putCapacityProfile(int id)  {
     try{
       progressState(sState.loading);
-      await apiRepositoryInterface.putCapacityProfile(id,
+       apiRepositoryInterface.putCapacityProfile(id,
           CapacityProfile(
               name: ctrlName.text,
               description: ctrlDescription.text,
@@ -97,18 +97,31 @@ class CapacityProfileController extends GetxController {
               services: servicesSelected
           )
       );
-
-
+      progressState(sState.initial);
+      initValue();
     }catch(e){
       print('lỗi ${e.toString()}');
+      progressState(sState.failure);
     }
   }
 
   Future getCapacityProfiles() async {
     try{
+      progressState(sState.loading);
       final result = await apiRepositoryInterface.getCapacityProfiles();
       capacityProfiles.assignAll(result);
+      progressState(sState.initial);
     }catch(e){
+      progressState(sState.failure);
     }
+  }
+
+  void initValue(){
+    ctrlDescription.text='';
+    ctrlUrlWeb.text = '';
+    ctrlName.text = '';
+    base64img.value = '';
+    nameImage.value = '';
+    servicesSelected.clear();
   }
 }

@@ -81,7 +81,7 @@ class JobCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: kDefaultPadding / 5),
-                        JobType(job: job),
+                        // JobType(job: job),
                         SizedBox(height: kDefaultPadding / 5),
                         Row(
                           children: [

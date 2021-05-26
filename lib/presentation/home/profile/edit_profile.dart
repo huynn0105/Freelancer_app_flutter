@@ -21,7 +21,7 @@ class EditProfileScreen extends StatelessWidget {
 
   EditProfileScreen({@required this.account});
 
-  // final controllerHome = Get.find<HomeController>();
+  final controllerHome = Get.find<HomeController>();
   final controllerJob = Get.find<PostJobController>();
   final controller = Get.put<ProfileController>(ProfileController(
     apiRepositoryInterface: Get.find(),
@@ -42,12 +42,10 @@ class EditProfileScreen extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () async {
-                  await controller.uploadProfile(account.id);
-                  // await controllerHome.loadAccountFromToken();
-                  controller.progressState(sState.initial);
-                  controller.isChange(true);
-                  Get.offAllNamed(Routes.splash);
+                onPressed: ()  {
+                  controller.uploadProfile(account.id);
+                  controllerHome.loadAccountFromToken();
+                  Get.offAllNamed(Routes.home);
                 },
                 child: Text(
                   'Done',
@@ -59,8 +57,8 @@ class EditProfileScreen extends StatelessWidget {
             leading: BackButton(
               onPressed: () async {
                 if (controller.isChange.value) {
-                  // await controllerHome.loadAccountFromToken();
-                  Get.offAllNamed(Routes.splash);
+                  await controllerHome.loadAccountFromToken();
+                  Get.offAllNamed(Routes.home);
                 } else
                   Get.back();
               },

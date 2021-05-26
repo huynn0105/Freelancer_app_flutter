@@ -11,18 +11,22 @@ class FreelancerController extends GetxController{
   RxList<Account> freelancers = <Account>[].obs;
   var progressState = sState.loading.obs;
 
-  Future loadFreelancer() async {
+  void loadFreelancer() async {
     progressState(sState.loading);
-    final result = await apiRepositoryInterface.getAccounts();
-    if(result !=null){
-      freelancers.assignAll(result);
+    try{
+      final result = await apiRepositoryInterface.getAccounts();
+      if(result !=null){
+        freelancers.assignAll(result);
+      }
+      progressState(sState.initial);
+    }catch(e){
+      progressState(sState.failure);
     }
-    progressState(sState.initial);
   }
 
   @override
   void onReady() {
-    //loadFreelancer();
+    loadFreelancer();
     super.onReady();
   }
 
