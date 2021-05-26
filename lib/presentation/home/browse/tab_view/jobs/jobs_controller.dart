@@ -22,9 +22,13 @@ class JobsController extends GetxController{
 
   void loadJobs() async {
     progressState(sState.loading);
-    var result = await apiRepositoryInterface.getJobs();
-    jobs.assignAll(result);
-    progressState(sState.initial);
+    try{
+      var result = await apiRepositoryInterface.getJobs();
+      jobs.assignAll(result);
+      progressState(sState.initial);
+    }catch(e){
+      progressState(sState.failure);
+    }
   }
 
   // void sendOffer() async{

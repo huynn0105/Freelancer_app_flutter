@@ -21,7 +21,7 @@ class JobCard extends StatelessWidget {
         Get.to(() => JobDetailScreen(idJob: job.id));
       },
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+        margin: const EdgeInsets.all(kDefaultPadding / 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kDefaultPadding / 2),
         ),

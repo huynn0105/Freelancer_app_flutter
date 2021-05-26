@@ -10,7 +10,7 @@ import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
 import 'package:freelance_app/presentation/home/widgets/service.dart';
 import 'package:freelance_app/presentation/home/widgets/skills.dart';
-import 'package:freelance_app/presentation/home/widgets/summary.dart';
+import 'package:freelance_app/presentation/home/widgets/review.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -56,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
                   CProfile(
                     capacityProfiles: user.capacityProfiles,
                   ),
-                  Summary(
+                  Review(
                     rate: me.rate,
                     totalMoney: user.balance,
                     totalVote: 3,

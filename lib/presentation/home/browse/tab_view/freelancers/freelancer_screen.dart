@@ -31,7 +31,6 @@ class FreelancersScreen extends StatelessWidget {
                   ? ListView.builder(
                 shrinkWrap: true,
                 itemCount: controller.freelancers.length,
-                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return FreelancerCard(
                     freelancer: controller.freelancers[index],
@@ -39,8 +38,7 @@ class FreelancersScreen extends StatelessWidget {
                   );
                 },
               )
-                  : Center(
-                child: Text('Empty', style: TEXT_STYLE_PRIMARY),
+                  : Center(child: Text('Empty', style: TEXT_STYLE_PRIMARY),
               ),
             );
           else if (controller.progressState.value == sState.failure)
@@ -87,7 +85,7 @@ class FreelancerCard extends StatelessWidget {
         ),
         elevation: 2,
         child: Padding(
-          padding: EdgeInsets.all(kDefaultPadding / 2),
+          padding: EdgeInsets.all(kDefaultPadding / 3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

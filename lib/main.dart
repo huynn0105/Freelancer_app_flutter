@@ -27,9 +27,8 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.splash,
       initialBinding: MainBinding(),
       theme: ThemeData(
-        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white,elevation: 0),
         scaffoldBackgroundColor: Colors.white,
-
         primaryIconTheme:
             Theme.of(context).primaryIconTheme.copyWith(color: Colors.black),
         primaryTextTheme:

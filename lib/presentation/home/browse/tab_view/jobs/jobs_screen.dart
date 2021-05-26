@@ -12,37 +12,45 @@ class JobsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      ()=> controller.progressState.value != sState.loading ? Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: controller.jobs.isNotEmpty
-              ? ListView.builder(
-                  itemBuilder: (context, index) {
-                    return JobCard(job: controller.jobs[index]);
-                  },
-                  shrinkWrap: true,
-                  itemCount: controller.jobs.length,
-                )
-              : Center(child: Text('Empty',style: TEXT_STYLE_PRIMARY,),),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            showCupertinoModalBottomSheet(
-                expand: true,
-                context: context,
-                builder: (builder) {
-                  return FilterSearchScreen();
-                });
-          },
-          child: Icon(
-            Icons.search
-          )
-        ),
-
-      ) : const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return Obx(() {
+      if (controller.progressState.value != sState.loading) {
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.all(kDefaultPadding/2),
+            child: controller.jobs.isNotEmpty
+                ? ListView.builder(
+                    itemBuilder: (context, index) {
+                      return JobCard(job: controller.jobs[index]);
+                    },
+                    shrinkWrap: true,
+                    itemCount: controller.jobs.length,
+                  )
+                : Center(
+                    child: Text(
+                      'Empty',
+                      style: TEXT_STYLE_PRIMARY,
+                    ),
+                  ),
+          ),
+          floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showCupertinoModalBottomSheet(
+                    expand: true,
+                    context: context,
+                    builder: (builder) {
+                      return FilterSearchScreen();
+                    });
+              },
+              child: Icon(Icons.search)),
+        );
+      } else if (controller.progressState.value == sState.failure)
+        return Center(
+            child: Text(
+          'Error',
+          style: TEXT_STYLE_PRIMARY,
+        ));
+      else
+        return Center(child: CircularProgressIndicator());
+    });
   }
 }

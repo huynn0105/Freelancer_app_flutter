@@ -37,7 +37,6 @@ class BrowseScreen extends StatelessWidget {
           children: [
             JobsScreen(),
             FreelancersScreen(),
-
           ],
         ),
           // floatingActionButton: FloatingActionButton(

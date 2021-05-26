@@ -4,7 +4,7 @@ import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/add_capacity_profile.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profile_controller.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
-import 'package:freelance_app/presentation/home/profile/components/capacity.dart';
+import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity.dart';
 import 'package:get/get.dart';
 class CProfile extends StatelessWidget {
   final controller = Get.put<CapacityProfileController>(CapacityProfileController(

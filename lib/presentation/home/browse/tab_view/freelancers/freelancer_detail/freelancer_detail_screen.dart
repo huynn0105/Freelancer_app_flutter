@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/data/data.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/rating/rating_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
 import 'package:freelance_app/presentation/home/widgets/c_profile.dart';
 import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
 import 'package:freelance_app/presentation/home/widgets/service.dart';
 import 'package:freelance_app/presentation/home/widgets/skills.dart';
-import 'package:freelance_app/presentation/home/widgets/summary.dart';
+import 'package:freelance_app/presentation/home/widgets/review.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'freelancer_detail_controller.dart';
 
@@ -55,10 +57,6 @@ class FreelancerDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Text('Mời làm'),
-      ),
       body: Obx(() {
         if (controller.progressState.value == sState.initial) {
           var freelancer = controller.freelancer.value;
@@ -100,7 +98,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                   CProfile(
                     capacityProfiles: freelancer.capacityProfiles,
                   ),
-                  Summary(
+                  Review(
                     rate: me.rate,
                     totalMoney: freelancer.balance,
                     totalVote: 3,
@@ -125,6 +123,18 @@ class FreelancerDetailScreen extends StatelessWidget {
           child: CircularProgressIndicator(),
         );
       }),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return RatingScreen(freelancer: controller.freelancer.value,);
+              });
+        },
+        label: Text('Mời làm'),
+      ),
     );
   }
 }
