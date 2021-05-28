@@ -51,7 +51,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     return new Scaffold(
         appBar: AppBar(
           title: Text(
-            'Select Service',
+            'Chọn dịch vụ phù hợp',
           ),
 
           actions: [
@@ -61,7 +61,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   Get.back();
               },
               child: Text(
-                'Done',
+                'Xong',
                 style: TextStyle(fontSize: 18),
               ),
             ),

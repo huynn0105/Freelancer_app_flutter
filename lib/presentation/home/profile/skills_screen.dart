@@ -46,8 +46,7 @@ class _SkillsScreenState extends State<SkillsScreen> {
     return new Scaffold(
         appBar: AppBar(
           title: Text(
-            'Select Skills',
-
+            'Chọn kĩ năng phù hợp',
           ),
 
           actions: [
@@ -57,7 +56,7 @@ class _SkillsScreenState extends State<SkillsScreen> {
                 Get.back();
               },
               child: Text(
-                'Done',
+                'Xong',
                 style: TextStyle(fontSize: 18),
               ),
             ),

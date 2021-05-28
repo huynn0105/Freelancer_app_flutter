@@ -28,7 +28,7 @@ class RatingScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('Rate Freelancer',style: TEXT_STYLE_PRIMARY,),
+          Text('Đánh giá Freelancer',style: TEXT_STYLE_PRIMARY,),
           SizedBox(height: kDefaultPadding,),
           CircleAvatar(
             radius: 36,
@@ -70,11 +70,11 @@ class RatingScreen extends StatelessWidget {
           ),
           SizedBox(height: kDefaultPadding),
           InputText(
-            hint: 'Type you review...',
+            hint: 'Nhập bình luận...',
             maxLines: 6,
           ),
           Spacer(),
-          RoundedButton(onTap: (){}, child: Text('Rate',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),))
+          RoundedButton(onTap: (){}, child: Text('Gửi đánh giá',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),))
         ],
       ),
     );

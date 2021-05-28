@@ -18,7 +18,7 @@ class Skills extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Skill',
+            'Kỹ năng',
             style: TEXT_STYLE_PRIMARY,
           ),
           SizedBox(

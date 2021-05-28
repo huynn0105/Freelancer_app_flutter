@@ -31,7 +31,7 @@ class SearchBoxFilter extends StatelessWidget {
             )
                 : SizedBox.shrink(),
             fillColor: Colors.black38.withAlpha(15),
-            hintText: "Search Data...",
+            hintText: "Tìm kiếm...",
             hintStyle: TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),

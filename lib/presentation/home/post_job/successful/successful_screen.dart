@@ -14,7 +14,7 @@ class SuccessfulScreen extends StatelessWidget {
             Image(image: AssetImage('assets/images/success.gif'),height: 150,),
             Padding(
               padding: const EdgeInsets.only(top: 10,bottom: 30),
-              child: Text('Successful',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              child: Text('Thành công',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             ),
             SizedBox(height: 20,),
             ElevatedButton(
@@ -26,7 +26,7 @@ class SuccessfulScreen extends StatelessWidget {
                 minimumSize: Size(double.infinity, 50),
               ),
               child: Text(
-                'Recommend',
+                'Đề xuất',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -39,7 +39,7 @@ class SuccessfulScreen extends StatelessWidget {
                 minimumSize: Size(double.infinity, 50),
               ),
               child: Text(
-                'Home',
+                'Trang chủ',
                 style: TextStyle(fontSize: 20),
               ),
             ),

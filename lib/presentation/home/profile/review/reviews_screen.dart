@@ -8,7 +8,7 @@ class ReviewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reviews'),
+        title: Text('Đánh giá'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -29,7 +29,7 @@ class ReviewsScreen extends StatelessWidget {
                 color: Colors.yellow,
                 borderColor: Colors.yellow,
               ),
-              Text('based on 23 reviews',style: TEXT_STYLE_FOREIGN,),
+              Text('dựa trên 23 nhận xét',style: TEXT_STYLE_FOREIGN,),
               SizedBox(height: kDefaultPadding/2,),
               Divider(color: Colors.grey,),
               SizedBox(height: kDefaultPadding,),

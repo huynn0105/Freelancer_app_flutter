@@ -13,7 +13,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
+          'Ngân sách dự kiến',
         ),
         actions: [
           TextButton(
@@ -23,7 +23,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                   : null;
             },
             child: Text(
-              'Next',
+              'Tiếp theo',
               style: TextStyle(fontSize: 18, color: Colors.blue),
             ),
           ),
@@ -35,7 +35,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
           key: formKey,
           child: Column(
             children: [
-              Text('Salary',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 24),),
+              Text('Số tiền tối đa tôi có thể trả trong khoảng',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 24),),
               SizedBox(height: 20,),
               TextFormField(
                 controller: controller.floorPriceTextController,
@@ -45,9 +45,9 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                   fontSize: 20,
                 ),
                 validator: MinLengthValidator(1,
-                    errorText: 'Pleases enter'),
+                    errorText: 'Vui lòng nhập'),
                 decoration: InputDecoration(
-                  hintText: 'From...',
+                  hintText: 'Từ...',
                   suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
 
                 ),
@@ -58,12 +58,12 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                 controller: controller.cellingPriceTextController,
                 inputFormatters: [ThousandsFormatter()],
                 validator: MinLengthValidator(1,
-                    errorText: 'Pleases enter'),
+                    errorText: 'Vui lòng nhập'),
                 style: TextStyle(
                   fontSize: 20,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'To...',
+                  hintText: 'Đến...',
                   suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
                 ),
               ),

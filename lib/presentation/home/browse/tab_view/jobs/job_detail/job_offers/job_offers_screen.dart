@@ -150,35 +150,35 @@ class JobOffersScreen extends StatelessWidget {
                 SizedBox(
                   height: kDefaultPadding,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Your contact information',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: kDefaultPadding/2,
-                    ),
-                    InputText(
-                      hint: 'Phone',
-                      icon: Icon(Icons.phone),
-                    ),
-                    SizedBox(
-                      height: kDefaultPadding/2,
-                    ),
-                    InputText(
-                      hint: 'Skype',
-                      icon: Icon(FontAwesomeIcons.skype),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       'Your contact information',
+                //       style: TextStyle(
+                //         fontSize: 20,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       height: kDefaultPadding/2,
+                //     ),
+                //     InputText(
+                //       hint: 'Phone',
+                //       icon: Icon(Icons.phone),
+                //     ),
+                //     SizedBox(
+                //       height: kDefaultPadding/2,
+                //     ),
+                //     InputText(
+                //       hint: 'Skype',
+                //       icon: Icon(FontAwesomeIcons.skype),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 15,
+                // ),
                 RoundedButton(
                     onTap: () {
                       controller.sendOffer();

@@ -12,7 +12,7 @@ class TypeOfWorkScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
+          'Thông tin đầy đủ về yêu cầu tuyển dụng',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -23,7 +23,7 @@ class TypeOfWorkScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Type of work',
+                'Loại hình công việc',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(

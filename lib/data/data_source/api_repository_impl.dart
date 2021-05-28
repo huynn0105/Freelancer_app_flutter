@@ -256,8 +256,8 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   }
 
   @override
-  Future getCapacityProfiles() async{
-    var rs = await HttpService.get(CAPACITY_PROFILE, bearerToken: TOKEN);
+  Future getCapacityProfiles(int freelancerId) async{
+    var rs = await HttpService.get('$CAPACITY_PROFILE/freelancer/$freelancerId', bearerToken: TOKEN);
     print('codeCapacityProfiles ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;

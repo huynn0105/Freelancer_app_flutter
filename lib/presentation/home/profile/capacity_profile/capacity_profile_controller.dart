@@ -105,16 +105,23 @@ class CapacityProfileController extends GetxController {
     }
   }
 
-  Future getCapacityProfiles() async {
+  Future getCapacityProfiles(int freelancerId) async {
     try{
       progressState(sState.loading);
-      final result = await apiRepositoryInterface.getCapacityProfiles();
+      final result = await apiRepositoryInterface.getCapacityProfiles(freelancerId);
       capacityProfiles.assignAll(result);
       progressState(sState.initial);
     }catch(e){
       progressState(sState.failure);
     }
   }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
+
 
   void initValue(){
     ctrlDescription.text='';

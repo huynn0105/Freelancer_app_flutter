@@ -8,8 +8,8 @@ class BrowseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> tab = [
-      'Project',
-      'Freelancer'
+      'Tìm việc làm',
+      'Thuê Freelancer'
     ];
     return DefaultTabController(
       length: tab.length,
@@ -28,11 +28,10 @@ class BrowseScreen extends StatelessWidget {
             ),
           ),
           title: Text(
-            'Browse',
+            'Tìm',
           ),
           centerTitle: true,
         ),
-        backgroundColor: Colors.white,
         body: TabBarView(
           children: [
             JobsScreen(),

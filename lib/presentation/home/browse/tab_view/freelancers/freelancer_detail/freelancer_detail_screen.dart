@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/rating/rating_screen.dart';
+import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
+import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
-import 'package:freelance_app/presentation/home/widgets/c_profile.dart';
 import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
 import 'package:freelance_app/presentation/home/widgets/service.dart';
@@ -10,8 +11,6 @@ import 'package:freelance_app/presentation/home/widgets/skills.dart';
 import 'package:freelance_app/presentation/home/widgets/review.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import 'freelancer_detail_controller.dart';
 
 class FreelancerDetailScreen extends StatelessWidget {
@@ -41,7 +40,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      'Report user',
+                      'Báo cáo freelancer',
                     )
                   ],
                 ),
@@ -95,8 +94,44 @@ class FreelancerDetailScreen extends StatelessWidget {
                             )
                           : const SizedBox.shrink()
                       : const SizedBox.shrink(),
-                  CProfile(
-                    capacityProfiles: freelancer.capacityProfiles,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: kDefaultPadding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Hồ sơ năng lực',
+                              style: TEXT_STYLE_PRIMARY,
+                              overflow: TextOverflow.fade,
+                            ),
+                            Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                if(controller.capacityProfiles.isEmpty)
+                                controller.getCapacityProfiles(freelancerId);
+                                Get.to(() => CapacityProfilesScreen(controller: controller,));
+                              },
+                              child:freelancer.capacityProfiles.isNotEmpty
+                                  ? Text('Xem tất cả')
+                                  : const SizedBox.shrink(),
+                            ),
+                          ],
+                        ),
+                        freelancer.capacityProfiles.isNotEmpty
+                            ? Capacity(
+                            capacityProfiles: freelancer.capacityProfiles,
+                          onTap: (){
+                            if(controller.capacityProfiles.isEmpty)
+                               controller.getCapacityProfiles(freelancerId);
+                            Get.to(() => CapacityProfilesScreen(controller: controller,));
+                          },
+                        )
+                            : Text('Chưa có hồ sơ nào!'),
+
+                      ],
+                    ),
                   ),
                   Review(
                     rate: me.rate,

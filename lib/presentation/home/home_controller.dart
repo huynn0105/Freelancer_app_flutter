@@ -1,5 +1,6 @@
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
+import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
@@ -20,7 +21,7 @@ class HomeController extends GetxController {
   RxInt indexSelected = 0.obs;
   RxList<Skill> skillsFreelancer = <Skill>[].obs;
   RxString level = ''.obs;
-
+  RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
 
   @override
   void onReady()  {
@@ -74,5 +75,12 @@ class HomeController extends GetxController {
     await localRepositoryInterface.clearData();
   }
 
-
+  void getCapacityProfiles(int freelancerId) async {
+    try{
+      final result = await apiRepositoryInterface.getCapacityProfiles(freelancerId);
+      capacityProfiles.assignAll(result);
+    }catch(e){
+      print('lỗi:  ${e.toString()}');
+    }
+  }
 }

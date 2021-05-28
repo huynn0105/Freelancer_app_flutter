@@ -73,6 +73,7 @@ class ProfileController extends GetxController {
       isChange(false);
       final bytes = await pickedFile.readAsBytes();
       String base64Image = base64Encode(bytes);
+      print('path: ${pickedFile.path}');
       if (pickedFile != null) {
         var result = await apiRepositoryInterface.uploadAvatar(
           ImageRequest(
@@ -86,7 +87,7 @@ class ProfileController extends GetxController {
         }
 
       } else {
-        Get.snackbar('Failed', 'Image not selected',
+        Get.snackbar('Lỗi', 'Tệp không được chọn',
             margin: EdgeInsets.only(top: 5, left: 10, right: 10));
         isChange(false);
       }

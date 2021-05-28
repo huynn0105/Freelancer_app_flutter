@@ -10,6 +10,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
   return Job(
     id: json['id'] as int,
     name: json['name'] as String,
+    avatarRenter: json['avatarRenter'] as String,
     deadline: json['deadline'] == null
         ? null
         : DateTime.parse(json['deadline'] as String),
@@ -65,4 +66,5 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'province': instance.province,
       'status': instance.status,
       'skills': instance.skills,
+      'avatarRenter': instance.avatarRenter,
     };

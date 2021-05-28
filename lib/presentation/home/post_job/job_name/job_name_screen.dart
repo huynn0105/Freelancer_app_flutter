@@ -18,7 +18,7 @@ class JobNameScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
+          'Đăng việc',
         ),
         actions: [
           TextButton(
@@ -28,7 +28,7 @@ class JobNameScreen extends StatelessWidget {
                   : null;
             },
             child: Text(
-              'Next',
+              'Tiếp theo',
               style: TextStyle(fontSize: 18),
             ),
           ),
@@ -41,7 +41,7 @@ class JobNameScreen extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "Great! Let's give your job a name",
+                "Đặt tên cụ thể cho công việc cần tuyển",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -51,11 +51,11 @@ class JobNameScreen extends StatelessWidget {
                 height: 30,
               ),
               InputText(
-                hint: 'e.g I need a designer for my cafe webs...',
+                hint: 'VD: Thiết kế App bán hàng cao cấp',
                 controller: controller.nameTextController,
                 maxLength: 50,
                 validator: MinLengthValidator(10,
-                    errorText: 'Pleases enter at least 10 characters,'),
+                    errorText: 'Nhập ít nhất 10 ký tự'),
               ),
             ],
           ),

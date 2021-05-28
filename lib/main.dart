@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'constant.dart';
 import 'domain/services/http_service.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.splash,
       initialBinding: MainBinding(),
       theme: ThemeData(
+        canvasColor: secondaryColor,
         appBarTheme: AppBarTheme(backgroundColor: Colors.white,elevation: 0),
         scaffoldBackgroundColor: Colors.white,
         primaryIconTheme:

@@ -32,11 +32,11 @@ class Review extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Review',
+              'Đánh giá',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Spacer(),
-            TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: Text('Show all'))
+            TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: Text('Xem tất cả'))
           ],
         ),
         Row(

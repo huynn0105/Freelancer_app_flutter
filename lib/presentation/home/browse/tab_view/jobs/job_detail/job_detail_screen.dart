@@ -1,34 +1,31 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/data/data.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
-import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import 'job_detail_controller.dart';
 import 'job_offers/job_offers_screen.dart';
 
 class JobDetailScreen extends StatelessWidget {
-  final int idJob;
+  final int jobId;
 
-  JobDetailScreen({@required this.idJob});
+  JobDetailScreen({@required this.jobId});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<JobDetailController>(
-        JobDetailController(apiRepositoryInterface: Get.find(), jobId: idJob));
-
+        JobDetailController(apiRepositoryInterface: Get.find(), jobId: jobId));
+    final formatter = new NumberFormat("#,###");
     final df = new DateFormat('dd-MM-yyyy');
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'JOB DETAIL',
+            'Chi tiết công việc',
           ),
           centerTitle: true,
           elevation: 0,
@@ -58,11 +55,10 @@ class JobDetailScreen extends StatelessWidget {
                                 foregroundColor: Colors.transparent,
                                 backgroundColor: Colors.grey.shade300,
                                 child: CachedNetworkImage(
-                                  imageUrl:
-                                      'https://res.cloudinary.com/practicaldev/image/fetch/s--ZUMyUgWZ--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/i/am6lv2x37bole6x4poz3.jpg',
-                                  // httpHeaders: {
-                                  //   HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
-                                  // },
+                                  imageUrl: '$IMAGE/${controller.job.value.avatarRenter}',
+                                  httpHeaders: {
+                                    HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
+                                  },
                                   placeholder: (context, url) =>
                                       CupertinoActivityIndicator(),
                                   imageBuilder: (context, image) =>
@@ -126,20 +122,20 @@ class JobDetailScreen extends StatelessWidget {
                               Divider(),
                             ],
                           ),
-                          Text('Service', style: TEXT_STYLE_PRIMARY),
+                          Text('Dịch vụ càn thuê', style: TEXT_STYLE_PRIMARY),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(controller.job.value.service.name,
                               style: TEXT_STYLE_FOREIGN.copyWith(
                                   color: Colors.blue)),
                           SizedBox(height: kDefaultPadding),
-                          Text('Description', style: TEXT_STYLE_PRIMARY),
+                          Text('Mô tả chi tiết', style: TEXT_STYLE_PRIMARY),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(
                             controller.job.value.details,
                             style: TEXT_STYLE_ON_FOREGROUND,
                           ),
                           SizedBox(height: kDefaultPadding),
-                          Text('Skill Sets Required',
+                          Text('Kỹ năng yêu cầu',
                               style: TEXT_STYLE_PRIMARY),
                           
                           Wrap(
@@ -160,40 +156,18 @@ class JobDetailScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: kDefaultPadding),
-                          Text('Salary', style: TEXT_STYLE_PRIMARY),
+                          Text('Ngân sách', style: TEXT_STYLE_PRIMARY),
                           SizedBox(height: kDefaultPadding / 4),
-                          Row(
-                            children: [
-                              Text('100.000 - ', style: TEXT_STYLE_FOREIGN),
-                              Text('200.000 VNĐ', style: TEXT_STYLE_FOREIGN),
-                            ],
-                          ),
+                          Text('${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ', style: TEXT_STYLE_FOREIGN),
                           SizedBox(height: kDefaultPadding),
-                          Text('Deadline', style: TEXT_STYLE_PRIMARY),
+                          Text('Hạn chót', style: TEXT_STYLE_PRIMARY),
                           SizedBox(height: kDefaultPadding / 4),
                           Text('${df.format(controller.job.value.deadline)}',
                               style: TEXT_STYLE_FOREIGN),
                           SizedBox(height: kDefaultPadding),
-                          Text('Location', style: TEXT_STYLE_PRIMARY),
+                          Text('Địa điểm', style: TEXT_STYLE_PRIMARY),
                           SizedBox(height: kDefaultPadding / 4),
-                          Text('job.province.name', style: TEXT_STYLE_FOREIGN),
-                          SizedBox(height: kDefaultPadding),
-                          Text('Review', style: TEXT_STYLE_PRIMARY),
-                          SizedBox(height: kDefaultPadding / 4),
-                          Row(
-                            children: [
-                              Text(
-                                'Nguyen Nhat Huy',
-                                style: TEXT_STYLE_FOREIGN,
-                              ),
-                              Spacer(),
-                              Rate(rate: freelancers[1].rate),
-                            ],
-                          ),
-                          SizedBox(height: kDefaultPadding / 5),
-                          Text(
-                            controller.job.value.details,
-                          ),
+                          Text(controller.job.value.province.name, style: TEXT_STYLE_FOREIGN),
                           SizedBox(height: kDefaultPadding * 5)
                         ],
                       ),),
@@ -202,7 +176,7 @@ class JobDetailScreen extends StatelessWidget {
                         child: RoundedButton(
                           onTap: () => Get.to(() => JobOffersScreen()),
                           child: Text(
-                            'Apply Now',
+                            'Gửi chào giá',
                             style: TEXT_STYLE_PRIMARY.copyWith(
                                 color: Colors.white),
                           ),

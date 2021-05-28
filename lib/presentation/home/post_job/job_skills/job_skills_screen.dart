@@ -52,7 +52,7 @@ class _JobSkillsScreenState extends State<JobSkillsScreen> {
     return new Scaffold(
         appBar: AppBar(
           title: Text(
-            'Select Skills',
+            'Chọn kỹ năng',
           ),
           actions: [
             TextButton(
@@ -66,7 +66,7 @@ class _JobSkillsScreenState extends State<JobSkillsScreen> {
                 }
               },
               child: Text(
-                widget.id == 1 ? 'Next' : 'Done',
+                widget.id == 1 ? 'Tiếp theo' : 'Hoàn thành',
                 style: TextStyle(fontSize: 18),
               ),
             ),

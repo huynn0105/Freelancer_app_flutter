@@ -7,6 +7,7 @@ import 'package:freelance_app/presentation/home/post_job/post_job_controller.dar
 import 'package:freelance_app/presentation/home/post_job/successful/successful_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:get/get.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class PostJobDetailScreen extends GetWidget<PostJobController> {
 
@@ -15,7 +16,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
       if (result) {
         Get.offAll(()=>SuccessfulScreen());
       } else {
-        Get.snackbar('Error','',
+        Get.snackbar('Lỗi','',
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.TOP);
@@ -29,7 +30,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
         Scaffold(
           appBar: AppBar(
             title: Text(
-              'Post Job Detail',
+              'Chi tiết công việc',
             ),
           ),
           body: Container(
@@ -39,20 +40,20 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                 children: [
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Title',
+                      labelText: 'Tên công việc',
                     ),
                     controller: controller.nameTextController,
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Specialty',
+                      labelText: 'Lĩnh vực',
                     ),
                     onTap: () {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Specialty List'),
+                              title: Text('Danh sách lĩnh vực'),
                               content: setupSpecialties(),
                             );
                           });
@@ -62,7 +63,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Service',
+                      labelText: 'Dịch vụ',
                     ),
                     readOnly: true,
                     controller: controller.serviceTextController,
@@ -71,7 +72,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Service List'),
+                              title: Text('Danh sách dịch vụ'),
                               content: setupServices(),
                             );
                           });
@@ -80,7 +81,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                   TextField(
                     controller: controller.descriptionTextController,
                     decoration: InputDecoration(
-                      labelText: 'Description',
+                      labelText: 'Mô tả công việc',
                     ),
                   ),
                   SizedBox(
@@ -89,7 +90,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                   TextField(
                     controller: controller.locationTextController,
                     decoration: InputDecoration(
-                      labelText: 'Location',
+                      labelText: 'Địa điểm',
                       prefixIcon: Icon(
                         Icons.location_on,
                       ),
@@ -106,7 +107,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                       selectDate(context, controller);
                     },
                     decoration: InputDecoration(
-                      labelText: 'Deadline',
+                      labelText: 'Hạn chót',
                       prefixIcon: Icon(
                         Icons.calendar_today_outlined,
                         color: Colors.blue,
@@ -127,7 +128,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Type of work'),
+                        Text('Loại hình làm việc'),
                         SizedBox(
                           height: 4,
                         ),
@@ -159,7 +160,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Form of work'),
+                        Text('Hình thức làm việc'),
                         SizedBox(
                           height: 4,
                         ),
@@ -191,7 +192,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Pay form'),
+                        Text('Hình thức trả lương'),
                         SizedBox(
                           height: 4,
                         ),
@@ -223,13 +224,14 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Salary'),
+                        Text('Ngân sách'),
                         Row(
                           children: [
                             Expanded(
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
                                 controller: controller.floorPriceTextController,
+                                inputFormatters: [ThousandsFormatter()],
                                 decoration: InputDecoration(
                                   suffixIcon: Padding(
                                       padding: EdgeInsets.all(15),
@@ -247,6 +249,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                               child: TextFormField(
                                 controller: controller.cellingPriceTextController,
                                 keyboardType: TextInputType.number,
+                                inputFormatters: [ThousandsFormatter()],
                                 decoration: InputDecoration(
                                   suffixIcon: Padding(
                                       padding: EdgeInsets.all(15),
@@ -269,7 +272,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Skills'),
+                        Text('Kỹ năng'),
                         Obx(
                           () => ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
@@ -296,7 +299,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                         ),
                         Center(
                             child: TextButton(
-                          child: Text('Add more skill'),
+                          child: Text('Thêm kỹ năng'),
                           onPressed: () {
                             Get.to(() => JobSkillsScreen(
                                   id: 0,
@@ -312,7 +315,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     ()=> CheckboxListTile(value: controller.isPrivate.value, onChanged: (value){
                       controller.isPrivate.value = value;
                     },
-                      title: Text('I want this to be Secretly Visible - only people I link this to them and I invite them to work with will be able to see it.'),
+                      title: Text('Tôi muốn việc này được Hiển Thị Bí Mật - chỉ những người nào tôi gửi link việc này cho họ và tôi mời họ làm việc mới có thể xem.'),
                         controlAffinity: ListTileControlAffinity.leading
                     ),
                   ),
@@ -324,7 +327,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                       minimumSize: Size(double.infinity, 40),
                     ),
                     child: Text(
-                      'Post Job',
+                      'Đăng việc',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),

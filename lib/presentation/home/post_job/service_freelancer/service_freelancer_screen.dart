@@ -14,7 +14,7 @@ class ServiceFreelancer extends StatelessWidget {
       appBar: AppBar(
         elevation: 1,
         title: Text(
-          'Post Job',
+          'Đăng việc',
         ),
       ),
       body: Container(
@@ -22,7 +22,7 @@ class ServiceFreelancer extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'Choose the service that best suits your freelancer recruitment requirements',
+              'Chọn dịch vụ phù hợp với yêu cầu tuyển freelancer của bạn nhất',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,

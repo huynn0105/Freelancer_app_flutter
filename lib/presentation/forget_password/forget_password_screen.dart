@@ -59,7 +59,7 @@ class ForgetPassword extends StatelessWidget {
                   height: kDefaultPadding,
                 ),
                 Text(
-                  "Please enter your registered email",
+                  "Nhập email đã đăng ký",
                   style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.blue),
                 ),
                 SizedBox(
@@ -67,8 +67,8 @@ class ForgetPassword extends StatelessWidget {
                 ),
                 TextFormField(
                   validator: MultiValidator([
-                    EmailValidator(errorText: 'Enter a valid email address'),
-                    RequiredValidator(errorText: 'Email is required'),
+                    EmailValidator(errorText: 'Email vừa nhập không hợp lệ'),
+                    RequiredValidator(errorText: 'Yêu cầu nhập email'),
                   ]),
                   decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -82,7 +82,7 @@ class ForgetPassword extends StatelessWidget {
                 RoundedButton(
                   onTap: () {},
                   child: Text(
-                    'Reset password',
+                    'Gửi yêu cầu',
                     style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),
                   ),
                 )

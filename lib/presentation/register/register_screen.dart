@@ -14,8 +14,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
   @override
   Widget build(BuildContext context) {
     final passwordValidator = MultiValidator([
-      RequiredValidator(errorText: 'password is required'),
-      MinLengthValidator(7, errorText: 'password must be at least 7 digits long'),
+      RequiredValidator(errorText: 'Yêu cầu nhập mật khẩu'),
+      MinLengthValidator(6, errorText: 'Mật khẩu phải nhiều hơn 6 ký tự'),
     ]);
 
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -24,18 +24,18 @@ class RegisterScreen extends GetWidget<RegisterController> {
       if (formKey.currentState.validate()) {
         final bool result = await controller.register();
         if (result) {
-          Get.snackbar('Success', 'Register Success ',
+          Get.snackbar('Thành công', 'Đăng ký thành công',
               snackPosition: SnackPosition.BOTTOM);
           Get.offAllNamed(Routes.home);
         } else {
-          Get.snackbar('Error',controller.message.value,
+          Get.snackbar('Lỗi',controller.message.value,
               backgroundColor: Colors.red,
               colorText: Colors.white,
               snackPosition: SnackPosition.TOP);
 
         }
       } else {
-        Get.snackbar('Error', 'Kiểm tra lại thông tin',
+        Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.TOP);
@@ -101,8 +101,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         TextFormField(
                           controller: controller.emailTextController,
                           validator: MultiValidator([
-                            EmailValidator(errorText: 'Enter a valid email address'),
-                            RequiredValidator(errorText: 'Email is required'),
+                            EmailValidator(errorText: 'Địa chỉ email không hợp lệ'),
+                            RequiredValidator(errorText: 'Yêu cầu nhập email'),
                           ]),
                           decoration: InputDecoration(
                               prefixIcon: Icon(
@@ -141,7 +141,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         ),
                         TextFormField(
                           validator: (val) => MatchValidator(
-                                  errorText: 'passwords do not match')
+                                  errorText: 'Mật khẩu không chính xác')
                               .validateMatch(
                                   val, controller.passwordTextController.text),
                           decoration: InputDecoration(
@@ -197,7 +197,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: RoundedButton(
                       onTap: register,
-                      child: Text('Register',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
+                      child: Text('Đăng ký',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
                     )),
                 Container(
                   alignment: Alignment.centerRight,

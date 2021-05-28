@@ -45,7 +45,7 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Location',
+          'Địa điểm',
         ),
       ),
       body: Obx(
@@ -54,7 +54,7 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
           child: Column(
             children: [
               Text(
-                'Location',
+                'Cần tuyển freelancer làm việc tại',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               SizedBox(

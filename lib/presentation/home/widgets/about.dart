@@ -17,15 +17,15 @@ class About extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'About',
+            'Giới thiệu',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 5,
           ),
           ExpandableText(description, style: TextStyle(fontSize: 14),
-            expandText: 'show more',
-            collapseText: 'show less',
+            expandText: 'Xem thêm',
+            collapseText: 'Ẩn đi',
             maxLines: 3,
           ),
         ],

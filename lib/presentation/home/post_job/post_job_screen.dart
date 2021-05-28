@@ -1,14 +1,11 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:get/get.dart';
-
 import 'job_name/job_name_screen.dart';
-import 'widgets/post_job_detail.dart';
 
 class PostJobScreen extends StatelessWidget {
   final controller = Get.put<PostJobController>(PostJobController(
@@ -20,7 +17,7 @@ class PostJobScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Post Job'),
+          title: Text('Đăng việc'),
         ),
         body: Obx(
           ()=> controller.specialties.isNotEmpty ? Container(
@@ -29,7 +26,7 @@ class PostJobScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'I need help with....',
+                  'Chọn lĩnh vực cần tuyển',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -125,72 +122,72 @@ class ItemCategory extends StatelessWidget {
   }
 }
 
-class PostJobOther extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        bottom: MyLinearProgressIndicator(
-          backgroundColor: Colors.white,
-          value: 0.3,
-        ),
-        title: Text(
-          'Other or not sure',
-          style: TextStyle(color: Colors.black),
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              'Should it be designed, built, or both?',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.to(PostJobOther());
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Design and build it',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Spacer(),
-                              IconButton(
-                                  icon: Icon(Icons.keyboard_arrow_right),
-                                  onPressed: () {}),
-                            ],
-                          ),
-                        ),
-                        Divider(),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class PostJobOther extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         bottom: MyLinearProgressIndicator(
+//           backgroundColor: Colors.white,
+//           value: 0.3,
+//         ),
+//         title: Text(
+//           'Other or not sure',
+//           style: TextStyle(color: Colors.black),
+//         ),
+//         iconTheme: IconThemeData(
+//           color: Colors.black, //change your color here
+//         ),
+//         backgroundColor: Colors.white,
+//       ),
+//       body: Container(
+//         padding: EdgeInsets.all(20),
+//         child: Column(
+//           children: [
+//             Text(
+//               'Should it be designed, built, or both?',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.bold,
+//                 fontSize: 22,
+//               ),
+//             ),
+//             SizedBox(
+//               height: 10,
+//             ),
+//             Expanded(
+//               child: Container(
+//                 width: double.infinity,
+//                 child: ListView.builder(
+//                   itemBuilder: (context, index) {
+//                     return Column(
+//                       children: [
+//                         InkWell(
+//                           onTap: () {
+//                             Get.to(PostJobOther());
+//                           },
+//                           child: Row(
+//                             children: [
+//                               Text(
+//                                 'Design and build it',
+//                                 style: TextStyle(fontSize: 16),
+//                               ),
+//                               Spacer(),
+//                               IconButton(
+//                                   icon: Icon(Icons.keyboard_arrow_right),
+//                                   onPressed: () {}),
+//                             ],
+//                           ),
+//                         ),
+//                         Divider(),
+//                       ],
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

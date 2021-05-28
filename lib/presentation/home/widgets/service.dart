@@ -17,7 +17,7 @@ class Services extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Service',
+            'Dịch vụ',
             style: TEXT_STYLE_PRIMARY,
           ),
           SizedBox(

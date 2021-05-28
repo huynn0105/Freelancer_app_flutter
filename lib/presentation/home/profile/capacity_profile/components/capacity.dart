@@ -8,9 +8,11 @@ class Capacity extends StatefulWidget {
   const Capacity({
     Key key,
     @required this.capacityProfiles,
+    @required this.onTap,
   }) : super(key: key);
 
   final List<CapacityProfile> capacityProfiles;
+  final GestureTapCallback onTap;
 
   @override
   _CapacityState createState() => _CapacityState();
@@ -43,9 +45,7 @@ class _CapacityState extends State<Capacity> {
                   return index == widget.capacityProfiles.length
                       ? IconButton(
                           icon: Icon(Icons.more_horiz),
-                          onPressed: () {
-                            Get.to(() => CapacityProfilesScreen());
-                          })
+                          onPressed: widget.onTap,)
                       : CapacityCard(
                           capacityProfile: widget.capacityProfiles[index],
                         );

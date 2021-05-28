@@ -18,7 +18,7 @@ class FilterSearchScreen extends StatelessWidget {
     final formatter = new NumberFormat("#,###");
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filter'),
+        title: Text('Tìm kiếm'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -30,7 +30,7 @@ class FilterSearchScreen extends StatelessWidget {
         actions: [
           TextButton(
             child: Text(
-              'Done',
+              'Hoàn thành',
               style: TextStyle(fontSize: 17),
             ),
             onPressed: () {},
@@ -55,9 +55,9 @@ class FilterSearchScreen extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('Min salary'),
+                    Text('Ngân sách nhỏ nhất'),
                     Spacer(),
-                    Text('Max salary'),
+                    Text('Ngân sách lớn nhất'),
                   ],
                 ),
                 Obx(
@@ -97,7 +97,7 @@ class FilterSearchScreen extends StatelessWidget {
                   height: 10,
                 ),
                 ItemFilter(
-                  title: 'Form of work',
+                  title: 'Loại hình làm việc',
                   controller: controller,
                   list: List.generate(
                     controller.formOfWorks.length,
@@ -118,7 +118,7 @@ class FilterSearchScreen extends StatelessWidget {
                   height: 20,
                 ),
                 ItemFilter(
-                  title: 'Type of work',
+                  title: 'Hình thức làm việc',
                   controller: controller,
                   list: List.generate(
                     controller.typeOfWorks.length,
@@ -139,7 +139,7 @@ class FilterSearchScreen extends StatelessWidget {
                   height: 20,
                 ),
                 ItemFilter(
-                  title: 'Level',
+                  title: 'Trình độ',
                   controller: controller,
                   list: List.generate(
                     controller.levels.length,
@@ -159,7 +159,7 @@ class FilterSearchScreen extends StatelessWidget {
                 TextField(
                   controller: controller.locationTextController,
                   decoration: InputDecoration(
-                    labelText: 'Location',
+                    labelText: 'Địa điểm',
                     prefixIcon: Icon(
                       Icons.location_on,
                     ),

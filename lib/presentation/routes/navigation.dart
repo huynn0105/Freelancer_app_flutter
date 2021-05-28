@@ -1,3 +1,4 @@
+import 'package:freelance_app/presentation/admin/main_screen.dart';
 import 'package:freelance_app/presentation/home/home_binding.dart';
 import 'package:freelance_app/presentation/home/home_screen.dart';
 import 'package:freelance_app/presentation/login/login_binding.dart';
@@ -14,6 +15,7 @@ class Routes {
   static final String login = '/login';
   static final String home = '/home';
   static final String register = '/register';
+  static final String admin = '/admin';
 
 
 }
@@ -24,6 +26,10 @@ class Pages {
         name: Routes.splash,
         page: () => SplashScreen(),
         bindings: [MainBinding(), SplashBinding()]
+    ),
+    GetPage(
+        name: Routes.admin,
+        page: () => MainScreen(),
     ),
     GetPage(
       name: Routes.login,

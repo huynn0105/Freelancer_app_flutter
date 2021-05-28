@@ -23,7 +23,7 @@ class _RecommendState extends State<RecommendScreen> {
               Get.to(HomeScreen());
             },
             child: Text(
-              'Done',
+              'Hoàn thành',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ),

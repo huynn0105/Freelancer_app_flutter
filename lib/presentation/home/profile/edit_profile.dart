@@ -96,33 +96,33 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InputText(
-                          hint: 'Name',
+                          hint: 'Họ và tên',
                           controller: controller.ctrlName,
-                          label: 'Name',
+                          label: 'Tên đầy đủ',
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         InputText(
-                          hint: 'Phone number',
+                          hint: 'Điện thoại',
                           controller: controller.ctrlPhoneNumber,
-                          label: 'Phone number',
+                          label: 'Số điện thoại',
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         InputText(
-                          hint: 'Websites',
+                          hint: 'Website cá nhân',
                           controller: controller.ctrlWebsite,
-                          label: 'Websites',
+                          label: 'Website (nếu có)',
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         InputText(
-                          hint: 'Tile',
+                          hint: 'Chức danh',
                           controller: controller.ctrlTile,
-                          label: 'Tile',
+                          label: 'Lập trình viên mobile',
                         ),
                         SizedBox(
                           height: 10,
@@ -134,15 +134,14 @@ class EditProfileScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    'Intro',
+                    'Giới thiệu bản thân',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   InputText(
-                    hint:
-                        'Experienced English - Vietnamese Translator & Editor',
+                    hint: '1. Bạn là ai?\n2. Kinh nghiệm và chuyển môn?...',
                     controller: controller.ctrlDescription,
                     maxLines: 8,
                   ),
@@ -151,7 +150,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Specialty',
+                      labelText: 'Lĩnh vực',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -161,7 +160,7 @@ class EditProfileScreen extends StatelessWidget {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Specialty List'),
+                              title: Text('Danh sách lĩnh vực'),
                               content: setupSpecialties(),
                             );
                           });
@@ -177,7 +176,7 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Form Of Work',
+                          'Tôi có thể làm',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -213,7 +212,7 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Level',
+                          'Trình độ',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -249,7 +248,7 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Skill',
+                          'Kỹ năng',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -282,7 +281,7 @@ class EditProfileScreen extends StatelessWidget {
                         ),
                         Center(
                           child: TextButton(
-                            child: Text('Add more skill'),
+                            child: Text('Thêm kỹ năng'),
                             onPressed: () {
                               if (controller.skills.isEmpty)
                                 controller.getSkills();
@@ -301,7 +300,7 @@ class EditProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Service',
+                          'Dịch vụ',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -334,7 +333,7 @@ class EditProfileScreen extends StatelessWidget {
                         ),
                         Center(
                           child: TextButton(
-                            child: Text('Add more service'),
+                            child: Text('Thêm dịch vụ'),
                             onPressed: () {
                               if (controller.services.isEmpty)
                                 controller.getServices();
@@ -351,7 +350,7 @@ class EditProfileScreen extends StatelessWidget {
                     height: 20,
                   ),
                   Text(
-                    'Status',
+                    'Muốn nhận việc?',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   Obx(
@@ -360,7 +359,7 @@ class EditProfileScreen extends StatelessWidget {
                         onChanged: (value) {
                           controller.isReady.value = value;
                         },
-                        title: Text('On Ready'),
+                        title: Text('Có, Tôi đã sẵn sàng'),
                         controlAffinity: ListTileControlAffinity.leading),
                   ),
                 ],
@@ -408,7 +407,7 @@ class EditProfileScreen extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.image),
-              title: Text('Gallery'),
+              title: Text('Thư viện'),
               onTap: () async {
                 controller.uploadAvatar(ImageSource.gallery);
                 Get.back();

@@ -26,7 +26,7 @@ class MessagesScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
-                  'Active 3m ago',
+                  'Hoạt động 3m trước',
                   style: TextStyle(fontSize: 12),
                 ),
               ],
@@ -227,7 +227,7 @@ class ChatInputField extends StatelessWidget {
               ),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Type message',
+                  hintText: 'Aa',
                   border: InputBorder.none,
                 ),
               ),

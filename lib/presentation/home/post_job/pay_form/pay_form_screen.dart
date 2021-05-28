@@ -14,7 +14,7 @@ class PayFormScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
+          'Hình thức trả lương',
         ),
       ),
       body: Obx(
@@ -24,7 +24,7 @@ class PayFormScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Pay Form',
+                'Ngân sách dự kiến chi cho công việc này',
                 style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 24),
               ),
               SizedBox(

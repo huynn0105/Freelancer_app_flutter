@@ -8,7 +8,7 @@ class ChatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messages'),
+        title: Text('Tin nhắn'),
         actions: [
           IconButton(icon: Icon(Icons.search), onPressed: (){}),
         ],

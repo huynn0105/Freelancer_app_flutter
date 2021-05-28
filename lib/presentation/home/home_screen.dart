@@ -1,7 +1,10 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:freelance_app/presentation/home/dashboard/dashboard_screen.dart';
 import 'package:freelance_app/presentation/home/messages/chats_screen.dart';
+import 'package:freelance_app/presentation/home/my_job/my_job_screen.dart';
 import 'browse/browse_screen.dart';
 import 'home_controller.dart';
 import 'post_job/post_job_screen.dart';
@@ -14,7 +17,7 @@ class HomeScreen extends GetWidget<HomeController>  {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _children = [
-      DashboardScreen(),
+      MyJobScreen(),
       BrowseScreen(),
       PostJobScreen(),
       ChatsScreen(),
@@ -26,19 +29,17 @@ class HomeScreen extends GetWidget<HomeController>  {
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.black54,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
           iconSize: 28,
           onTap: (index){
             controller.updateIndexSelected(index);
           }, // new
           currentIndex: controller.indexSelected.value, // new
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: 'Dashboard',),
-            BottomNavigationBarItem(icon: Icon(Icons.work),label: 'Browse',),
-            BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline),label:'Post Job',),
-            BottomNavigationBarItem(icon: Icon(Icons.message),label: 'Message',),
-            BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Profile',),
+            BottomNavigationBarItem(icon: Icon(Icons.list_alt_outlined),label: 'Home',),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.search),label: 'Tìm',),
+            BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline_sharp),label:'Đăng việc',),
+            BottomNavigationBarItem(icon: Icon(Icons.message_outlined),label: 'Tin nhắn',),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled),label: 'Hồ sơ',),
           ],
         ),),
     );

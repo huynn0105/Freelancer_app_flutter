@@ -20,7 +20,7 @@ class JobDescriptionScreen extends StatelessWidget {
           value: 0.2,
         ),
         title: Text(
-          'Post Job',
+          'Thông tin đầy đủ về yêu cầu tuyển dụng',
         ),
 
         actions: [
@@ -32,7 +32,7 @@ class JobDescriptionScreen extends StatelessWidget {
               }
             },
             child: Text(
-              'Next',
+              'Tiếp theo',
               style: TextStyle(fontSize: 18),
             ),
           ),
@@ -59,8 +59,8 @@ class JobDescriptionScreen extends StatelessWidget {
                     maxLines: 10,
                     controller: controller.descriptionTextController,
                     maxLength: 1000,
-                    validator: MinLengthValidator(10,
-                        errorText: 'Pleases enter at least 10 characters,')),
+                    validator: MinLengthValidator(20,
+                        errorText: 'Vui lòng nhập ít nhất 20 ký tự')),
                 SizedBox(
                   height: 20,
                 ),
@@ -68,7 +68,7 @@ class JobDescriptionScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Deadline',
+                      'Hạn chót nhận hồ sơ',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),

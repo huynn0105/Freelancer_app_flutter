@@ -16,27 +16,27 @@ class LoginScreen extends GetWidget<LoginController> {
     if (formKey.currentState.validate()) {
       final bool result = await controller.login();
       if (result) {
-        Get.snackbar('Success', 'Login Success',
+        Get.snackbar('Thành công', 'Đăng nhập thành công',
             snackPosition: SnackPosition.TOP);
         Get.offAllNamed(Routes.home);
       } else {
         Get.snackbar(
-            'Error',controller.message.value,
+            'Lỗi',controller.message.value,
             snackPosition: SnackPosition.TOP,
             backgroundColor: Colors.red,
             colorText: Colors.white
         );
       }
     } else {
-      Get.snackbar('Error', 'Kiểm tra lại thông tin',
+      Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
           snackPosition: SnackPosition.BOTTOM);
     }
   }
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(6, errorText: 'password must be at least 6 digits long'),
+    RequiredValidator(errorText: 'Yêu cầu nhập mật khẩu'),
+    MinLengthValidator(6, errorText: 'Mật khẩu phải có ít nhất 6 ký tự'),
   ]);
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class LoginScreen extends GetWidget<LoginController> {
       body: Stack(
         children: [
           Container(
-            width: !isMobile(context) ? double.infinity/2 : double.infinity,
+            width: !Responsive.isMobile(context) ? double.infinity/2 : double.infinity,
             child: Column(
               children: [
                 Expanded(
@@ -74,7 +74,7 @@ class LoginScreen extends GetWidget<LoginController> {
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: RoundedButton(
                       onTap: login,
-                      child: Text('Login',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
+                      child: Text('Đăng nhâp',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
                     )),
                 Container(
                   alignment: Alignment.centerRight,
@@ -160,7 +160,7 @@ class LoginScreen extends GetWidget<LoginController> {
               height: 10,
             ),
             Text(
-              'Password',
+              'Mật khẩu',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -174,7 +174,7 @@ class LoginScreen extends GetWidget<LoginController> {
                   prefixIcon: Icon(
                     Icons.lock_outline,
                   ),
-                  hintText: 'password'),
+                  hintText: 'Mật khẩu'),
             ),
             SizedBox(height: 15,),
             GestureDetector(

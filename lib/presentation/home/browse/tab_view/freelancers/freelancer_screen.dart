@@ -38,11 +38,11 @@ class FreelancersScreen extends StatelessWidget {
                   );
                 },
               )
-                  : Center(child: Text('Empty', style: TEXT_STYLE_PRIMARY),
+                  : Center(child: Icon(Icons.error_outline),
               ),
             );
           else if (controller.progressState.value == sState.failure)
-            return Center(child: Text('Error',style: TEXT_STYLE_PRIMARY,));
+            return Center(child: Text('Lỗi, thử lại sau!',style: TEXT_STYLE_PRIMARY,));
           else
             return Center(child: CircularProgressIndicator());
         }

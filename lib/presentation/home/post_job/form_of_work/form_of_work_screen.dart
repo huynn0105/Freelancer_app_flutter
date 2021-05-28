@@ -12,7 +12,7 @@ class FormOfWorkScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Post Job',
+          'Thông tin đầy đủ về yêu cầu tuyển dụng',
         ),
       ),
       body: Obx(
@@ -23,7 +23,7 @@ class FormOfWorkScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Form of work',
+                      'Hình thức làm việc',
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),

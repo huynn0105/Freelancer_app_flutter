@@ -18,14 +18,14 @@ class SplashScreen extends GetWidget<SplashController> {
               radius: 40,
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: Image.asset('assets/images/a.jpg'),
+                child: Image.asset('assets/images/logo.png'),
               ),
             ),
             SizedBox(
               height: 8,
             ),
             Text(
-              "Delivery App",
+              "FreelancerVN App",
               style: Theme.of(context).textTheme.headline4.copyWith(
                   fontWeight: FontWeight.bold, color: Colors.white),
               textAlign: TextAlign.center,

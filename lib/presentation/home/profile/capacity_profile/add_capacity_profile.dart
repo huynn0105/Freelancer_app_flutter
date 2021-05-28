@@ -38,7 +38,7 @@ class AddCapacityProfile extends StatelessWidget {
         Scaffold(
           appBar: AppBar(
             title: Text(
-              "${capacityProfile != null ? 'Edit' : 'Add'} Capacity Profile",
+              "${capacityProfile != null ? 'Chỉnh sửa' : 'Thêm'} hồ sơ năng lực",
             ),
           ),
           body: SingleChildScrollView(
@@ -48,7 +48,7 @@ class AddCapacityProfile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Project name',
+                    'Tiêu đề*',
                     style: TEXT_STYLE_PRIMARY,
                   ),
                   SizedBox(
@@ -56,34 +56,34 @@ class AddCapacityProfile extends StatelessWidget {
                   ),
                   InputText(
                     controller: controller.ctrlName,
-                    hint: 'Create...',
+                    hint: 'Tên dự án hoặc tên sản phẩm bạn đã thực hiện',
                   ),
                   SizedBox(
                     height: kDefaultPadding,
                   ),
                   Text(
-                    'Url Web',
+                    'URL',
                     style: TEXT_STYLE_PRIMARY,
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   InputText(
-                    hint: 'https://...',
+                    hint: 'Link web dẫn đến dự án hoặc sản phẩm này (nếu có).',
                     controller: controller.ctrlUrlWeb,
                   ),
                   SizedBox(
                     height: kDefaultPadding,
                   ),
                   Text(
-                    'Description',
+                    'Mô tả chi tiết*',
                     style: TEXT_STYLE_PRIMARY,
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   InputText(
-                    hint: 'Experienced English - Vietnamese Translator & Editor',
+                    hint: 'Hãy viết thật chi tiết về sản phẩm hoặc dự án này để người xem có thể hiệu được những công việc thực sự bạn đã làm.',
                     controller: controller.ctrlDescription,
                     maxLines: 8,
                   ),
@@ -91,7 +91,7 @@ class AddCapacityProfile extends StatelessWidget {
                     height: kDefaultPadding,
                   ),
                   Text(
-                    'Image',
+                    'Hình ảnh liên quan',
                     style: TEXT_STYLE_PRIMARY,
                   ),
                   SizedBox(
@@ -134,7 +134,7 @@ class AddCapacityProfile extends StatelessWidget {
                         onPressed: () {
                           controller.uploadImage();
                         },
-                        child: Text('Add Image'),
+                        child: Text('Thêm ảnh'),
                       ),
                     ],
                   ),
@@ -146,7 +146,7 @@ class AddCapacityProfile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Service',
+                          'Dịch vụ liên quan',
                           style:
                               TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
@@ -179,7 +179,7 @@ class AddCapacityProfile extends StatelessWidget {
                         ),
                         Center(
                           child: TextButton(
-                            child: Text('Add more service'),
+                            child: Text('Thêm dịch vụ'),
                             onPressed: () {
                               if (controller.services.isEmpty)
                                 controller.getServices();
@@ -209,7 +209,7 @@ class AddCapacityProfile extends StatelessWidget {
                         Get.offAllNamed(Routes.home);
                       },
                       child:  Text(
-                              capacityProfile != null ? 'Update' : 'Apply',
+                              capacityProfile != null ? 'Cập nhập' : 'Lưu hồ sơ',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

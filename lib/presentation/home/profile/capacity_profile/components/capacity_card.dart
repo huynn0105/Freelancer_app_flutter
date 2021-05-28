@@ -20,7 +20,6 @@ class CapacityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print('cap ${capacityProfile.imageUrl}');
         Get.to(() => CapacityProfileDetailScreen(
               capacityProfile: capacityProfile,
             ));
