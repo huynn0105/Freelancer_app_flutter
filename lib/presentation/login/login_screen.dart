@@ -45,25 +45,10 @@ class LoginScreen extends GetWidget<LoginController> {
       body: Stack(
         children: [
           Container(
-            width: !Responsive.isMobile(context) ? double.infinity/2 : double.infinity,
             child: Column(
               children: [
                 Expanded(
-                    flex: 2,
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      return Stack(
-                        children: [
-                          Align(
-                            child: Image.asset(
-                              'assets/images/logo.png',
-                              color: Theme.of(context).accentColor,
-                              width: 120,
-                            ),
-                            alignment: Alignment.center,
-                          ),
-                        ],
-                      );
-                    })),
+                    child: SizedBox.shrink()),
                 Expanded(
                     flex: 6,
                     child: SingleChildScrollView(
@@ -79,7 +64,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 Container(
                   alignment: Alignment.centerRight,
                   margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                  padding: EdgeInsets.symmetric(vertical: 10),
+
                   child: GestureDetector(
                     onTap: () {
                       Get.toNamed(Routes.register);
@@ -117,23 +102,37 @@ class LoginScreen extends GetWidget<LoginController> {
 
   Widget buildLoginPanel() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Đăng Nhập',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 20,
-            ),
+
+            LayoutBuilder(builder: (context, constraints) {
+              return Stack(
+                children: [
+                  Center(
+                    child: Text(
+                      'Chào mừng đến với',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Align(
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: 200,
+                      height: 180,
+                    ),
+                    alignment: Alignment.center,
+                  ),
+                ],
+              );
+            }),
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

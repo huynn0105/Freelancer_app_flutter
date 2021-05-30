@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/presentation/home/browse/filter/filter_controller.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/item_selected.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
 import 'package:freelance_app/presentation/home/post_job/job_location/job_location_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 
 class FilterSearchScreen extends StatelessWidget {
@@ -51,130 +53,92 @@ class FilterSearchScreen extends StatelessWidget {
                   isSearching: controller.isSearching.value,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: kDefaultPadding,
                 ),
+                Text('Ngân sách',style: TEXT_STYLE_ON_FOREGROUND,),
                 Row(
                   children: [
-                    Text('Ngân sách nhỏ nhất'),
-                    Spacer(),
-                    Text('Ngân sách lớn nhất'),
+                    Expanded(
+                      child: TextFormField(
+                        controller: controller.floorPriceTextController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [ThousandsFormatter()],
+                        decoration: InputDecoration(
+                          hintText: 'Từ...',
+                          suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: kDefaultPadding,),
+
+                    Expanded(
+                      child: TextFormField(
+                        controller: controller.cellingPriceTextController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [ThousandsFormatter()],
+                        decoration: InputDecoration(
+                          hintText: 'Từ...',
+                          suffixIcon: Padding(padding: EdgeInsets.all(15), child: Text('VNĐ',style: TextStyle(color: Colors.black54),)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Obx(
-                  () => RangeSlider(
-                    values: controller.currentRangeValues.value,
-                    min: 1,
-                    max: 50,
-                    onChanged: (RangeValues values) {
-                      controller.currentRangeValues.value = values;
-                      // setState(() {
-                      //   _currentRangeValues = values;
-                      // });
-                    },
-                  ),
-                ),
-                Obx(
-                  () => Row(
-                    children: [
-                      Text(
-                        '${formatter.format(controller.currentRangeValues.value.start)}M VNĐ',
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Spacer(),
-                      Text(
-                          '${formatter.format(controller.currentRangeValues.value.end)}M VNĐ',
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ItemFilter(
-                  title: 'Loại hình làm việc',
-                  controller: controller,
-                  list: List.generate(
-                    controller.formOfWorks.length,
-                    (index) {
-                      var jobType = controller.formOfWorks[index];
-                      return ItemSelected(
-                        active: controller.jobTypeId.value,
-                        onTap: () {
-                          controller.jobTypeId(jobType.id);
-                        },
-                        index: jobType.id,
-                        name: jobType.name,
-                      );
-                    },
-                  ),
-                ),
+
+
                 SizedBox(
                   height: 20,
                 ),
-                ItemFilter(
-                  title: 'Hình thức làm việc',
-                  controller: controller,
-                  list: List.generate(
-                    controller.typeOfWorks.length,
-                    (index) {
-                      var typeOfWork = controller.typeOfWorks[index];
-                      return ItemSelected(
-                        active: controller.typeOfWorkId.value,
-                        onTap: () {
-                          controller.typeOfWorkId(typeOfWork.id);
-                        },
-                        index: typeOfWork.id,
-                        name: typeOfWork.name,
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ItemFilter(
-                  title: 'Trình độ',
-                  controller: controller,
-                  list: List.generate(
-                    controller.levels.length,
-                    (index) {
-                      var lv = controller.levels[index];
-                      return ItemSelected(
-                        active: controller.levelId.value,
-                        onTap: () {
-                          controller.levelId(lv.id);
-                        },
-                        index: lv.id,
-                        name: lv.name,
-                      );
-                    },
-                  ),
-                ),
-                TextField(
-                  controller: controller.locationTextController,
-                  decoration: InputDecoration(
-                    labelText: 'Địa điểm',
-                    prefixIcon: Icon(
-                      Icons.location_on,
-                    ),
-                  ),
-                  onTap: () {
-                    if (controller.provinces.isEmpty) {
-                      controller.loadProvinces();
-                    }
-                    Get.to(() => JobLocationScreen(
-                          id: 0,
-                          controller: controller,
-                        ),preventDuplicates: false);
+                controller.specialties.isNotEmpty ? ItemFilter(
+                  title: 'Lĩnh vực',
+                  list: controller.specialties,
+                  selected: controller.specialty.value,
+                  onChanged: (newValue){
+                    controller.specialty(newValue);
                   },
-                  readOnly: true,
-                ),
+                ): SizedBox(),
+                controller.services.isNotEmpty ? ItemFilter(
+                  title: 'Dịch vụ',
+                  list: controller.services,
+                  selected: controller.service.value,
+                  onChanged: (newValue){
+                    controller.service(newValue);
+                  },
+                ): SizedBox(),
+
+                controller.payForms.isNotEmpty ? ItemFilter(
+                  title: 'Hình thức trả lương',
+                  list: controller.payForms,
+                  selected: controller.payForm.value,
+                  onChanged: (newValue){
+                    controller.payForm(newValue);
+                  },
+                ): SizedBox(),
+                controller.formOfWorks.isNotEmpty ? ItemFilter(
+                  title: 'Hình thức làm việc',
+                  list: controller.formOfWorks,
+                  selected: controller.formOfWork.value,
+                  onChanged: (newValue){
+                    controller.formOfWork(newValue);
+                  },
+                ): SizedBox(),
+                controller.typeOfWorks.isNotEmpty ? ItemFilter(
+                  title: 'Loại hình làm việc',
+                  list: controller.typeOfWorks,
+                  selected: controller.typeOfWork.value,
+                  onChanged: (newValue){
+                    controller.typeOfWork(newValue);
+                  },
+                ): SizedBox(),
+                controller.provinces.isNotEmpty ? ItemFilter(
+                  title: 'Địa điểm làm việc',
+                  list: controller.provinces,
+                  selected: controller.province.value,
+                  onChanged: (newValue){
+                    controller.province(newValue);
+                  },
+                ): SizedBox(),
+
               ],
             ),
           ),
@@ -187,32 +151,50 @@ class FilterSearchScreen extends StatelessWidget {
 class ItemFilter extends StatelessWidget {
   const ItemFilter({
     Key key,
-    @required this.controller,
-    this.title,
-    this.list,
+    @required this.title,
+    @required this.list,
+    @required this.onChanged,
+    @required this.selected,
+
   }) : super(key: key);
 
-  final controller;
+
   final String title;
-  final List<Widget> list;
+  final List list;
+  final Function onChanged;
+  final selected;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    var widthScreen =  MediaQuery.of(context).size.width;
+    return Row(
       children: [
-        Text(
-          title,
-          style: TEXT_STYLE_PRIMARY,
+        Container(
+          width: widthScreen*0.2,
+          child: Text(
+            title,
+            style: TEXT_STYLE_ON_FOREGROUND,
+          ),
         ),
-        SizedBox(
-          height: 6,
-        ),
-        Wrap(
-          runSpacing: 6,
-          spacing: 6,
-          children: list,
-        ),
+        Spacer(),
+        Container(
+          width: widthScreen*0.55,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              value: selected,
+              onChanged: (newValue) {
+                onChanged(newValue);
+              },
+              items: list.map<DropdownMenuItem>(( value) {
+                return DropdownMenuItem(
+                  value: value,
+                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 17),),width: widthScreen*0.47,),
+                );
+              }).toList(),
+            ),
+          ),
+        )
+
       ],
     );
   }

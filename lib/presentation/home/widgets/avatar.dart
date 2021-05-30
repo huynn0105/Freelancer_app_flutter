@@ -18,26 +18,24 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Material(
-        child: InkWell(
-          onTap: onTap,
-          child: CircleAvatar(
-            radius: 75,
-            foregroundColor: Colors.transparent,
-            backgroundColor: Colors.grey.shade300,
-            child: CachedNetworkImage(
-              imageUrl: '$IMAGE/$url',
-              httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
-              placeholder: (context, url) => CupertinoActivityIndicator(),
-              imageBuilder: (context, image) => CircleAvatar(
-                backgroundImage: image,
-                radius: 70,
-              ),
-              errorWidget: (context, url, error) => CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: AssetImage('assets/images/avatarnull.png'),
-                radius: 70,
-              ),
+      InkWell(
+        onTap: onTap,
+        child: CircleAvatar(
+          radius: 75,
+          foregroundColor: Colors.transparent,
+          backgroundColor: Colors.grey.shade300,
+          child: CachedNetworkImage(
+            imageUrl: '$IMAGE/$url',
+            httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
+            placeholder: (context, url) => CupertinoActivityIndicator(),
+            imageBuilder: (context, image) => CircleAvatar(
+              backgroundImage: image,
+              radius: 70,
+            ),
+            errorWidget: (context, url, error) => CircleAvatar(
+              backgroundColor: Colors.grey,
+              backgroundImage: AssetImage('assets/images/avatarnull.png'),
+              radius: 70,
             ),
           ),
         ),

@@ -71,21 +71,6 @@ class EditProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Ảnh đại diện',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  Obx(() => Center(
-                        child: Avatar(
-                          url: controller.imageURL.value != ''
-                              ? controller.imageURL.value
-                              : account.avatarUrl,
-                          onTap: getImage,
-                        ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
                     'Information',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
@@ -385,39 +370,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Future getImage() async {
-    Get.bottomSheet(
-      Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-        ),
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          crossAxisAlignment: WrapCrossAlignment.end,
-          children: [
-            ListTile(
-              leading: Icon(Icons.camera),
-              title: Text('Camera'),
-              onTap: () {
-                controller.uploadAvatar(ImageSource.camera);
-                Get.back();
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.image),
-              title: Text('Thư viện'),
-              onTap: () async {
-                controller.uploadAvatar(ImageSource.gallery);
-                Get.back();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Future initValue(Account account) {
     controller.ctrlName.text = account.name;
@@ -430,7 +383,7 @@ class EditProfileScreen extends StatelessWidget {
     controller.levelId.value = account.level != null ? account.level.id : 0;
     controller.specialtyId.value =
         account.specialty != null ? account.specialty.id : 0;
-    controller.imageURL.value = account.avatarUrl;
+
     if (account.freelancerServices != null)
       controller.servicesSelected.assignAll(account.freelancerServices);
     if (account.freelancerSkills != null)

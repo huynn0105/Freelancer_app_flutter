@@ -31,6 +31,7 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> postCapacityProfile(CapacityProfile capacityProfile);
   Future<dynamic> putCapacityProfile(int id,CapacityProfile capacityProfile);
   Future<dynamic> getCapacityProfiles(int freelancerId);
+  Future<dynamic> deleteCapacityProfile(int capacityProfileId);
   Future<dynamic> getAccounts();
   Future<dynamic> getAccountFromId(int id);
   Future<dynamic> postOfferHistories(OfferRequest offerRequest);

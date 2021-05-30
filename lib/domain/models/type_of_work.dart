@@ -14,4 +14,12 @@ class TypeOfWork{
     data['name'] = this.name;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TypeOfWork && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

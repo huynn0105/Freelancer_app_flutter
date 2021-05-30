@@ -23,9 +23,8 @@ class JobNameScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              formKey.currentState.validate()
-                  ? Get.to(() => ServiceFreelancer())
-                  : null;
+              if(formKey.currentState.validate())
+                Get.to(() => ServiceFreelancer());
             },
             child: Text(
               'Tiếp theo',
@@ -53,7 +52,7 @@ class JobNameScreen extends StatelessWidget {
               InputText(
                 hint: 'VD: Thiết kế App bán hàng cao cấp',
                 controller: controller.nameTextController,
-                maxLength: 50,
+                maxLength: 100,
                 validator: MinLengthValidator(10,
                     errorText: 'Nhập ít nhất 10 ký tự'),
               ),

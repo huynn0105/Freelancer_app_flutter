@@ -86,9 +86,7 @@ class JobDetailScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: kDefaultPadding / 4),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                              Column(
                                 children: [
                                   NavItem(
                                     title: controller.job.value.typeOfWork.name,
@@ -99,6 +97,7 @@ class JobDetailScreen extends StatelessWidget {
                                     ),
                                     backgroundColor: Colors.pinkAccent.shade200,
                                   ),
+                                  SizedBox(height: 5,),
                                   NavItem(
                                       title:
                                           controller.job.value.formOfWork.name,
@@ -108,6 +107,7 @@ class JobDetailScreen extends StatelessWidget {
                                         fontSize: 18,
                                       ),
                                       backgroundColor: Colors.green.shade400),
+                                  SizedBox(height: 5,),
                                   NavItem(
                                       title: controller.job.value.payform.name,
                                       textStyle: TextStyle(

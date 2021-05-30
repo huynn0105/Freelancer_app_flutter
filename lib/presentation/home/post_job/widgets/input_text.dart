@@ -38,7 +38,6 @@ class InputText extends StatelessWidget {
         validator: validator,
         inputFormatters: inputFormatters,
         keyboardType: keyboardType,
-        style: TextStyle(fontSize: 18),
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: icon,

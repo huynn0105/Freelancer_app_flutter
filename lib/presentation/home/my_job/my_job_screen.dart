@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/home/my_job/tab_view/as_employer%20_screen.dart';
 import 'package:freelance_app/presentation/home/my_job/tab_view/as_freelancer.dart';
@@ -19,12 +20,16 @@ class MyJobScreen extends StatelessWidget {
             labelColor: Colors.white,
             unselectedLabelColor: Colors.blue,
             indicator: BoxDecoration(
-                border: Border.all(color: Colors.blue), color: Colors.blue),
+                 color: Colors.blue),
             tabs: List.generate(
               tab.length,
-                  (index) => Tab(
+                  (index) => Container(
+                    height: 38,
+                    alignment: Alignment.center,
+                    child: Tab(
                 text: tab[index],
               ),
+                  ),
             ),
           ),
         ),

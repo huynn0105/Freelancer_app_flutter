@@ -17,7 +17,7 @@ class ProfileController extends GetxController {
       {this.apiRepositoryInterface});
 
 
-  RxString imageURL = ''.obs;
+
   RxList<Service> services = <Service>[].obs;
   RxList<Service> servicesSelected = <Service>[].obs;
   var progressState = sState.initial.obs;
@@ -67,35 +67,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future uploadAvatar(ImageSource imageSource) async {
-    try {
-      var pickedFile = await ImagePicker().getImage(source: imageSource);
-      isChange(false);
-      final bytes = await pickedFile.readAsBytes();
-      String base64Image = base64Encode(bytes);
-      print('path: ${pickedFile.path}');
-      if (pickedFile != null) {
-        var result = await apiRepositoryInterface.uploadAvatar(
-          ImageRequest(
-            name: pickedFile.path.split("/").last,
-            imageBase64: base64Image,
-          ),
-        );
-        if (result != null) {
-          imageURL.value = result;
-          isChange(true);
-        }
 
-      } else {
-        Get.snackbar('Lỗi', 'Tệp không được chọn',
-            margin: EdgeInsets.only(top: 5, left: 10, right: 10));
-        isChange(false);
-      }
-    } catch (e) {
-      print('lỗi ${e.toString()}');
-      isChange(false);
-    }
-  }
 
   void changeValueService(Service service, List<Service> serviceList) {
     final List<Service> updatedListService = serviceList.map((e) {

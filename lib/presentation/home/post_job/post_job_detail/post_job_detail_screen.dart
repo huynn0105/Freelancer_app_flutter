@@ -34,11 +34,12 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
             ),
           ),
           body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.all(kDefaultPadding/2),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   TextField(
+                    maxLength: 100,
                     decoration: InputDecoration(
                       labelText: 'Tên công việc',
                     ),
@@ -80,6 +81,9 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                   ),
                   TextField(
                     controller: controller.descriptionTextController,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,//Normal textInputField will be displayed
+                    maxLines: 5,// when user presses enter it will adapt to it
                     decoration: InputDecoration(
                       labelText: 'Mô tả công việc',
                     ),
@@ -315,7 +319,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     ()=> CheckboxListTile(value: controller.isPrivate.value, onChanged: (value){
                       controller.isPrivate.value = value;
                     },
-                      title: Text('Tôi muốn việc này được Hiển Thị Bí Mật - chỉ những người nào tôi gửi link việc này cho họ và tôi mời họ làm việc mới có thể xem.'),
+                      title: Text('Tôi muốn việc này được Hiển Thị Bí Mật. chỉ những người nào tôi gửi link việc này cho họ và tôi mời họ làm việc mới có thể xem.'),
                         controlAffinity: ListTileControlAffinity.leading
                     ),
                   ),

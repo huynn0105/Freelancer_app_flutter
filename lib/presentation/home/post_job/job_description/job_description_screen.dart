@@ -20,7 +20,7 @@ class JobDescriptionScreen extends StatelessWidget {
           value: 0.2,
         ),
         title: Text(
-          'Thông tin đầy đủ về yêu cầu tuyển dụng',
+          'Đăng việc',
         ),
 
         actions: [

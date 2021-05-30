@@ -19,4 +19,17 @@ class Specialty{
      data['image'] = this.image;
      return data;
    }
+
+   @override
+  String toString() {
+    return 'id: $id, name: $name';
+  }
+
+   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Specialty && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

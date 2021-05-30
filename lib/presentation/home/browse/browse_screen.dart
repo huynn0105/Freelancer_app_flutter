@@ -22,8 +22,11 @@ class BrowseScreen extends StatelessWidget {
                 border: Border.all(color: Colors.blue), color: Colors.blue),
             tabs: List.generate(
               tab.length,
-              (index) => Tab(
-                text: tab[index],
+              (index) => Container(
+                height: 38,
+                child: Tab(
+                  text: tab[index],
+                ),
               ),
             ),
           ),

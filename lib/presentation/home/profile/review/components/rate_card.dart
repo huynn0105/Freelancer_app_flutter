@@ -22,10 +22,13 @@ class ReviewCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: kDefaultPadding),
       child: Column(
         children: [
+          Text('Lập trình website học trực tuyến có tính năng bán khoá học và làm bài tập trắc nghiệm',
+            style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17,color: Colors.teal,),
+            overflow: TextOverflow.ellipsis,),
           Row(
             children: [
               CircleAvatar(
-                radius: 23,
+                radius: 20,
                 foregroundColor: Colors.transparent,
                 backgroundColor: Colors.grey.shade300,
                 child: CachedNetworkImage(
@@ -38,14 +41,14 @@ class ReviewCard extends StatelessWidget {
                       CupertinoActivityIndicator(),
                   imageBuilder: (context, image) => CircleAvatar(
                     backgroundImage: image,
-                    radius: 20,
+                    radius: 18,
                   ),
                   errorWidget: (context, url, error) =>
                       CircleAvatar(
                         backgroundColor: Colors.grey,
                         backgroundImage: AssetImage(
                             'assets/images/avatarnull.png'),
-                        radius: 20,
+                        radius: 18,
                       ),
                 ),
               ),
@@ -53,7 +56,7 @@ class ReviewCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Nguyễn Nhật Huy',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17),),
+                  Text('Nguyễn Nhật Huy',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 15),),
                   SmoothStarRating(
                     allowHalfRating: false,
                     onRated: (v) {},
@@ -66,8 +69,6 @@ class ReviewCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Spacer(),
-              Text('1 ngày trước',style: TextStyle(fontSize: 15,color: Colors.black.withOpacity(0.8)),),
             ],
           ),
           SizedBox(height: kDefaultPadding/4,),

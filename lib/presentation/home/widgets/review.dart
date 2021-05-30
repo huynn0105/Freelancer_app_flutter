@@ -26,44 +26,54 @@ class Review extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
         Row(
           children: [
-            Text(
-              'Đánh giá',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
+            Text('Tóm lượt', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
             Spacer(),
             TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: Text('Xem tất cả'))
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('4.0',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 35),),
-            SizedBox(width: kDefaultPadding,),
-            SmoothStarRating(
-              allowHalfRating: false,
-              onRated: (v) {},
-              starCount: 5,
-              rating: rate.toDouble(),
-              size: 40,
-              isReadOnly: true,
-              color: Colors.yellow,
-              borderColor: Colors.yellow,
-            ),
-          ],
-        ),
-        Divider(),
-        ListView.builder(
-            itemCount: 3,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context,index)=>ReviewCard(rate: rate))
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('4.0',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 35),),
+              SizedBox(width: kDefaultPadding,),
+              SmoothStarRating(
+                allowHalfRating: false,
+                onRated: (v) {},
+                starCount: 5,
+                rating: rate.toDouble(),
+                size: 40,
+                isReadOnly: true,
+                color: Colors.yellow,
+                borderColor: Colors.yellow,
+              ),
+            ],
+          ),
+          Divider(),
 
-      ],
+          Text('Việc hoàn thành',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
+          SizedBox(height: 5,),
+          ListView.builder(
+              itemCount: 1,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context,index)=>ReviewCard(rate: rate)),
+          Text('Việc đã hủy',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
+          SizedBox(height: 5,),
+          ListView.builder(
+              itemCount: 1,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context,index)=>ReviewCard(rate: rate)),
+        ],
+
+      ),
     );
   }
 }

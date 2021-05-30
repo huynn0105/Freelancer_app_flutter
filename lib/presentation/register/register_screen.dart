@@ -80,6 +80,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         ),
                         TextFormField(
                           controller: controller.usernameTextController,
+                          obscureText: true,
                           validator: MinLengthValidator(1,
                               errorText: 'Không được bỏ trống'),
                           decoration: InputDecoration(
@@ -100,6 +101,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         ),
                         TextFormField(
                           controller: controller.emailTextController,
+                          obscureText: true,
                           validator: MultiValidator([
                             EmailValidator(errorText: 'Địa chỉ email không hợp lệ'),
                             RequiredValidator(errorText: 'Yêu cầu nhập email'),

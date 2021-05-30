@@ -52,11 +52,21 @@ class HttpService {
     }));
   }
 
-  static Future<http.Response> get(String url,
-      {String bearerToken, Map<String, dynamic> parameters}) async {
+  static Future<http.Response> get(String url, {String bearerToken, Map<String, dynamic> parameters}) async {
     var uri = Uri.https(DOMAIN, url, parameters);
-    print("urllll: $uri");
+    print("HTTP GET: $uri");
     return await http.get(
+      uri,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $bearerToken',
+      },
+    );
+  }
+
+  static Future<http.Response> delete(String url, {String bearerToken, Map<String, dynamic> parameters}) async {
+    var uri = Uri.https(DOMAIN, url, parameters);
+    print("HTTP DELETE: $uri");
+    return await http.delete(
       uri,
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer $bearerToken',

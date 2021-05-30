@@ -13,7 +13,7 @@ class Skills extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -24,7 +24,7 @@ class Skills extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Wrap(
+          skillsList.isNotEmpty ? Wrap(
             runSpacing: 5,
             spacing: 5,
             children: List.generate(
@@ -37,7 +37,7 @@ class Skills extends StatelessWidget {
                 color: Colors.black54,
                 ))
             ),
-          ),
+          ) : Text('Freelancer đang cập nhật kỹ năng'),
         ],
       ),
     );

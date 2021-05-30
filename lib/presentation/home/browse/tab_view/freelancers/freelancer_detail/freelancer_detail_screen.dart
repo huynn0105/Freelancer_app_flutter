@@ -3,6 +3,7 @@ import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/rating/rating_screen.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity.dart';
+import 'package:freelance_app/presentation/home/profile/profile_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
 import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
@@ -61,7 +62,6 @@ class FreelancerDetailScreen extends StatelessWidget {
           var freelancer = controller.freelancer.value;
           return SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
                   Header(
@@ -75,27 +75,34 @@ class FreelancerDetailScreen extends StatelessWidget {
                     contract: freelancer.website,
                     phoneNumber: freelancer.phone,
                   ),
-                  freelancer.description != null
-                      ? About(
-                          description: '${freelancer.description}',
-                        )
-                      : const SizedBox.shrink(),
+                  Divider(color: Colors.grey),
+                  Earn(),
+                  Divider(color: Colors.grey),
+                  About(description: freelancer.description,name: freelancer.name,),
+                  Divider(
+                    thickness: kDefaultPadding/2,
+                    color: Colors.grey[300],
+                  ),
                   freelancer.freelancerSkills != null
-                      ? freelancer.capacityProfiles.isNotEmpty
                           ? Skills(
                               skillsList: freelancer.freelancerSkills,
                             )
-                          : const SizedBox.shrink()
                       : const SizedBox.shrink(),
+                  Divider(
+                    thickness: kDefaultPadding/2,
+                    color: Colors.grey[300],
+                  ),
                   freelancer.freelancerServices != null
-                      ? freelancer.capacityProfiles.isNotEmpty
                           ? Services(
                               freelancerServices: freelancer.freelancerServices,
                             )
-                          : const SizedBox.shrink()
                       : const SizedBox.shrink(),
+                  Divider(
+                    thickness: kDefaultPadding/2,
+                    color: Colors.grey[300],
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: kDefaultPadding),
+                    padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -129,9 +136,12 @@ class FreelancerDetailScreen extends StatelessWidget {
                           },
                         )
                             : Text('Chưa có hồ sơ nào!'),
-
                       ],
                     ),
+                  ),
+                  Divider(
+                    thickness: kDefaultPadding/2,
+                    color: Colors.grey[300],
                   ),
                   Review(
                     rate: me.rate,

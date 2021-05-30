@@ -18,7 +18,6 @@ class NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
-
       child: Text(
         title,
         style: textStyle,

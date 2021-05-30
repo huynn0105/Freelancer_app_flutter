@@ -250,8 +250,8 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future putCapacityProfile(int id,CapacityProfile capacityProfile) async{
-    var rs = await HttpService.put('CAPACITYPROFILE/$id',capacityProfile.toJson(), bearerToken: TOKEN);
-    print('js :${capacityProfile.toJson()}');
+    var rs = await HttpService.put('$CAPACITY_PROFILE/$id',capacityProfile.toJson(), bearerToken: TOKEN);
+    print('js :${capacityProfile.imageName}');
     print('codeCapacityProfiles ${rs.statusCode}');
   }
 
@@ -297,6 +297,10 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('codeOfferHistories ${rs.statusCode}');
   }
 
-
+  @override
+  Future deleteCapacityProfile(int capacityProfileId)async {
+    var rs = await HttpService.get('$CAPACITY_PROFILE/$capacityProfileId', bearerToken: TOKEN);
+    print('codeDeleteCap ${rs.statusCode}');
+  }
 
 }

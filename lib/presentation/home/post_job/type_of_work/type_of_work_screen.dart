@@ -12,7 +12,7 @@ class TypeOfWorkScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Thông tin đầy đủ về yêu cầu tuyển dụng',
+          'Đăng việc',
           style: TextStyle(color: Colors.black),
         ),
       ),

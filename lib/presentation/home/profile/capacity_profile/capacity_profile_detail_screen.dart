@@ -22,7 +22,21 @@ class CapacityProfileDetailScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          actions: [
+            IconButton(icon: Icon(Icons.delete_outline_outlined), onPressed: (){
+              Get.defaultDialog(
+                radius: 10,
+                actions: [
+                  TextButton(onPressed: ()=>Get.back(), child: Text('Không')),
+                  Spacer(),
+                  TextButton(onPressed: (){}, child: Text('Có')),
+                ],
+                title: 'Xác nhận xoá?',
+                middleText: 'Bạn muốn xoá hồ sơ này?'
 
+              );
+            })
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(

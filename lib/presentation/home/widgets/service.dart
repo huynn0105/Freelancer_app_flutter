@@ -12,7 +12,7 @@ class Services extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,14 +23,14 @@ class Services extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          ListView.builder(
+          freelancerServices.isNotEmpty ? ListView.builder(
             itemBuilder: (context, index) => ItemService(
               nameService: freelancerServices[index].name,
             ),
             itemCount: freelancerServices.length,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-          ),
+          ) : Text('Freelancer đang cập nhập dịch vụ'),
 
         ],
       ),

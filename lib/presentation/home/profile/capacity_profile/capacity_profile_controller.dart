@@ -63,10 +63,10 @@ class CapacityProfileController extends GetxController {
     }
   }
 
-  void postCapacityProfile()  {
+  Future postCapacityProfile() async {
     try{
       progressState(sState.loading);
-       apiRepositoryInterface.postCapacityProfile(
+      await apiRepositoryInterface.postCapacityProfile(
         CapacityProfile(
           name: ctrlName.text,
           description: ctrlDescription.text,
@@ -77,17 +77,17 @@ class CapacityProfileController extends GetxController {
         )
       );
       progressState(sState.initial);
-      initValue();
+
     }catch(e){
       print('lỗi ${e.toString()}');
       progressState(sState.failure);
     }
   }
 
-  void putCapacityProfile(int id)  {
+  Future putCapacityProfile(int id) async  {
     try{
       progressState(sState.loading);
-       apiRepositoryInterface.putCapacityProfile(id,
+       await apiRepositoryInterface.putCapacityProfile(id,
           CapacityProfile(
               name: ctrlName.text,
               description: ctrlDescription.text,
@@ -98,7 +98,7 @@ class CapacityProfileController extends GetxController {
           )
       );
       progressState(sState.initial);
-      initValue();
+
     }catch(e){
       print('lỗi ${e.toString()}');
       progressState(sState.failure);
@@ -114,12 +114,6 @@ class CapacityProfileController extends GetxController {
     }catch(e){
       progressState(sState.failure);
     }
-  }
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
   }
 
 

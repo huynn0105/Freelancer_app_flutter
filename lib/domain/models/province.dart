@@ -18,5 +18,15 @@ class Province{
     data['type'] = this.type;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Province &&
+          runtimeType == other.runtimeType &&
+          provinceId == other.provinceId;
+
+  @override
+  int get hashCode => provinceId.hashCode;
 }
 

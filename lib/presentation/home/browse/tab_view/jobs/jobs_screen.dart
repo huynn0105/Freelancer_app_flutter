@@ -84,35 +84,7 @@ class JobCard extends StatelessWidget {
           child: Column(
             children: [
               Row(
-
                 children: [
-                  Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        foregroundColor: Colors.transparent,
-                        backgroundColor: Colors.grey.shade300,
-                        child: CachedNetworkImage(
-                          imageUrl: '$IMAGE/${job.avatarRenter}',
-                          httpHeaders: {
-                            HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
-                          },
-                          placeholder: (context, url) =>
-                              CupertinoActivityIndicator(),
-                          imageBuilder: (context, image) => CircleAvatar(
-                            backgroundImage: image,
-                            radius: 40,
-                          ),
-                          errorWidget: (context, url, error) => CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            backgroundImage:
-                                AssetImage('assets/images/avatarnull.png'),
-                            radius: 40,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(width: kDefaultPadding / 2),
                   Expanded(
                     child: Column(
@@ -128,16 +100,13 @@ class JobCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: kDefaultPadding / 5),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.person_outline,
-                              size: 20,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            Text('12 chào giá',
-                                style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text(
+                            'Lập trình di động',
+                            style:TEXT_STYLE_FOREIGN.copyWith(fontSize: 16),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         SizedBox(height: kDefaultPadding / 5),
                         Row(
@@ -146,10 +115,17 @@ class JobCard extends StatelessWidget {
                                 size: 20,
                                 color: Theme.of(context).primaryColor),
                             SizedBox(width: 4),
-                            Text('hạn nhận hồ sơ ${job.deadline.difference(DateTime.now()).inDays} ngày',
+                            Text('Còn ${job.deadline.difference(DateTime.now()).inDays} ngày',
                                 style:
-                                    TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
-                            SizedBox(width: kDefaultPadding * 2),
+                                TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
+                            SizedBox(width: kDefaultPadding*2),
+                            Icon(
+                              Icons.person_outline,
+                              size: 20,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            Text('12 chào giá',
+                                style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
                           ],
                         ),
                         SizedBox(height: kDefaultPadding / 5),
