@@ -6,23 +6,14 @@ import 'package:freelance_app/responsive.dart';
 class Header extends StatelessWidget {
   const Header({
     Key key,
+
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if(!Responsive.isDesktop(context))
-          IconButton(icon: Icon(Icons.menu), onPressed: (){
-            Scaffold.of(context).openDrawer();
-          }),
-        if(!Responsive.isMobile(context))
-          Text('Dashboard',
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                ),
-        SizedBox(width: kDefaultPadding,),
         if(!Responsive.isMobile(context))
         Spacer(flex: Responsive.isDesktop(context)? 2: 1,),
         Expanded(child: SearchField()),
@@ -48,23 +39,35 @@ class ProfileCard extends StatelessWidget {
           border: Border.all(color: Colors.white10),
           borderRadius:
           BorderRadius.all(Radius.circular(kDefaultPadding / 2))),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage('assets/images/avatar.jpg'),
-          ),
-          SizedBox(
-            width: kDefaultPadding / 2,
-          ),
-          if(!Responsive.isMobile(context))
-          Text(
-            'Nguyễn Nhật Huy',
-          ),
-          Icon(
-            Icons.keyboard_arrow_down,
-          ),
-        ],
+      child: InkWell(
+        onTap: ()async{
+          await showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(1000.0, 70.0, 0.0, 0.0),
+          items: <PopupMenuItem<int>>[
+          new PopupMenuItem<int>(child: const Text('Cá nhân'), value: 1),
+          new PopupMenuItem<int>(child: const Text('Đăng xuất'), value: 2),
+          ]);
+        },
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 15,
+              backgroundImage: AssetImage('assets/images/avatar.jpg'),
+            ),
+            SizedBox(
+              width: kDefaultPadding / 2,
+            ),
+            if(!Responsive.isMobile(context))
+            Text(
+              'Nguyễn Nhật Huy',
+              style: TextStyle(fontSize: 13),
+            ),
+            Icon(
+              Icons.keyboard_arrow_down,
+            ),
+          ],
+        ),
       ),
     );
   }

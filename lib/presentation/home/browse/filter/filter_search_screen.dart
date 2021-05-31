@@ -166,19 +166,19 @@ class ItemFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var widthScreen =  MediaQuery.of(context).size.width;
+
     return Row(
       children: [
         Container(
-          width: widthScreen*0.2,
+          width: 100,
           child: Text(
             title,
             style: TEXT_STYLE_ON_FOREGROUND,
           ),
         ),
-        Spacer(),
+        SizedBox(width: 50,),
         Container(
-          width: widthScreen*0.55,
+          width: 260,
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
               value: selected,
@@ -188,7 +188,7 @@ class ItemFilter extends StatelessWidget {
               items: list.map<DropdownMenuItem>(( value) {
                 return DropdownMenuItem(
                   value: value,
-                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 17),),width: widthScreen*0.47,),
+                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 17),),width: 220,),
                 );
               }).toList(),
             ),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:freelance_app/presentation/admin/main_screen.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/presentation/admin/admin_controller.dart';
+import 'package:freelance_app/presentation/admin/admin_screen.dart';
+import 'package:get/get.dart';
 
-class SideMenu extends StatelessWidget {
+class SideMenu extends GetWidget<AdminController> {
   const SideMenu({
     Key key,
   }) : super(key: key);
@@ -9,45 +13,103 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: SingleChildScrollView(
-        child: Column(
+      child: ListView(
+        children: [
+          DrawerHeader(child: Image.asset('assets/images/logo.png')),
+          DrawerListTile(
+            title: 'Dashboard',
+            svgSrc: 'assets/icons/menu_dashboard.svg',
+            press: () {
+              controller.indexSelected(0);
+            },
+          ),
+          DrawerListTile(
+            title: 'Quảng lý công việc',
+            svgSrc: 'assets/icons/menu_dashboard.svg',
+            press: () {
+              controller.indexSelected(1);
+            },
+          ),
+          ExpansionTile(
+            title: Transform.translate(
+              child: Text("Quản lý chuyên ngành và dịch vụ cung cấp"),
+              offset: Offset(-16, 0),
+            ),
+            leading: SvgPicture.asset(
+              'assets/icons/menu_task.svg',
+              color: Colors.black87,
+            ),
+            children: [
+              SubItem(title: 'Quản lý chuyên ngành',svgSrc: 'assets/icons/menu_task.svg',
+                press: () {
+                  controller.indexSelected(2);
+                },
+              ),
+              SubItem(title: 'Quản lý dịch vụ',svgSrc: 'assets/icons/menu_store.svg',
+                press: () {
+                  controller.indexSelected(3);
+                },
+              ),
+            ],
+          ),
+          DrawerListTile(
+            title: 'Quản lý kỹ năng cung cấp',
+            svgSrc: 'assets/icons/menu_task.svg',
+            press: () {
+              controller.indexSelected(4);
+            },
+          ),
+          DrawerListTile(
+            title: 'Quản lý tài khoản người dùng',
+            svgSrc: 'assets/icons/menu_doc.svg',
+            press: () {
+              controller.indexSelected(5);
+            },
+          ),
+          DrawerListTile(
+            title: 'Báo cáo',
+            svgSrc: 'assets/icons/menu_store.svg',
+            press: () {
+              controller.indexSelected(6);
+            },
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+
+class SubItem extends StatelessWidget {
+  const SubItem({
+    Key key,
+    @required this.title,
+    @required this.svgSrc,
+    @required this.press,
+  }) : super(key: key);
+
+  final String title, svgSrc;
+  final VoidCallback press;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: press,
+      child: Padding(
+        padding: const EdgeInsets.all(kDefaultPadding / 2),
+        child: Row(
           children: [
-            DrawerHeader(child: Image.asset('assets/images/logo.png')),
-            DrawerListTile(
-              title: 'Dashboard',
-              svgSrc: 'assets/icons/menu_dashboard.svg',
-              press: () {},
+            SizedBox(
+              width: kDefaultPadding*2,
             ),
-            DrawerListTile(
-              title: 'Lĩnh vực',
-              svgSrc: 'assets/icons/menu_tran.svg',
-              press: () {},
+            SvgPicture.asset(
+              svgSrc,
+              color: Colors.black87,
             ),
-            DrawerListTile(
-              title: 'Dịch vụ',
-              svgSrc: 'assets/icons/menu_task.svg',
-              press: () {},
+            SizedBox(
+              width: kDefaultPadding / 2,
             ),
-            DrawerListTile(
-              title: 'Kĩ năng',
-              svgSrc: 'assets/icons/menu_doc.svg',
-              press: () {},
-            ),
-            DrawerListTile(
-              title: 'Người dùng',
-              svgSrc: 'assets/icons/menu_store.svg',
-              press: () {},
-            ),
-            DrawerListTile(
-              title: 'Thông báo',
-              svgSrc: 'assets/icons/menu_notification.svg',
-              press: () {},
-            ),
-            DrawerListTile(
-              title: 'Hồ sơ',
-              svgSrc: 'assets/icons/menu_profile.svg',
-              press: () {},
-            )
+            Expanded(child: Text(title)),
           ],
         ),
       ),

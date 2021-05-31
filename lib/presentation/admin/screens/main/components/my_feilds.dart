@@ -25,15 +25,6 @@ class MyFields extends StatelessWidget {
           icon: Icon(Icons.add),
           label: Text('Thêm mới'),
         ),
-        SizedBox(
-          height: kDefaultPadding,
-        ),
-        Responsive(
-          mobile: InfoCardGridView(crossAxisCount: _size.width < 530 ? 2 : 4,
-            childAspectRatio: _size.width < 530 ? 2 : 1.3,),
-          desktop: InfoCardGridView(childAspectRatio: _size.width < 1200 ?1.5 : 1.8,),
-          tablet: InfoCardGridView(childAspectRatio: _size.width < 980 ?1.3 : 1.7,),
-        )
       ],
     );
   }
@@ -43,16 +34,18 @@ class InfoCardGridView extends StatelessWidget {
   const InfoCardGridView({
     Key key,
     this.crossAxisCount = 4,
-    this.childAspectRatio = 1.8,
+    this.childAspectRatio = 3,
+    this.list,
   }) : super(key: key);
   final int crossAxisCount;
   final double childAspectRatio;
+  final List<JobM> list;
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
-      itemCount: demoMyFiels.length,
+      itemCount: list.length,
       physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
@@ -60,7 +53,7 @@ class InfoCardGridView extends StatelessWidget {
           childAspectRatio: childAspectRatio,
           crossAxisSpacing: kDefaultPadding),
       itemBuilder: (context, index) => ItemInfoCard(
-        info: demoMyFiels[index],
+        info: list[index],
       ),
     );
   }
@@ -71,47 +64,23 @@ class ItemInfoCard extends StatelessWidget {
     Key key,
     @required this.info,
   }) : super(key: key);
-  final CloudStorageInfo info;
+  final JobM info;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kDefaultPadding*2/3),
       decoration: BoxDecoration(
-        color: secondaryColor,
+        color: info.color,
         borderRadius:
             const BorderRadius.all(Radius.circular(kDefaultPadding / 2)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.all(kDefaultPadding / 2),
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: info.color.withOpacity(0.1),
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(kDefaultPadding / 2)),
-                ),
-                child: SvgPicture.asset(
-                  info.svgSrc,
-                  color: info.color,
-                ),
-              ),
-              Icon(Icons.more_vert),
-            ],
-          ),
-
-          Text(info.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-             ),
-        ],
+      child: Center(
+        child: Text('${info.title}: ${info.num}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.white,fontSize: 16),
+           ),
       ),
     );
   }

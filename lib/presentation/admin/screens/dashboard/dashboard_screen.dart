@@ -1,59 +1,188 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/presentation/admin/components/side_menu.dart';
-import 'package:freelance_app/presentation/admin/screens/dashboard/components/my_feilds.dart';
-import 'package:freelance_app/responsive.dart';
 
-import 'components/header.dart';
-import 'components/recent_job.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/MyFiles.dart';
+import 'package:freelance_app/presentation/admin/screens/main/components/my_feilds.dart';
+import 'package:freelance_app/responsive.dart';
 
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      drawer: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 300,
-        ),
-        child: SideMenu(),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Header(),
-            SizedBox(
-              height: kDefaultPadding/2,
-            ),
-            Row(
+    var _size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(kDefaultPadding),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: [
-                      MyFields(),
-                      SizedBox(height: kDefaultPadding),
-                      RecentJobs(),
-                      if(Responsive.isMobile(context))
-                        SizedBox(height: kDefaultPadding),
-
-                    ],
-                  ),
+                Text('Tổng số công việc',style: TEXT_STYLE_PRIMARY,),
+                SizedBox(height: 5,),
+                Responsive(
+                  mobile: InfoCardGridView(crossAxisCount:  2,
+                    childAspectRatio:  3,list: demoJobM,),
+                  desktop: InfoCardGridView(childAspectRatio: 3,list: demoJobM),
+                  tablet: InfoCardGridView(childAspectRatio:  3,list: demoJobM),
                 ),
-                if(!Responsive.isMobile(context))
-                SizedBox(width: kDefaultPadding),
-
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
+                SizedBox(height: 5,),
+                InfoCardGridView(list:demoUserM,crossAxisCount: Responsive.isMobile(context) ? 2 : 4,),
+              ],
+            ),
+          ),
+          Text('Công việc theo tháng',style: TEXT_STYLE_PRIMARY,),
+          _graphBarSection(),
+          SizedBox(height: kDefaultPadding*4,),
+          Text('Người dùng mới theo tháng',style: TEXT_STYLE_PRIMARY),
+          _graphSection()
+        ],
       ),
     );
   }
 
+  /// Create series list with multiple series
+}
 
+
+_graphSection() {
+  final customTickFormatter =
+      // ignore: missing_return
+      charts.BasicNumericTickFormatterSpec((num value) => 'Tháng ${value + 1}');
+
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
+    height: 300,
+    child: charts.LineChart(
+      _createSampleData(),
+      defaultRenderer: new charts.LineRendererConfig(includePoints: true),
+      animate: false,
+      // Sets up a currency formatter for the measure axis.
+
+      domainAxis: charts.NumericAxisSpec(
+        tickProviderSpec:
+            charts.BasicNumericTickProviderSpec(desiredTickCount: 6),
+        tickFormatterSpec: customTickFormatter,
+      ),
+    ),
+  );
+}
+
+_createSampleData() {
+  final myFakeDesktopData = [
+    new LinearSales(0, 140),
+    new LinearSales(1, 200),
+    new LinearSales(2, 300),
+    new LinearSales(3, 250),
+    new LinearSales(4, 222),
+    new LinearSales(5, 240),
+  ];
+
+  return [
+    charts.Series<LinearSales, int>(
+      id: 'Sales',
+      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      domainFn: (LinearSales sales, _) => sales.month,
+      measureFn: (LinearSales sales, _) => sales.sales,
+      data: myFakeDesktopData,
+    )
+  ];
+}
+
+_graphBarSection() {
+
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
+    height: 300,
+    child: charts.BarChart(
+      _createBarSampleData(),
+      defaultRenderer: new charts.BarRendererConfig(
+          groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
+      animate: false,
+      // Sets up a currency formatter for the measure axis.
+
+    ),
+  );
+}
+
+_createBarSampleData() {
+  final desktopSalesData = [
+    new OrdinalSales('Tháng 1', 15),
+    new OrdinalSales('Tháng 2', 25),
+    new OrdinalSales('Tháng 3', 100),
+    new OrdinalSales('Tháng 4', 75),
+    new OrdinalSales('Tháng 5', 50),
+    new OrdinalSales('Tháng 6', 65),
+  ];
+
+  final tableSalesData = [
+    new OrdinalSales('Tháng 1', 25),
+    new OrdinalSales('Tháng 2', 50),
+    new OrdinalSales('Tháng 3', 10),
+    new OrdinalSales('Tháng 4', 20),
+    new OrdinalSales('Tháng 5', 50),
+    new OrdinalSales('Tháng 6', 20),
+  ];
+
+  final mobileSalesData = [
+    new OrdinalSales('Tháng 1', 10),
+    new OrdinalSales('Tháng 2', 50),
+    new OrdinalSales('Tháng 3', 50),
+    new OrdinalSales('Tháng 4', 45),
+    new OrdinalSales('Tháng 5', 25),
+    new OrdinalSales('Tháng 6', 65),
+  ];
+
+  return [
+// Blue bars with a lighter center color.
+    new charts.Series<OrdinalSales, String>(
+      id: 'Desktop',
+      domainFn: (OrdinalSales sales, _) => sales.year,
+      measureFn: (OrdinalSales sales, _) => sales.sales,
+      data: desktopSalesData,
+      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+    ),
+// Solid red bars. Fill color will default to the series color if no
+// fillColorFn is configured.
+    new charts.Series<OrdinalSales, String>(
+      id: 'Tablet',
+      measureFn: (OrdinalSales sales, _) => sales.sales,
+      data: tableSalesData,
+      colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+      domainFn: (OrdinalSales sales, _) => sales.year,
+    ),
+// Hollow green bars.
+    new charts.Series<OrdinalSales, String>(
+      id: 'Mobile',
+      domainFn: (OrdinalSales sales, _) => sales.year,
+      measureFn: (OrdinalSales sales, _) => sales.sales,
+      data: mobileSalesData,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      fillColorFn: (_, __) => charts.MaterialPalette.transparent,
+    ),
+  ];
+}
+
+class LinearSales {
+  final int month;
+  final int sales;
+
+  LinearSales(this.month, this.sales);
+}
+class OrdinalSales {
+  final String year;
+  final int sales;
+
+  OrdinalSales(this.year, this.sales);
 }
