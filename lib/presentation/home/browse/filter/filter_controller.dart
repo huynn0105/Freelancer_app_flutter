@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
-import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/province.dart';
 import 'package:freelance_app/domain/models/service.dart';
-import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/models/type_of_work.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
@@ -83,7 +81,7 @@ class FilterController extends GetxController {
   Future loadProvinces() async {
     try {
       final result = await apiRepositoryInterface.getProvinces();
-      provinces.add(result);
+      provinces.addAll(result);
     } catch (e) {
       print('lỗi ${e.toString()}');
     }

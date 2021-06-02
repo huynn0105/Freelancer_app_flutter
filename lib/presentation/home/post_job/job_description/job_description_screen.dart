@@ -16,13 +16,9 @@ class JobDescriptionScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        bottom: MyLinearProgressIndicator(
-          value: 0.2,
-        ),
         title: Text(
           'Đăng việc',
         ),
-
         actions: [
           TextButton(
             onPressed: () {
@@ -110,13 +106,13 @@ Future<void> selectDate(
   final df = new DateFormat('dd-MM-yyyy');
   final DateTime pickedDate = await showDatePicker(
       context: context,
-      initialDate: controller.today.value,
+      initialDate: controller.deadline.value,
       firstDate: DateTime(2021),
       lastDate: DateTime(2050));
   if (pickedDate != null &&
-      pickedDate != controller.today.value &&
+      pickedDate != controller.deadline.value &&
       pickedDate.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-    controller.today.value = pickedDate.add(Duration(days: 1)).subtract(Duration(seconds: 1));
-    controller.deadlineTextController.text = df.format(controller.today.value);
+    controller.deadline.value = DateTime(pickedDate.year,pickedDate.month,pickedDate.year,23,59,59);
+    controller.deadlineTextController.text = df.format(controller.deadline.value);
   }
 }
