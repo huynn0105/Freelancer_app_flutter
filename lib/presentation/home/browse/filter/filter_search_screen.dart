@@ -170,7 +170,7 @@ class ItemFilter extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 90,
+          width: 100,
           child: Text(
             title,
             style: TEXT_STYLE_ON_FOREGROUND,
@@ -178,7 +178,7 @@ class ItemFilter extends StatelessWidget {
         ),
         SizedBox(width: 50,),
         Container(
-          width: 200,
+          width: 260,
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
               value: selected,
@@ -188,7 +188,7 @@ class ItemFilter extends StatelessWidget {
               items: list.map<DropdownMenuItem>(( value) {
                 return DropdownMenuItem(
                   value: value,
-                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 16),),width: 170,),
+                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 17),),width: 220,),
                 );
               }).toList(),
             ),
