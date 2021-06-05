@@ -8,11 +8,11 @@ import 'package:freelance_app/presentation/home/post_job/post_job_controller.dar
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/home/profile/profile_controller.dart';
 import 'package:freelance_app/presentation/home/profile/services_screen.dart';
-import 'package:freelance_app/presentation/home/widgets/avatar.dart';
+
 import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 import 'skills_screen.dart';
 
@@ -20,17 +20,17 @@ class EditProfileScreen extends StatelessWidget {
   final Account account;
 
   EditProfileScreen({@required this.account});
-
   final controllerHome = Get.find<HomeController>();
-  final controllerJob = Get.find<PostJobController>();
   final controller = Get.put<ProfileController>(ProfileController(
     apiRepositoryInterface: Get.find(),
   ));
 
   @override
   Widget build(BuildContext context) {
+
+
     Future.delayed(Duration(microseconds: 1), () async {
-      initValue(account);
+      await initValue(account);
     });
 
     return Stack(
@@ -42,9 +42,9 @@ class EditProfileScreen extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: ()  {
-                  controller.uploadProfile(account.id);
-                  controllerHome.loadAccountFromToken();
+                onPressed: () async {
+                  await controller.uploadProfile(account.id);
+                  await controllerHome.loadAccountFromToken();
                   Get.offAllNamed(Routes.home);
                 },
                 child: Text(
@@ -66,7 +66,7 @@ class EditProfileScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(18.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -105,9 +105,9 @@ class EditProfileScreen extends StatelessWidget {
                           height: 10,
                         ),
                         InputText(
-                          hint: 'Chức danh',
+                          hint: 'Lập trình viên mobile',
                           controller: controller.ctrlTile,
-                          label: 'Lập trình viên mobile',
+                          label: 'Chức danh',
                         ),
                         SizedBox(
                           height: 10,
@@ -141,6 +141,7 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
+                      controller.loadSpecialties();
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -171,9 +172,9 @@ class EditProfileScreen extends StatelessWidget {
                         Obx(
                           () => Row(
                             children: List.generate(
-                              controllerJob.formOfWorks.length,
+                              controller.formOfWorks.length,
                               (index) {
-                                var form = controllerJob.formOfWorks[index];
+                                var form = controller.formOfWorks[index];
                                 return ItemBox(
                                   name: form.name,
                                   active: controller.formOfWorkId.value,
@@ -321,7 +322,7 @@ class EditProfileScreen extends StatelessWidget {
                             child: Text('Thêm dịch vụ'),
                             onPressed: () {
                               if (controller.services.isEmpty)
-                                controller.getServices();
+                                controller.loadServices();
                               Get.to(() => ServiceScreen(
                                     controller: controller,
                                   ));
@@ -330,22 +331,6 @@ class EditProfileScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Muốn nhận việc?',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  Obx(
-                    () => CheckboxListTile(
-                        value: controller.isReady.value,
-                        onChanged: (value) {
-                          controller.isReady.value = value;
-                        },
-                        title: Text('Có, Tôi đã sẵn sàng'),
-                        controlAffinity: ListTileControlAffinity.leading),
                   ),
                 ],
               ),
@@ -372,7 +357,7 @@ class EditProfileScreen extends StatelessWidget {
 
 
 
-  Future initValue(Account account) {
+  Future<void> initValue(Account account) async {
     controller.ctrlName.text = account.name;
     controller.ctrlPhoneNumber.text = account.phone;
     controller.ctrlDescription.text = account.description;
@@ -383,7 +368,6 @@ class EditProfileScreen extends StatelessWidget {
     controller.levelId.value = account.level != null ? account.level.id : 0;
     controller.specialtyId.value =
         account.specialty != null ? account.specialty.id : 0;
-
     if (account.freelancerServices != null)
       controller.servicesSelected.assignAll(account.freelancerServices);
     if (account.freelancerSkills != null)
@@ -397,12 +381,12 @@ class EditProfileScreen extends StatelessWidget {
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
       child: Obx(
-        () => controllerJob.specialties.isNotEmpty
+        () => controller.specialties.isNotEmpty
             ? ListView.builder(
                 shrinkWrap: true,
-                itemCount: controllerJob.specialties.length,
+                itemCount: controller.specialties.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var specialty = controllerJob.specialties[index];
+                  var specialty = controller.specialties[index];
                   return InkWell(
                     child: ListTile(
                       title: Text(specialty.name),

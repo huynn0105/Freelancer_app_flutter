@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class AsFreelancerScreen extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
-    var _listTextTabToggle = ["Tất cả", "Đang làm", "Đã hoàn thành", "Đã huỷ"];
+    var _listTextTabToggle = ["Tất cả", "Đang làm", "Đang gửi chào giá", "Đã qua"];
     return Obx(
       ()=> Scaffold(
         backgroundColor: Colors.grey[50],

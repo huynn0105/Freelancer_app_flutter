@@ -9,13 +9,12 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if(Responsive.isDesktop(context))
-              Expanded(child: SideMenu(),),
+              Expanded(child: SideMenu(enable: false,),),
             Expanded(flex: 4, child: MainScreen(),
             ),
           ],

@@ -55,6 +55,7 @@ class LoginController extends GetxController {
       }
       if (response.statusCode == 400) {
         var js = jsonDecode(response.body);
+        loginState(sState.initial);
         message.value = js['message'];
         return false;
       }

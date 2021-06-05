@@ -1,12 +1,11 @@
-import 'dart:convert';
+import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
+import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
-import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 
@@ -24,6 +23,8 @@ class ProfileController extends GetxController {
   RxList<Skill> skills = <Skill>[].obs;
   RxList<Skill> skillsSelected = <Skill>[].obs;
   RxList<Level> levels = <Level>[].obs;
+  RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
+  RxList<Specialty> specialties = <Specialty>[].obs;
 
 
   TextEditingController ctrlName = TextEditingController();
@@ -67,7 +68,24 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future loadFormOfWorks() async {
+    try {
+      final result = await apiRepositoryInterface.getFormOfWorks();
+      formOfWorks.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
+  }
 
+  Future loadSpecialties() async {
+    try {
+      specialties.clear();
+      final result = await apiRepositoryInterface.getSpecialties();
+      specialties.assignAll(result);
+    } catch (e) {
+      print('lỗi ${e.toString()}');
+    }
+  }
 
   void changeValueService(Service service, List<Service> serviceList) {
     final List<Service> updatedListService = serviceList.map((e) {
@@ -97,7 +115,7 @@ class ProfileController extends GetxController {
     skillsSelected.assignAll(updatedSkills);
   }
 
-  Future getServices() async{
+  Future loadServices() async{
     List<Service> result = await apiRepositoryInterface.getServices();
      result.forEach((element) {
       servicesSelected.forEach((e){
@@ -107,8 +125,6 @@ class ProfileController extends GetxController {
         }
       });
     });
-
-
     services.assignAll(result);
 
   }
@@ -126,7 +142,7 @@ class ProfileController extends GetxController {
     skills.assignAll(result);
   }
 
-  Future getLevel() async{
+  Future loadLevel() async{
     try{
       final result = await apiRepositoryInterface.getLevels();
       levels.assignAll(result);
@@ -138,7 +154,8 @@ class ProfileController extends GetxController {
 
   @override
   void onReady() {
-    getLevel();
+    loadLevel();
+    loadFormOfWorks();
     super.onReady();
   }
 }

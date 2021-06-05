@@ -8,8 +8,9 @@ import 'package:get/get.dart';
 class SideMenu extends GetWidget<AdminController> {
   const SideMenu({
     Key key,
+    this.enable = true,
   }) : super(key: key);
-
+  final bool enable;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,6 +22,7 @@ class SideMenu extends GetWidget<AdminController> {
             svgSrc: 'assets/icons/menu_dashboard.svg',
             press: () {
               controller.indexSelected(0);
+              if(enable) Get.back();
             },
           ),
           DrawerListTile(
@@ -43,11 +45,13 @@ class SideMenu extends GetWidget<AdminController> {
               SubItem(title: 'Quản lý chuyên ngành',svgSrc: 'assets/icons/menu_task.svg',
                 press: () {
                   controller.indexSelected(2);
+                  if(enable) Get.back();
                 },
               ),
               SubItem(title: 'Quản lý dịch vụ',svgSrc: 'assets/icons/menu_store.svg',
                 press: () {
                   controller.indexSelected(3);
+                  if(enable) Get.back();
                 },
               ),
             ],
@@ -57,6 +61,7 @@ class SideMenu extends GetWidget<AdminController> {
             svgSrc: 'assets/icons/menu_task.svg',
             press: () {
               controller.indexSelected(4);
+              if(enable) Get.back();
             },
           ),
           DrawerListTile(
@@ -64,6 +69,7 @@ class SideMenu extends GetWidget<AdminController> {
             svgSrc: 'assets/icons/menu_doc.svg',
             press: () {
               controller.indexSelected(5);
+              if(enable) Get.back();
             },
           ),
           DrawerListTile(
@@ -71,6 +77,7 @@ class SideMenu extends GetWidget<AdminController> {
             svgSrc: 'assets/icons/menu_store.svg',
             press: () {
               controller.indexSelected(6);
+              if(enable) Get.back();
             },
           ),
 

@@ -10,11 +10,6 @@ import 'domain/services/http_service.dart';
 import 'main_binding.dart';
 
 void main() {
-    if(kIsWeb)
-      DOMAIN = 'localhost:5001';
-    else
-      DOMAIN = '10.0.2.2:5001';
-
   HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
 }

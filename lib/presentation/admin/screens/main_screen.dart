@@ -36,7 +36,7 @@ class MainScreen extends GetWidget<AdminController> {
         constraints: BoxConstraints(
           maxWidth: 300,
         ),
-        child: SideMenu(),
+        child: SideMenu(enable: true,),
       ):null,
       body: Obx(()=> _childrens[controller.indexSelected.value]),
     );

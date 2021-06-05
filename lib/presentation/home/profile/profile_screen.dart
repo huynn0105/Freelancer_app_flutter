@@ -1,10 +1,11 @@
-import 'package:custom_switch_button/custom_switch_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/responsive.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
+import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
 import 'package:freelance_app/presentation/home/widgets/avatar.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
@@ -14,6 +15,9 @@ import 'package:freelance_app/presentation/home/widgets/review.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../constant.dart';
+import '../../../constant.dart';
+import '../../../responsive.dart';
 import 'capacity_profile/add_capacity_profile.dart';
 import 'capacity_profile/capacity_profiles_screen.dart';
 import 'capacity_profile/components/capacity.dart';
@@ -26,164 +30,651 @@ class ProfileScreen extends StatelessWidget {
     return Obx(() {
       var user = controllerHome.account.value;
       return Scaffold(
-          appBar: AppBar(
+          backgroundColor: Colors.grey[200],
+          appBar: Responsive.isMobile(context) ? AppBar(
             title: Text(
               'Hồ Sơ',
             ),
-            actions: [
-              IconButton(icon: Icon(Icons.logout), onPressed: logout)
-            ],
-          ),
+            actions: [IconButton(icon: Icon(Icons.logout), onPressed: logout)],
+          ) : null,
           body: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  Obx(() => Avatar(
-                        url: controllerHome.imageURL.value != ''
-                            ? controllerHome.imageURL.value
-                            : user.avatarUrl,
-                        onTap: getImage,
-                      )),
-                  SizedBox(
-                    height: kDefaultPadding / 2,
-                  ),
-                  Text(
-                    user.name,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  user.tile != null
-                      ? Text(
-                          user.tile,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  user.level != null
-                      ? Text(
-                          user.level.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  Information(
-                    email: user.email,
-                    contract: user.website,
-                    phoneNumber: user.phone,
-                  ),
-                  Divider(color: Colors.grey),
-                  OnReady(),
-                  Divider(color: Colors.grey),
-                  Earn(),
-                  Divider(color: Colors.grey),
-                  About(
-                    description: user.description,
-                    name: user.name,
-                  ),
-                  Divider(
-                    thickness: kDefaultPadding / 2,
-                    color: Colors.grey[300],
-                  ),
-                  Skills(
-                    skillsList: controllerHome.account.value.freelancerSkills,
-                  ),
-                  Divider(
-                    thickness: kDefaultPadding / 2,
-                    color: Colors.grey[300],
-                  ),
-                  Services(
-                    freelancerServices: user.freelancerServices,
-                  ),
-                  Divider(
-                    thickness: kDefaultPadding / 2,
-                    color: Colors.grey[300],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding,
-                        vertical: kDefaultPadding / 2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Column(
+              children: [
+                Responsive(
+                    mobile: Column(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Hồ sơ năng lực',
-                              style: TEXT_STYLE_PRIMARY,
-                              overflow: TextOverflow.fade,
+                        Card(
+                          margin: EdgeInsets.all(0.0),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Obx(() => Avatar(
+                                      url: controllerHome.imageURL.value != ''
+                                          ? controllerHome.imageURL.value
+                                          : user.avatarUrl,
+                                      onTap: getImage,
+                                    )),
+                                SizedBox(
+                                  height: kDefaultPadding / 2,
+                                ),
+                                Text(
+                                  user.name,
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                user.tile != null
+                                    ? Text(
+                                        user.tile,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          color: Colors.black54,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                user.level != null
+                                    ? Text(
+                                        user.level.name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          color: Colors.black54,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
                             ),
-                            Spacer(),
-                            TextButton(
-                              onPressed: () {
-                                if (controllerHome.capacityProfiles.isEmpty)
-                                  controllerHome.getCapacityProfiles(user.id);
-                                Get.to(() => CapacityProfilesScreen(
-                                      controller: controllerHome,
-                                    ));
-                              },
-                              child: user.capacityProfiles.isNotEmpty
-                                  ? Text('Xem tất cả')
-                                  : const SizedBox.shrink(),
-                            ),
-                          ],
-                        ),
-                        user.capacityProfiles.isNotEmpty
-                            ? Capacity(
-                                capacityProfiles: user.capacityProfiles,
-                                onTap: () {
-                                  if (controllerHome.capacityProfiles.isEmpty)
-                                    controllerHome.getCapacityProfiles(user.id);
-                                  Get.to(() => CapacityProfilesScreen(
-                                        controller: controllerHome,
-                                      ));
-                                },
-                              )
-                            : Center(
-                                child: Icon(Icons.error_outline),
-                              ),
-                        Center(
-                          child: TextButton(
-                            child: Text('Thêm hồ sơ'),
-                            onPressed: () {
-                              Get.to(() => AddCapacityProfile());
-                            },
                           ),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          margin: EdgeInsets.all(0.0),
+                          child: Information(
+                            email: user.email,
+                            contract: user.website,
+                            phoneNumber: user.phone,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Card(
+                          child: OnReady(),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Card(
+                          child: Earn(),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          child: About(
+                            description: user.description,
+                            name: user.name,
+                          ),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          child: Skills(
+                            skillsList:
+                                controllerHome.account.value.freelancerSkills,
+                          ),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          child: Services(
+                            freelancerServices: user.freelancerServices,
+                          ),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding,
+                                vertical: kDefaultPadding / 2),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Hồ sơ năng lực',
+                                      style: TEXT_STYLE_PRIMARY,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                    Spacer(),
+                                    TextButton(
+                                      onPressed: () {
+                                        if (controllerHome
+                                            .capacityProfiles.isEmpty)
+                                          controllerHome
+                                              .getCapacityProfiles(user.id);
+                                        Get.to(() => CapacityProfilesScreen(
+                                              controller: controllerHome,
+                                            ));
+                                      },
+                                      child: user.capacityProfiles.isNotEmpty
+                                          ? Text('Xem tất cả')
+                                          : const SizedBox.shrink(),
+                                    ),
+                                  ],
+                                ),
+                                user.capacityProfiles.isNotEmpty
+                                    ? Capacity(
+                                        capacityProfiles:
+                                            user.capacityProfiles,
+                                        onTap: () {
+                                          if (controllerHome
+                                              .capacityProfiles.isEmpty)
+                                            controllerHome
+                                                .getCapacityProfiles(user.id);
+                                          Get.to(() => CapacityProfilesScreen(
+                                                controller: controllerHome,
+                                              ));
+                                        },
+                                      )
+                                    : Center(
+                                        child: Icon(Icons.error_outline),
+                                      ),
+                                Center(
+                                  child: TextButton(
+                                    child: Text('Thêm hồ sơ'),
+                                    onPressed: () {
+                                      Get.to(() => AddCapacityProfile());
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
+                        ),
+                        Card(
+                          child: Review(
+                            rate: me.rate,
+                            totalMoney: user.balance,
+                            totalVote: 3,
+                            workValue: 99,
+                          ),
+                          margin: EdgeInsets.all(0.0),
+                        ),
+                        SizedBox(
+                          height: kDefaultPadding / 2,
                         ),
                       ],
                     ),
-                  ),
-                  Divider(
-                    thickness: kDefaultPadding / 2,
-                    color: Colors.grey[300],
-                  ),
-                  Review(
-                    rate: me.rate,
-                    totalMoney: user.balance,
-                    totalVote: 3,
-                    workValue: 99,
-                  ),
-                  Divider(
-                    thickness: kDefaultPadding / 2,
-                    color: Colors.grey[300],
-                  ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                ],
-              ),
+                    tablet: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                      child: Column(
+                        children: [
+                          Card(
+                            margin: EdgeInsets.all(0.0),
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Obx(() => Avatar(
+                                    url: controllerHome.imageURL.value != ''
+                                        ? controllerHome.imageURL.value
+                                        : user.avatarUrl,
+                                    onTap: getImage,
+                                  )),
+                                  SizedBox(
+                                    height: kDefaultPadding / 2,
+                                  ),
+                                  Text(
+                                    user.name,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  user.tile != null
+                                      ? Text(
+                                    user.tile,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.black54,
+                                    ),
+                                  )
+                                      : const SizedBox.shrink(),
+                                  user.level != null
+                                      ? Text(
+                                    user.level.name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.black54,
+                                    ),
+                                  )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: kDefaultPadding / 2,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      margin: EdgeInsets.all(0.0),
+                                      child: Information(
+                                        email: user.email,
+                                        contract: user.website,
+                                        phoneNumber: user.phone,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: OnReady(),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Earn(),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: About(
+                                        description: user.description,
+                                        name: user.name,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Skills(
+                                        skillsList: controllerHome
+                                            .account.value.freelancerSkills,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Services(
+                                        freelancerServices:
+                                        user.freelancerServices,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: kDefaultPadding / 2,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: kDefaultPadding,
+                                            vertical: kDefaultPadding / 2),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Hồ sơ năng lực',
+                                                  style: TEXT_STYLE_PRIMARY,
+                                                  overflow: TextOverflow.fade,
+                                                ),
+                                                Spacer(),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (controllerHome
+                                                        .capacityProfiles
+                                                        .isEmpty)
+                                                      controllerHome
+                                                          .getCapacityProfiles(
+                                                          user.id);
+                                                    Get.to(() =>
+                                                        CapacityProfilesScreen(
+                                                          controller:
+                                                          controllerHome,
+                                                        ));
+                                                  },
+                                                  child: user.capacityProfiles
+                                                      .isNotEmpty
+                                                      ? Text('Xem tất cả')
+                                                      : const SizedBox.shrink(),
+                                                ),
+                                              ],
+                                            ),
+                                            user.capacityProfiles.isNotEmpty
+                                                ? Capacity(
+                                              capacityProfiles:
+                                              user.capacityProfiles,
+                                              onTap: () {
+                                                if (controllerHome
+                                                    .capacityProfiles
+                                                    .isEmpty)
+                                                  controllerHome
+                                                      .getCapacityProfiles(
+                                                      user.id);
+                                                Get.to(() =>
+                                                    CapacityProfilesScreen(
+                                                      controller:
+                                                      controllerHome,
+                                                    ));
+                                              },
+                                            )
+                                                : Center(
+                                              child: Icon(
+                                                  Icons.error_outline),
+                                            ),
+                                            Center(
+                                              child: TextButton(
+                                                child: Text('Thêm hồ sơ'),
+                                                onPressed: () {
+                                                  Get.to(() =>
+                                                      AddCapacityProfile());
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Review(
+                                        rate: me.rate,
+                                        totalMoney: user.balance,
+                                        totalVote: 3,
+                                        workValue: 99,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    desktop: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 250.0),
+                      child: Column(
+                        children: [
+                          Card(
+                            margin: EdgeInsets.all(0.0),
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Obx(() => Avatar(
+                                        url: controllerHome.imageURL.value != ''
+                                            ? controllerHome.imageURL.value
+                                            : user.avatarUrl,
+                                        onTap: getImage,
+                                      )),
+                                  SizedBox(
+                                    height: kDefaultPadding / 2,
+                                  ),
+                                  Text(
+                                    user.name,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  user.tile != null
+                                      ? Text(
+                                          user.tile,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: Colors.black54,
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                  user.level != null
+                                      ? Text(
+                                          user.level.name,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: Colors.black54,
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: kDefaultPadding / 2,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      margin: EdgeInsets.all(0.0),
+                                      child: Information(
+                                        email: user.email,
+                                        contract: user.website,
+                                        phoneNumber: user.phone,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: OnReady(),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Earn(),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: About(
+                                        description: user.description,
+                                        name: user.name,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Skills(
+                                        skillsList: controllerHome
+                                            .account.value.freelancerSkills,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Services(
+                                        freelancerServices:
+                                            user.freelancerServices,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: kDefaultPadding / 2,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: kDefaultPadding,
+                                            vertical: kDefaultPadding / 2),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Hồ sơ năng lực',
+                                                  style: TEXT_STYLE_PRIMARY,
+                                                  overflow: TextOverflow.fade,
+                                                ),
+                                                Spacer(),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (controllerHome
+                                                        .capacityProfiles
+                                                        .isEmpty)
+                                                      controllerHome
+                                                          .getCapacityProfiles(
+                                                              user.id);
+                                                    Get.to(() =>
+                                                        CapacityProfilesScreen(
+                                                          controller:
+                                                              controllerHome,
+                                                        ));
+                                                  },
+                                                  child: user.capacityProfiles
+                                                          .isNotEmpty
+                                                      ? Text('Xem tất cả')
+                                                      : const SizedBox.shrink(),
+                                                ),
+                                              ],
+                                            ),
+                                            user.capacityProfiles.isNotEmpty
+                                                ? Capacity(
+                                                    capacityProfiles:
+                                                        user.capacityProfiles,
+                                                    onTap: () {
+                                                      if (controllerHome
+                                                          .capacityProfiles
+                                                          .isEmpty)
+                                                        controllerHome
+                                                            .getCapacityProfiles(
+                                                                user.id);
+                                                      Get.to(() =>
+                                                          CapacityProfilesScreen(
+                                                            controller:
+                                                                controllerHome,
+                                                          ));
+                                                    },
+                                                  )
+                                                : Center(
+                                                    child: Icon(
+                                                        Icons.error_outline),
+                                                  ),
+                                            Center(
+                                              child: TextButton(
+                                                child: Text('Thêm hồ sơ'),
+                                                onPressed: () {
+                                                  Get.to(() =>
+                                                      AddCapacityProfile());
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                    Card(
+                                      child: Review(
+                                        rate: me.rate,
+                                        totalMoney: user.balance,
+                                        totalVote: 3,
+                                        workValue: 99,
+                                      ),
+                                      margin: EdgeInsets.all(0.0),
+                                    ),
+                                    SizedBox(
+                                      height: kDefaultPadding / 2,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
             ),
           ),
           floatingActionButton: FloatingActionButton(
@@ -198,10 +689,12 @@ class ProfileScreen extends StatelessWidget {
           ));
     });
   }
+
   void logout() async {
     await controllerHome.logOut();
     Get.offAllNamed(Routes.login);
   }
+
   Future getImage() async {
     Get.bottomSheet(
       Container(
@@ -244,21 +737,28 @@ class Earn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
-      child: Row(
-        children: [
-          Text(
-            'Kiếm được',
-            style: TEXT_STYLE_PRIMARY,
-          ),
-          Spacer(),
-          Text(
-            '100.000.00 VNĐ',
-            style: TEXT_STYLE_ON_FOREGROUND,
-          )
-        ],
+    return InkWell(
+      onTap: () => Get.to(() => WithdrawScreen()),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
+        child: Row(
+          children: [
+            Text(
+              'Kiếm được',
+              style: TEXT_STYLE_PRIMARY,
+            ),
+            Spacer(),
+            Text(
+              '100.000.00 VNĐ',
+              style: TEXT_STYLE_ON_FOREGROUND,
+            ),
+            SizedBox(
+              width: kDefaultPadding,
+            ),
+            Icon(Icons.arrow_right),
+          ],
+        ),
       ),
     );
   }
@@ -273,7 +773,8 @@ class OnReady extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: kDefaultPadding, ),
+        horizontal: kDefaultPadding,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

@@ -19,7 +19,6 @@ class Information extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Text(
             'Thông tin',
             style: TEXT_STYLE_PRIMARY,

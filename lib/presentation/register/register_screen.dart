@@ -6,10 +6,21 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
-const logoSize = 45.0;
+import 'register_controller.dart';
 
-class RegisterScreen extends GetWidget<RegisterController> {
 
+class RegisterScreen extends StatefulWidget {
+
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  var controller =  Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +29,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
       MinLengthValidator(6, errorText: 'Mật khẩu phải nhiều hơn 6 ký tự'),
     ]);
 
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
 
     void register() async {
       if (formKey.currentState.validate()) {
@@ -80,7 +91,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         ),
                         TextFormField(
                           controller: controller.usernameTextController,
-                          obscureText: true,
                           validator: MinLengthValidator(1,
                               errorText: 'Không được bỏ trống'),
                           decoration: InputDecoration(
@@ -101,7 +111,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         ),
                         TextFormField(
                           controller: controller.emailTextController,
-                          obscureText: true,
                           validator: MultiValidator([
                             EmailValidator(errorText: 'Địa chỉ email không hợp lệ'),
                             RequiredValidator(errorText: 'Yêu cầu nhập email'),
@@ -125,6 +134,9 @@ class RegisterScreen extends GetWidget<RegisterController> {
                         TextFormField(
                           controller: controller.passwordTextController,
                           validator: passwordValidator,
+                          obscureText: true,
+                          autocorrect: false,
+                          keyboardType: TextInputType.visiblePassword,
                           decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.lock_outline,
@@ -142,6 +154,9 @@ class RegisterScreen extends GetWidget<RegisterController> {
                           ),
                         ),
                         TextFormField(
+                          obscureText: true,
+                          autocorrect: false,
+                          keyboardType: TextInputType.visiblePassword,
                           validator: (val) => MatchValidator(
                                   errorText: 'Mật khẩu không chính xác')
                               .validateMatch(

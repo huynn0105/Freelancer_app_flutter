@@ -8,13 +8,12 @@ import 'package:get/get.dart';
 import 'job_name/job_name_screen.dart';
 
 class PostJobScreen extends StatelessWidget {
-  final controller = Get.put<PostJobController>(PostJobController(
-    apiRepositoryInterface: Get.find(),
-  ));
-
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put<PostJobController>(PostJobController(
+      apiRepositoryInterface: Get.find(),
+    ));
     return Scaffold(
         appBar: AppBar(
           title: Text('Đăng việc'),
