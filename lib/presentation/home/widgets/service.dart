@@ -14,8 +14,7 @@ class Services extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Dịch vụ',

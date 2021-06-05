@@ -77,9 +77,7 @@ class MyJobCard extends StatelessWidget {
     final df = new DateFormat('MMM dd');
     final formatter = new NumberFormat("#,###");
     return InkWell(
-      onTap: () => Get.to(() => JobDetailScreen(
-            jobId: job.id,
-          )),
+      onTap: ()=> Get.to(()=>JobDetailScreen(jobId: job.id,)),
       child: Card(
         margin: const EdgeInsets.all(kDefaultPadding / 2),
         shape: RoundedRectangleBorder(
@@ -87,7 +85,7 @@ class MyJobCard extends StatelessWidget {
         ),
         elevation: 2,
         child: Container(
-          height: 100,
+          height: 130,
           padding: EdgeInsets.all(kDefaultPadding / 3),
           child: Column(
             children: [
@@ -95,7 +93,7 @@ class MyJobCard extends StatelessWidget {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      radius: 25,
+                      radius: 30,
                       foregroundColor: Colors.transparent,
                       backgroundColor: Colors.grey.shade300,
                       child: CachedNetworkImage(
@@ -107,39 +105,61 @@ class MyJobCard extends StatelessWidget {
                             CupertinoActivityIndicator(),
                         imageBuilder: (context, image) => CircleAvatar(
                           backgroundImage: image,
-                          radius: 22,
+                          radius: 27,
                         ),
                         errorWidget: (context, url, error) => CircleAvatar(
                           backgroundColor: Colors.grey,
                           backgroundImage:
-                              AssetImage('assets/images/avatarnull.png'),
-                          radius: 22,
+                          AssetImage('assets/images/avatarnull.png'),
+                          radius: 27,
                         ),
                       ),
                     ),
                     SizedBox(
                       width: kDefaultPadding / 2,
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            job.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17),
-                          ),
-                          Text(
-                            job.renter.name,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                                fontSize: 13),
-                          )
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          '${job.name}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 20),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              '${job.renter.name}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 13),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(kDefaultPadding / 4),
+                              decoration: BoxDecoration(
+                                color: Colors.purple[50],
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${job.specialty.name}',
+                                  style:
+                                  TextStyle(color: Colors.purple, fontSize: 12),
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
+                    Spacer(),
+                    Icon(Icons.keyboard_arrow_right),
                   ],
                 ),
               ),
@@ -172,38 +192,44 @@ class MyJobCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: kDefaultPadding / 3),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${formatter.format(job.floorprice)} - ${formatter.format(job.floorprice)} VNĐ',
-                            style: TextStyle(
-                                color: Colors.grey, fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 4,
-                                backgroundColor: Colors.purple,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${formatter.format(job.floorprice)} - ${formatter.format(job.floorprice)} VNĐ',
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 4,
+                              backgroundColor: Colors.purple,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              '${job.status}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                job.status,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Spacer(),
-                              Text('${df.format(job.deadline)}'),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                    Spacer(),
+                    Column(
+                      children: [
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('${df.format(job.deadline)}'),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),

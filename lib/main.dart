@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       getPages: Pages.pages,
-      initialRoute: Routes.splash,
+      initialRoute: Routes.admin,
       initialBinding: MainBinding(),
       theme: ThemeData(
         canvasColor: secondaryColor,

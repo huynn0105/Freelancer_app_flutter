@@ -138,7 +138,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Mail đăng nhập',
+                    'Username',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
