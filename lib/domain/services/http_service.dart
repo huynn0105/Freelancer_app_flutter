@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:freelance_app/domain/models/freelancer.dart';
 import 'package:http/http.dart' as http;
-
 const DOMAIN = 'www.freelancervn.somee.com';
-
 const LOGIN = '/api/Login';
 const REGISTER = '/api/Register';
 const ACCOUNT = '/api/Accounts';
