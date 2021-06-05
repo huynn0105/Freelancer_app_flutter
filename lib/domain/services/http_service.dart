@@ -13,7 +13,6 @@ const SKILLS = '/api/Skills';
 const PAY_FORMS = '/api/Payforms';
 const FORM_OF_WORKS = '/api/FormOfWorks';
 const CAPACITY_PROFILES = '/api/CapacityProfiles';
-const SPECIALTY_SERVICE = '/api/SpecialtyServices/getservices';
 const SERVICE = '/api/Services';
 const PROVINCES = '/api/Provinces';
 const IMAGE = 'http://$DOMAIN/api/Images';

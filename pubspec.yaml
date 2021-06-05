@@ -69,6 +69,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/images/avatar.jpg
+    - assets/images/postjob.jpg
     - assets/images/success.gif
   #   - images/a_dot_ham.jpeg
 

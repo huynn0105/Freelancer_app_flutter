@@ -104,7 +104,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getSpecialtyServices(int specialtyId) async {
-    var rs = await HttpService.get('$SPECIALTY_SERVICE/$specialtyId', bearerToken: TOKEN);
+    var rs = await HttpService.get('$SPECIALTIES/$specialtyId/services', bearerToken: TOKEN);
     print('codeSpecialtiesServices ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -301,6 +301,17 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   Future deleteCapacityProfile(int capacityProfileId)async {
     var rs = await HttpService.get('$CAPACITY_PROFILE/$capacityProfileId', bearerToken: TOKEN);
     print('codeDeleteCap ${rs.statusCode}');
+  }
+
+  Future<dynamic> getJobRenters(int id) async{
+    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters', bearerToken: TOKEN);
+    print('code Job Renter: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
+    }
+    return null;
   }
 
 }

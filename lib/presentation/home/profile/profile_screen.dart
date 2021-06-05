@@ -104,14 +104,14 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 2,
+                          height: kDefaultPadding / 2,
                         ),
                         Card(
                           child: OnReady(),
                           margin: EdgeInsets.all(0.0),
                         ),
                         SizedBox(
-                          height: 2,
+                          height: kDefaultPadding / 2,
                         ),
                         Card(
                           child: Earn(),

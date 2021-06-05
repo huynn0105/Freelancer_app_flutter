@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
-import 'package:freelance_app/domain/models/level.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
@@ -27,10 +27,12 @@ class HomeController extends GetxController {
   RxList<Skill> skillsFreelancer = <Skill>[].obs;
   RxString level = ''.obs;
   RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
+  RxList<Job> jobsRenter = <Job>[].obs;
 
   @override
-  void onReady()  {
-    loadAccountLocal();
+  void onReady() async {
+    await loadAccountLocal();
+    loadJobRenter();
     super.onReady();
   }
   @override
@@ -122,4 +124,14 @@ class HomeController extends GetxController {
       print('lỗi ${e.toString()}');
     }
   }
+
+  void loadJobRenter() async {
+    var result = await apiRepositoryInterface.getJobRenters(account.value.id);
+    try{
+      jobsRenter.assignAll(result);
+    }catch(e){
+      print('lỗi ${e.toString()}');
+    }
+  }
+
 }

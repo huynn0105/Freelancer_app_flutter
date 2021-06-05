@@ -35,5 +35,5 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getAccounts();
   Future<dynamic> getAccountFromId(int id);
   Future<dynamic> postOfferHistories(OfferRequest offerRequest);
-
+  Future<dynamic> getJobRenters(int id);
 }

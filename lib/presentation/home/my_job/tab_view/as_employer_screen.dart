@@ -124,24 +124,32 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                 // )
 
                 Padding(
-                  padding: EdgeInsets.all(kDefaultPadding / 2),
-                  child: controller.account.value.jobRenters != null
-                      ? controller.account.value.jobRenters.isNotEmpty
+                  padding: EdgeInsets.all(kDefaultPadding / 4),
+                  child: controller.jobsRenter.isNotEmpty
                           ? ListView.builder(
                               itemCount:
-                                  controller.account.value.jobRenters.length,
+                                  controller.jobsRenter.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 return MyJobCard(
-                                  job: controller.account.value.jobRenters[index],
+                                  job: controller.jobsRenter[index],
+                                  color: Colors.blue.shade400,
                                 );
                               })
                           : Center(
-                              child: Text('Bạn chưa đăng việc nào!'),
+                              child: Column(
+                                children: [
+                                  Image.asset('assets/images/postjob.jpg'),
+                                  Text('Bạn chưa đăng việc nào!',style: TextStyle(fontSize: 18),),
+                                  ElevatedButton(child: Text('Đăng việc ngay'),
+                                    onPressed: (){
+                                    controller.updateIndexSelected(2);
+                                    },
+                                  )
+                                ],
+                              ),
                             )
-                      : Center(
-                          child: CircularProgressIndicator(),
-                        ),
+
                 ),
               ],
             ),
@@ -163,12 +171,10 @@ class MyJobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final df = new DateFormat('MMM dd');
     final formatter = new NumberFormat("#,###");
     return InkWell(
       onTap: () => Get.to(() => JobDetailScreen(jobId: job.id)),
       child: Card(
-        margin: const EdgeInsets.all(kDefaultPadding / 2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -186,7 +192,7 @@ class MyJobCard extends StatelessWidget {
                   topLeft: Radius.circular(8),
                 ),
               ),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2,vertical: 8),
               child: Text(
                 job.name,
                 maxLines: 1,
@@ -195,7 +201,7 @@ class MyJobCard extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2,vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
