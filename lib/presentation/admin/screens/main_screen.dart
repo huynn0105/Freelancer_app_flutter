@@ -9,18 +9,17 @@ import 'package:get/get.dart';
 
 import 'dashboard/dashboard_screen.dart';
 import 'main/components/header.dart';
+import 'main/manage_job/manage_job_screen.dart';
 import 'main/service/service_screen.dart';
 import 'main/skill/skill_screen.dart';
 import 'main/specialty/specialty_screen.dart';
-import 'manage_job/manage_job.dart';
-
 
 class MainScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _childrens = [
+    final List<Widget> _children = [
       DashboardScreen(),
-      ManageJob(),
+      ManageJobScreen(),
       SpecialtyScreen(),
       ServiceScreen(),
       SkillScreen(),
@@ -38,7 +37,7 @@ class MainScreen extends GetWidget<AdminController> {
         ),
         child: SideMenu(enable: true,),
       ):null,
-      body: Obx(()=> _childrens[controller.indexSelected.value]),
+      body: Obx(()=> _children[controller.indexSelected.value]),
     );
   }
 

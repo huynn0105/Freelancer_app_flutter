@@ -219,7 +219,7 @@ class AddCapacityProfile extends StatelessWidget {
                                 await controller.postCapacityProfile();
 
                               if(controller.progressState.value == sState.initial)
-                                Get.snackbar('Thành công','', snackPosition: SnackPosition.BOTTOM,backgroundColor: Colors.green,
+                                Get.snackbar('Thành công','', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green,
                                   colorText: Colors.white,);
                               else if(controller.progressState.value == sState.failure)
                                 Get.snackbar('Lỗi','',
@@ -239,7 +239,7 @@ class AddCapacityProfile extends StatelessWidget {
                           }
                         },
                         child:  Text(
-                                capacityProfile != null ? 'Cập nhập' : 'Lưu hồ sơ',
+                                'Xác nhận',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

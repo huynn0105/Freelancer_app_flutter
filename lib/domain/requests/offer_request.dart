@@ -2,7 +2,7 @@ class OfferRequest {
   int jobId;
   int freelancerId;
   int offerPrice;
-  int expectedDay;
+  String expectedDay;
   String description;
   String todoList;
 

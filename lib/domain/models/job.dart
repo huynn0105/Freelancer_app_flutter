@@ -17,6 +17,7 @@ class Job {
   int id;
   String name;
   DateTime deadline;
+  DateTime createAt;
   String details;
   Renter renter;
   String avatarRenter;
@@ -36,6 +37,7 @@ class Job {
     this.id,
     this.name,
     this.deadline,
+    this.createAt,
     this.details,
     this.renter,
     this.freelancer,

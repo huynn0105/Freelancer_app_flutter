@@ -1,12 +1,9 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'constant.dart';
-import 'domain/services/http_service.dart';
 import 'main_binding.dart';
 
 void main() {

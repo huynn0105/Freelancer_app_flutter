@@ -7,10 +7,9 @@ import 'package:get/get.dart';
 class AsFreelancerScreen extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
-    var _listTextTabToggle = ["Tất cả", "Đang làm", "Đang gửi chào giá", "Đã qua"];
+    var _listTextTabToggle = ["Tất cả", "Đang nhận", "Chào giá", "Đã qua"];
     return Obx(
       ()=> Scaffold(
-        backgroundColor: Colors.grey[50],
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -19,8 +18,10 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
                 // width in percent
                 borderRadius: 10,
                 height: 30,
-                initialIndex: 0,
+                initialIndex: controller.tabSelectedFreelancer.value,
+                isScroll: false,
                 selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
+                selectedIndex: controller.tabSelectedFreelancer.value,
                 selectedTextStyle: TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -30,23 +31,44 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
                     fontSize: 13,
                     fontWeight: FontWeight.w500),
                 labels: _listTextTabToggle,
-                selectedLabelIndex: (index) {
-
+                selectedLabelIndex: (int) {
+                  controller.tabSelectedFreelancer(int);
+                  if (controller.jobsFreelancer[int].isEmpty)
+                    controller.loadJobsFreelancer(int);
                 },
-                isScroll: false,
               ),
               Padding(
                 padding: EdgeInsets.all(kDefaultPadding / 2),
-                child: controller.account.value.jobRenters.isNotEmpty ? ListView.builder(
-                    itemCount: controller.account.value.jobRenters.length,
+                child: controller.progressState.value == sState.initial ? controller.jobsFreelancer[controller.tabSelectedFreelancer.value].isNotEmpty ? ListView.builder(
+                    itemCount: controller.jobsFreelancer[controller.tabSelectedFreelancer.value].length,
                     shrinkWrap: true,
                     itemBuilder: (context,index){
                       return MyJobCard(
-                        job: controller.account.value.jobRenters[index],
+                        job: controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index],
                       );
                     }) : Center(
-                  child: CircularProgressIndicator(),
-                ),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/postjob.jpg',
+                        height: 250,
+                      ),
+                      Text(
+                        'Bạn chưa có việc nào!',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      ElevatedButton(
+                        child: Text('Tìm việc ngay'),
+                        onPressed: () {
+                          controller.updateIndexSelected(1);
+                        },
+                      )
+                    ],
+                  ),
+                ) : Padding(
+              padding: const EdgeInsets.only(top: 100),
+          child: Center(child: CircularProgressIndicator(),),
+        )
               ),
             ],
           ),

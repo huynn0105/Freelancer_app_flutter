@@ -17,7 +17,6 @@ class Account {
   String name;
   String phone;
   String email;
-  int roleId;
   String tile;
   String description;
   String website;
@@ -40,7 +39,6 @@ class Account {
     this.name,
     this.phone,
     this.email,
-    this.roleId,
     this.tile,
     this.description,
     this.website,

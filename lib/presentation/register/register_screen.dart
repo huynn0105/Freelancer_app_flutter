@@ -43,7 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               backgroundColor: Colors.red,
               colorText: Colors.white,
               snackPosition: SnackPosition.TOP);
-
         }
       } else {
         Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
@@ -52,7 +51,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             snackPosition: SnackPosition.TOP);
       }
     }
-
 
     return Stack(
       children: [
@@ -111,6 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         TextFormField(
                           controller: controller.emailTextController,
+                          keyboardType: TextInputType.emailAddress,
                           validator: MultiValidator([
                             EmailValidator(errorText: 'Địa chỉ email không hợp lệ'),
                             RequiredValidator(errorText: 'Yêu cầu nhập email'),
@@ -187,7 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   onChanged: (value) {
                                     controller.roleSelected.value = value;
                                   },
-                                  value: 1,
+                                  value: 2,
                                   groupValue: controller.roleSelected.value,
                                 ),
                               ),
@@ -198,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   onChanged: (value) {
                                     controller.roleSelected.value = value;
                                   },
-                                  value: 2,
+                                  value: 3,
                                   groupValue: controller.roleSelected.value,
                                 ),
                               ),

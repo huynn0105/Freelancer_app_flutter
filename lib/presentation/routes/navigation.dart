@@ -1,8 +1,6 @@
 import 'package:freelance_app/main_binding.dart';
 import 'package:freelance_app/presentation/admin/admin_binding.dart';
 import 'package:freelance_app/presentation/admin/admin_screen.dart';
-import 'package:freelance_app/presentation/admin/screens/dashboard/dashboard_screen.dart';
-import 'package:freelance_app/presentation/admin/screens/manage_job/manage_job.dart';
 import 'package:freelance_app/presentation/home/home_binding.dart';
 import 'package:freelance_app/presentation/home/home_screen.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/add_credit.dart';
@@ -22,8 +20,6 @@ class Routes {
   static final String home = '/home';
   static final String register = '/register';
   static final String admin = '/admin';
-  static final String dashboard = '/dashboard';
-  static final String manageJob = '/manage_job';
 
 
 }
@@ -38,17 +34,7 @@ class Pages {
     GetPage(
         name: Routes.admin,
         page: () => AdminScreen(),
-        bindings: [AdminBinding()],
-      children: [
-        GetPage(
-            name: Routes.dashboard,
-            page: () => DashboardScreen(),
-        ),
-        GetPage(
-          name: Routes.manageJob,
-          page: () => ManageJob(),
-        ),
-      ]
+        binding: AdminBinding(),
     ),
 
     GetPage(
@@ -65,17 +51,15 @@ class Pages {
       name: Routes.home,
       page: () => HomeScreen(),
       binding: HomeBinding(),
-      children: [
-        GetPage(
-          name: '/add_credit',
-          page: () => AddCredit(),
-        ),
-        GetPage(
-          name: '/add_momo',
-          page: () => AddMoMo(),
-        ),
-      ]
-    ),
 
+    ),
+    GetPage(
+      name: '/add_credit',
+      page: () => AddCredit(),
+    ),
+    GetPage(
+      name: '/add_momo',
+      page: () => AddMoMo(),
+    ),
   ];
 }

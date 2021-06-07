@@ -13,13 +13,28 @@ class AsEmployerScreen extends GetWidget<HomeController> {
   Widget build(BuildContext context) {
     var _listTextTabToggle = [
       "Tất cả",
+      "Đang giao",
       "Đang chờ",
-      "Trong tiến trình",
       "Đã qua"
     ];
+
+    Color selectedColor(String status) {
+      switch (status) {
+        case 'Waiting':
+          return Color(0xFFEAB802);
+        case 'In progeress':
+          return Colors.blue;
+        case 'Done':
+          return Colors.green;
+        case 'Closed':
+          return Colors.black.withOpacity(0.6);
+        default:
+          return Colors.amber;
+      }
+    }
+
     return Obx(
       () => Scaffold(
-        backgroundColor: Colors.grey[50],
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -32,7 +47,7 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                   // width in percent
                   borderRadius: 10,
                   height: 30,
-                  initialIndex: 0,
+                  initialIndex: controller.tabSelectedRenter.value,
                   selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
                   selectedTextStyle: TextStyle(
                       color: Colors.white,
@@ -43,113 +58,53 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                       fontSize: 13,
                       fontWeight: FontWeight.w500),
                   labels: _listTextTabToggle,
-                  selectedLabelIndex: (index) {},
+                  selectedIndex: controller.tabSelectedRenter.value,
                   isScroll: false,
+                  selectedLabelIndex: (int) {
+                    controller.tabSelectedRenter(int);
+                    if (controller.jobsRenter[int].isEmpty)
+                      controller.loadJobsRenter(int);
+                  },
                 ),
-                // Column(
-                //   children: [
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.green,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.amber,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.amber,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.blue,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.amber,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.green,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.green,
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color: Colors.black.withOpacity(0.7),
-                //     ),
-                //     MyJobCard(
-                //       job: Job(
-                //           name: 'Tôi cần việc làm thên',
-                //           cellingprice: 100000000,
-                //           floorprice: 10000000000,
-                //           deadline: DateTime.now()),
-                //       color:  Colors.black.withOpacity(0.7),
-                //     ),
-                //   ],
-                // )
 
-                Padding(
-                  padding: EdgeInsets.all(kDefaultPadding / 4),
-                  child: controller.jobsRenter.isNotEmpty
+
+                Obx(
+                  () => Padding(
+                      padding: EdgeInsets.all(kDefaultPadding / 4),
+                      child: controller.progressState.value == sState.initial ? controller.jobsRenter[controller.tabSelectedRenter.value].isNotEmpty
                           ? ListView.builder(
-                              itemCount:
-                                  controller.jobsRenter.length,
+                              itemCount: controller.jobsRenter[controller.tabSelectedRenter.value].length,
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return MyJobCard(
-                                  job: controller.jobsRenter[index],
-                                  color: Colors.blue.shade400,
+                                  job: controller.jobsRenter[controller.tabSelectedRenter.value][index],
+                                  color: selectedColor(controller.jobsRenter[controller.tabSelectedRenter.value][index].status),
                                 );
                               })
                           : Center(
                               child: Column(
                                 children: [
-                                  Image.asset('assets/images/postjob.jpg'),
-                                  Text('Bạn chưa đăng việc nào!',style: TextStyle(fontSize: 18),),
-                                  ElevatedButton(child: Text('Đăng việc ngay'),
-                                    onPressed: (){
-                                    controller.updateIndexSelected(2);
+                                  Image.asset(
+                                    'assets/images/postjob.jpg',
+                                    height: 250,
+                                  ),
+                                  Text(
+                                    'Bạn chưa đăng việc nào!',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  ElevatedButton(
+                                    child: Text('Đăng việc ngay'),
+                                    onPressed: () {
+                                      controller.updateIndexSelected(2);
                                     },
                                   )
                                 ],
                               ),
-                            )
-
+                            ) : Padding(
+                              padding: const EdgeInsets.only(top: 100),
+                              child: Center(child: CircularProgressIndicator(),),
+                            )),
                 ),
               ],
             ),
@@ -178,7 +133,7 @@ class MyJobCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-
+        margin: EdgeInsets.all(8),
         elevation: 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,16 +147,19 @@ class MyJobCard extends StatelessWidget {
                   topLeft: Radius.circular(8),
                 ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2,vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding / 2, vertical: 8),
               child: Text(
                 job.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17,color: Colors.white),
+                style: TEXT_STYLE_PRIMARY.copyWith(
+                    fontSize: 17, color: Colors.white),
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2,vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding / 2, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -216,12 +174,8 @@ class MyJobCard extends StatelessWidget {
                       Spacer(),
                       Text(
                         job.deadline.difference(DateTime.now()).inDays >= 0
-                            ? job.deadline.difference(DateTime.now()).inDays ==
-                                    0
-                                ? job.deadline
-                                            .difference(DateTime.now())
-                                            .inHours <=
-                                        0
+                            ? job.deadline.difference(DateTime.now()).inDays == 0
+                                ? job.deadline.difference(DateTime.now()).inHours <= 0
                                     ? 'Đóng ${DateTime.now().difference(job.deadline).inHours} giờ trước'
                                     : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
                                 : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'

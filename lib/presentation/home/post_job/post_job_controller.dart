@@ -16,14 +16,14 @@ class PostJobController extends GetxController {
 
   PostJobController({this.apiRepositoryInterface});
 
-  var today = DateTime.now().obs;
+  var deadline = DateTime.now().obs;
   RxList<Specialty> specialties = <Specialty>[].obs;
   RxList<Service> services = <Service>[].obs;
   RxList<Skill> skills = <Skill>[].obs;
   RxList<TypeOfWork> typeOfWorks = <TypeOfWork>[].obs;
   RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
   RxList<PayForm> payForms = <PayForm>[].obs;
-  RxList<Province> provinces = <Province>[].obs;
+  RxList<Province> provinces = <Province>[Province(provinceId: null,name: 'Toàn quốc')].obs;
   var progressState = sState.initial.obs;
   RxList<Skill> skillsSelected = <Skill>[].obs;
   RxInt specialtyId = 0.obs;
@@ -54,7 +54,7 @@ class PostJobController extends GetxController {
         typeId: typeId.value,
         formId: formId.value,
         workatId: workAtId.value,
-        deadline: today.value,
+        deadline: deadline.value,
         floorprice: int.parse(floorPriceTextController.text.replaceAll(',', '')),
         cellingprice: int.parse(cellingPriceTextController.text.replaceAll(',', '')),
         isPrivate: isPrivate.value ? 1 : 0,
@@ -66,6 +66,10 @@ class PostJobController extends GetxController {
       ));
       progressState(sState.initial);
       if (response != null) {
+        nameTextController.text = '';
+        descriptionTextController.text = '';
+        floorPriceTextController.text = '';
+        cellingPriceTextController.text = '';
         return true;
       }
       return false;
@@ -80,7 +84,7 @@ class PostJobController extends GetxController {
   void onInit() async {
     await loadSpecialties();
     deadlineTextController.text =
-        '${today.value.day}/${today.value.month}/${today.value.year}';
+        '${deadline.value.day}/${deadline.value.month}/${deadline.value.year}';
     super.onInit();
   }
 
@@ -151,7 +155,7 @@ class PostJobController extends GetxController {
   Future getProvinces() async {
     try {
       final result = await apiRepositoryInterface.getProvinces();
-      provinces.assignAll(result);
+      provinces.addAll(result);
     } catch (e) {
       print('lỗi ${e.toString()}');
     }

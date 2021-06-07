@@ -8,7 +8,7 @@ const TextStyle TEXT_STYLE_FOREIGN =
 
 
 const primaryColor = Color(0xFF2697FF);
-const secondaryColor = Color(0xFFF6F5F5);
+const secondaryColor = Color(0xFFFAFAF8);
 const done = Color(0xFF0ba360);
 
 const kDefaultPadding = 20.0;

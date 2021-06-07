@@ -29,6 +29,7 @@ class SideMenu extends GetWidget<AdminController> {
             title: 'Quảng lý công việc',
             svgSrc: 'assets/icons/menu_dashboard.svg',
             press: () {
+              controller.loadJobs();
               controller.indexSelected(1);
             },
           ),

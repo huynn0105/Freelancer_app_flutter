@@ -26,14 +26,18 @@ class JobDetailController extends GetxController{
   }
 
   void sendOffer() async{
-    await apiRepositoryInterface.postOfferHistories(OfferRequest(
-        jobId: job.value.id,
-        description: descriptionController.text,
-        expectedDay: int.parse(expectedDayController.text),
-        freelancerId: 1,
-        offerPrice: int.parse(offerPriceController.text),
-        todoList: todoListController.text
-    ));
+    try{
+      await apiRepositoryInterface.postOfferHistories(OfferRequest(
+          jobId: job.value.id,
+          description: descriptionController.text,
+          expectedDay: expectedDayController.text,
+          freelancerId: 1,
+          offerPrice: int.parse(offerPriceController.text),
+          todoList: todoListController.text
+      ));
+    }catch(e){
+
+    }
   }
 
   @override

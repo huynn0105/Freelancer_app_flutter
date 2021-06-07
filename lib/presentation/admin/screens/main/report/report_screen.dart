@@ -1,57 +1,41 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
+import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
 
 class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: Responsive.isDesktop(context) ? EdgeInsets.symmetric(vertical: kDefaultPadding,horizontal: kDefaultPadding*3) : EdgeInsets.all(kDefaultPadding/2),
       child: Container(
-        padding: EdgeInsets.all(kDefaultPadding),
+        width: double.infinity,
         decoration: BoxDecoration(
           color: secondaryColor,
           borderRadius: BorderRadius.all(Radius.circular(kDefaultPadding / 2)),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Tất cả công việc',
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  .copyWith(color: Colors.black),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: DataTable(
-                columnSpacing: kDefaultPadding,
-                horizontalMargin: 0,
-                columns: [
-                  DataColumn(label: Text('ID Job')),
-                  DataColumn(
-                      label: Text(
-                    'Tên Công việc',
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                  DataColumn(
-                      label: Text('Tên người thuê',
-                          overflow: TextOverflow.ellipsis)),
-                  DataColumn(
-                      label: Text('Tên Freelancer',
-                          overflow: TextOverflow.ellipsis)),
-                  DataColumn(
-                      label: Text('Tuỳ chọn', overflow: TextOverflow.ellipsis)),
-                ],
-                rows: List.generate(10, (index) => recentDataRow(index)),
-              ),
-            )
+        child: DataTable(
+          columnSpacing: kDefaultPadding,
+          horizontalMargin: kDefaultPadding,
+          columns: [
+            DataColumn(label: Text('ID Job')),
+            DataColumn(
+                label: Text(
+              'Tên Công việc',
+              overflow: TextOverflow.ellipsis,
+            )),
+            DataColumn(
+                label: Text('Tên người thuê',
+                    overflow: TextOverflow.ellipsis)),
+            DataColumn(
+                label: Text('Tên Freelancer',
+                    overflow: TextOverflow.ellipsis)),
+            DataColumn(
+                label: Text('Tuỳ chọn', overflow: TextOverflow.ellipsis)),
           ],
+          rows: List.generate(10, (index) => recentDataRow(index)),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
+import 'package:freelance_app/domain/requests/bank_account_request.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
@@ -36,4 +37,17 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getAccountFromId(int id);
   Future<dynamic> postOfferHistories(OfferRequest offerRequest);
   Future<dynamic> getJobRenters(int id);
+  Future<dynamic> getJobRentersWaiting(int id);
+  Future<dynamic> getJobRentersInProgress(int id);
+  Future<dynamic> getJobRentersPast(int id);
+
+  Future<dynamic> getJobFreelancers(int id);
+  Future<dynamic> getJobFreelancersInProgress(int id);
+  Future<dynamic> getJobFreelancersPast(int id);
+  Future<dynamic> getOfferHistories(int id);
+  Future<dynamic> putOnReady(int id);
+  Future<dynamic> getBanks();
+  Future<dynamic> getBankAccounts();
+  Future<dynamic> postBankAccounts(BankAccountRequest request);
+
 }

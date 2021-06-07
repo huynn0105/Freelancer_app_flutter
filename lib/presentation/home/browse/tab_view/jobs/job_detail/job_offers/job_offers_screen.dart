@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_controller.dart';
@@ -17,7 +16,7 @@ class JobOffersScreen extends StatelessWidget {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     // void sendOffer() async {
     //   if (formKey.currentState.validate()) {
-    //     final bool result = await controller.register();
+    //     final  result = await controller.sendOffer();
     //     if (result) {
     //       Get.snackbar('Success', 'Register Success ',
     //           snackPosition: SnackPosition.BOTTOM);

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/presentation/home/browse/filter/filter_controller.dart';
-import 'package:freelance_app/presentation/home/browse/widgets/item_selected.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
-import 'package:freelance_app/presentation/home/post_job/job_location/job_location_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
@@ -17,7 +14,6 @@ class FilterSearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = new NumberFormat("#,###");
     return Scaffold(
       appBar: AppBar(
         title: Text('Tìm kiếm'),
@@ -170,7 +166,7 @@ class ItemFilter extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 100,
+          width: 90,
           child: Text(
             title,
             style: TEXT_STYLE_ON_FOREGROUND,
@@ -178,7 +174,7 @@ class ItemFilter extends StatelessWidget {
         ),
         SizedBox(width: 50,),
         Container(
-          width: 260,
+          width: 210,
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
               value: selected,
@@ -188,7 +184,7 @@ class ItemFilter extends StatelessWidget {
               items: list.map<DropdownMenuItem>(( value) {
                 return DropdownMenuItem(
                   value: value,
-                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 17),),width: 220,),
+                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 16),),width: 170,),
                 );
               }).toList(),
             ),

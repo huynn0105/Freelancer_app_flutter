@@ -14,12 +14,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomeController extends GetxController {
-
   final ApiRepositoryInterface apiRepositoryInterface;
   final LocalRepositoryInterface localRepositoryInterface;
 
+  HomeController({this.apiRepositoryInterface, this.localRepositoryInterface});
 
-  HomeController({this.apiRepositoryInterface,this.localRepositoryInterface});
   RxString imageURL = ''.obs;
   var progressState = sState.initial.obs;
   Rx<Account> account = Account().obs;
@@ -27,53 +26,59 @@ class HomeController extends GetxController {
   RxList<Skill> skillsFreelancer = <Skill>[].obs;
   RxString level = ''.obs;
   RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
-  RxList<Job> jobsRenter = <Job>[].obs;
+  RxBool accountOnReady = true.obs;
+  List<RxList<Job>> jobsRenter = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
+  List<RxList<Job>> jobsFreelancer = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
+  var tabSelectedRenter = 0.obs;
+  var tabSelectedFreelancer = 0.obs;
 
   @override
   void onReady() async {
     await loadAccountLocal();
-    loadJobRenter();
+    accountOnReady(account.value.onReady);
+    loadJobsRenter(tabSelectedRenter.value);
+    loadJobsFreelancer(tabSelectedFreelancer.value);
     super.onReady();
   }
+
   @override
   void onInit() {
     super.onInit();
   }
 
   Future<void> loadAccountFromToken() async {
-   try {
-     progressState(sState.loading);
-     var user = await apiRepositoryInterface.getAccountFromToken();
-     progressState(sState.initial);
-     if(user!=null){
-       account(user);
-     }else if(user == null){
-       print('lỗi: user null');
-       await apiRepositoryInterface.logout();
-       await localRepositoryInterface.clearData();
-       Get.offAllNamed(Routes.login);
-     }
-   }catch(e){
-     print('lỗi: user ${e.toString()}');
-     progressState(sState.initial);
-     await apiRepositoryInterface.logout();
-     await localRepositoryInterface.clearData();
-     Get.offAllNamed(Routes.login);
-   }
+    try {
+      progressState(sState.loading);
+      var user = await apiRepositoryInterface.getAccountFromToken();
+      progressState(sState.initial);
+      if (user != null) {
+        account(user);
+      } else if (user == null) {
+        print('lỗi: user null');
+        await apiRepositoryInterface.logout();
+        await localRepositoryInterface.clearData();
+        Get.offAllNamed(Routes.login);
+      }
+    } catch (e) {
+      print('lỗi: user ${e.toString()}');
+      progressState(sState.initial);
+      await apiRepositoryInterface.logout();
+      await localRepositoryInterface.clearData();
+      Get.offAllNamed(Routes.login);
+    }
   }
 
   Future loadAccountLocal() async {
     progressState(sState.loading);
     await localRepositoryInterface.getAccount().then(
-          (value) {
-            account(value);
+      (value) {
+        account(value);
       },
     );
     progressState(sState.initial);
   }
 
   void updateIndexSelected(int index) {
-    print(indexSelected.value);
     indexSelected(index);
   }
 
@@ -83,18 +88,20 @@ class HomeController extends GetxController {
   }
 
   void getCapacityProfiles(int freelancerId) async {
-    try{
-      final result = await apiRepositoryInterface.getCapacityProfiles(freelancerId);
+    try {
+      final result =
+          await apiRepositoryInterface.getCapacityProfiles(freelancerId);
       capacityProfiles.assignAll(result);
-    }catch(e){
+    } catch (e) {
       print('lỗi:  ${e.toString()}');
     }
   }
 
-  void deleteCapacityProfile(int capacityProfileId) async{
-    try{
-      final result = await apiRepositoryInterface.deleteCapacityProfile(capacityProfileId);
-    }catch(e){
+  void deleteCapacityProfile(int capacityProfileId) async {
+    try {
+      final result =
+          await apiRepositoryInterface.deleteCapacityProfile(capacityProfileId);
+    } catch (e) {
       print('lỗi:  ${e.toString()}');
     }
   }
@@ -115,7 +122,6 @@ class HomeController extends GetxController {
         if (result != null) {
           imageURL.value = result;
         }
-
       } else {
         Get.snackbar('Lỗi', 'Tệp không được chọn',
             margin: EdgeInsets.only(top: 5, left: 10, right: 10));
@@ -125,10 +131,76 @@ class HomeController extends GetxController {
     }
   }
 
-  void loadJobRenter() async {
-    var result = await apiRepositoryInterface.getJobRenters(account.value.id);
+  void loadJobsRenter(int selected) async {
+    progressState(sState.loading);
+    var result;
+    switch (selected) {
+      case 0:
+        result = await apiRepositoryInterface.getJobRenters(account.value.id);
+        break;
+      case 1:
+        result = await apiRepositoryInterface.getJobRentersInProgress(account.value.id);
+        break;
+      case 2:
+        result =
+            await apiRepositoryInterface.getJobRentersWaiting(account.value.id);
+        break;
+      case 3:
+        result =
+            await apiRepositoryInterface.getJobRentersPast(account.value.id);
+        break;
+      default:
+        result = await apiRepositoryInterface.getJobRenters(account.value.id);
+        break;
+    }
+
+      try {
+        jobsRenter[selected].assignAll(result);
+        progressState(sState.initial);
+      } catch (e) {
+        print('lỗi ${e.toString()}');
+        progressState(sState.initial);
+      }
+
+  }
+
+  void loadJobsFreelancer(int selected) async {
+    var result;
+    progressState(sState.loading);
+    switch (selected) {
+      case 0:
+        result = await apiRepositoryInterface.getJobFreelancers(account.value.id);
+        break;
+      case 1:
+        result = await apiRepositoryInterface.getJobFreelancersInProgress(account.value.id);
+        break;
+      case 2:
+        result =
+        await apiRepositoryInterface.getOfferHistories(account.value.id);
+        break;
+      case 3:
+        result =
+        await apiRepositoryInterface.getJobFreelancersPast(account.value.id);
+        break;
+      default:
+        result = await apiRepositoryInterface.getJobFreelancers(account.value.id);
+        break;
+    }
+
+      try {
+        jobsFreelancer[selected].assignAll(result);
+        progressState(sState.initial);
+      } catch (e) {
+        print('lỗi ${e.toString()}');
+        progressState(sState.initial);
+      }
+
+
+  }
+
+  void sendOnReady() async{
     try{
-      jobsRenter.assignAll(result);
+      await apiRepositoryInterface.putOnReady(account.value.id);
     }catch(e){
       print('lỗi ${e.toString()}');
     }

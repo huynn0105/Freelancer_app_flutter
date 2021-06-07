@@ -17,6 +17,8 @@ const SERVICE = '/api/Services';
 const PROVINCES = '/api/Provinces';
 const IMAGE = 'http://$DOMAIN/api/Images';
 const LEVELS = 'api/Levels';
+const BANKS = 'api/Banks';
+const BANK_ACCOUNT = 'api/BankAccounts';
 const CAPACITY_PROFILE = 'api/CapacityProfiles';
 const ACCOUNT_PAGINATION = '/api/Accounts/pagination';
 const OFFER_HISTORIES = '/api/OfferHistories';
@@ -36,8 +38,8 @@ class HttpService {
     }));
   }
 
-  static Future<http.Response> put(String url, Map<String, dynamic> body,
-      {String bearerToken, Map<String, dynamic> parameters}) async {
+  static Future<http.Response> put(String url,
+      { Map<String, dynamic> body,String bearerToken, Map<String, dynamic> parameters}) async {
     var uri = Uri.http(DOMAIN, url, parameters);
     print('HTTP PUT: $uri');
     return (await http.put(uri, body: jsonEncode(body), headers: {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
+import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/add_credit.dart';
 
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/payment_method_screen.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
@@ -12,7 +14,7 @@ class WithdrawScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Số dư'),
+        title: Text('Tài sản cá nhân'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,7 +44,7 @@ class WithdrawScreen extends StatelessWidget {
               SizedBox(height: kDefaultPadding/2),
               InkWell(
                 onTap: ()=>Get.to(()=> PaymentMethodScreen()),
-                child: PaymentMethodCard(),),
+                child: Text('Thêm phương thức'),),
               SizedBox(height: kDefaultPadding),
               Text('Rút tiền',style: TEXT_STYLE_PRIMARY,),
               SizedBox(height: kDefaultPadding/2),
@@ -87,15 +89,16 @@ class WithdrawScreen extends StatelessWidget {
 class PaymentMethodCard extends StatelessWidget {
   const PaymentMethodCard({
     Key key,
+    @required this.paymentMethod
   }) : super(key: key);
-
+  final PaymentMethod paymentMethod;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kDefaultPadding/2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade100,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -104,15 +107,19 @@ class PaymentMethodCard extends StatelessWidget {
             children: [
               Text('Chuyển khoảng ngân hàng',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
               Spacer(),
-              InkWell(child: Icon(Icons.mode_edit))
+              InkWell(child: Icon(Icons.mode_edit), onTap: (){
+                Get.to(()=> AddCredit(paymentMethod: paymentMethod,));
+              },)
             ],
           ),
           SizedBox(height: 5),
-          Text('NGUYEN NHAT HUY',style: TextStyle(fontWeight: FontWeight.w500),),
+          Text(paymentMethod.ownerName,style: TextStyle(fontWeight: FontWeight.w500),),
           SizedBox(height: 5),
-          Text('2214999999999999999999',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+          Text(paymentMethod.accountNumber,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
           SizedBox(height: 5),
-          Text('VIETTINBANK'),
+          Text(paymentMethod.bank.name),
+          SizedBox(height: 5),
+          Text(paymentMethod.branchName),
         ],
       ),
     );

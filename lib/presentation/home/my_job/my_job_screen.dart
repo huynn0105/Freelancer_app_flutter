@@ -7,8 +7,8 @@ class MyJobScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> tab = [
-      'Là nhà tuyển dụng',
-      'Là Freelancer'
+      'Nhà tuyển dụng',
+      'Freelancer'
     ];
     return DefaultTabController(
       length: tab.length,

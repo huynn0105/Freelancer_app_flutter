@@ -12,6 +12,8 @@ class InputText extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.inputFormatters,
+    this.onTap,
+    this.readOnly = false,
     Key key,
   }) : super(key: key);
   final int maxLines;
@@ -24,7 +26,8 @@ class InputText extends StatelessWidget {
   final Widget suffixIcon;
   final TextInputType keyboardType;
   final List<TextInputFormatter> inputFormatters;
-
+  final VoidCallback onTap;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,8 @@ class InputText extends StatelessWidget {
         maxLength: maxLength,
         validator: validator,
         inputFormatters: inputFormatters,
+        onTap: onTap,
+        readOnly: readOnly,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,

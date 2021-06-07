@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/presentation/admin/screens/manage_job/manage_job.dart';
+import 'package:freelance_app/presentation/admin/screens/main/manage_job/manage_job_screen.dart';
 import 'package:get/get.dart';
 
 class RecentJobs extends StatelessWidget {

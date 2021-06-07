@@ -15,9 +15,6 @@ import 'package:freelance_app/presentation/home/widgets/review.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../constant.dart';
-import '../../../constant.dart';
-import '../../../responsive.dart';
 import 'capacity_profile/add_capacity_profile.dart';
 import 'capacity_profile/capacity_profiles_screen.dart';
 import 'capacity_profile/components/capacity.dart';
@@ -27,16 +24,21 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Obx(() {
       var user = controllerHome.account.value;
       return Scaffold(
           backgroundColor: Colors.grey[200],
-          appBar: Responsive.isMobile(context) ? AppBar(
-            title: Text(
-              'Hồ Sơ',
-            ),
-            actions: [IconButton(icon: Icon(Icons.logout), onPressed: logout)],
-          ) : null,
+          appBar: Responsive.isMobile(context)
+              ? AppBar(
+                  title: Text(
+                    'Hồ Sơ',
+                  ),
+                  actions: [
+                    IconButton(icon: Icon(Icons.logout), onPressed: logout)
+                  ],
+                )
+              : null,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -103,11 +105,17 @@ class ProfileScreen extends StatelessWidget {
                             phoneNumber: user.phone,
                           ),
                         ),
-                        SizedBox(
-                          height: kDefaultPadding / 2,
-                        ),
+                        SizedBox(height: kDefaultPadding / 2),
                         Card(
-                          child: OnReady(),
+                          child: Obx(
+                            ()=> OnReady(
+                              value: controllerHome.accountOnReady.value,
+                              onChanged: (value) {
+                                controllerHome.accountOnReady(value);
+                                 controllerHome.sendOnReady();
+                              },
+                            ),
+                          ),
                           margin: EdgeInsets.all(0.0),
                         ),
                         SizedBox(
@@ -183,8 +191,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 user.capacityProfiles.isNotEmpty
                                     ? Capacity(
-                                        capacityProfiles:
-                                            user.capacityProfiles,
+                                        capacityProfiles: user.capacityProfiles,
                                         onTap: () {
                                           if (controllerHome
                                               .capacityProfiles.isEmpty)
@@ -240,11 +247,11 @@ class ProfileScreen extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Obx(() => Avatar(
-                                    url: controllerHome.imageURL.value != ''
-                                        ? controllerHome.imageURL.value
-                                        : user.avatarUrl,
-                                    onTap: getImage,
-                                  )),
+                                        url: controllerHome.imageURL.value != ''
+                                            ? controllerHome.imageURL.value
+                                            : user.avatarUrl,
+                                        onTap: getImage,
+                                      )),
                                   SizedBox(
                                     height: kDefaultPadding / 2,
                                   ),
@@ -259,23 +266,23 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   user.tile != null
                                       ? Text(
-                                    user.tile,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: Colors.black54,
-                                    ),
-                                  )
+                                          user.tile,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: Colors.black54,
+                                          ),
+                                        )
                                       : const SizedBox.shrink(),
                                   user.level != null
                                       ? Text(
-                                    user.level.name,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: Colors.black54,
-                                    ),
-                                  )
+                                          user.level.name,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: Colors.black54,
+                                          ),
+                                        )
                                       : const SizedBox.shrink(),
                                 ],
                               ),
@@ -302,7 +309,15 @@ class ProfileScreen extends StatelessWidget {
                                       height: kDefaultPadding / 2,
                                     ),
                                     Card(
-                                      child: OnReady(),
+                                      child: Obx(
+                                        ()=> OnReady(
+                                          value: controllerHome.accountOnReady.value,
+                                          onChanged: (value) {
+                                            controllerHome.accountOnReady(!value);
+                                            controllerHome.sendOnReady();
+                                          },
+                                        ),
+                                      ),
                                       margin: EdgeInsets.all(0.0),
                                     ),
                                     SizedBox(
@@ -338,7 +353,7 @@ class ProfileScreen extends StatelessWidget {
                                     Card(
                                       child: Services(
                                         freelancerServices:
-                                        user.freelancerServices,
+                                            user.freelancerServices,
                                       ),
                                       margin: EdgeInsets.all(0.0),
                                     ),
@@ -361,7 +376,7 @@ class ProfileScreen extends StatelessWidget {
                                             vertical: kDefaultPadding / 2),
                                         child: Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
+                                              CrossAxisAlignment.stretch,
                                           children: [
                                             Row(
                                               children: [
@@ -378,15 +393,15 @@ class ProfileScreen extends StatelessWidget {
                                                         .isEmpty)
                                                       controllerHome
                                                           .getCapacityProfiles(
-                                                          user.id);
+                                                              user.id);
                                                     Get.to(() =>
                                                         CapacityProfilesScreen(
                                                           controller:
-                                                          controllerHome,
+                                                              controllerHome,
                                                         ));
                                                   },
                                                   child: user.capacityProfiles
-                                                      .isNotEmpty
+                                                          .isNotEmpty
                                                       ? Text('Xem tất cả')
                                                       : const SizedBox.shrink(),
                                                 ),
@@ -394,26 +409,26 @@ class ProfileScreen extends StatelessWidget {
                                             ),
                                             user.capacityProfiles.isNotEmpty
                                                 ? Capacity(
-                                              capacityProfiles:
-                                              user.capacityProfiles,
-                                              onTap: () {
-                                                if (controllerHome
-                                                    .capacityProfiles
-                                                    .isEmpty)
-                                                  controllerHome
-                                                      .getCapacityProfiles(
-                                                      user.id);
-                                                Get.to(() =>
-                                                    CapacityProfilesScreen(
-                                                      controller:
-                                                      controllerHome,
-                                                    ));
-                                              },
-                                            )
+                                                    capacityProfiles:
+                                                        user.capacityProfiles,
+                                                    onTap: () {
+                                                      if (controllerHome
+                                                          .capacityProfiles
+                                                          .isEmpty)
+                                                        controllerHome
+                                                            .getCapacityProfiles(
+                                                                user.id);
+                                                      Get.to(() =>
+                                                          CapacityProfilesScreen(
+                                                            controller:
+                                                                controllerHome,
+                                                          ));
+                                                    },
+                                                  )
                                                 : Center(
-                                              child: Icon(
-                                                  Icons.error_outline),
-                                            ),
+                                                    child: Icon(
+                                                        Icons.error_outline),
+                                                  ),
                                             Center(
                                               child: TextButton(
                                                 child: Text('Thêm hồ sơ'),
@@ -525,7 +540,15 @@ class ProfileScreen extends StatelessWidget {
                                       height: kDefaultPadding / 2,
                                     ),
                                     Card(
-                                      child: OnReady(),
+                                      child: Obx(
+                                        ()=> OnReady(
+                                          value: controllerHome.accountOnReady.value,
+                                          onChanged: (value) {
+                                            controllerHome.accountOnReady(!value);
+                                            controllerHome.sendOnReady();
+                                          },
+                                        ),
+                                      ),
                                       margin: EdgeInsets.all(0.0),
                                     ),
                                     SizedBox(
@@ -767,7 +790,11 @@ class Earn extends StatelessWidget {
 class OnReady extends StatelessWidget {
   const OnReady({
     Key key,
+    @required this.onChanged,
+    @required this.value,
   }) : super(key: key);
+  final Function onChanged;
+  final bool value;
 
   @override
   Widget build(BuildContext context) {
@@ -784,8 +811,10 @@ class OnReady extends StatelessWidget {
           ),
           Spacer(),
           Switch(
-            value: true,
-            onChanged: (value) {},
+            value: value,
+            onChanged: (value) {
+              onChanged(value);
+            },
             activeTrackColor: Colors.lightBlue[200],
             activeColor: Colors.blue,
           )

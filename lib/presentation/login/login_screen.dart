@@ -3,7 +3,6 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/presentation/forget_password/forget_password_screen.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
-import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
 import 'login_controller.dart';
@@ -14,19 +13,8 @@ class LoginScreen extends GetWidget<LoginController> {
 
   void login() async {
     if (formKey.currentState.validate()) {
-      final bool result = await controller.login();
-      if (result) {
-        Get.snackbar('Thành công', 'Đăng nhập thành công',
-            snackPosition: SnackPosition.TOP);
-        Get.offAllNamed(Routes.home);
-      } else {
-        Get.snackbar(
-            'Lỗi',controller.message.value,
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: Colors.red,
-            colorText: Colors.white
-        );
-      }
+      await controller.login();
+
     } else {
       Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
           snackPosition: SnackPosition.BOTTOM);
@@ -44,42 +32,40 @@ class LoginScreen extends GetWidget<LoginController> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            child: Column(
-              children: [
-                Expanded(
-                    child: SizedBox.shrink()),
-                Expanded(
-                    flex: 6,
-                    child: SingleChildScrollView(
-                      child: buildLoginPanel(),
-                    )),
-                Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: RoundedButton(
-                      onTap: login,
-                      child: Text('Đăng nhâp',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
-                    )),
-                Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+          Column(
+            children: [
+              Expanded(
+                  child: SizedBox.shrink()),
+              Expanded(
+                  flex: 6,
+                  child: SingleChildScrollView(
+                    child: buildLoginPanel(),
+                  )),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: RoundedButton(
+                    onTap: login,
+                    child: Text('Đăng nhâp',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),),
+                  )),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
 
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.register);
-                    },
-                    child: Text(
-                      "Bạn chưa có tài khoản? Đăng ký ngay!",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2661FA)),
-                    ),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.register);
+                  },
+                  child: Text(
+                    "Bạn chưa có tài khoản? Đăng ký ngay!",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2661FA)),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
           Positioned.fill(
             child: Obx(() {
@@ -138,7 +124,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Username',
+                    'Email đăng nhập',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -150,7 +136,7 @@ class LoginScreen extends GetWidget<LoginController> {
                         prefixIcon: Icon(
                           Icons.person_outline,
                         ),
-                        hintText: 'username'),
+                        hintText: 'Email'),
                   ),
                 ],
               ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/province.dart';
-import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/pay_form/pay_form_screen.dart';
-import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 
 import 'package:get/get.dart';
@@ -49,7 +47,7 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
         ),
       ),
       body: Obx(
-        ()=> controller.provinces.isNotEmpty ? Container(
+        ()=> controller.provinces.length != 1 ? Container(
           padding: EdgeInsets.all(25),
           child: Column(
             children: [

@@ -6,6 +6,7 @@ import 'package:freelance_app/domain/repositories/local_storage_repository.dart'
 import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
 
@@ -31,9 +32,8 @@ class LoginController extends GetxController {
   final usernameTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   var loginState = sState.initial.obs;
-  RxString message = ''.obs;
 
-  Future<bool> login() async {
+  Future login() async {
     final username = usernameTextController.text;
     final password = passwordTextController.text;
     try {
@@ -51,23 +51,39 @@ class LoginController extends GetxController {
         print('token: $TOKEN');
         await localRepositoryInterface.saveToken(TOKEN);
         await localRepositoryInterface.saveAccount(account);
-        return true;
+        if(account.role.id == 1)
+          Get.offAllNamed(Routes.admin);
+        else
+          Get.offAllNamed(Routes.home);
+        Get.snackbar('Thành công', 'Đăng nhập thành công',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+
+
       }
       if (response.statusCode == 400) {
         var js = jsonDecode(response.body);
         loginState(sState.initial);
-        message.value = js['message'];
-        return false;
+        Get.snackbar(
+            'Lỗi',js['message'],
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white
+        );
       }
       else{
         loginState(sState.initial);
-        return false;
       }
-
     } on Exception catch (e) {
       loginState(sState.initial);
       print('lỗi: ${e.toString()}');
-      return false;
+      Get.snackbar(
+          'Lỗi','Sever bận',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white
+      );
     }
   }
 }

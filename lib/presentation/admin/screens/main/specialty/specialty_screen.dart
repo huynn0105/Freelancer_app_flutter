@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/service.dart';
-import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
@@ -11,15 +10,17 @@ class SpecialtyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(kDefaultPadding),
+      padding: Responsive.isDesktop(context) ? EdgeInsets.symmetric(vertical: kDefaultPadding,horizontal: kDefaultPadding*3) : EdgeInsets.all(kDefaultPadding/2),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ElevatedButton.icon(
             onPressed: () {
               Get.defaultDialog(
+                radius: 10,
                   title: 'Thêm chuyên ngành',
-                  content: Expanded(child: Container(child: SpecialtyScreen(),width: 500,height: 700,))
+                  titleStyle: TEXT_STYLE_PRIMARY,
+                  content: SpecialDetail()
               );
             },
             style: !Responsive.isMobile(context) ?TextButton.styleFrom(
@@ -30,11 +31,17 @@ class SpecialtyScreen extends StatelessWidget {
             icon: Icon(Icons.add),
             label: Text('Thêm mới'),
           ),
+          SizedBox(height: kDefaultPadding),
           Container(
+            decoration: BoxDecoration(
+              color: secondaryColor,
+              borderRadius: BorderRadius.all(
+                  Radius.circular(kDefaultPadding / 2)),
+            ),
             width: double.infinity,
             child: DataTable(
               columnSpacing: kDefaultPadding,
-              horizontalMargin: 0,
+              horizontalMargin: kDefaultPadding,
               columns: [
                 DataColumn(label: Text('ID')),
                 DataColumn(label: Text('Tên chuyên ngành')),
@@ -56,70 +63,80 @@ class SpecialDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(kDefaultPadding),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
+      width: Responsive.isDesktop(context)? size.width*0.35 : size.width*0.6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Chuyên ngành",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+          Row(
+            children: [
+              SizedBox(
+                child: Text(
+                  "Tên chuyên ngành",
+                  style: TextStyle(
+                      color: Colors.black54,
+                    fontSize: 16
+                  ),
+                ),
+                width: 150,
+              ),
+              Expanded(child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Lập trình web'
+                ),
+              )),
+            ],
           ),
-          SizedBox(height: kDefaultPadding),
-          InputText(label: 'Tên chuyên ngành',),
           SizedBox(height: kDefaultPadding),
           Text(
             'Hình ảnh liên quan',
-            style: TEXT_STYLE_ON_FOREGROUND,
+            style: TextStyle(
+                color: Colors.black54,
+                fontSize: 16
+            ),
           ),
           SizedBox(
-            height: kDefaultPadding/2,
+            height: kDefaultPadding/3,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
              Container(
                   height: 130,
                   width: 200,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blueAccent, width: 2),
-
                   ),
                 ),
+              SizedBox(width: kDefaultPadding),
               ElevatedButton(
                 onPressed: () {
-
                 },
                 child: Text('Thêm ảnh'),
               ),
             ],
           ),
-          SizedBox(
-            height: kDefaultPadding,
-          ),
+          SizedBox(height: kDefaultPadding),
           Row(
             children: [
-              Container(
-                width: 100,
+              SizedBox(
+                width: 150,
                 child: Text(
                   'Chọn dịch vụ',
-                  style: TEXT_STYLE_ON_FOREGROUND,
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16
+                  ),
                 ),
               ),
               SizedBox(width: kDefaultPadding,),
               Container(
-                width: 260,
                 child: DropdownButton(
                   value: Service(id: 1,name: 'Tất cả'),
                   onChanged: (newValue) {
-
                   },
                   items: demoService.map<DropdownMenuItem>(( value) {
                     return DropdownMenuItem(
