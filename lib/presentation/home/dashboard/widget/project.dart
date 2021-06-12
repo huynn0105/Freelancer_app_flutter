@@ -4,80 +4,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class Project extends StatelessWidget {
-  const Project({
-    Key key,
-    @required this.jobs,
-  }) : super(key: key);
-  final List<Job> jobs;
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 6,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 2,
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Text(
-                      'Project',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Icon(Icons.arrow_drop_down),
-                    Spacer(),
-                    TextButton(
-                      child: Text(
-                        'See All',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              )),
-          Expanded(
-            flex: 10,
-            child: ListView.builder(
-                itemCount: jobs.length,
-                itemBuilder: (context, index) {
-                  return MyJobCard(
-                    job: jobs[index],
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class MyJobCard extends StatelessWidget {
   const MyJobCard({
     Key key,
-    @required this.job,
+    @required this.jobOffer,
   }) : super(key: key);
-  final Job job;
+  final JobOffer jobOffer;
 
   @override
   Widget build(BuildContext context) {
-    final df = new DateFormat('MMM dd');
-    final formatter = new NumberFormat("#,###");
+    final df = new DateFormat('dd - MM - yyyy');
     return InkWell(
-      onTap: ()=> Get.to(()=>JobDetailScreen(jobId: job.id,)),
+      onTap: ()=> Get.to(()=>JobDetailScreen(jobId: jobOffer.jobId,)),
       child: Card(
         margin: const EdgeInsets.all(kDefaultPadding / 2),
         shape: RoundedRectangleBorder(
@@ -97,7 +43,7 @@ class MyJobCard extends StatelessWidget {
                       foregroundColor: Colors.transparent,
                       backgroundColor: Colors.grey.shade300,
                       child: CachedNetworkImage(
-                        imageUrl: '$IMAGE/${job.avatarRenter}',
+                        imageUrl: 'http://${jobOffer.job.renter.avatarRenter}',
                         httpHeaders: {
                           HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
                         },
@@ -123,38 +69,17 @@ class MyJobCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          '${job.name}',
+                          jobOffer.job.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 20),
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              '${job.renter.name}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                  fontSize: 13),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(kDefaultPadding / 4),
-                              decoration: BoxDecoration(
-                                color: Colors.purple[50],
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${job.specialty.name}',
-                                  style:
-                                  TextStyle(color: Colors.purple, fontSize: 12),
-                                ),
-                              ),
-                            )
-                          ],
+                        Text(
+                          jobOffer.job.renter.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 13),
                         )
                       ],
                     ),
@@ -178,11 +103,11 @@ class MyJobCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${job.deadline.difference(DateTime.now()).inDays}',
+                            '${jobOffer.job.deadline.difference(DateTime.now()).inDays}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Days',
+                            'Ngày',
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
@@ -197,7 +122,7 @@ class MyJobCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${formatter.format(job.floorprice)} - ${formatter.format(job.floorprice)} VNĐ',
+                          '${jobOffer.offerPrice} VNĐ',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.bold),
                         ),
@@ -211,7 +136,7 @@ class MyJobCard extends StatelessWidget {
                               width: 8,
                             ),
                             Text(
-                              '${job.status}',
+                              '${jobOffer.job.status}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -226,7 +151,7 @@ class MyJobCard extends StatelessWidget {
                         Spacer(),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('${df.format(job.deadline)}'),
+                          child: Text('${df.format(jobOffer.job.deadline)}'),
                         ),
                       ],
                     )

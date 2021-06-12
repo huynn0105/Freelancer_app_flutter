@@ -6,11 +6,13 @@ class Information extends StatelessWidget {
     this.email,
     this.phoneNumber,
     this.contract,
+    this.location,
     Key key,
   }) : super(key: key);
   final String email;
   final String phoneNumber;
   final String contract;
+  final String location;
 
   @override
   Widget build(BuildContext context) {
@@ -23,31 +25,28 @@ class Information extends StatelessWidget {
             'Thông tin',
             style: TEXT_STYLE_PRIMARY,
           ),
-          SizedBox(height: 5,),
-          Row(
-            children: [
-              Icon(Icons.mail, color: Colors.black54,),
-              SizedBox(width: 10,),
-              Text(
-                '$email', style: TextStyle(fontSize: 16),)
-            ],
+          ListTile(
+            leading: Icon(Icons.mail),
+            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            title: Text(email),
           ),
-          SizedBox(height: 5,),
-          Row(
-            children: [
-              Icon(Icons.phone, color: Colors.black54,),
-              SizedBox(width: 10,),
-              Text('$phoneNumber', style: TextStyle(fontSize: 16),)
-            ],
+          ListTile(
+            leading: Icon(Icons.phone),
+            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            title: Text(phoneNumber),
           ),
-          SizedBox(height: 5,),
-          contract != null ? Row(
-            children: [
-              Icon(Icons.link_sharp, color: Colors.black54,),
-              SizedBox(width: 10,),
-              Text(contract, style: TextStyle(fontSize: 16),)
-            ],
-          ): const SizedBox.shrink(),
+          location!=null ? ListTile(
+            leading: Icon(Icons.location_on),
+
+            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            title: Text(location),
+          ) : const SizedBox.shrink(),
+          contract!=null ?ListTile(
+            leading: Icon(Icons.link_sharp),
+
+            visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            title: Text(contract),
+          ) : const SizedBox.shrink(),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -36,11 +37,11 @@ class RegisterController extends GetxController {
 
   var registerState = sState.initial.obs;
 
-  var roleSelected = 1.obs;
+  var roleSelected = 2.obs;
 
   RxString message = ''.obs;
 
-  Future<bool> register() async {
+  void register() async {
     final name = usernameTextController.text;
     final email = emailTextController.text;
     final password = passwordTextController.text;
@@ -60,23 +61,37 @@ class RegisterController extends GetxController {
         Account account = Account.fromJson(jsonObject['account']);
         await localRepositoryInterface.saveToken(TOKEN);
         await localRepositoryInterface.saveAccount(account);
+        CURRENT_ID = account.id;
         print('token: $TOKEN');
-        return true;
+        if(account.role.id==1)
+          Get.offAllNamed(Routes.admin);
+        else
+          Get.offAllNamed(Routes.home);
+
+        Get.snackbar('Thành công', 'Đăng ký thành công',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
       }
-      if (response.statusCode == 400) {
+      else if(response.statusCode == 400) {
         registerState(sState.initial);
         var js = jsonDecode(response.body);
         message(js['message']);
-        return false;
+        Get.snackbar('Lỗi',js['message'],
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP);
       }else{
         registerState(sState.initial);
-        return false;
+        Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP);
       }
 
     } catch (e) {
       registerState(sState.initial);
       print("Lỗi: ${e.toString()}");
-      return false;
     }
   }
 }

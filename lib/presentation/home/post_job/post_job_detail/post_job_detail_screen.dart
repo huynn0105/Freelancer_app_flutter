@@ -4,24 +4,11 @@ import 'package:freelance_app/presentation/home/post_job/job_description/job_des
 import 'package:freelance_app/presentation/home/post_job/job_location/job_location_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/job_skills/job_skills_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
-import 'package:freelance_app/presentation/home/post_job/successful/successful_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:get/get.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
 
 class PostJobDetailScreen extends GetWidget<PostJobController> {
-
-  void postJob() async {
-      final bool result = await controller.postJob();
-      if (result) {
-        Get.offAll(()=>SuccessfulScreen());
-      } else {
-        Get.snackbar('Lỗi','',
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.TOP);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +21,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
             ),
           ),
           body: Container(
-            padding: EdgeInsets.all(kDefaultPadding/2),
+            padding: EdgeInsets.all(kDefaultPadding / 2),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -82,8 +69,10 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                   TextField(
                     controller: controller.descriptionTextController,
                     keyboardType: TextInputType.multiline,
-                    minLines: 1,//Normal textInputField will be displayed
-                    maxLines: 5,// when user presses enter it will adapt to it
+                    minLines: 1,
+                    //Normal textInputField will be displayed
+                    maxLines: 5,
+                    // when user presses enter it will adapt to it
                     decoration: InputDecoration(
                       labelText: 'Mô tả công việc',
                     ),
@@ -99,8 +88,10 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                         Icons.location_on,
                       ),
                     ),
-                    onTap: ()=> Get.to(()=> JobLocationScreen(id: 0,controller: controller,))
-                    ,
+                    onTap: () => Get.to(() => JobLocationScreen(
+                          id: 0,
+                          controller: controller,
+                        )),
                     readOnly: true,
                   ),
                   SizedBox(
@@ -137,10 +128,10 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                           height: 4,
                         ),
                         Obx(
-                          ()=> Row(
+                          () => Row(
                             children: List.generate(
                               controller.typeOfWorks.length,
-                              (index){
+                              (index) {
                                 var type = controller.typeOfWorks[index];
                                 return ItemBox(
                                   name: type.name,
@@ -169,10 +160,10 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                           height: 4,
                         ),
                         Obx(
-                              ()=> Row(
+                          () => Row(
                             children: List.generate(
                               controller.formOfWorks.length,
-                                  (index) {
+                              (index) {
                                 var form = controller.formOfWorks[index];
                                 return ItemBox(
                                   name: form.name,
@@ -182,7 +173,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                                     controller.formId.value = form.id;
                                   },
                                 );
-                                  },
+                              },
                             ),
                           ),
                         ),
@@ -201,10 +192,10 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                           height: 4,
                         ),
                         Obx(
-                              ()=> Row(
+                          () => Row(
                             children: List.generate(
                               controller.payForms.length,
-                                  (index){
+                              (index) {
                                 var payForm = controller.payForms[index];
                                 return ItemBox(
                                   name: payForm.name,
@@ -214,7 +205,7 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                                     controller.payFormId.value = payForm.id;
                                   },
                                 );
-                                  },
+                              },
                             ),
                           ),
                         ),
@@ -251,7 +242,8 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                             ),
                             Expanded(
                               child: TextFormField(
-                                controller: controller.cellingPriceTextController,
+                                controller:
+                                    controller.cellingPriceTextController,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [ThousandsFormatter()],
                                 decoration: InputDecoration(
@@ -314,18 +306,22 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
                     ),
                   ),
                   Divider(),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Obx(
-                    ()=> CheckboxListTile(value: controller.isPrivate.value, onChanged: (value){
-                      controller.isPrivate.value = value;
-                    },
-                      title: Text('Tôi muốn việc này được Hiển Thị Bí Mật. chỉ những người nào tôi gửi link việc này cho họ và tôi mời họ làm việc mới có thể xem.'),
-                        controlAffinity: ListTileControlAffinity.leading
-                    ),
+                    () => CheckboxListTile(
+                        value: controller.isPrivate.value,
+                        onChanged: (value) {
+                          controller.isPrivate.value = value;
+                        },
+                        title: Text(
+                            'Tôi muốn việc này được Hiển Thị Bí Mật. chỉ những người nào tôi gửi link việc này cho họ và tôi mời họ làm việc mới có thể xem.'),
+                        controlAffinity: ListTileControlAffinity.leading),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      postJob();
+                      controller.postJob();
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 40),
@@ -394,27 +390,27 @@ class PostJobDetailScreen extends GetWidget<PostJobController> {
       height: 300.0, // Change as per your requirement
       width: 300.0, // Change as per your requirement
       child: Obx(
-            () => controller.provinces.isNotEmpty
+        () => controller.provinces.isNotEmpty
             ? ListView.builder(
-          shrinkWrap: true,
-          itemCount: controller.provinces.length,
-          itemBuilder: (BuildContext context, int index) {
-            var province = controller.provinces[index];
-            return InkWell(
-              child: ListTile(
-                title: Text(province.name),
-              ),
-              onTap: () {
-                controller.locationTextController.text = province.name;
-                controller.provinceId.value = province.provinceId;
-                Get.back();
-              },
-            );
-          },
-        )
+                shrinkWrap: true,
+                itemCount: controller.provinces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var province = controller.provinces[index];
+                  return InkWell(
+                    child: ListTile(
+                      title: Text(province.name),
+                    ),
+                    onTap: () {
+                      controller.locationTextController.text = province.name;
+                      controller.provinceId.value = province.provinceId;
+                      Get.back();
+                    },
+                  );
+                },
+              )
             : const Center(
-          child: CircularProgressIndicator(),
-        ),
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }

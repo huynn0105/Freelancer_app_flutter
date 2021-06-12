@@ -32,8 +32,8 @@ class Skills extends StatelessWidget {
               (index) => NavItem(
                 title: skillsList[index].name,
                 textStyle: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
                 color: Colors.black54,
                 ))
             ),

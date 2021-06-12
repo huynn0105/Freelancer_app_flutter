@@ -51,7 +51,7 @@ class ManageJobScreen extends GetWidget<AdminController> {
         DataCell(Text(job.renter.name)),
         DataCell(Text('${df.format(job.createAt)}')),
         DataCell(ElevatedButton(onPressed: () async{
-          Job result = await controller.loadJob(job.id);
+          Job result = await controller.loadJobFromId(job.id);
           Get.defaultDialog(
               title: 'CHI TIẾT CÔNG VIỆC',
               titleStyle: TEXT_STYLE_PRIMARY,
@@ -77,34 +77,36 @@ class JobDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.all(kDefaultPadding),
-      width: Responsive.isDesktop(context) ? size.width*0.4 : size.width*0.75,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(),
-            ItemRow(title: 'Tên công việc',content: job.name),
-            Divider(),
-            ItemRow(title: 'Mô tả công việc',content: job.details,),
-            Divider(),
-            ItemRow(title: 'Địa điểm làm việc',content: job.province != null ? job.province.name : 'Toàn quốc'),
-            Divider(),
-            ItemRow(title: 'Kỹ năng yêu cầu',content: 'Flutter, Android, C++, PHP, C#, ASP.net'),
-            Divider(),
-            ItemRow(title: 'Hình thức làm việc',content: job.formOfWork.name),
-            Divider(),
-            ItemRow(title: 'Loại hình làm việc',content: job.typeOfWork.name),
-            Divider(),
-            ItemRow(title: 'Hình thức trả lương',content: job.payform.name),
-            Divider(),
-            ItemRow(title: 'Ngân sách',content: '${job.floorprice} - ${job.cellingprice} VNĐ',),
-            Divider(),
-            ItemRow(title: 'Tuỳ chọn hiển thị',content: 'Công khai'),
-            Divider(),
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.all(kDefaultPadding),
+        width: Responsive.isDesktop(context) ? size.width*0.4 : size.width*0.75,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(),
+              ItemRow(title: 'Tên công việc',content: job.name),
+              Divider(),
+              ItemRow(title: 'Mô tả công việc',content: job.details,),
+              Divider(),
+              ItemRow(title: 'Địa điểm làm việc',content: job.province != null ? job.province.name : 'Toàn quốc'),
+              Divider(),
+              ItemRow(title: 'Kỹ năng yêu cầu',content: 'Flutter, Android, C++, PHP, C#, ASP.net'),
+              Divider(),
+              ItemRow(title: 'Hình thức làm việc',content: job.formOfWork.name),
+              Divider(),
+              ItemRow(title: 'Loại hình làm việc',content: job.typeOfWork.name),
+              Divider(),
+              ItemRow(title: 'Hình thức trả lương',content: job.payform.name),
+              Divider(),
+              ItemRow(title: 'Ngân sách',content: '${job.floorprice} - ${job.cellingprice} VNĐ',),
+              Divider(),
+              ItemRow(title: 'Tuỳ chọn hiển thị',content: 'Công khai'),
+              Divider(),
 
-          ],
+            ],
+          ),
         ),
       ),
     );

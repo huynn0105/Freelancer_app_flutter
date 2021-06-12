@@ -83,17 +83,17 @@ class _JobSkillsScreenState extends State<JobSkillsScreen> {
                     Expanded(
                       child: _isSearch
                           ? ListView.builder(
-                              itemCount: controller.skills.length,
-                              itemBuilder: (context, index) {
-                                var skill = controller.skills[index];
-                                return CheckboxListTile(
-                                    title: new Text(skill.name),
-                                    value: skill.isValue,
-                                    onChanged: (bool value) {
-                                      controller.changeValue(
-                                          skill.copyWith(isValue: value),controller.skills);
-                                    });
-                              })
+                          itemCount: controller.skills.length,
+                          itemBuilder: (context, index) {
+                            var skill = controller.skills[index];
+                            return CheckboxListTile(
+                                title: new Text(skill.name),
+                                value: skill.isValue,
+                                onChanged: (bool value) {
+                                  controller.changeValue(
+                                      skill.copyWith(isValue: value),controller.skills);
+                                });
+                          })
                           : _searchListView(),
                     )
                   ]),

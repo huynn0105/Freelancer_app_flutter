@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/presentation/home/dashboard/dashboard_screen.dart';
 import 'package:freelance_app/presentation/home/messages/chats_screen.dart';
 import 'package:freelance_app/presentation/home/my_job/my_job_screen.dart';
 import 'package:freelance_app/responsive.dart';
@@ -28,7 +25,6 @@ class HomeScreen extends GetWidget<HomeController> {
       () => Scaffold(
         appBar: !Responsive.isMobile(context)
             ? AppBar(
-          leading: SvgPicture.asset('assets/icons/logo.svg'),
                 actions: [
                   TextButton(
                       style: TextButton.styleFrom(minimumSize: Size(100, 50)),

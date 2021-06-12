@@ -3,15 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_controller.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import 'filter/ffilter_search_screen.dart';
 import 'freelancer_detail/freelancer_detail_screen.dart';
 
 class FreelancersScreen extends StatelessWidget {
@@ -34,7 +33,7 @@ class FreelancersScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return FreelancerCard(
                     freelancer: controller.freelancers[index],
-                    rate: freelancers[index].rate,
+                    rate: 5,
                   );
                 },
               )
@@ -49,11 +48,22 @@ class FreelancersScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
+            if(controller.services.length==1)
+            controller.loadServices();
+            if(controller.levels.length==1)
+            controller.loadLevels();
+            if(controller.specialties.length==1)
+            controller.loadSpecialties();
+            if(controller.provinces.length==1)
+            controller.loadProvinces();
+
             showCupertinoModalBottomSheet(
-                expand: true,
                 context: context,
                 builder: (builder) {
-                  return FilterSearchScreen();
+                  return Container(
+                    height: 450,
+                    child: FFilterSearchScreen(),
+                  );
                 });
           },
           child: Icon(Icons.search)),
@@ -101,7 +111,7 @@ class FreelancerCard extends StatelessWidget {
                               foregroundColor: Colors.transparent,
                               backgroundColor: Colors.grey.shade300,
                               child: CachedNetworkImage(
-                                imageUrl: '$IMAGE/${freelancer.avatarUrl}',
+                                imageUrl: 'http://${freelancer.avatarUrl}',
                                 httpHeaders: {
                                   HttpHeaders.authorizationHeader:
                                       'Bearer $TOKEN'

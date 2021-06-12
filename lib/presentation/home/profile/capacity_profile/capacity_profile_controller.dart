@@ -75,9 +75,7 @@ class CapacityProfileController extends GetxController {
           imageBase64: base64img.value,
           services: servicesSelected
         )
-      );
-      progressState(sState.initial);
-
+      ).then((value) => progressState(sState.initial));
     }catch(e){
       print('lỗi ${e.toString()}');
       progressState(sState.failure);
@@ -96,8 +94,7 @@ class CapacityProfileController extends GetxController {
               imageBase64: base64img.value,
               services: servicesSelected
           )
-      );
-      progressState(sState.initial);
+      ).then((value) => progressState(sState.initial));
 
     }catch(e){
       print('lỗi ${e.toString()}');
@@ -108,21 +105,15 @@ class CapacityProfileController extends GetxController {
   Future getCapacityProfiles(int freelancerId) async {
     try{
       progressState(sState.loading);
-      final result = await apiRepositoryInterface.getCapacityProfiles(freelancerId);
-      capacityProfiles.assignAll(result);
-      progressState(sState.initial);
+      await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
+        capacityProfiles.assignAll(value);
+        progressState(sState.initial);
+      });
     }catch(e){
       progressState(sState.failure);
     }
   }
 
 
-  void initValue(){
-    ctrlDescription.text='';
-    ctrlUrlWeb.text = '';
-    ctrlName.text = '';
-    base64img.value = '';
-    nameImage.value = '';
-    servicesSelected.clear();
-  }
+
 }

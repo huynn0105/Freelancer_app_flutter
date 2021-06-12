@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
-import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/home/profile/profile_controller.dart';
 import 'package:freelance_app/presentation/home/profile/services_screen.dart';
@@ -13,13 +12,13 @@ import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
-
 import 'skills_screen.dart';
 
 class EditProfileScreen extends StatelessWidget {
   final Account account;
 
   EditProfileScreen({@required this.account});
+
   final controllerHome = Get.find<HomeController>();
   final controller = Get.put<ProfileController>(ProfileController(
     apiRepositoryInterface: Get.find(),
@@ -27,8 +26,6 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     Future.delayed(Duration(microseconds: 1), () async {
       await initValue(account);
     });
@@ -42,13 +39,28 @@ class EditProfileScreen extends StatelessWidget {
             ),
             actions: [
               TextButton(
-                onPressed: () async {
-                  await controller.uploadProfile(account.id);
-                  await controllerHome.loadAccountFromToken();
-                  Get.offAllNamed(Routes.home);
+                onPressed: () {
+                  controller.uploadProfile(account.id).then((value) {
+                    print('Giá trị ngoài: $value');
+                    if(value) {
+                      controllerHome.loadAccountFromToken().then((value) {
+                        Get.offAllNamed(Routes.home);
+                        Get.snackbar(
+                            'Thành công', 'Cập nhập thông tin thành công',
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.TOP);
+                      });
+                    }
+                    else
+                      Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                          snackPosition: SnackPosition.TOP);
+                  });
                 },
                 child: Text(
-                  'Done',
+                  'Hoàn thành',
                   style: TextStyle(fontSize: 18),
                 ),
               ),
@@ -85,55 +97,63 @@ class EditProfileScreen extends StatelessWidget {
                           controller: controller.ctrlName,
                           label: 'Tên đầy đủ',
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         InputText(
                           hint: 'Điện thoại',
                           controller: controller.ctrlPhoneNumber,
                           label: 'Số điện thoại',
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         InputText(
                           hint: 'Website cá nhân',
                           controller: controller.ctrlWebsite,
                           label: 'Website (nếu có)',
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         InputText(
                           hint: 'Lập trình viên mobile',
-                          controller: controller.ctrlTile,
+                          controller: controller.ctrlTitle,
                           label: 'Chức danh',
                         ),
-                        SizedBox(
-                          height: 10,
+                        SizedBox(height: 10),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Thành phố',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onTap: () {
+                            controller.loadProvinces();
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Danh sách thành phố'),
+                                    content: setupLocation(),
+                                  );
+                                });
+                          },
+                          readOnly: true,
+                          controller: controller.ctrlProvince,
                         ),
+                        SizedBox(height: 10),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Text(
                     'Giới thiệu bản thân',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   InputText(
                     hint: '1. Bạn là ai?\n2. Kinh nghiệm và chuyển môn?...',
                     controller: controller.ctrlDescription,
                     maxLines: 8,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
+                  SizedBox(height: 20),
+                  TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Lĩnh vực',
                       border: OutlineInputBorder(
@@ -154,45 +174,7 @@ class EditProfileScreen extends StatelessWidget {
                     readOnly: true,
                     controller: controller.ctrlSpecialty,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tôi có thể làm',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Obx(
-                          () => Row(
-                            children: List.generate(
-                              controller.formOfWorks.length,
-                              (index) {
-                                var form = controller.formOfWorks[index];
-                                return ItemBox(
-                                  name: form.name,
-                                  active: controller.formOfWorkId.value,
-                                  index: form.id,
-                                  onTap: () {
-                                    controller.formOfWorkId.value = form.id;
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,9 +184,7 @@ class EditProfileScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 4,
-                        ),
+                        SizedBox(height: 4),
                         Obx(
                           () => Row(
                             children: List.generate(
@@ -226,9 +206,7 @@ class EditProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,9 +256,7 @@ class EditProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,8 +300,8 @@ class EditProfileScreen extends StatelessWidget {
                               if (controller.services.isEmpty)
                                 controller.loadServices();
                               Get.to(() => ServiceScreen(
-                                    controller: controller,
-                                  ));
+                                controller: controller,
+                              ));
                             },
                           ),
                         ),
@@ -355,16 +331,13 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-
-
   Future<void> initValue(Account account) async {
     controller.ctrlName.text = account.name;
     controller.ctrlPhoneNumber.text = account.phone;
     controller.ctrlDescription.text = account.description;
     controller.ctrlWebsite.text = account.website;
-    controller.ctrlTile.text = account.tile;
-    controller.formOfWorkId.value =
-        account.formOfWork != null ? account.formOfWork.id : 0;
+    controller.ctrlTitle.text = account.title;
+
     controller.levelId.value = account.level != null ? account.level.id : 0;
     controller.specialtyId.value =
         account.specialty != null ? account.specialty.id : 0;
@@ -374,6 +347,8 @@ class EditProfileScreen extends StatelessWidget {
       controller.skillsSelected.assignAll(account.freelancerSkills);
     if (account.specialty != null)
       controller.ctrlSpecialty.text = account.specialty.name;
+    if (account.province != null)
+      controller.ctrlProvince.text = account.province.name;
   }
 
   Widget setupSpecialties() {
@@ -394,6 +369,36 @@ class EditProfileScreen extends StatelessWidget {
                     onTap: () {
                       controller.ctrlSpecialty.text = specialty.name;
                       controller.specialtyId.value = specialty.id;
+                      Get.back();
+                    },
+                  );
+                },
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
+
+  Widget setupLocation() {
+    return Container(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: Obx(
+        () => controller.provinces.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.provinces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var province = controller.provinces[index];
+                  return InkWell(
+                    child: ListTile(
+                      title: Text(province.name),
+                    ),
+                    onTap: () {
+                      controller.ctrlProvince.text = province.name;
+                      controller.province(province);
                       Get.back();
                     },
                   );

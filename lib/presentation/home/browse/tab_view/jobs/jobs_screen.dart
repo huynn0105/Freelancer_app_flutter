@@ -1,18 +1,14 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/job.dart';
-import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/jobs_controller.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import 'filter/filter_search_screen.dart';
 import 'job_detail/job_detail_screen.dart';
 
 class JobsScreen extends StatelessWidget {
@@ -39,6 +35,19 @@ class JobsScreen extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
               onPressed: () {
+                if(controller.formOfWorks.length==1)
+                controller.loadFormOfWorks();
+                if(controller.typeOfWorks.length==1)
+                controller.loadTypeOfWorks();
+                if(controller.specialties.length==1)
+                controller.loadSpecialties();
+                if(controller.services.length==1)
+                controller.loadServices();
+                if(controller.payForms.length==1)
+                controller.loadPayForms();
+                if(controller.provinces.length==1)
+                controller.loadProvinces();
+
                 showCupertinoModalBottomSheet(
                     expand: true,
                     context: context,
@@ -115,17 +124,31 @@ class JobCard extends StatelessWidget {
                                 size: 20,
                                 color: Theme.of(context).primaryColor),
                             SizedBox(width: 4),
-                            Text('Còn ${job.deadline.difference(DateTime.now()).inDays} ngày',
-                                style:
-                                TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
-                            SizedBox(width: kDefaultPadding*2),
+
+                            Text(
+                              job.deadline.difference(DateTime.now()).inDays >= 0
+                                  ? job.deadline.difference(DateTime.now()).inDays == 0
+                                  ? job.deadline.difference(DateTime.now()).inHours <= 0
+                                  ? 'Hết hạn ${DateTime.now().difference(job.deadline).inHours} giờ trước'
+                                  : 'Chỉ còn ${job.deadline.difference(DateTime.now()).inHours} giờ'
+                                  : 'Chỉ còn ${job.deadline.difference(DateTime.now()).inDays} ngày'
+                                  : 'Hết hạn ${DateTime.now().difference(job.deadline).inDays} ngày trước',
+                              style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16),
+                            ),
+
+
+                            Spacer(),
                             Icon(
                               Icons.person_outline,
                               size: 20,
                               color: Theme.of(context).primaryColor,
                             ),
-                            Text('12 chào giá',
-                                style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
+                            Padding(
+                              padding: const EdgeInsets.only(right: kDefaultPadding),
+                              child: Text('12 chào giá',
+                                  style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
+                            ),
+
                           ],
                         ),
                         SizedBox(height: kDefaultPadding / 5),

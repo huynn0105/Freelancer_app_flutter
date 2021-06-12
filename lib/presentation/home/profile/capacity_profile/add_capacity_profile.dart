@@ -26,17 +26,24 @@ class AddCapacityProfile extends StatelessWidget {
 
   AddCapacityProfile({this.capacityProfile, Key key}) : super(key: key);
 
-  void initValue() {
-    controller.ctrlName.text = capacityProfile.name;
-    controller.ctrlUrlWeb.text = capacityProfile.urlweb;
-    controller.ctrlDescription.text = capacityProfile.description;
-    if (capacityProfile.services != null)
-      controller.servicesSelected.assignAll(capacityProfile.services);
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    if (capacityProfile != null) initValue();
+    if (capacityProfile != null){
+      controller.ctrlName.text = capacityProfile.name;
+      controller.ctrlUrlWeb.text = capacityProfile.urlweb;
+      controller.ctrlDescription.text = capacityProfile.description;
+      if (capacityProfile.services != null)
+        controller.servicesSelected.assignAll(capacityProfile.services);
+    }else{
+      controller.ctrlDescription.text='';
+      controller.ctrlUrlWeb.text = '';
+      controller.ctrlName.text = '';
+      controller.base64img.value = '';
+      controller.nameImage.value = '';
+      controller.servicesSelected.clear();
+    }
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Stack(
       children: [
@@ -128,7 +135,7 @@ class AddCapacityProfile extends StatelessWidget {
                                       ? capacityProfile.imageUrl != null
                                           ? DecorationImage(
                                               image: CachedNetworkImageProvider(
-                                                '$IMAGE/${capacityProfile.imageUrl}',
+                                                'http://${capacityProfile.imageUrl}',
                                                 headers: {
                                                   HttpHeaders.authorizationHeader:
                                                       'Bearer $TOKEN'
@@ -207,7 +214,7 @@ class AddCapacityProfile extends StatelessWidget {
                     ), RoundedButton(
                         onTap: () async {
                           if(formKey.currentState.validate()){
-                            if(capacityProfile == null && controller.nameImage.value=='' && controller.base64img.value=='')
+                            if((controller.nameImage.value=='' || controller.base64img.value==''))
                                 Get.snackbar('Lỗi', 'Vui lòng thêm ảnh',
                                     backgroundColor: Colors.red,
                                     colorText: Colors.white,
@@ -217,18 +224,22 @@ class AddCapacityProfile extends StatelessWidget {
                                 await controller.putCapacityProfile(capacityProfile.id);
                               else
                                 await controller.postCapacityProfile();
-
-                              if(controller.progressState.value == sState.initial)
-                                Get.snackbar('Thành công','', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green,
+                              if(controller.progressState.value == sState.initial) {
+                                await controllerHome.loadAccountFromToken();
+                                Get.offAllNamed(Routes.home);
+                                Get.snackbar('Thành công', '',
+                                  snackPosition: SnackPosition.TOP,
+                                  backgroundColor: Colors.green,
                                   colorText: Colors.white,);
+                              }
                               else if(controller.progressState.value == sState.failure)
-                                Get.snackbar('Lỗi','',
+                                Get.snackbar('Lỗi','Server lỗi! Thử lại sau',
                                     backgroundColor: Colors.red,
                                     colorText: Colors.white,
                                     snackPosition: SnackPosition.BOTTOM);
-                              await controllerHome.loadAccountFromToken();
-                              Get.offAllNamed(Routes.home);
-                              controller.initValue();
+
+
+
                             }
 
                           } else {

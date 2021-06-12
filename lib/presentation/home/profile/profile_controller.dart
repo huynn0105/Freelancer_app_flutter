@@ -1,5 +1,6 @@
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
+import 'package:freelance_app/domain/models/province.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
@@ -25,63 +26,75 @@ class ProfileController extends GetxController {
   RxList<Level> levels = <Level>[].obs;
   RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
   RxList<Specialty> specialties = <Specialty>[].obs;
+  RxList<Province> provinces = <Province>[].obs;
 
+  Rx<Province> province = Province().obs;
 
   TextEditingController ctrlName = TextEditingController();
   TextEditingController ctrlPhoneNumber = TextEditingController();
-  TextEditingController ctrlTile = TextEditingController();
+  TextEditingController ctrlTitle = TextEditingController();
   TextEditingController ctrlWebsite = TextEditingController();
   TextEditingController ctrlDescription = TextEditingController();
   TextEditingController ctrlSpecialty = TextEditingController();
+  TextEditingController ctrlProvince = TextEditingController();
   RxInt specialtyId = 0.obs;
-  RxBool isReady = true.obs;
   RxBool isChange = false.obs;
-  RxInt formOfWorkId = 0.obs;
   RxInt levelId = 0.obs;
 
 
-    void uploadProfile(int id)  {
+    Future<bool> uploadProfile(int id) async {
     try {
       progressState(sState.loading);
-      var freelancerSkills =  skillsSelected.where((e) => e.isValue == true).toList();
-      var freelancerServices =  servicesSelected.where((e) => e.isValue == true).toList();
-       apiRepositoryInterface.putAccount(
+      // var freelancerSkills =  skillsSelected.where((e) => e.isValue == true).toList();
+      // var freelancerServices =  servicesSelected.where((e) => e.isValue == true).toList();
+      var rs =  await apiRepositoryInterface.putAccount(
           id,
           AccountRequest(
             name: ctrlName.text,
             roleId: 2,
             phone: ctrlPhoneNumber.text,
-            tile: ctrlTile.text,
+            provinceID: province.value.provinceId,
+            tile: ctrlTitle.text,
             description: ctrlDescription.text,
             website: ctrlWebsite.text,
             specialtyId: specialtyId.value,
             levelId: levelId.value,
-            onReady: isReady.value,
-            formOfWorkId: formOfWorkId.value,
-            skills: freelancerSkills,
-            services: freelancerServices,
+            skills: skillsSelected,
+            services: servicesSelected,
           ));
-      progressState(sState.initial);
+      if(rs == 200){
+        progressState(sState.initial);
+        print('Giá trị $rs');
+        return true;
+      }else{
+        progressState(sState.failure);
+        return false;
+      }
+
+
     } catch (e) {
       print('Lỗi $e');
       progressState(sState.failure);
+      Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
+      return false;
     }
   }
-
-  Future loadFormOfWorks() async {
+  Future loadProvinces() async {
     try {
-      final result = await apiRepositoryInterface.getFormOfWorks();
-      formOfWorks.assignAll(result);
+     await apiRepositoryInterface.getProvinces().then((value) => provinces.addAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
   }
 
+
   Future loadSpecialties() async {
     try {
-      specialties.clear();
-      final result = await apiRepositoryInterface.getSpecialties();
-      specialties.assignAll(result);
+      await apiRepositoryInterface.getSpecialties().then((value) =>  specialties.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -116,36 +129,39 @@ class ProfileController extends GetxController {
   }
 
   Future loadServices() async{
-    List<Service> result = await apiRepositoryInterface.getServices();
-     result.forEach((element) {
-      servicesSelected.forEach((e){
-        if(e.id == element.id){
-          element.isValue = true;
-          return;
-        }
+    await apiRepositoryInterface.getServices().then((value){
+      value.forEach((element) {
+        servicesSelected.forEach((e){
+          if(e.id == element.id){
+            element.isValue = true;
+            return;
+          }
+        });
       });
+      services.assignAll(value);
     });
-    services.assignAll(result);
+
 
   }
 
   void getSkills() async {
-    final result = await apiRepositoryInterface.getSkills();
-    result.forEach((element) {
-      skillsSelected.forEach((e){
-        if(e.id == element.id){
-          element.isValue = true;
-          return;
-        }
+    await apiRepositoryInterface.getSkills().then((value){
+      value.forEach((element) {
+        skillsSelected.forEach((e){
+          if(e.id == element.id){
+            element.isValue = true;
+            return;
+          }
+        });
       });
+      skills.assignAll(value);
     });
-    skills.assignAll(result);
+
   }
 
   Future loadLevel() async{
     try{
-      final result = await apiRepositoryInterface.getLevels();
-      levels.assignAll(result);
+     await apiRepositoryInterface.getLevels().then((value) => levels.assignAll(value));
     }catch(e){
       print('lỗi ${e.toString()}');
     }
@@ -155,7 +171,6 @@ class ProfileController extends GetxController {
   @override
   void onReady() {
     loadLevel();
-    loadFormOfWorks();
     super.onReady();
   }
 }

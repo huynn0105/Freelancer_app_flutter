@@ -1,5 +1,7 @@
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
+import 'package:freelance_app/domain/models/service.dart';
+import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/requests/account_request.dart';
 import 'package:freelance_app/domain/requests/bank_account_request.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
@@ -7,6 +9,7 @@ import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
 import 'package:freelance_app/domain/requests/post_job_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
+import 'package:freelance_app/domain/requests/search_request.dart';
 
 abstract class ApiRepositoryInterface{
 
@@ -17,6 +20,8 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> uploadAvatar(ImageRequest imageRequest);
   Future<dynamic> updateProfile(Account account);
   Future<dynamic> getSpecialties();
+  Future<dynamic> postSpecialty(String name,String imageName, String imageBase64, List<Service> services);
+  Future<dynamic> putSpecialty(int id, String name,String imageName, String imageBase64,List<Service> services);
   Future<dynamic> postJob(PostJobRequest postJobRequest);
   Future<dynamic> getJobs();
   Future<dynamic> getJobFromId(int id);
@@ -40,7 +45,6 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getJobRentersWaiting(int id);
   Future<dynamic> getJobRentersInProgress(int id);
   Future<dynamic> getJobRentersPast(int id);
-
   Future<dynamic> getJobFreelancers(int id);
   Future<dynamic> getJobFreelancersInProgress(int id);
   Future<dynamic> getJobFreelancersPast(int id);
@@ -49,5 +53,10 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getBanks();
   Future<dynamic> getBankAccounts();
   Future<dynamic> postBankAccounts(BankAccountRequest request);
-
+  Future<dynamic> postSkill(String name);
+  Future<dynamic> putSkill(int id,String name);
+  Future<dynamic> postService(String name, List<Specialty> specialties);
+  Future<dynamic> putService(int id, String name, List<Specialty> specialties);
+  Future<dynamic> searchJob(SearchRequest request);
+  Future<dynamic> searchFreelancer(SearchRequest request);
 }

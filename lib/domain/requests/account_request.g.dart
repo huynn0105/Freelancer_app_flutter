@@ -14,10 +14,9 @@ AccountRequest _$AccountRequestFromJson(Map<String, dynamic> json) {
     website: json['website'] as String,
     tile: json['tile'] as String,
     description: json['description'] as String,
+    provinceID: json['provinceID'] as String,
     specialtyId: json['specialtyId'] as int,
     levelId: json['levelId'] as int,
-    onReady: json['onReady'] as bool,
-    formOfWorkId: json['formOfWorkId'] as int,
     skills: (json['skills'] as List)
         ?.map(
             (e) => e == null ? null : Skill.fromJson(e as Map<String, dynamic>))
@@ -35,12 +34,11 @@ Map<String, dynamic> _$AccountRequestToJson(AccountRequest instance) =>
       'roleId': instance.roleId,
       'phone': instance.phone,
       'tile': instance.tile,
+      'provinceID': instance.provinceID,
       'description': instance.description,
       'website': instance.website,
       'specialtyId': instance.specialtyId,
       'levelId': instance.levelId,
-      'onReady': instance.onReady,
-      'formOfWorkId': instance.formOfWorkId,
       'skills': instance.skills,
       'services': instance.services,
     };

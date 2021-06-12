@@ -4,6 +4,7 @@ import 'package:freelance_app/domain/models/bank.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
@@ -20,6 +21,7 @@ import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
 import 'package:freelance_app/domain/requests/post_job_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
+import 'package:freelance_app/domain/requests/search_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 
 class ApiRepositoryImpl extends ApiRepositoryInterface {
@@ -41,9 +43,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       "email": loginRequest.username,
       "password": loginRequest.password
     };
-    return await HttpService.post(LOGIN, accountInput);
-
-
+    return await HttpService.post(LOGIN, body: accountInput);
   }
 
   @override
@@ -62,8 +62,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       'password': registerRequest.password,
     };
     print('input: $accountInput');
-    return await HttpService.post(REGISTER, accountInput);
-
+    return await HttpService.post(REGISTER, body: accountInput);
   }
 
   @override
@@ -73,7 +72,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       'imageBase64': imageRequest.imageBase64
     };
 
-    var rs = await HttpService.post(AVATAR, input, bearerToken: TOKEN);
+    var rs = await HttpService.post(AVATAR, body: input, bearerToken: TOKEN);
     print('codeAvatar ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
@@ -87,8 +86,8 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     Map<String, dynamic> parameters = {
       'id': account.id,
     };
-    var rs = await HttpService.put(
-        ACCOUNT, body: account.toJson(), bearerToken: TOKEN, parameters: parameters);
+    var rs = await HttpService.put(ACCOUNT,
+        body: account.toJson(), bearerToken: TOKEN, parameters: parameters);
     print('codeUpdateProfile ${rs.statusCode}');
   }
 
@@ -104,10 +103,40 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
+  @override
+  Future postSpecialty(String name, String imageName, String imageBase64,
+      List<Service> services) async {
+    Map<String, dynamic> input = {
+      'name': name,
+      'imageName': imageName,
+      'imageBase64': imageBase64,
+      'services': services,
+    };
+
+    var rs =
+        await HttpService.post(SPECIALTIES, body: input, bearerToken: TOKEN);
+    print('POST Specialty ${rs.statusCode}');
+  }
+
+  @override
+  Future putSpecialty(int id, String name, String imageName, String imageBase64,
+      List<Service> services) async {
+    Map<String, dynamic> input = {
+      'name': name,
+      'imageName': imageName,
+      'imageBase64': imageBase64,
+      'services': services,
+    };
+
+    var rs = await HttpService.put('$SPECIALTIES/$id',
+        body: input, bearerToken: TOKEN);
+    print('PUT Specialty $id ${rs.statusCode}');
+  }
 
   @override
   Future getSpecialtyServices(int specialtyId) async {
-    var rs = await HttpService.get('$SPECIALTIES/$specialtyId/services', bearerToken: TOKEN);
+    var rs = await HttpService.get('$SPECIALTIES/$specialtyId/services',
+        bearerToken: TOKEN);
     print('codeSpecialtiesServices ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -131,14 +160,11 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future postJob(PostJobRequest postJobRequest) async {
-
-    var rs = await HttpService.post(
-        JOB, postJobRequest.toJson(), bearerToken: TOKEN);
+    var rs = await HttpService.post(JOB,
+        body: postJobRequest.toJson(), bearerToken: TOKEN);
     print('codeJob: ${rs.statusCode}');
-    if(rs.statusCode==200)
-      return true;
+    if (rs.statusCode == 200) return true;
     return false;
-
   }
 
   @override
@@ -152,6 +178,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
     return null;
   }
+
   @override
   Future getJobFromId(int id) async {
     var rs = await HttpService.get('$JOB/$id', bearerToken: TOKEN);
@@ -224,18 +251,17 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-
-
   @override
   Future putAccount(int id, AccountRequest request) async {
-    var rs = await HttpService.put('api/Accounts/$id', body: request.toJson(),bearerToken: TOKEN);
-    print('putAccount ${request.toJson()}');
-    print('codePutAccount ${rs.statusCode}');
+    var rs = await HttpService.put('api/Accounts/$id',
+        body: request.toJson(), bearerToken: TOKEN);
+    print(rs.statusCode);
+    return rs.statusCode;
   }
 
   @override
   Future putOnReady(int id) async {
-    var rs = await HttpService.put('$ACCOUNT/$id/onready',bearerToken: TOKEN);
+    var rs = await HttpService.put('$ACCOUNT/$id/onready', bearerToken: TOKEN);
     print('code onReady ${rs.statusCode}');
   }
 
@@ -250,37 +276,40 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
   }
 
-
   @override
-  Future postCapacityProfile(CapacityProfile capacityProfile) async{
-    var rs = await HttpService.post(CAPACITY_PROFILE,capacityProfile.toJson(), bearerToken: TOKEN);
+  Future postCapacityProfile(CapacityProfile capacityProfile) async {
+    var rs = await HttpService.post(CAPACITY_PROFILE,
+        body: capacityProfile.toJson(), bearerToken: TOKEN);
     print('codeCapacityProfiles ${rs.statusCode}');
   }
 
   @override
-  Future putCapacityProfile(int id,CapacityProfile capacityProfile) async{
-    var rs = await HttpService.put('$CAPACITY_PROFILE/$id',body:capacityProfile.toJson(), bearerToken: TOKEN);
+  Future putCapacityProfile(int id, CapacityProfile capacityProfile) async {
+    var rs = await HttpService.put('$CAPACITY_PROFILE/$id',
+        body: capacityProfile.toJson(), bearerToken: TOKEN);
     print('js :${capacityProfile.imageName}');
     print('codeCapacityProfiles ${rs.statusCode}');
   }
 
   @override
-  Future getCapacityProfiles(int freelancerId) async{
-    var rs = await HttpService.get('$CAPACITY_PROFILE/freelancer/$freelancerId', bearerToken: TOKEN);
+  Future getCapacityProfiles(int freelancerId) async {
+    var rs = await HttpService.get('$CAPACITY_PROFILE/freelancer/$freelancerId',
+        bearerToken: TOKEN);
     print('codeCapacityProfiles ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var capacityProfiles = jsonList.map((e) => CapacityProfile.fromJson(e)).toList();
+      var capacityProfiles =
+          jsonList.map((e) => CapacityProfile.fromJson(e)).toList();
       return capacityProfiles;
     }
     return null;
   }
 
   @override
-  Future getAccounts() async{
+  Future getAccounts() async {
     var rs = await HttpService.get(ACCOUNT, bearerToken: TOKEN);
     print('codeAccounts ${rs.statusCode}');
-    if(rs.statusCode == 200){
+    if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
       return accounts;
@@ -301,20 +330,25 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   }
 
   @override
-  Future postOfferHistories(OfferRequest offerRequest)async {
-    var rs = await HttpService.post(OFFER_HISTORIES,offerRequest.toJson(), bearerToken: TOKEN);
+  Future postOfferHistories(OfferRequest offerRequest) async {
+    var rs = await HttpService.post(OFFER_HISTORIES,
+        body: offerRequest.toJson(), bearerToken: TOKEN);
     print('codeOfferHistories ${rs.statusCode}');
     print('OfferHistories ${rs.body}');
+    if (rs.statusCode == 200) return true;
+    return false;
   }
 
   @override
-  Future deleteCapacityProfile(int capacityProfileId)async {
-    var rs = await HttpService.get('$CAPACITY_PROFILE/$capacityProfileId', bearerToken: TOKEN);
+  Future deleteCapacityProfile(int capacityProfileId) async {
+    var rs = await HttpService.get('$CAPACITY_PROFILE/$capacityProfileId',
+        bearerToken: TOKEN);
     print('codeDeleteCap ${rs.statusCode}');
   }
 
-  Future<dynamic> getJobRenters(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters', bearerToken: TOKEN);
+  Future<dynamic> getJobRenters(int id) async {
+    var rs =
+        await HttpService.get('$ACCOUNT/$id/jobrenters', bearerToken: TOKEN);
     print('code Job Renter: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -324,8 +358,9 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-  Future<dynamic> getJobRentersWaiting(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/waiting', bearerToken: TOKEN);
+  Future<dynamic> getJobRentersWaiting(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/waiting',
+        bearerToken: TOKEN);
     print('code Job Renter Waiting: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -335,8 +370,9 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-  Future<dynamic> getJobRentersInProgress(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/inprogress', bearerToken: TOKEN);
+  Future<dynamic> getJobRentersInProgress(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/inprogress',
+        bearerToken: TOKEN);
     print('code Job Renter InProgress: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -346,8 +382,9 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-  Future<dynamic> getJobRentersPast(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/past', bearerToken: TOKEN);
+  Future<dynamic> getJobRentersPast(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/past',
+        bearerToken: TOKEN);
     print('code Job Renter Past: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
@@ -357,47 +394,50 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-
-  Future<dynamic> getJobFreelancers(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers', bearerToken: TOKEN);
+  Future<dynamic> getJobFreelancers(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers',
+        bearerToken: TOKEN);
     print('code Job Freelancer Part: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
-      return jobs;
+      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
+      return jobsOffer;
     }
     return null;
   }
 
-  Future<dynamic> getJobFreelancersInProgress(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/inprogress', bearerToken: TOKEN);
+  Future<dynamic> getJobFreelancersInProgress(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/inprogress',
+        bearerToken: TOKEN);
     print('code Job freelancers inprogress: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
-      return jobs;
+      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
+      return jobsOffer;
     }
     return null;
   }
 
-  Future<dynamic> getJobFreelancersPast(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/past', bearerToken: TOKEN);
+  Future<dynamic> getJobFreelancersPast(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/past',
+        bearerToken: TOKEN);
     print('code Job freelancers past: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
-      return jobs;
+      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
+      return jobsOffer;
     }
     return null;
   }
 
-  Future<dynamic> getOfferHistories(int id) async{
-    var rs = await HttpService.get('$ACCOUNT/$id/offerhistories', bearerToken: TOKEN);
+  Future<dynamic> getOfferHistories(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/offerhistories',
+        bearerToken: TOKEN);
     print('code Job OfferHistories: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
-      return jobs;
+      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
+      return jobsOffer;
     }
     return null;
   }
@@ -412,20 +452,77 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       return banks;
     }
   }
+
   @override
   Future getBankAccounts() async {
     var rs = await HttpService.get(BANK_ACCOUNT, bearerToken: TOKEN);
     print('code Payment Method ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var paymentMethods = jsonList.map((e) => PaymentMethod.fromJson(e)).toList();
+      var paymentMethods =
+          jsonList.map((e) => PaymentMethod.fromJson(e)).toList();
       return paymentMethods;
     }
   }
 
   @override
-  Future postBankAccounts(BankAccountRequest request) async{
-    var rs = await HttpService.post(BANK_ACCOUNT,request.toJson(), bearerToken: TOKEN);
+  Future postBankAccounts(BankAccountRequest request) async {
+    var rs = await HttpService.post(BANK_ACCOUNT,
+        body: request.toJson(), bearerToken: TOKEN);
     print('code Bank Account ${rs.statusCode}');
+  }
+
+  @override
+  Future postSkill(String name) async {
+    var rs = await HttpService.post(SKILLS,body: {'name':name}, bearerToken: TOKEN);
+    print('code post skill ${rs.statusCode}');
+  }
+
+  @override
+  Future putSkill(int id,String name) async {
+    var rs = await HttpService.put('$SKILLS/$id',body: {'name':name}, bearerToken: TOKEN);
+    print('code put skill ${rs.statusCode}');
+  }
+
+  @override
+  Future postService(String name, List<Specialty> specialties) async {
+    Map<String,dynamic> input = {
+      "name": name,
+      "specialties" : specialties,
+    };
+    var rs = await HttpService.post(SERVICE,body: input, bearerToken: TOKEN);
+    print('cod post Service ${rs.statusCode}');
+  }
+
+  @override
+  Future putService(int id,String name, List<Specialty> specialties) async {
+    Map<String,dynamic> input = {
+      "name": name,
+      "specialties" : specialties,
+    };
+    var rs = await HttpService.put('$SERVICE/$id',body: input, bearerToken: TOKEN);
+    print('cod put Service ${rs.statusCode}');
+  }
+
+  @override
+  Future searchJob(SearchRequest request) async{
+   var rs = await HttpService.get('$JOB/search',parameters:request.toJsonJob(),bearerToken: TOKEN);
+   print('code Search Job ${rs.statusCode}');
+   if(rs.statusCode == 200){
+     var jsonList = jsonDecode(rs.body) as List;
+     var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+     return jobs;
+   }
+  }
+
+  @override
+  Future searchFreelancer(SearchRequest request) async{
+    var rs = await HttpService.get('$ACCOUNT/search',parameters:request.toJsonFreelancer(),bearerToken: TOKEN);
+    print('code Search ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
+      return accounts;
+    }
   }
 }

@@ -17,9 +17,11 @@ class FreelancerDetailController extends GetxController{
   void loadFreelancer() async {
     try{
       progressState(sState.loading);
-      var result = await apiRepositoryInterface.getAccountFromId(freelancerId);
-      freelancer(result);
-      progressState(sState.initial);
+     await apiRepositoryInterface.getAccountFromId(freelancerId).then((value){
+        freelancer(value);
+        progressState(sState.initial);
+      });
+
     }catch(e){
      print('lỗi: ${e.toString()}');
      progressState(sState.failure);
@@ -27,9 +29,7 @@ class FreelancerDetailController extends GetxController{
   }
   void getCapacityProfiles(int freelancerId) async {
     try{
-      final result = await apiRepositoryInterface.getCapacityProfiles(freelancerId);
-      capacityProfiles.assignAll(result);
-      print('size ${capacityProfiles.length}');
+     await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value) => capacityProfiles.assignAll(value));
     }catch(e){
       print('Lỗi: ${e.toString()}');
     }

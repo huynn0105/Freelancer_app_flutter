@@ -1,5 +1,6 @@
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/province.dart';
 
 import 'form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
@@ -17,7 +18,9 @@ class Account {
   String name;
   String phone;
   String email;
-  String tile;
+  String createdAtDate;
+  String title;
+  Province province;
   String description;
   String website;
   double balance;
@@ -39,9 +42,11 @@ class Account {
     this.name,
     this.phone,
     this.email,
-    this.tile,
+    this.title,
     this.description,
+    this.createdAtDate,
     this.website,
+    this.province,
     this.balance,
     this.earning,
     this.onReady,

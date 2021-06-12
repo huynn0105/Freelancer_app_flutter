@@ -67,7 +67,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                   Header(
                     avatarUrl: freelancer.avatarUrl,
                     name: freelancer.name,
-                    tile: freelancer.tile,
+                    tile: freelancer.title,
                     level: freelancer.level,
                   ),
                   Information(

@@ -4,7 +4,7 @@ const TextStyle TEXT_STYLE_PRIMARY =
     TextStyle(fontSize: 19, fontWeight: FontWeight.w600);
 const TextStyle TEXT_STYLE_ON_FOREGROUND = TextStyle(fontSize: 16);
 const TextStyle TEXT_STYLE_FOREIGN =
-    TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black54);
+    TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.black54);
 
 
 const primaryColor = Color(0xFF2697FF);

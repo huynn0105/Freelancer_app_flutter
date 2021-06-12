@@ -13,8 +13,7 @@ class AccountRequest {
    String website;
    int specialtyId;
    int levelId;
-   bool onReady;
-   int formOfWorkId;
+   String provinceID;
    List<Skill> skills;
    List<Service> services;
 
@@ -27,8 +26,7 @@ class AccountRequest {
     this.description,
     this.specialtyId,
     this.levelId,
-    this.onReady,
-    this.formOfWorkId,
+    this.provinceID,
     this.skills,
     this.services,
   });

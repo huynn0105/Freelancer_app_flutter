@@ -12,8 +12,9 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     phone: json['phone'] as String,
     email: json['email'] as String,
-    tile: json['tile'] as String,
+    title: json['title'] as String,
     description: json['description'] as String,
+    createdAtDate: json['createdAtDate'] as String,
     website: json['website'] as String,
     balance: (json['balance'] as num)?.toDouble(),
     earning: (json['earning'] as num)?.toDouble(),
@@ -22,6 +23,9 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     formOfWork: json['formOfWork'] == null
         ? null
         : FormOfWork.fromJson(json['formOfWork'] as Map<String, dynamic>),
+    province: json['province'] == null
+        ? null
+        : Province.fromJson(json['province'] as Map<String, dynamic>),
     level: json['level'] == null
         ? null
         : Level.fromJson(json['level'] as Map<String, dynamic>),
@@ -55,7 +59,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'name': instance.name,
       'phone': instance.phone,
       'email': instance.email,
-      'tile': instance.tile,
+      'title': instance.title,
       'description': instance.description,
       'website': instance.website,
       'balance': instance.balance,
@@ -65,6 +69,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'formOfWork': instance.formOfWork,
       'level': instance.level,
       'role': instance.role,
+      'createdAtDate': instance.createdAtDate,
       'specialty': instance.specialty,
       'freelancerServices': instance.freelancerServices,
       'freelancerSkills': instance.freelancerSkills,

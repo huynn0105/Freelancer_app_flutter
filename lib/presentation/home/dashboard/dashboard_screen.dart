@@ -9,7 +9,6 @@ import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
 import 'widget/earning.dart';
-import 'widget/project.dart';
 
 class DashboardScreen extends GetWidget<HomeController> {
   void logout() async {
@@ -59,7 +58,7 @@ class DashboardScreen extends GetWidget<HomeController> {
                         ],
                       ),
                     ),
-                    Obx(()=> Project(jobs: controller.account.value.jobRenters,)),
+
                   ],
                 )
               : const SizedBox.shrink(),
@@ -109,7 +108,7 @@ class DashboardScreen extends GetWidget<HomeController> {
                 radius: 20,
                 backgroundColor: Colors.pinkAccent,
                 child: CachedNetworkImage(
-                  imageUrl: '$IMAGE/$url',
+                  imageUrl: 'http://$url',
                   httpHeaders: {
                     HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
                   },

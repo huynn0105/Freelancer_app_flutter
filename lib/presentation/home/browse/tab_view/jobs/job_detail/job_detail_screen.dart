@@ -13,9 +13,8 @@ import 'job_offers/job_offers_screen.dart';
 
 class JobDetailScreen extends StatelessWidget {
   final int jobId;
-  bool isMe = false;
 
-  JobDetailScreen({@required this.jobId, this.isMe});
+  JobDetailScreen({@required this.jobId});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,7 @@ class JobDetailScreen extends StatelessWidget {
                                 backgroundColor: Colors.grey.shade300,
                                 child: CachedNetworkImage(
                                   imageUrl:
-                                      '$IMAGE/${controller.job.value.avatarRenter}',
+                                      'http://${controller.job.value.avatarRenter}',
                                   httpHeaders: {
                                     HttpHeaders.authorizationHeader:
                                         'Bearer $TOKEN'
@@ -87,9 +86,11 @@ class JobDetailScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: kDefaultPadding / 4),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                spacing: 10,
+                                runSpacing: 5,
                                 children: [
                                   NavItem(
                                       title:
@@ -123,20 +124,39 @@ class JobDetailScreen extends StatelessWidget {
                               Divider(),
                             ],
                           ),
-                          Text('Dịch vụ càn thuê', style: TEXT_STYLE_PRIMARY),
+                          Row(
+                            children: [
+                              Icon(Icons.home_repair_service_outlined,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Dịch vụ càn thuê', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(controller.job.value.service.name,
                               style: TEXT_STYLE_FOREIGN.copyWith(
                                   color: Colors.blue)),
                           SizedBox(height: kDefaultPadding),
-                          Text('Mô tả chi tiết', style: TEXT_STYLE_PRIMARY),
+
+                          Row(
+                            children: [
+                              Icon(Icons.description_outlined,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Mô tả chi tiết', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(
                             controller.job.value.details,
                             style: TEXT_STYLE_ON_FOREGROUND,
                           ),
                           SizedBox(height: kDefaultPadding),
-                          Text('Kỹ năng yêu cầu', style: TEXT_STYLE_PRIMARY),
+                          Row(
+                            children: [
+                              Icon(Icons.psychology_outlined,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Kỹ năng yêu cầu', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           Wrap(
                             children: List.generate(
                               controller.job.value.skills.length,
@@ -156,18 +176,36 @@ class JobDetailScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: kDefaultPadding),
-                          Text('Ngân sách', style: TEXT_STYLE_PRIMARY),
+                          Row(
+                            children: [
+                              Icon(CupertinoIcons.money_dollar_circle,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Ngân sách', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(
                               '${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ',
                               style: TEXT_STYLE_FOREIGN),
                           SizedBox(height: kDefaultPadding),
-                          Text('Hạn chót', style: TEXT_STYLE_PRIMARY),
+                          Row(
+                            children: [
+                              Icon(Icons.access_time_outlined,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Hạn chót nhận hồ sơ', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           SizedBox(height: kDefaultPadding / 4),
                           Text('${df.format(controller.job.value.deadline)}',
                               style: TEXT_STYLE_FOREIGN),
                           SizedBox(height: kDefaultPadding),
-                          Text('Địa điểm', style: TEXT_STYLE_PRIMARY),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on_outlined,color: Colors.black87,),
+                              SizedBox(width: kDefaultPadding/2),
+                              Text('Địa điểm làm việc', style: TEXT_STYLE_PRIMARY),
+                            ],
+                          ),
                           SizedBox(height: kDefaultPadding / 4),
                           Text(
                               controller.job.value.province != null
@@ -178,7 +216,7 @@ class JobDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    isMe == false ? Align(
+                    controller.job.value.renter.id != CURRENT_ID ? Align(
                       alignment: Alignment.bottomCenter,
                       child: RoundedButton(
                         onTap: () => Get.to(() => JobOffersScreen()),

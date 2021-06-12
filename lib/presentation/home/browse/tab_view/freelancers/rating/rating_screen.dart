@@ -35,7 +35,7 @@ class RatingScreen extends StatelessWidget {
             foregroundColor: Colors.transparent,
             backgroundColor: Colors.grey.shade300,
             child: CachedNetworkImage(
-              imageUrl: '$IMAGE/${freelancer.avatarUrl}',
+              imageUrl: 'http://${freelancer.avatarUrl}',
               httpHeaders: {
                 HttpHeaders.authorizationHeader:
                 'Bearer $TOKEN'

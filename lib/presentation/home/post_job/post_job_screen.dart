@@ -101,7 +101,7 @@ class ItemCategory extends StatelessWidget {
                 ),
               ),
               CachedNetworkImage(
-                imageUrl: '$IMAGE/$image',
+                imageUrl: 'http://$image',
                 httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
                 placeholder: (context, url) => CupertinoActivityIndicator(),
                 imageBuilder: (context, image) => Container(

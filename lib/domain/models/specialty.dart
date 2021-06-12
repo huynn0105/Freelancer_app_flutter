@@ -3,14 +3,20 @@ class Specialty{
    int id;
    String name;
    String image;
-   Specialty({this.id,this.name});
+   bool isValue = false;
+   Specialty({this.id,this.name,this.isValue});
 
 
    Specialty.fromJson(Map<String, dynamic> json) {
-     id = json['id'];
-     name = json['name'];
-     image = json['image'];
+     id = json['id'] as int;
+     name = json['name']  as String;
+     image = json['image'] as String;
    }
+   Specialty.fromJsonNoValue(Map<String, dynamic> json) {
+     id = json['id'] as int;
+     name = json['name'] as String;
+   }
+
 
    Map<String, dynamic> toJson() {
      final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -32,4 +38,12 @@ class Specialty{
 
   @override
   int get hashCode => id.hashCode;
+
+   Specialty copyWith({bool isValue, int id, String name}) {
+     return Specialty(
+       isValue: isValue ?? this.isValue,
+       id: id ?? this.id,
+       name: name ?? this.name,
+     );
+   }
 }

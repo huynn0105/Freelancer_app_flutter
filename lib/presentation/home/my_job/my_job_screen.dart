@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/home/my_job/tab_view/as_employer_screen.dart';
-import 'package:freelance_app/presentation/home/my_job/tab_view/as_freelancer.dart';
+import 'package:freelance_app/presentation/home/my_job/tab_view/as_freelancer_screen.dart';
 
 class MyJobScreen extends StatelessWidget {
   @override

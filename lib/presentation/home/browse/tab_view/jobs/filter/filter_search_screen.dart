@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/presentation/home/browse/filter/filter_controller.dart';
-import 'package:freelance_app/presentation/home/browse/widgets/search_box_filter.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/jobs/jobs_controller.dart';
+import 'package:freelance_app/presentation/home/browse/widgets/item_filter.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
 
 
+
 class FilterSearchScreen extends StatelessWidget {
-  final controller = Get.put<FilterController>(FilterController(
+  final controller = Get.put<JobsController>(JobsController(
     apiRepositoryInterface: Get.find(),
   ));
 
@@ -28,10 +28,13 @@ class FilterSearchScreen extends StatelessWidget {
         actions: [
           TextButton(
             child: Text(
-              'Hoàn thành',
+              'Tìm',
               style: TextStyle(fontSize: 17),
             ),
-            onPressed: () {},
+            onPressed: () {
+              controller.sendSearch();
+              Get.back();
+            },
           )
         ],
         elevation: 0,
@@ -43,10 +46,36 @@ class FilterSearchScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SearchBoxFilter(
-                  controller: controller,
-                  searchQueryController: controller.searchQueryController,
-                  isSearching: controller.isSearching.value,
+                Obx(
+                  ()=> TextField(
+                    controller: controller.searchQueryController,
+                    onChanged: (value){
+                      value.isNotEmpty ? controller.isSearching(true) : controller.isSearching(false);
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: controller.isSearching.value ? IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          controller.searchQueryController.text = '';
+                          controller.isSearching(false);
+                        },
+                      ) : SizedBox.shrink(),
+                      fillColor: Colors.black38.withAlpha(15),
+                      hintText: "Tìm kiếm...",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      contentPadding: EdgeInsets.all(4),
+                    ),
+                    style: TextStyle(fontSize: 18.0),
+                  ),
                 ),
                 SizedBox(
                   height: kDefaultPadding,
@@ -80,11 +109,7 @@ class FilterSearchScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
-
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: kDefaultPadding),
                 controller.specialties.isNotEmpty ? ItemFilter(
                   title: 'Lĩnh vực',
                   list: controller.specialties,
@@ -144,54 +169,3 @@ class FilterSearchScreen extends StatelessWidget {
   }
 }
 
-class ItemFilter extends StatelessWidget {
-  const ItemFilter({
-    Key key,
-    @required this.title,
-    @required this.list,
-    @required this.onChanged,
-    @required this.selected,
-
-  }) : super(key: key);
-
-
-  final String title;
-  final List list;
-  final Function onChanged;
-  final selected;
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Row(
-      children: [
-        Container(
-          width: 90,
-          child: Text(
-            title,
-            style: TEXT_STYLE_ON_FOREGROUND,
-          ),
-        ),
-        SizedBox(width: 50,),
-        Container(
-          width: 210,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton(
-              value: selected,
-              onChanged: (newValue) {
-                onChanged(newValue);
-              },
-              items: list.map<DropdownMenuItem>(( value) {
-                return DropdownMenuItem(
-                  value: value,
-                  child: Container(child: Text(value.name,style: TextStyle(fontSize: 16),),width: 170,),
-                );
-              }).toList(),
-            ),
-          ),
-        )
-
-      ],
-    );
-  }
-}

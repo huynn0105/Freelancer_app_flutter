@@ -5,6 +5,7 @@ import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
@@ -28,7 +29,8 @@ class HomeController extends GetxController {
   RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
   RxBool accountOnReady = true.obs;
   List<RxList<Job>> jobsRenter = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
-  List<RxList<Job>> jobsFreelancer = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
+
+  List<RxList<JobOffer>> jobsFreelancer = <RxList<JobOffer>>[<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs];
   var tabSelectedRenter = 0.obs;
   var tabSelectedFreelancer = 0.obs;
 
@@ -49,22 +51,20 @@ class HomeController extends GetxController {
   Future<void> loadAccountFromToken() async {
     try {
       progressState(sState.loading);
-      var user = await apiRepositoryInterface.getAccountFromToken();
-      progressState(sState.initial);
-      if (user != null) {
-        account(user);
-      } else if (user == null) {
-        print('lỗi: user null');
-        await apiRepositoryInterface.logout();
-        await localRepositoryInterface.clearData();
-        Get.offAllNamed(Routes.login);
-      }
+     await apiRepositoryInterface.getAccountFromToken().then((value){
+        progressState(sState.initial);
+        if (value != null) {
+          account(value);
+        } else if (value == null) {
+          print('lỗi: user null');
+         logOut().then((value) => Get.offAllNamed(Routes.login));
+        }
+      });
+
     } catch (e) {
       print('lỗi: user ${e.toString()}');
       progressState(sState.initial);
-      await apiRepositoryInterface.logout();
-      await localRepositoryInterface.clearData();
-      Get.offAllNamed(Routes.login);
+      logOut().then((value) => Get.offAllNamed(Routes.login));
     }
   }
 
@@ -89,9 +89,7 @@ class HomeController extends GetxController {
 
   void getCapacityProfiles(int freelancerId) async {
     try {
-      final result =
-          await apiRepositoryInterface.getCapacityProfiles(freelancerId);
-      capacityProfiles.assignAll(result);
+          await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value) => capacityProfiles.assignAll(value));
     } catch (e) {
       print('lỗi:  ${e.toString()}');
     }
@@ -99,7 +97,7 @@ class HomeController extends GetxController {
 
   void deleteCapacityProfile(int capacityProfileId) async {
     try {
-      final result =
+
           await apiRepositoryInterface.deleteCapacityProfile(capacityProfileId);
     } catch (e) {
       print('lỗi:  ${e.toString()}');
@@ -165,7 +163,7 @@ class HomeController extends GetxController {
   }
 
   void loadJobsFreelancer(int selected) async {
-    var result;
+    List<JobOffer> result;
     progressState(sState.loading);
     switch (selected) {
       case 0:

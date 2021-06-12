@@ -33,7 +33,7 @@ class LoginController extends GetxController {
   final passwordTextController = TextEditingController();
   var loginState = sState.initial.obs;
 
-  Future login() async {
+  void login() async {
     final username = usernameTextController.text;
     final password = passwordTextController.text;
     try {
@@ -51,6 +51,7 @@ class LoginController extends GetxController {
         print('token: $TOKEN');
         await localRepositoryInterface.saveToken(TOKEN);
         await localRepositoryInterface.saveAccount(account);
+        CURRENT_ID = account.id;
         if(account.role.id == 1)
           Get.offAllNamed(Routes.admin);
         else

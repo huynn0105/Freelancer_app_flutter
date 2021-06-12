@@ -70,12 +70,12 @@ class ProfileScreen extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
-                                user.tile != null
+                                user.title != null
                                     ? Text(
-                                        user.tile,
+                                        user.title,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           color: Colors.black54,
                                         ),
                                       )
@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                                         user.level.name,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           color: Colors.black54,
                                         ),
                                       )
@@ -102,6 +102,7 @@ class ProfileScreen extends StatelessWidget {
                           child: Information(
                             email: user.email,
                             contract: user.website,
+                            location: user.province != null ? user.province.name : null,
                             phoneNumber: user.phone,
                           ),
                         ),
@@ -264,9 +265,9 @@ class ProfileScreen extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  user.tile != null
+                                  user.title != null
                                       ? Text(
-                                          user.tile,
+                                          user.title,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 18,
@@ -495,9 +496,9 @@ class ProfileScreen extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  user.tile != null
+                                  user.title != null
                                       ? Text(
-                                          user.tile,
+                                          user.title,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 18,
@@ -639,21 +640,11 @@ class ProfileScreen extends StatelessWidget {
                                               ],
                                             ),
                                             user.capacityProfiles.isNotEmpty
-                                                ? Capacity(
-                                                    capacityProfiles:
-                                                        user.capacityProfiles,
+                                                ? Capacity(capacityProfiles: user.capacityProfiles,
                                                     onTap: () {
-                                                      if (controllerHome
-                                                          .capacityProfiles
-                                                          .isEmpty)
-                                                        controllerHome
-                                                            .getCapacityProfiles(
-                                                                user.id);
-                                                      Get.to(() =>
-                                                          CapacityProfilesScreen(
-                                                            controller:
-                                                                controllerHome,
-                                                          ));
+                                                      if (controllerHome.capacityProfiles.isEmpty)
+                                                        controllerHome.getCapacityProfiles(user.id);
+                                                      Get.to(() => CapacityProfilesScreen(controller: controllerHome,));
                                                     },
                                                   )
                                                 : Center(

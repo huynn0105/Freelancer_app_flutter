@@ -24,11 +24,14 @@ const ACCOUNT_PAGINATION = '/api/Accounts/pagination';
 const OFFER_HISTORIES = '/api/OfferHistories';
 
 // ignore: non_constant_identifier_names
-String TOKEN = '';
+int CURRENT_ID;
+// ignore: non_constant_identifier_names
+String TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhAZ21haWwuY29tIiwicm9sZSI6IjEiLCJuYmYiOjE2MjMyNTU1OTEsImV4cCI6MTYzMTg5NTU5MSwiaWF0IjoxNjIzMjU1NTkxfQ.LdXIUYuQXPCujcD_tsv0vHmHoAPs-BGTdAziEFaNUU8';
 
 class HttpService {
-  static Future<http.Response> post(String url, Map<String, dynamic> body,
-      {String bearerToken, Map<String, dynamic> parameters}) async {
+
+  static Future<http.Response> post(String url,
+      { Map<String, dynamic> body,String bearerToken, Map<String, dynamic> parameters}) async {
     var uri = Uri.http(DOMAIN, url, parameters);
     print('HTTP POST: $uri');
     return (await http.post(uri, body: jsonEncode(body), headers: {
@@ -37,6 +40,7 @@ class HttpService {
       HttpHeaders.authorizationHeader: 'Bearer $bearerToken',
     }));
   }
+
 
   static Future<http.Response> put(String url,
       { Map<String, dynamic> body,String bearerToken, Map<String, dynamic> parameters}) async {

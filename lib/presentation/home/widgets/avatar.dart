@@ -25,7 +25,7 @@ class Avatar extends StatelessWidget {
           foregroundColor: Colors.transparent,
           backgroundColor: Colors.grey.shade300,
           child: CachedNetworkImage(
-            imageUrl: '$IMAGE/$url',
+            imageUrl: 'http://$url',
             httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
             placeholder: (context, url) => CupertinoActivityIndicator(),
             imageBuilder: (context, image) => CircleAvatar(
@@ -50,7 +50,7 @@ class Avatar extends StatelessWidget {
             Icons.camera_alt,
             color: Colors.black,
           ),
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(15),
           shape: CircleBorder(),
         ),
       )

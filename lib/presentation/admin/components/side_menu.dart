@@ -45,12 +45,14 @@ class SideMenu extends GetWidget<AdminController> {
             children: [
               SubItem(title: 'Quản lý chuyên ngành',svgSrc: 'assets/icons/menu_task.svg',
                 press: () {
+                  controller.loadSpecialties();
                   controller.indexSelected(2);
                   if(enable) Get.back();
                 },
               ),
               SubItem(title: 'Quản lý dịch vụ',svgSrc: 'assets/icons/menu_store.svg',
                 press: () {
+                  controller.loadServices();
                   controller.indexSelected(3);
                   if(enable) Get.back();
                 },
@@ -61,6 +63,7 @@ class SideMenu extends GetWidget<AdminController> {
             title: 'Quản lý kỹ năng cung cấp',
             svgSrc: 'assets/icons/menu_task.svg',
             press: () {
+              controller.loadSkills();
               controller.indexSelected(4);
               if(enable) Get.back();
             },
@@ -69,6 +72,7 @@ class SideMenu extends GetWidget<AdminController> {
             title: 'Quản lý tài khoản người dùng',
             svgSrc: 'assets/icons/menu_doc.svg',
             press: () {
+              controller.loadFreelancers();
               controller.indexSelected(5);
               if(enable) Get.back();
             },

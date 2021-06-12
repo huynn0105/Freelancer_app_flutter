@@ -82,7 +82,7 @@ class CapacityProfileDetailScreen extends StatelessWidget {
                                   color: Colors.grey[200],
                                 ),
                               ),
-                              imageUrl: '$IMAGE/${capacityProfile.imageUrl}',
+                              imageUrl: 'http://${capacityProfile.imageUrl}',
                               httpHeaders: {
                                 HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
                               },

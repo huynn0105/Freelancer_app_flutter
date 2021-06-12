@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class AsFreelancerScreen extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
-    var _listTextTabToggle = ["Tất cả", "Đang nhận", "Chào giá", "Đã qua"];
+    var _listTextTabToggle = ["Đã nhận", "Đang nhận", "Chào giá", "Đã qua"];
     return Obx(
       ()=> Scaffold(
         body: SingleChildScrollView(
@@ -15,7 +15,6 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
             children: [
               SizedBox(height: kDefaultPadding/2,),
               FlutterToggleTab(
-                // width in percent
                 borderRadius: 10,
                 height: 30,
                 initialIndex: controller.tabSelectedFreelancer.value,
@@ -39,12 +38,14 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
               ),
               Padding(
                 padding: EdgeInsets.all(kDefaultPadding / 2),
-                child: controller.progressState.value == sState.initial ? controller.jobsFreelancer[controller.tabSelectedFreelancer.value].isNotEmpty ? ListView.builder(
+                child: controller.progressState.value == sState.initial
+                    ? controller.jobsFreelancer[controller.tabSelectedFreelancer.value].isNotEmpty
+                    ? ListView.builder(
                     itemCount: controller.jobsFreelancer[controller.tabSelectedFreelancer.value].length,
                     shrinkWrap: true,
                     itemBuilder: (context,index){
                       return MyJobCard(
-                        job: controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index],
+                        jobOffer: controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index],
                       );
                     }) : Center(
                   child: Column(

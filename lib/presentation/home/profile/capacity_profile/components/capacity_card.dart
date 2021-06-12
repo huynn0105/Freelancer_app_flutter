@@ -25,7 +25,7 @@ class CapacityCard extends StatelessWidget {
             ));
       },
       child: CachedNetworkImage(
-        imageUrl: '$IMAGE/${capacityProfile.imageUrl}',
+        imageUrl: 'http://${capacityProfile.imageUrl}',
         httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
         placeholder: (context, url) => CupertinoActivityIndicator(),
         errorWidget: (context, url, error) => Container(

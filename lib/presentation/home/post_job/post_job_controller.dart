@@ -9,6 +9,7 @@ import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/models/type_of_work.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/requests/post_job_request.dart';
+import 'package:freelance_app/presentation/home/post_job/successful/successful_screen.dart';
 import 'package:get/get.dart';
 
 class PostJobController extends GetxController {
@@ -45,10 +46,10 @@ class PostJobController extends GetxController {
   final deadlineTextController = TextEditingController();
   final locationTextController = TextEditingController();
 
-  Future<bool> postJob() async {
+  Future postJob() async {
     try {
       progressState(sState.loading);
-      final response = await apiRepositoryInterface.postJob(PostJobRequest(
+       await apiRepositoryInterface.postJob(PostJobRequest(
         name: nameTextController.text,
         details: descriptionTextController.text,
         typeId: typeId.value,
@@ -63,20 +64,28 @@ class PostJobController extends GetxController {
         provinceId: provinceId.value,
         payformId: payFormId.value,
         skills: skillsSelected,
-      ));
-      progressState(sState.initial);
-      if (response != null) {
-        nameTextController.text = '';
-        descriptionTextController.text = '';
-        floorPriceTextController.text = '';
-        cellingPriceTextController.text = '';
-        return true;
-      }
-      return false;
+      )).then((value){
+        progressState(sState.initial);
+        if(value){
+          Get.offAll(() => SuccessfulScreen());
+          nameTextController.text = '';
+          descriptionTextController.text = '';
+          floorPriceTextController.text = '';
+          cellingPriceTextController.text = '';
+        }else
+          Get.snackbar('Lỗi', '',
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+      });
+
     } catch (e) {
       print("Lỗi: ${e.toString()}");
       progressState(sState.initial);
-      return false;
+      Get.snackbar('Lỗi', '',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
     }
   }
 
@@ -95,10 +104,8 @@ class PostJobController extends GetxController {
   }
 
   Future loadSpecialties() async {
-    try {
-      specialties.clear();
-      final result = await apiRepositoryInterface.getSpecialties();
-      specialties.assignAll(result);
+    try { await apiRepositoryInterface.getSpecialties().then((value) => specialties.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -106,9 +113,9 @@ class PostJobController extends GetxController {
 
   Future getSpecialtyServices(int specialtyId) async {
     try {
-      final result =
-          await apiRepositoryInterface.getSpecialtyServices(specialtyId);
-      services.assignAll(result);
+
+          await apiRepositoryInterface.getSpecialtyServices(specialtyId).then((value) => services.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -116,9 +123,8 @@ class PostJobController extends GetxController {
 
   Future getSkills() async {
     try {
-      skills.clear();
-      final result = await apiRepositoryInterface.getSkills();
-      skills.assignAll(result);
+      await apiRepositoryInterface.getSkills().then((value) => skills.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -126,9 +132,8 @@ class PostJobController extends GetxController {
 
   Future getTypeOfWorks() async {
     try {
-      typeOfWorks.clear();
-      final result = await apiRepositoryInterface.getTypeOfWorks();
-      typeOfWorks.assignAll(result);
+       await apiRepositoryInterface.getTypeOfWorks().then((value) => typeOfWorks.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -136,8 +141,8 @@ class PostJobController extends GetxController {
 
   Future getFormOfWorks() async {
     try {
-      final result = await apiRepositoryInterface.getFormOfWorks();
-      formOfWorks.assignAll(result);
+      await apiRepositoryInterface.getFormOfWorks().then((value) =>  formOfWorks.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -145,8 +150,8 @@ class PostJobController extends GetxController {
 
   Future getPayForms() async {
     try {
-      final result = await apiRepositoryInterface.getPayForms();
-      payForms.assignAll(result);
+     await apiRepositoryInterface.getPayForms().then((value) => payForms.assignAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -154,8 +159,8 @@ class PostJobController extends GetxController {
 
   Future getProvinces() async {
     try {
-      final result = await apiRepositoryInterface.getProvinces();
-      provinces.addAll(result);
+      await apiRepositoryInterface.getProvinces().then((value) => provinces.addAll(value));
+
     } catch (e) {
       print('lỗi ${e.toString()}');
     }

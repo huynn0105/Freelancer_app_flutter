@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:freelance_app/presentation/home/browse/filter/filter_search_screen.dart';
 import 'package:freelance_app/presentation/home/browse/widgets/wheel_selected_page.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class Header extends StatelessWidget {
   const Header({

@@ -13,45 +13,37 @@ class JobOffersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    // void sendOffer() async {
-    //   if (formKey.currentState.validate()) {
-    //     final  result = await controller.sendOffer();
-    //     if (result) {
-    //       Get.snackbar('Success', 'Register Success ',
-    //           snackPosition: SnackPosition.BOTTOM);
-    //       Get.offAllNamed(Routes.home);
-    //     } else {
-    //       Get.snackbar('Error', controller.message.value,
-    //           backgroundColor: Colors.red,
-    //           colorText: Colors.white,
-    //           snackPosition: SnackPosition.TOP);
-    //     }
-    //   } else {
-    //     Get.snackbar('Error', 'Kiểm tra lại thông tin',
-    //         backgroundColor: Colors.red,
-    //         colorText: Colors.white,
-    //         snackPosition: SnackPosition.TOP);
-    //   }
-    // }
+    GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+    void sendOffer() async {
+      if (_keyForm.currentState.validate()) {
+        controller.sendOffer();
+      } else {
+        Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Offer information'),
+        title: Text('THÔNG TIN CHÀO GIÁ'),
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: _keyForm,
           child: Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
+            padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Column(
                   children: [
                     EditBox(
-                      title: 'Proposed cost',
-                      hint: '10,000,000',
+                      title: 'Chi phí đề xuất*',
+                      hint: '5,000,000',
+                      controller: controller.offerPriceController,
                       validator:
-                          MinLengthValidator(1, errorText: "Can't be left blank"),
+                          MinLengthValidator(1, errorText: "Không được bỏ trống"),
                       keyboardType: TextInputType.number,
                       inputFormatters: [ThousandsFormatter()],
                       suffixIcon: Padding(
@@ -61,129 +53,76 @@ class JobOffersScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: kDefaultPadding,),
+                    SizedBox(height: kDefaultPadding),
                     EditBox(
-                      title: 'Expected to be completed in',
-                      hint: '6 ',
+                      title: 'Dự kiến hoàn thành trong*',
+                      controller: controller.expectedDayController,
+                      hint: '3',
                       validator:
-                          MinLengthValidator(1, errorText: "Can't be left blank"),
+                          MinLengthValidator(1, errorText: "Không được bỏ trống"),
                       keyboardType: TextInputType.number,
-                      suffixIcon: PopupMenuButton(
-                        child: Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Text(
-                            'Week',
-                          ),
-                        ),
-                        itemBuilder: (BuildContext bc) => [
-                          PopupMenuItem(
-                            child: Text(
-                              'Day',
-                            ),
-                            value: "/Day",
-                          ),
-                          PopupMenuItem(
-                            child: Text(
-                              'Week',
-                            ),
-                            value: "/Week",
-                          ),
-                          PopupMenuItem(
-                            child: Text(
-                              'Month',
-                            ),
-                            value: "/Month",
-                          ),
-                        ],
-                        onSelected: (route) {
-                          print(route);
-                          // Note You must create respective pages for navigation
-                          // Navigator.pushNamed(context, route);
-                        },
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text('Ngày',style: TextStyle(fontSize: 16),),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: kDefaultPadding,),
+                SizedBox(height: kDefaultPadding),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Proposal to convince customers',
+                      'Đề xuất thuyết phục khách hàng*',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
-                      height: kDefaultPadding/2,
+                      height: kDefaultPadding/2
                     ),
                     Text(
-                      '1.What experiences and skills do you have that would be a good fit for this project?',
+                      '1.Bạn có những kinh nghiệm và kỹ năng nào phù hợp với dự án này?',
                       style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
-
+                    SizedBox(height: 4),
                     InputText(
                       hint:
-                          '''- I have xx years of experience in this field..\n- I am proficient in using tools such as...\n- I've done similar projects in the past...''',
+                          '''- Tôi đã có xx năm kinh nghiệm trong linh vực..\n- Tôi sử dụng thành thạo các công cụ như...\n- Tôi đã từng thực hiện những dự án tương tự...''',
                       maxLines: 5,
+                      controller: controller.descriptionController,
                       validator:
-                          MinLengthValidator(1, errorText: "Can't be left blank"),
+                          MinLengthValidator(1, errorText: "Không được bỏ trống"),
                     ),
                     SizedBox(
-                      height: kDefaultPadding/2,
+                      height: kDefaultPadding
                     ),
                     Text(
-                      '2.How do you plan to do this project?',
+                      '2.Bạn dự định thực hiện dự án này như thế nào?*',
                       style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),
+                    SizedBox(height: 4),
                     InputText(
                       hint:
-                          '''- First I will...\n- Then I will...\n- I believe it will be completed as planned''',
+                          '''- Đầu tiên tôi sẽ...\n- Sau đó tôi sẽ...\n- Tôi tin sẽ hoàn thành công việc theo kế hoạch''',
                       maxLines: 5,
+                      controller: controller.todoListController,
                       validator:
-                          MinLengthValidator(1, errorText: "Can't be left blank"),
+                          MinLengthValidator(1, errorText: "Không được bỏ trống"),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: kDefaultPadding,
+                  height: kDefaultPadding
                 ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     Text(
-                //       'Your contact information',
-                //       style: TextStyle(
-                //         fontSize: 20,
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       height: kDefaultPadding/2,
-                //     ),
-                //     InputText(
-                //       hint: 'Phone',
-                //       icon: Icon(Icons.phone),
-                //     ),
-                //     SizedBox(
-                //       height: kDefaultPadding/2,
-                //     ),
-                //     InputText(
-                //       hint: 'Skype',
-                //       icon: Icon(FontAwesomeIcons.skype),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 15,
-                // ),
+
                 RoundedButton(
                     onTap: () {
-                      controller.sendOffer();
+                      sendOffer();
                     },
                     child: Text(
-                      'Send offer',
+                      'Gửi chào giá',
                       style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),
                     )),
                 SizedBox(

@@ -2,6 +2,8 @@ import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 class JobDetailController extends GetxController{
@@ -20,23 +22,43 @@ class JobDetailController extends GetxController{
 
   void loadJob() async {
     progressState(sState.loading);
-    var result = await apiRepositoryInterface.getJobFromId(jobId);
-    job(result);
-    progressState(sState.initial);
+   await apiRepositoryInterface.getJobFromId(jobId).then((value){
+      job(value);
+      progressState(sState.initial);
+    });
+
   }
 
   void sendOffer() async{
     try{
       await apiRepositoryInterface.postOfferHistories(OfferRequest(
           jobId: job.value.id,
+          freelancerId: CURRENT_ID,
+          offerPrice: int.parse(offerPriceController.text.replaceAll(',','')),
+          expectedDay: expectedDayController.text + 'Ngày',
           description: descriptionController.text,
-          expectedDay: expectedDayController.text,
-          freelancerId: 1,
-          offerPrice: int.parse(offerPriceController.text),
           todoList: todoListController.text
-      ));
-    }catch(e){
+      )).then((value){
+        if (value) {
+          Get.offAllNamed(Routes.home);
+          Get.snackbar('Thành công', 'Gửi chào giá thành công',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
 
+        } else {
+          Get.snackbar('Thất bại!', 'Thử lại sau!',
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.TOP);
+        }
+      });
+    }catch(e){
+      print('lỗi: $e');
+      Get.snackbar('Thất bại!', 'Thử lại sau!',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP);
     }
   }
 

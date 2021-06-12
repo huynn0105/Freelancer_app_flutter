@@ -26,7 +26,7 @@ class Header extends StatelessWidget {
             foregroundColor: Colors.transparent,
             backgroundColor: Colors.grey.shade300,
             child: CachedNetworkImage(
-              imageUrl: '$IMAGE/$avatarUrl',
+              imageUrl: 'http://$avatarUrl',
               httpHeaders: {
                 HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
               },

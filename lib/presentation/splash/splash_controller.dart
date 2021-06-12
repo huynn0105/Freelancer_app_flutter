@@ -33,6 +33,7 @@ class SplashController extends GetxController {
         print('token: $TOKEN');
         var account = await apiRepositoryInterface.getAccountFromToken();
         await localRepositoryInterface.saveAccount(account);
+        CURRENT_ID = account.id;
         if(account.role.id ==  1){
           print('admin');
         Get.offAllNamed(Routes.admin);
