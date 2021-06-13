@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/presentation/admin/admin_controller.dart';
-import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
 
 class DiaLogChoices extends StatefulWidget {
@@ -51,10 +49,20 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-      width: Responsive.isDesktop(context) ? size.width * 0.35 : double.maxFinite,
-      child: AnimatedContainer(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Chọn dịch vụ'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.check),
+          onPressed: (){
+            controller.selectedList(widget.listSelected,widget.listChoice);
+            Get.back();
+          },)
+        ],
+      ),
+      body: AnimatedContainer(
         padding: MediaQuery.of(context).viewInsets,
         duration: const Duration(milliseconds: 300),
         child: Column(
@@ -62,19 +70,7 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              ElevatedButton(onPressed: (){
-                Get.back();
-              }, child: Text('Huỷ không chọn')),
-              Text('Chọn dịch vụ',style: TEXT_STYLE_PRIMARY),
-              ElevatedButton(onPressed: (){
-                controller.selectedList(widget.listSelected,widget.listChoice);
-                Get.back();
-              }, child: Text('Hoàn thành'))
-            ],),
-            SizedBox(height: kDefaultPadding,),
+
             searchBar(),
             list(),
           ],
@@ -125,12 +121,11 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
     return Obx(
       ()=> Expanded(
         child: Scrollbar(
-          child:  !_isSearch ?  ListView.builder(
+          child:  !_isSearch ? widget.listChoice.isNotEmpty ?  ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemCount: widget.listChoice.length,
               itemBuilder: (context, index) {
                 var item = widget.listChoice[index];
-
                 return Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: CheckboxListTile(
@@ -143,9 +138,9 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
                         else if(item is Specialty)
                           controller.changeValueSpecialty(
                               item.copyWith(isValue: value));
-                      }),
+                      })
                 );
-              }) : _searchListView(),
+              }) : _searchListView(): Center(child: CircularProgressIndicator(),),
         ),
       ),
     );
@@ -162,13 +157,13 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
   }
 
   Widget _searchAddList() {
-    return ListView.builder(
+    return _searchListItems.isNotEmpty ? ListView.builder(
         itemCount: _searchListItems.length,
         itemBuilder: (BuildContext context, int index) {
           var item = _searchListItems[index];
           return Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: CheckboxListTile(
+            child:  CheckboxListTile(
                 title: Text(item.name),
                 value: item.isValue,
                 onChanged: (bool value) {
@@ -178,9 +173,9 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
                   else if(item is Specialty)
                     controller.changeValueSpecialty(
                         item.copyWith(isValue: value));
-                }),
+                })
           );
-        });
+        }): Center(child: CircularProgressIndicator(),);
   }
 }
 

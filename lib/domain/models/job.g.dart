@@ -10,13 +10,12 @@ Job _$JobFromJson(Map<String, dynamic> json) {
   return Job(
     id: json['id'] as int,
     name: json['name'] as String,
-    avatarRenter: json['avatarRenter'] as String,
     deadline: json['deadline'] == null
         ? null
         : DateTime.parse(json['deadline'] as String),
-    createAt: json['creatAt'] == null
+    createAt: json['createAt'] == null
         ? null
-        : DateTime.parse(json['creatAt'] as String),
+        : DateTime.parse(json['createAt'] as String),
     details: json['details'] as String,
     renter: json['renter'] == null
         ? null
@@ -49,6 +48,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Skill.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    avatarUrl: json['avatarUrl'] as String,
   );
 }
 
@@ -56,8 +56,9 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'deadline': instance.deadline?.toIso8601String(),
+      'createAt': instance.createAt?.toIso8601String(),
       'details': instance.details,
-      'creatAt': instance.createAt,
+      'avatarUrl': instance.avatarUrl,
       'renter': instance.renter,
       'freelancer': instance.freelancer,
       'floorprice': instance.floorprice,
@@ -70,5 +71,4 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'province': instance.province,
       'status': instance.status,
       'skills': instance.skills,
-      'avatarRenter': instance.avatarRenter,
     };

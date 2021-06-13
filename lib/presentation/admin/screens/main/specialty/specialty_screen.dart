@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/presentation/admin/admin_controller.dart';
 import 'package:freelance_app/presentation/admin/components/dialog_choices.dart';
@@ -13,24 +12,26 @@ import 'package:get/get.dart';
 class SpecialtyScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       padding: Responsive.isDesktop(context)
           ? EdgeInsets.symmetric(
               vertical: kDefaultPadding, horizontal: kDefaultPadding * 3)
           : EdgeInsets.all(kDefaultPadding / 2),
       child: Obx(
-        () => controller.progressState.value == sState.initial
-            ? Column(
+        () => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-                      controller.loadServices();
-                      Get.defaultDialog(
-                          radius: 10,
-                          title: 'Thêm chuyên ngành',
-                          titleStyle: TEXT_STYLE_PRIMARY,
-                          content: SpecialDetail());
+                      showDialog(
+                          context: context,
+                          builder: (_)=>AlertDialog(
+                              contentPadding: EdgeInsets.all(10),
+                              content: Container(
+                                  width: Responsive.isDesktop(context) ? size.width * 0.35 : double.maxFinite,
+                                  child: SpecialDetail()))
+                      );
                     },
                     style: !Responsive.isMobile(context)
                         ? TextButton.styleFrom(
@@ -62,28 +63,34 @@ class SpecialtyScreen extends GetWidget<AdminController> {
                             rows: List.generate(
                                 controller.specialties.length,
                                 (index) => recentDataRow(
-                                    controller.specialties[index])),
+                                    controller.specialties[index],context)),
                           ),
                         )
-                      : Center(child: Text('Trống')),
+                      : Center(child: CircularProgressIndicator())
                 ],
               )
-            : Center(child: CircularProgressIndicator()),
+            ,
       ),
     );
   }
 
-  DataRow recentDataRow(Specialty specialty) {
+  DataRow recentDataRow(Specialty specialty,context) {
+    var size = MediaQuery.of(context).size;
     return DataRow(
       cells: [
         DataCell(Text('${specialty.id}')),
         DataCell(Text(specialty.name)),
         DataCell(ElevatedButton(
           onPressed: () {
-            Get.defaultDialog(
-                title: 'Sửa chuyên ngành',
-                radius: 10,
-                content: SpecialDetail(specialty: specialty));
+            showDialog(
+              context: context,
+                builder: (_)=>AlertDialog(
+                  contentPadding: EdgeInsets.all(10),
+                    content: Container(
+                      width: Responsive.isDesktop(context) ? size.width * 0.35 : double.maxFinite,
+                        child: SpecialDetail(specialty: specialty)))
+                );
+
           },
           child: Text('Sửa'),
           style: ElevatedButton.styleFrom(primary: Colors.yellow),
@@ -99,10 +106,11 @@ class SpecialDetail extends StatelessWidget {
     this.specialty,
   }) : super(key: key);
   final Specialty specialty;
-  final controller = Get.find<AdminController>();
+
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AdminController>();
     final _formKey = GlobalKey<FormState>();
     var size = MediaQuery.of(context).size;
     if (specialty != null) {
@@ -113,11 +121,18 @@ class SpecialDetail extends StatelessWidget {
       controller.base64img.value = '';
       controller.nameImage.value = '';
     }
-    return Expanded(
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${specialty!=null ? 'Sửa' : 'Thêm'} chuyên ngành'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(icon: Icon(Icons.clear), onPressed: ()=>Get.back())
+        ],
+      ),
+      body: Container(
         padding: EdgeInsets.all(kDefaultPadding),
-        width:
-            Responsive.isDesktop(context) ? size.width * 0.35 : size.width * 0.65,
+
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -201,7 +216,7 @@ class SpecialDetail extends StatelessWidget {
                 children: [
                   SizedBox(
                     child: Text(
-                      "Chọn dịch vụ",
+                      "Dịch vụ",
                       style: TextStyle(color: Colors.black54, fontSize: 16),
                     ),
                     width: 150,
@@ -209,14 +224,14 @@ class SpecialDetail extends StatelessWidget {
                   SizedBox(width: kDefaultPadding),
                   ElevatedButton(
                       onPressed: () {
-                        if (controller.services.isEmpty) {
-                          controller.loadServices();
-                        }
+                        controller.loadServices();
                         showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
                               contentPadding: EdgeInsets.all(10),
-                              content: DiaLogChoices(listChoice: controller.services,listSelected: controller.servicesSelected,),
+                              content: Container(
+                                  width: Responsive.isDesktop(context) ? size.width * 0.35 : double.maxFinite,
+                                  child: DiaLogChoices(listChoice: controller.services,listSelected: controller.servicesSelected,)),
                             ));
                       },
                       child: Text('Click để chọn'))
@@ -300,9 +315,3 @@ class SpecialDetail extends StatelessWidget {
   }
 }
 
-List demoService = [
-  Service(id: 1, name: 'Tất cả'),
-  Service(id: 2, name: 'Lập trình web'),
-  Service(id: 3, name: 'Lập trình ứng dụng di động'),
-  Service(id: 4, name: 'Đa nền tảng'),
-];

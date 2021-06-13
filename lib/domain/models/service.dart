@@ -1,8 +1,11 @@
+import 'package:freelance_app/domain/models/specialty.dart';
+
 class Service{
   int id;
   String name;
+  List<Specialty> specialties;
   bool isValue;
-  Service({this.id,this.name,this.isValue});
+  Service({this.id,this.name,this.isValue,this.specialties});
 
   Service.fromJson(Map<String, dynamic> json) {
     id = json['id'] as int;
@@ -13,6 +16,10 @@ class Service{
   Service.fromJsonNoValue(Map<String, dynamic> json) {
     id = json['id'] as int;
     name = json['name'] as String;
+    specialties = (json['specialty'] as List)
+        ?.map(
+            (e) => e == null ? null : Specialty.fromJson(e as Map<String, dynamic>))
+        ?.toList();
     isValue = false;
   }
 

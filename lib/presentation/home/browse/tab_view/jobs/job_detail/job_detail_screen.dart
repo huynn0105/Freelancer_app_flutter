@@ -54,7 +54,7 @@ class JobDetailScreen extends StatelessWidget {
                                 backgroundColor: Colors.grey.shade300,
                                 child: CachedNetworkImage(
                                   imageUrl:
-                                      'http://${controller.job.value.avatarRenter}',
+                                      'http://${controller.job.value.avatarUrl}',
                                   httpHeaders: {
                                     HttpHeaders.authorizationHeader:
                                         'Bearer $TOKEN'

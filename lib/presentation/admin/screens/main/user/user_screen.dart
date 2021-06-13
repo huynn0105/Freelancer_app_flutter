@@ -7,6 +7,7 @@ import 'package:freelance_app/presentation/admin/screens/main/components/my_feil
 import 'package:freelance_app/presentation/admin/screens/main/manage_job/manage_job_screen.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 class UserScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class UserScreen extends GetWidget<AdminController> {
                   DataColumn(label: Text('Tên Người Dùng',overflow: TextOverflow.ellipsis,)),
                   DataColumn(label: Text('Tuỳ chọn',overflow: TextOverflow.ellipsis)),
                 ],
-                rows: List.generate(controller.freelancers.length, (index) => recentDataRow(controller.freelancers[index])),
+                rows: List.generate(controller.freelancers.length, (index) => recentDataRow(controller.freelancers[index],context)),
               ),
             ),
           ],
@@ -50,19 +51,18 @@ class UserScreen extends GetWidget<AdminController> {
       ),
     );
   }
-  DataRow recentDataRow(Account account) {
+  DataRow recentDataRow(Account account,context) {
+    var size = MediaQuery.of(context).size;
     return DataRow(
       cells: [
         DataCell(Text('${account.id}')),
         DataCell(Text(account.name)),
         DataCell(ElevatedButton(onPressed: () async{
           var result = await controller.loadFreelancerFromId(account.id);
-          Get.defaultDialog(
-              title: '${account.name}',
-              titleStyle: TEXT_STYLE_PRIMARY,
-              radius: 10,
-              content: FreelancerDetail(freelancer: result),
-          );
+          showDialog(context: context, builder: (_)=>AlertDialog(
+            contentPadding: EdgeInsets.all(10),
+            content: SizedBox(width: Responsive.isDesktop(context) ? size.width*0.4 : double.maxFinite, child: FreelancerDetail(freelancer: result)),
+          ));
         }, child: Text('Xem'),style: ElevatedButton.styleFrom(primary: Colors.green),)),
       ],
     );
@@ -80,11 +80,18 @@ class FreelancerDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(kDefaultPadding),
-        width: Responsive.isDesktop(context) ? size.width*0.4 : size.width*0.75,
+    final df = new DateFormat('dd-MM-yyyy');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Thông tin người dùng'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(icon: Icon(Icons.clear), onPressed: ()=>Get.back())
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.all(kDefaultPadding/2),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +114,7 @@ class FreelancerDetail extends StatelessWidget {
               Divider(),
               ItemRow(title: 'Trạng thái',content: freelancer.onReady ? 'Sẵn sàng' : 'Bận'),
               Divider(),
-              ItemRow(title: 'Ngày tạo',content: freelancer.createdAtDate),
+              ItemRow(title: 'Ngày tạo',content: '${df.format(freelancer.createdAtDate)}'),
               Divider(),
               ItemRow(title: 'Kinh nghiệm',content: freelancer.level !=null ? freelancer.level.name : ''),
               Divider(),
@@ -115,7 +122,47 @@ class FreelancerDetail extends StatelessWidget {
               Divider(),
               ItemRow(title: 'Thành phố',content: freelancer.province !=null ? freelancer.province.name : ''),
               Divider(),
-              ItemRow(title: 'Dịch vụ cung cấp',content: freelancer.freelancerServices.isNotEmpty? 'Kỹ năng nhiều' : ''),
+              Padding(padding: EdgeInsets.symmetric(vertical: 7),child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      'Dịch vụ cung cấp',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    width: 200,
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
+                  ),
+                  Expanded(child: freelancer.freelancerServices.isNotEmpty ? Wrap(
+                    children: List.generate(freelancer.freelancerServices.length, (index){
+                      if(index<freelancer.freelancerServices.length-1)
+                        return Text('${freelancer.freelancerServices[index].name}, ');
+                      return Text(freelancer.freelancerServices[index].name);
+                    }),
+                  ):Text('Chưa cập nhập'),)
+                ],
+              ),),
+              Divider(),
+              Padding(padding: EdgeInsets.symmetric(vertical: 7),child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      'Dịch vụ cung cấp',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    width: 200,
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
+                  ),
+                  Expanded(child: freelancer.freelancerSkills.isNotEmpty ? Wrap(
+                    children: List.generate(freelancer.freelancerSkills.length, (index){
+                      if(index<freelancer.freelancerSkills.length-1)
+                        return Text('${freelancer.freelancerSkills[index].name}, ');
+                      return Text(freelancer.freelancerSkills[index].name);
+                    }),
+                  ):Text('Chưa cập nhập'),)
+                ],
+              ),),
             ],
           ),
         ),

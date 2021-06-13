@@ -1,7 +1,7 @@
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/domain/models/province.dart';
-
 import 'form_of_work.dart';
 import 'package:freelance_app/domain/models/level.dart';
 import 'package:freelance_app/domain/models/role.dart';
@@ -18,10 +18,12 @@ class Account {
   String name;
   String phone;
   String email;
-  String createdAtDate;
+  DateTime createdAtDate;
+  DateTime bannedAtDate;
   String title;
   Province province;
   String description;
+  List<PaymentMethod> bankAccounts;
   String website;
   double balance;
   double earning;

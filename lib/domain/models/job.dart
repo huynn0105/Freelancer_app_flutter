@@ -19,8 +19,8 @@ class Job {
   DateTime deadline;
   DateTime createAt;
   String details;
+  String avatarUrl;
   Renter renter;
-  String avatarRenter;
   Account freelancer;
   int floorprice;
   int cellingprice;
@@ -51,7 +51,7 @@ class Job {
     this.province,
     this.status,
     this.skills,
-    this.avatarRenter,
+    this.avatarUrl,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);

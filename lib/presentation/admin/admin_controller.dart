@@ -61,26 +61,24 @@ class AdminController extends GetxController {
   }
 
   Future loadServices() async {
-    progressState(sState.loading);
+    services.clear();
     try {
       await apiRepositoryInterface.getServices().then((value){
         services.assignAll(value);
-        if(servicesSelected.isNotEmpty){
-          value.forEach((element) {
-            specialtiesSelected.forEach((e) {
-              if (e.id == element.id) {
-                element.isValue = true;
-                return;
-              }
-            });
+        if(servicesSelected.isNotEmpty)
+        services.forEach((element) {
+          specialtiesSelected.forEach((e) {
+            if (e.id == element.id) {
+              element.isValue = true;
+              return;
+            }
           });
-        }
-        return progressState(sState.initial);
+        });
       });
 
     } catch (e) {
       print('lỗi ${e.toString()}');
-      progressState(sState.initial);
+
     }
   }
 
@@ -89,14 +87,15 @@ class AdminController extends GetxController {
     indexSelected(index);
   }
 
-  Future loadJobFromId(jobId) async {
+  Future<Job> loadJobFromId(jobId) async {
     try {
       await apiRepositoryInterface.getJobFromId(jobId).then((value) {
-        job(value);
-        return job.value;
+       return job(value);
       });
+      return job.value;
     } catch (e) {
       print('Lỗi $e');
+      return null;
     }
   }
 
@@ -114,13 +113,13 @@ class AdminController extends GetxController {
   }
 
   Future loadSpecialties() async {
-    progressState(sState.loading);
+    specialties.clear();
     try {
       await apiRepositoryInterface.getSpecialties().then((value){
         specialties.assignAll(value);
-        progressState(sState.initial);
+        if(specialtiesSelected.isNotEmpty)
         value.forEach((element) {
-          servicesSelected.forEach((e) {
+          specialtiesSelected.forEach((e) {
             if (e.id == element.id) {
               element.isValue = true;
               return;
@@ -130,7 +129,6 @@ class AdminController extends GetxController {
       });
 
     } catch (e) {
-      progressState(sState.initial);
       print('lỗi ${e.toString()}');
     }
   }
@@ -224,7 +222,6 @@ class AdminController extends GetxController {
         }
         progressState(sState.initial);
       });
-
     } catch (e) {
       progressState(sState.failure);
     }
