@@ -13,10 +13,15 @@ const logoSize = 45.0;
 class LoginScreen extends GetWidget<LoginController> {
   void login() async {
     if (formKey.currentState.validate()) {
-      await controller.login();
+       controller.login();
     } else {
       Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
-          snackPosition: SnackPosition.BOTTOM);
+          maxWidth: 600,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          barBlur: 200
+      );
     }
   }
 
@@ -226,6 +231,10 @@ class FormLogin extends StatelessWidget {
           ),
           TextFormField(
             controller: usernameTextController,
+            validator: MultiValidator([
+              RequiredValidator(errorText: 'Yêu cầu nhập mật khẩu'),
+              EmailValidator(errorText: 'Sai định dang email'),
+            ]),
             decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.person_outline,

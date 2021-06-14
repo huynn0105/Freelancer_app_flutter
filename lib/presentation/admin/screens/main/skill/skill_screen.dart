@@ -89,6 +89,7 @@ class _SkillDetailState extends State<SkillDetail> {
       width: Responsive.isDesktop(context)? size.width*0.35 : size.width*0.6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -132,6 +133,7 @@ class _SkillDetailState extends State<SkillDetail> {
               Get.snackbar(
                 'Thành công',
                 '',
+                maxWidth: 600,
                 snackPosition: SnackPosition.TOP,
                 backgroundColor: Colors.green,
                 colorText: Colors.white,

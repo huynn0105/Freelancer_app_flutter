@@ -118,7 +118,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                               onPressed: () {
                                 if(controller.capacityProfiles.isEmpty)
                                 controller.getCapacityProfiles(freelancerId);
-                                Get.to(() => CapacityProfilesScreen(controller: controller,));
+                                Get.to(() => CapacityProfilesScreen());
                               },
                               child:freelancer.capacityProfiles.isNotEmpty
                                   ? Text('Xem tất cả')
@@ -132,7 +132,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                           onTap: (){
                             if(controller.capacityProfiles.isEmpty)
                                controller.getCapacityProfiles(freelancerId);
-                            Get.to(() => CapacityProfilesScreen(controller: controller,));
+                            Get.to(() => CapacityProfilesScreen());
                           },
                         )
                             : Text('Chưa có hồ sơ nào!'),

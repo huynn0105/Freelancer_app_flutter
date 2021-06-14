@@ -132,7 +132,6 @@ class SpecialDetail extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.all(kDefaultPadding),
-
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -285,6 +284,7 @@ class SpecialDetail extends StatelessWidget {
                       Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
                           backgroundColor: Colors.red,
                           colorText: Colors.white,
+                          maxWidth: 600,
                           snackPosition: SnackPosition.TOP);
                     } else {
                       if (specialty != null)
@@ -297,6 +297,7 @@ class SpecialDetail extends StatelessWidget {
                         Get.snackbar(
                           'Thành công',
                           '',
+                          maxWidth: 600,
                           snackPosition: SnackPosition.TOP,
                           backgroundColor: Colors.green,
                           colorText: Colors.white,

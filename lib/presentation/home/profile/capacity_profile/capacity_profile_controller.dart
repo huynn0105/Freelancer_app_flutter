@@ -18,7 +18,6 @@ class CapacityProfileController extends GetxController {
   var progressState = sState.initial.obs;
   RxList<Service> services = <Service>[].obs;
   RxList<Service> servicesSelected = <Service>[].obs;
-  RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
   RxString base64img = ''.obs;
   RxString nameImage = ''.obs;
 
@@ -102,17 +101,9 @@ class CapacityProfileController extends GetxController {
     }
   }
 
-  Future getCapacityProfiles(int freelancerId) async {
-    try{
-      progressState(sState.loading);
-      await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
-        capacityProfiles.assignAll(value);
-        progressState(sState.initial);
-      });
-    }catch(e){
-      progressState(sState.failure);
-    }
-  }
+
+
+
 
 
 

@@ -21,11 +21,19 @@ class JobDetailController extends GetxController{
   Rx<Job> job = Job().obs;
 
   void loadJob() async {
-    progressState(sState.loading);
-   await apiRepositoryInterface.getJobFromId(jobId).then((value){
-      job(value);
-      progressState(sState.initial);
-    });
+    try {
+      progressState(sState.loading);
+      await apiRepositoryInterface.getJobFromId(jobId).then((value) {
+        if(value!=null){
+          job(value);
+          progressState(sState.initial);
+        }else
+          progressState(sState.failure);
+      });
+    }catch(e){
+      print('lỗi: $e');
+      progressState(sState.failure);
+    }
 
   }
 
@@ -44,12 +52,14 @@ class JobDetailController extends GetxController{
           Get.snackbar('Thành công', 'Gửi chào giá thành công',
               backgroundColor: Colors.green,
               colorText: Colors.white,
+              maxWidth: 600,
               snackPosition: SnackPosition.TOP);
 
         } else {
           Get.snackbar('Thất bại!', 'Thử lại sau!',
               backgroundColor: Colors.red,
               colorText: Colors.white,
+              maxWidth: 600,
               snackPosition: SnackPosition.TOP);
         }
       });
@@ -58,6 +68,7 @@ class JobDetailController extends GetxController{
       Get.snackbar('Thất bại!', 'Thử lại sau!',
           backgroundColor: Colors.red,
           colorText: Colors.white,
+          maxWidth: 600,
           snackPosition: SnackPosition.TOP);
     }
   }

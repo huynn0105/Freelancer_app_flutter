@@ -26,6 +26,7 @@ class Job {
   int cellingprice;
   PayForm payform;
   Specialty specialty;
+  bool offered;
   Service service;
   TypeOfWork typeOfWork;
   FormOfWork formOfWork;

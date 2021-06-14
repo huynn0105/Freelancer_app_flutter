@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_offers/job_offers_detail.dart';
+import 'package:freelance_app/presentation/home/home_controller.dart';
+import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
 import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:get/get.dart';
@@ -20,6 +23,7 @@ class JobDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put<JobDetailController>(
         JobDetailController(apiRepositoryInterface: Get.find(), jobId: jobId));
+    final homeController = Get.find<HomeController>();
     final formatter = new NumberFormat("#,###");
     final df = new DateFormat('dd-MM-yyyy');
     return Scaffold(
@@ -44,6 +48,7 @@ class JobDetailScreen extends StatelessWidget {
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
                                 height: kDefaultPadding,
@@ -77,6 +82,7 @@ class JobDetailScreen extends StatelessWidget {
                               ),
                               SizedBox(height: kDefaultPadding / 2),
                               Text(controller.job.value.name,
+                                  textAlign: TextAlign.center,
                                   style: TEXT_STYLE_PRIMARY.copyWith(
                                       fontSize: 22)),
                               SizedBox(height: kDefaultPadding / 2),
@@ -126,9 +132,13 @@ class JobDetailScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.home_repair_service_outlined,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
-                              Text('Dịch vụ càn thuê', style: TEXT_STYLE_PRIMARY),
+                              Icon(
+                                Icons.home_repair_service_outlined,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
+                              Text('Dịch vụ càn thuê',
+                                  style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
                           SizedBox(height: kDefaultPadding / 4),
@@ -136,11 +146,13 @@ class JobDetailScreen extends StatelessWidget {
                               style: TEXT_STYLE_FOREIGN.copyWith(
                                   color: Colors.blue)),
                           SizedBox(height: kDefaultPadding),
-
                           Row(
                             children: [
-                              Icon(Icons.description_outlined,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
+                              Icon(
+                                Icons.description_outlined,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
                               Text('Mô tả chi tiết', style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
@@ -152,9 +164,13 @@ class JobDetailScreen extends StatelessWidget {
                           SizedBox(height: kDefaultPadding),
                           Row(
                             children: [
-                              Icon(Icons.psychology_outlined,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
-                              Text('Kỹ năng yêu cầu', style: TEXT_STYLE_PRIMARY),
+                              Icon(
+                                Icons.psychology_outlined,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
+                              Text('Kỹ năng yêu cầu',
+                                  style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
                           Wrap(
@@ -178,8 +194,11 @@ class JobDetailScreen extends StatelessWidget {
                           SizedBox(height: kDefaultPadding),
                           Row(
                             children: [
-                              Icon(CupertinoIcons.money_dollar_circle,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
+                              Icon(
+                                CupertinoIcons.money_dollar_circle,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
                               Text('Ngân sách', style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
@@ -190,9 +209,13 @@ class JobDetailScreen extends StatelessWidget {
                           SizedBox(height: kDefaultPadding),
                           Row(
                             children: [
-                              Icon(Icons.access_time_outlined,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
-                              Text('Hạn chót nhận hồ sơ', style: TEXT_STYLE_PRIMARY),
+                              Icon(
+                                Icons.access_time_outlined,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
+                              Text('Hạn chót nhận hồ sơ',
+                                  style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
                           SizedBox(height: kDefaultPadding / 4),
@@ -201,9 +224,13 @@ class JobDetailScreen extends StatelessWidget {
                           SizedBox(height: kDefaultPadding),
                           Row(
                             children: [
-                              Icon(Icons.location_on_outlined,color: Colors.black87,),
-                              SizedBox(width: kDefaultPadding/2),
-                              Text('Địa điểm làm việc', style: TEXT_STYLE_PRIMARY),
+                              Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.black87,
+                              ),
+                              SizedBox(width: kDefaultPadding / 2),
+                              Text('Địa điểm làm việc',
+                                  style: TEXT_STYLE_PRIMARY),
                             ],
                           ),
                           SizedBox(height: kDefaultPadding / 4),
@@ -216,17 +243,190 @@ class JobDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    controller.job.value.renter.id != CURRENT_ID ? Align(
+                    controller.job.value.renter.id != CURRENT_ID
+                        ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: RoundedButton(
+                              onTap: () {
+                                var current = homeController.account.value;
+                                if (current.phone == '' ||
+                                    current.province == null ||
+                                    current.specialty == null ||
+                                    current.title == '' ||
+                                    current.level == null ||
+                                    current.freelancerSkills.length < 2 ||
+                                    current.freelancerServices.isEmpty ||
+                                    current.description == '') {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => AlertDialog(
+                                            insetPadding: EdgeInsets.all(5),
+                                            title: Text(
+                                              'Bạn chưa có quyền gửi chào giá!',
+                                              style: TextStyle(fontSize: 23),
+                                            ),
+                                            contentPadding: EdgeInsets.all(10),
+                                            content: Container(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                      'Để gửi chào giá, bạn phải hoàn thiện hồ sơ cá nhân. Hiện tại hồ sơ của bạn đang thiếu các thông tin sau:'),
+                                                  Column(
+                                                    children: [
+                                                      if (current.province == null)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Thành phố',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current.specialty == null)
+                                                        ListTile(title: Text(
+                                                          'Lĩnh vực chuyên môn',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current
+                                                          .description.isEmpty)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Giới thiệu bản thân',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current.phone.isEmpty)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Số điện thoại',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current.title.isEmpty)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Chức danh',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current.level == null)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Trình độ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current
+                                                              .freelancerSkills
+                                                              .length <
+                                                          2)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Tối thiếu 2 kỹ năng',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                      if (current
+                                                          .freelancerServices
+                                                          .isEmpty)
+                                                        ListTile(
+                                                            title: Text(
+                                                          'Hồ sơ dịch vụ',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.red),
+                                                        )),
+                                                    ],
+                                                  ),
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        Get.to(() =>
+                                                            EditProfileScreen(
+                                                                account:
+                                                                    current));
+                                                      },
+                                                      child:
+                                                          Text('Bổ sung ngay'))
+                                                ],
+                                              ),
+                                            ),
+                                          ));
+                                } else
+                                  Get.to(() => JobOffersScreen());
+                              },
+                              child: Text(
+                                'Gửi chào giá',
+                                style: TEXT_STYLE_PRIMARY.copyWith(
+                                    color: Colors.white),
+                              ),
+                            ),
+                          )
+                        : Align(
                       alignment: Alignment.bottomCenter,
-                      child: RoundedButton(
-                        onTap: () => Get.to(() => JobOffersScreen()),
-                        child: Text(
-                          'Gửi chào giá',
-                          style:
-                              TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ) : SizedBox.shrink()
+                          child: Row(
+                      children: [
+                          Expanded(
+                            flex: 1,
+                              child: RoundedButton(
+                                backgroundColor: Color(0xFF1EC725),
+                              onTap: () {
+                                Get.to(() => JobOffersDetail());
+                              },
+                              child:
+                              Text('Có 15 chào giá',style: TEXT_STYLE_PRIMARY.copyWith(
+                              color: Colors.white)))),
+                          SizedBox(width: 10),
+                          Expanded(
+                            flex: 1,
+                              child: RoundedButton(
+                                backgroundColor: Colors.red,
+                            onTap: () {
+
+                              },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Đóng',style: TEXT_STYLE_PRIMARY.copyWith(
+                                    color: Colors.white)),
+                                SizedBox(width: 5),
+                                Icon(Icons.close),
+                              ],
+                            ),
+                              )),
+                      ],
+                    ),
+                        )
                   ],
                 )
               : const Center(

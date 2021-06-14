@@ -236,6 +236,7 @@ class ServiceDetail extends StatelessWidget {
                   Get.snackbar(
                     'Thành công',
                     '',
+                    maxWidth: 600,
                     snackPosition: SnackPosition.TOP,
                     backgroundColor: Colors.green,
                     colorText: Colors.white,

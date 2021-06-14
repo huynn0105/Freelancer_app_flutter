@@ -71,6 +71,7 @@ class RegisterController extends GetxController {
         Get.snackbar('Thành công', 'Đăng ký thành công',
               backgroundColor: Colors.green,
               colorText: Colors.white,
+            maxWidth: 600,
               snackPosition: SnackPosition.TOP);
       }
       else if(response.statusCode == 400) {
@@ -80,12 +81,14 @@ class RegisterController extends GetxController {
         Get.snackbar('Lỗi',js['message'],
             backgroundColor: Colors.red,
             colorText: Colors.white,
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP);
       }else{
         registerState(sState.initial);
         Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
             backgroundColor: Colors.red,
             colorText: Colors.white,
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP);
       }
 

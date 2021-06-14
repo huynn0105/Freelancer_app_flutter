@@ -76,6 +76,7 @@ class PostJobController extends GetxController {
           Get.snackbar('Lỗi', '',
               backgroundColor: Colors.red,
               colorText: Colors.white,
+              maxWidth: 600,
               snackPosition: SnackPosition.TOP);
       });
 
@@ -85,6 +86,7 @@ class PostJobController extends GetxController {
       Get.snackbar('Lỗi', '',
           backgroundColor: Colors.red,
           colorText: Colors.white,
+          maxWidth: 600,
           snackPosition: SnackPosition.TOP);
     }
   }
@@ -105,7 +107,6 @@ class PostJobController extends GetxController {
 
   Future loadSpecialties() async {
     try { await apiRepositoryInterface.getSpecialties().then((value) => specialties.assignAll(value));
-
     } catch (e) {
       print('lỗi ${e.toString()}');
     }

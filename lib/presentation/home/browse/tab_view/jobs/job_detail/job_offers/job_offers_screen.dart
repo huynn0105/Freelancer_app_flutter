@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 
 class JobOffersScreen extends StatelessWidget {
   final controller = Get.find<JobDetailController>();
-
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
@@ -21,10 +20,10 @@ class JobOffersScreen extends StatelessWidget {
         Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
             backgroundColor: Colors.red,
             colorText: Colors.white,
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP);
       }
     }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('THÔNG TIN CHÀO GIÁ'),

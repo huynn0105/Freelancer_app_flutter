@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/add_capacity_profile.dart';
 import 'package:freelance_app/presentation/home/widgets/service.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class CapacityProfileDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -32,7 +34,9 @@ class CapacityProfileDetailScreen extends StatelessWidget {
                               primary: Colors.grey, minimumSize: Size(120, 40)),
                           child: Text('Huỷ')),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.deleteCapacityProfile(capacityProfile);
+                          },
                           style: ElevatedButton.styleFrom(
                               primary: Colors.blue, minimumSize: Size(120, 40)),
                           child: Text('Xoá')),

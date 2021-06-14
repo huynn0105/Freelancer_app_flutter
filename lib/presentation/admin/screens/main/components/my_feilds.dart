@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/MyFiles.dart';
 import 'package:freelance_app/responsive.dart';
 
 class MyFields extends StatelessWidget {
@@ -35,17 +34,17 @@ class InfoCardGridView extends StatelessWidget {
     Key key,
     this.crossAxisCount = 4,
     this.childAspectRatio = 3,
-    this.list,
+
   }) : super(key: key);
   final int crossAxisCount;
   final double childAspectRatio;
-  final List<JobM> list;
+  //final List<JobM> list;
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
-      itemCount: list.length,
+
       physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
@@ -53,7 +52,7 @@ class InfoCardGridView extends StatelessWidget {
           childAspectRatio: childAspectRatio,
           crossAxisSpacing: kDefaultPadding),
       itemBuilder: (context, index) => ItemInfoCard(
-        info: list[index],
+
       ),
     );
   }
@@ -62,25 +61,34 @@ class InfoCardGridView extends StatelessWidget {
 class ItemInfoCard extends StatelessWidget {
   const ItemInfoCard({
     Key key,
-    @required this.info,
+    @required this.color,
+    @required this.title,
+    @required this.num,
   }) : super(key: key);
-  final JobM info;
+  final Color color;
+  final String title;
+  final int num;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kDefaultPadding*2/3),
+
       decoration: BoxDecoration(
-        color: info.color,
+        color: color,
         borderRadius:
             const BorderRadius.all(Radius.circular(kDefaultPadding / 2)),
       ),
-      child: Center(
-        child: Text('${info.title}: ${info.num}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: Colors.white,fontSize: 16),
-           ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.white,fontSize: 16),
+             ),
+          Text('$num',style: TextStyle(color: Colors.white,fontSize: 20))
+        ],
       ),
     );
   }

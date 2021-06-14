@@ -45,8 +45,8 @@ class ProfileController extends GetxController {
     Future<bool> uploadProfile(int id) async {
     try {
       progressState(sState.loading);
-      // var freelancerSkills =  skillsSelected.where((e) => e.isValue == true).toList();
-      // var freelancerServices =  servicesSelected.where((e) => e.isValue == true).toList();
+      var freelancerSkills =  skillsSelected.where((e) => e.isValue == true).toList();
+      var freelancerServices =  servicesSelected.where((e) => e.isValue == true).toList();
       var rs =  await apiRepositoryInterface.putAccount(
           id,
           AccountRequest(
@@ -59,8 +59,8 @@ class ProfileController extends GetxController {
             website: ctrlWebsite.text,
             specialtyId: specialtyId.value,
             levelId: levelId.value,
-            skills: skillsSelected,
-            services: servicesSelected,
+            skills: freelancerSkills,
+            services: freelancerServices,
           ));
       if(rs == 200){
         progressState(sState.initial);
@@ -78,6 +78,7 @@ class ProfileController extends GetxController {
       Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
           backgroundColor: Colors.red,
           colorText: Colors.white,
+          maxWidth: 600,
           snackPosition: SnackPosition.TOP);
       return false;
     }

@@ -35,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller.register();
        else
         Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
+            maxWidth: 600,
             backgroundColor: Colors.red,
             colorText: Colors.white,
             snackPosition: SnackPosition.TOP);

@@ -82,6 +82,13 @@ class AdminController extends GetxController {
     }
   }
 
+  @override
+  void onReady() {
+    loadJobs();
+    loadFreelancers();
+    super.onReady();
+  }
+
   void updateIndexSelected(int index) {
     print(indexSelected.value);
     indexSelected(index);
@@ -90,7 +97,8 @@ class AdminController extends GetxController {
   Future<Job> loadJobFromId(jobId) async {
     try {
       await apiRepositoryInterface.getJobFromId(jobId).then((value) {
-       return job(value);
+        if(value!=null)
+        job(value);
       });
       return job.value;
     } catch (e) {
@@ -234,6 +242,7 @@ class AdminController extends GetxController {
       print('lỗi: ${e.toString()}');
     }
   }
+
 
   Future loadSkills() async {
     progressState(sState.loading);

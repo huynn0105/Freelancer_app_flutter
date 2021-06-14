@@ -72,7 +72,8 @@ class HomeController extends GetxController {
     progressState(sState.loading);
     await localRepositoryInterface.getAccount().then(
       (value) {
-        account(value);
+        if(value!=null)
+          account(value);
       },
     );
     progressState(sState.initial);
@@ -89,18 +90,35 @@ class HomeController extends GetxController {
 
   void getCapacityProfiles(int freelancerId) async {
     try {
-          await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value) => capacityProfiles.assignAll(value));
+          await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
+            if(value!=null)
+              capacityProfiles.assignAll(value);
+          });
     } catch (e) {
       print('lỗi:  ${e.toString()}');
     }
   }
 
-  void deleteCapacityProfile(int capacityProfileId) async {
-    try {
-
-          await apiRepositoryInterface.deleteCapacityProfile(capacityProfileId);
-    } catch (e) {
-      print('lỗi:  ${e.toString()}');
+  Future deleteCapacityProfile(CapacityProfile capacityProfile) async{
+    try{
+      await apiRepositoryInterface.deleteCapacityProfile(capacityProfile.id).then((value){
+        if(value){
+          Get.snackbar('Thành công', 'Xoá hồ sơ năng lực thành công',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            maxWidth: 600,
+            colorText: Colors.white,);
+        }else{
+          Get.snackbar('Lỗi','Server lỗi! Thử lại sau',
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              maxWidth: 600,
+              snackPosition: SnackPosition.TOP);
+        }
+          loadAccountFromToken().then((value) => Get.offAndToNamed(Routes.home));
+      });
+    }catch(e){
+      print('lỗi: $e');
     }
   }
 
@@ -122,6 +140,7 @@ class HomeController extends GetxController {
         }
       } else {
         Get.snackbar('Lỗi', 'Tệp không được chọn',
+            maxWidth: 600,
             margin: EdgeInsets.only(top: 5, left: 10, right: 10));
       }
     } catch (e) {
@@ -184,7 +203,6 @@ class HomeController extends GetxController {
         result = await apiRepositoryInterface.getJobFreelancers(account.value.id);
         break;
     }
-
       try {
         jobsFreelancer[selected].assignAll(result);
         progressState(sState.initial);
@@ -192,8 +210,6 @@ class HomeController extends GetxController {
         print('lỗi ${e.toString()}');
         progressState(sState.initial);
       }
-
-
   }
 
   void sendOnReady() async{

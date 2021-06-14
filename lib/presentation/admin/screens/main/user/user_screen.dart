@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/MyFiles.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/presentation/admin/admin_controller.dart';
 import 'package:freelance_app/presentation/admin/screens/main/components/my_feilds.dart';
@@ -23,7 +22,17 @@ class UserScreen extends GetWidget<AdminController> {
                 children: [
                   Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
                   SizedBox(height: 5,),
-                  InfoCardGridView(list:demoUserM,crossAxisCount: Responsive.isMobile(context) ? 2 : 4,),
+                  //InfoCardGridView(list:demoUserM,crossAxisCount: Responsive.isMobile(context) ? 2 : 4,),
+                  Padding(
+                    padding: Responsive.isDesktop(context) ? const EdgeInsets.only(right: 300) : EdgeInsets.all(0),
+                    child: Row(
+                        children: [
+                          Expanded(child: ItemInfoCard(color: Colors.blue, title: 'Tổng người dùng', num: controller.freelancers.length)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(color: Colors.green, title: 'Đã xác thức', num: controller.freelancers.length)),
+                        ],
+                    ),
+                  )
                 ],
               ),
             ),

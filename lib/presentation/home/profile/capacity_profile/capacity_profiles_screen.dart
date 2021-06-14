@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
+import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
 import 'capacity_profile_controller.dart';
 import 'components/capacity_card.dart';
 class CapacityProfilesScreen extends StatelessWidget {
-  final controller;
-  CapacityProfilesScreen({this.controller});
   @override
   Widget build(BuildContext context) {
+    final controller =  Get.find<HomeController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Hồ sơ năng lực'),

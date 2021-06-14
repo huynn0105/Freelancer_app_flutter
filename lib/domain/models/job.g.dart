@@ -49,7 +49,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
             (e) => e == null ? null : Skill.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     avatarUrl: json['avatarUrl'] as String,
-  );
+  )..offered = json['offered'] as bool;
 }
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
@@ -65,6 +65,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'cellingprice': instance.cellingprice,
       'payform': instance.payform,
       'specialty': instance.specialty,
+      'offered': instance.offered,
       'service': instance.service,
       'typeOfWork': instance.typeOfWork,
       'formOfWork': instance.formOfWork,

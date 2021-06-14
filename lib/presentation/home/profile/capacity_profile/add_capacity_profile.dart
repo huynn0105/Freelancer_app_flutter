@@ -218,6 +218,7 @@ class AddCapacityProfile extends StatelessWidget {
                                 Get.snackbar('Lỗi', 'Vui lòng thêm ảnh',
                                     backgroundColor: Colors.red,
                                     colorText: Colors.white,
+                                    maxWidth: 600,
                                     snackPosition: SnackPosition.TOP);
                             else{
                               if(capacityProfile!=null)
@@ -227,16 +228,18 @@ class AddCapacityProfile extends StatelessWidget {
                               if(controller.progressState.value == sState.initial) {
                                 await controllerHome.loadAccountFromToken();
                                 Get.offAllNamed(Routes.home);
-                                Get.snackbar('Thành công', '',
+                                Get.snackbar('Thành công', '${capacityProfile!=null ? 'Cập nhập ' : 'Thêm '} hồ sơ năng lực thành công',
                                   snackPosition: SnackPosition.TOP,
                                   backgroundColor: Colors.green,
+                                  maxWidth: 600,
                                   colorText: Colors.white,);
                               }
                               else if(controller.progressState.value == sState.failure)
                                 Get.snackbar('Lỗi','Server lỗi! Thử lại sau',
                                     backgroundColor: Colors.red,
                                     colorText: Colors.white,
-                                    snackPosition: SnackPosition.BOTTOM);
+                                    maxWidth: 600,
+                                    snackPosition: SnackPosition.TOP);
 
 
 
@@ -246,6 +249,7 @@ class AddCapacityProfile extends StatelessWidget {
                             Get.snackbar('Lỗi', 'Kiểm tra lại thông tin đã nhập',
                                 backgroundColor: Colors.red,
                                 colorText: Colors.white,
+                                maxWidth: 600,
                                 snackPosition: SnackPosition.TOP);
                           }
                         },

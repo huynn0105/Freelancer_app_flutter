@@ -185,7 +185,8 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('codeJobId: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
-      var job = Job.fromJson(jsonObject);
+      var job = Job.fromJson(jsonObject['job']);
+
       return job;
     }
     return null;
@@ -293,7 +294,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getCapacityProfiles(int freelancerId) async {
-    var rs = await HttpService.get('$CAPACITY_PROFILE/freelancer/$freelancerId',
+    var rs = await HttpService.get('$ACCOUNT/$freelancerId/capacityprofiles',
         bearerToken: TOKEN);
     print('codeCapacityProfiles ${rs.statusCode}');
     if (rs.statusCode == 200) {
@@ -341,9 +342,12 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future deleteCapacityProfile(int capacityProfileId) async {
-    var rs = await HttpService.get('$CAPACITY_PROFILE/$capacityProfileId',
+    var rs = await HttpService.delete('$CAPACITY_PROFILE/$capacityProfileId',
         bearerToken: TOKEN);
     print('codeDeleteCap ${rs.statusCode}');
+    if (rs.statusCode == 200) return true;
+    return false;
+
   }
 
   Future<dynamic> getJobRenters(int id) async {

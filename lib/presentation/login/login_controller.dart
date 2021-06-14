@@ -57,6 +57,7 @@ class LoginController extends GetxController {
         else
           Get.offAllNamed(Routes.home);
         Get.snackbar('Thành công', 'Đăng nhập thành công',
+              maxWidth: 600,
               backgroundColor: Colors.green,
               colorText: Colors.white,
               snackPosition: SnackPosition.TOP);
@@ -68,6 +69,7 @@ class LoginController extends GetxController {
         loginState(sState.initial);
         Get.snackbar(
             'Lỗi',js['message'],
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP,
             backgroundColor: Colors.red,
             colorText: Colors.white
@@ -80,7 +82,9 @@ class LoginController extends GetxController {
       loginState(sState.initial);
       print('lỗi: ${e.toString()}');
       Get.snackbar(
-          'Lỗi','Sever bận',
+          'Lỗi','Sever bận! Thử lại sau!',
+          maxWidth: 600,
+          barBlur: 2,
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.red,
           colorText: Colors.white

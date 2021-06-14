@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/MyFiles.dart';
+import 'package:freelance_app/presentation/admin/admin_controller.dart';
 import 'package:freelance_app/presentation/admin/screens/main/components/my_feilds.dart';
 import 'package:freelance_app/responsive.dart';
+import 'package:get/get.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
@@ -21,12 +22,38 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 Text('Tổng số công việc',style: TEXT_STYLE_PRIMARY,),
                 SizedBox(height: 5,),
-                Responsive(
-                  mobile: InfoCardGridView(crossAxisCount:  2,
-                    childAspectRatio:  3,list: demoJobM,),
-                  desktop: InfoCardGridView(childAspectRatio: 3,list: demoJobM),
-                  tablet: InfoCardGridView(childAspectRatio:  3,list: demoJobM),
+                Responsive(mobile: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.jobs.length,color: Colors.blue,)),
+                        SizedBox(width: kDefaultPadding),
+                        Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.jobs.length,color: Colors.amber,))
+                      ],
+                    ),
+                    SizedBox(height: kDefaultPadding),
+                    Row(
+                      children: [
+                        Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.jobs.length,color: Colors.green,)),
+                        SizedBox(width: kDefaultPadding),
+                        Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.jobs.length,color: Colors.red,))
+                      ],
+                    )
+                  ],
                 ),
+                    desktop: Row(
+                      children: [
+                        Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.jobs.length,color: Colors.blue,)),
+                        SizedBox(width: kDefaultPadding),
+                        Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.jobs.length,color: Colors.amber,)),
+                        SizedBox(width: kDefaultPadding),
+                        Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.jobs.length,color: Colors.green,)),
+                        SizedBox(width: kDefaultPadding),
+                        Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.jobs.length,color: Colors.red,))
+                      ],
+                    ),
+                )
+
               ],
             ),
           ),
@@ -37,7 +64,16 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
                 SizedBox(height: 5,),
-                InfoCardGridView(list:demoUserM,crossAxisCount: Responsive.isMobile(context) ? 2 : 4,),
+                Padding(
+                  padding: Responsive.isDesktop(context) ? const EdgeInsets.only(right: 300) : EdgeInsets.all(0),
+                  child: Row(
+                    children: [
+                      Expanded(child: ItemInfoCard(color: Colors.blue, title: 'Tổng người dùng', num: controller.freelancers.length)),
+                      SizedBox(width: kDefaultPadding),
+                      Expanded(child: ItemInfoCard(color: Colors.green, title: 'Đã xác thức', num: controller.freelancers.length)),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

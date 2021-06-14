@@ -146,18 +146,21 @@ class AddCredit extends StatelessWidget {
         Get.snackbar('Thành công', '${paymentMethod != null ? 'Cập nhập' : 'Thêm'} phương thức thanh toán thành công',
             backgroundColor: Colors.green,
             colorText: Colors.white,
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP);
 
       } else {
         Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
             backgroundColor: Colors.red,
             colorText: Colors.white,
+            maxWidth: 600,
             snackPosition: SnackPosition.TOP);
       }
     }else {
       Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
           backgroundColor: Colors.red,
           colorText: Colors.white,
+          maxWidth: 600,
           snackPosition: SnackPosition.TOP);
     }
   }

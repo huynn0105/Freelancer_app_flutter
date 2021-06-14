@@ -28,6 +28,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
                   Get.snackbar('Lỗi', 'Khoảng tiền bị sai!!!',
                       snackPosition: SnackPosition.TOP,
                       backgroundColor: Colors.red,
+                      maxWidth: 600,
                       colorText: Colors.white);
                 } else
                   Get.to(() => PostJobDetailScreen());

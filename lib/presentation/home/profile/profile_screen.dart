@@ -181,7 +181,6 @@ class ProfileScreen extends StatelessWidget {
                                           controllerHome
                                               .getCapacityProfiles(user.id);
                                         Get.to(() => CapacityProfilesScreen(
-                                              controller: controllerHome,
                                             ));
                                       },
                                       child: user.capacityProfiles.isNotEmpty
@@ -199,7 +198,6 @@ class ProfileScreen extends StatelessWidget {
                                             controllerHome
                                                 .getCapacityProfiles(user.id);
                                           Get.to(() => CapacityProfilesScreen(
-                                                controller: controllerHome,
                                               ));
                                         },
                                       )
@@ -397,8 +395,6 @@ class ProfileScreen extends StatelessWidget {
                                                               user.id);
                                                     Get.to(() =>
                                                         CapacityProfilesScreen(
-                                                          controller:
-                                                              controllerHome,
                                                         ));
                                                   },
                                                   child: user.capacityProfiles
@@ -421,8 +417,6 @@ class ProfileScreen extends StatelessWidget {
                                                                 user.id);
                                                       Get.to(() =>
                                                           CapacityProfilesScreen(
-                                                            controller:
-                                                                controllerHome,
                                                           ));
                                                     },
                                                   )
@@ -627,10 +621,7 @@ class ProfileScreen extends StatelessWidget {
                                                           .getCapacityProfiles(
                                                               user.id);
                                                     Get.to(() =>
-                                                        CapacityProfilesScreen(
-                                                          controller:
-                                                              controllerHome,
-                                                        ));
+                                                        CapacityProfilesScreen());
                                                   },
                                                   child: user.capacityProfiles
                                                           .isNotEmpty
@@ -644,7 +635,7 @@ class ProfileScreen extends StatelessWidget {
                                                     onTap: () {
                                                       if (controllerHome.capacityProfiles.isEmpty)
                                                         controllerHome.getCapacityProfiles(user.id);
-                                                      Get.to(() => CapacityProfilesScreen(controller: controllerHome,));
+                                                      Get.to(() => CapacityProfilesScreen());
                                                     },
                                                   )
                                                 : Center(

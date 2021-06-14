@@ -28,7 +28,7 @@ class RoundedButton extends StatelessWidget {
             size.height * 0.073,
           )),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: child,
       ),
     );

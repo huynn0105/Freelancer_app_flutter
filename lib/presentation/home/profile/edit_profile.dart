@@ -49,6 +49,7 @@ class EditProfileScreen extends StatelessWidget {
                             'Thành công', 'Cập nhập thông tin thành công',
                             backgroundColor: Colors.green,
                             colorText: Colors.white,
+                            maxWidth: 600,
                             snackPosition: SnackPosition.TOP);
                       });
                     }
@@ -56,6 +57,7 @@ class EditProfileScreen extends StatelessWidget {
                       Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
                           backgroundColor: Colors.red,
                           colorText: Colors.white,
+                          maxWidth: 600,
                           snackPosition: SnackPosition.TOP);
                   });
                 },
@@ -337,7 +339,6 @@ class EditProfileScreen extends StatelessWidget {
     controller.ctrlDescription.text = account.description;
     controller.ctrlWebsite.text = account.website;
     controller.ctrlTitle.text = account.title;
-
     controller.levelId.value = account.level != null ? account.level.id : 0;
     controller.specialtyId.value =
         account.specialty != null ? account.specialty.id : 0;
