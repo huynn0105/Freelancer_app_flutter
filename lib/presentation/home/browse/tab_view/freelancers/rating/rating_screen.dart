@@ -13,70 +13,61 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 class RatingScreen extends StatelessWidget {
 
   final Account freelancer;
-  const RatingScreen({@required this.freelancer});
+  const RatingScreen({this.freelancer});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      padding: EdgeInsets.all(kDefaultPadding),
-      decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: new BorderRadius.only(
-          topLeft: const Radius.circular(kDefaultPadding),
-          topRight: const Radius.circular(kDefaultPadding),
-        ),
-      ),
-      child: Column(
-        children: [
-          Text('Đánh giá Freelancer',style: TEXT_STYLE_PRIMARY,),
-          SizedBox(height: kDefaultPadding,),
-          CircleAvatar(
-            radius: 36,
-            foregroundColor: Colors.transparent,
-            backgroundColor: Colors.grey.shade300,
-            child: CachedNetworkImage(
-              imageUrl: 'http://${freelancer.avatarUrl}',
-              httpHeaders: {
-                HttpHeaders.authorizationHeader:
-                'Bearer $TOKEN'
-              },
-              placeholder: (context, url) =>
-                  CupertinoActivityIndicator(),
-              imageBuilder: (context, image) => CircleAvatar(
-                backgroundImage: image,
-                radius: 33,
+    return Scaffold(
+      appBar: AppBar(),
+      body:  Column(
+          children: [
+            Text('Đánh giá Freelancer',style: TEXT_STYLE_PRIMARY,),
+            SizedBox(height: kDefaultPadding,),
+            CircleAvatar(
+              radius: 36,
+              foregroundColor: Colors.transparent,
+              backgroundColor: Colors.grey.shade300,
+              child: CachedNetworkImage(
+                imageUrl: 'https://thecastofcheers.com/images/9-best-online-avatars-and-how-to-make-your-own-[2020]-4.png',
+                httpHeaders: {
+                  HttpHeaders.authorizationHeader:
+                  'Bearer $TOKEN'
+                },
+                placeholder: (context, url) =>
+                    CupertinoActivityIndicator(),
+                imageBuilder: (context, image) => CircleAvatar(
+                  backgroundImage: image,
+                  radius: 33,
+                ),
+                errorWidget: (context, url, error) =>
+                    CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      backgroundImage: AssetImage(
+                          'assets/images/avatarnull.png'),
+                      radius: 33,
+                    ),
               ),
-              errorWidget: (context, url, error) =>
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage(
-                        'assets/images/avatarnull.png'),
-                    radius: 33,
-                  ),
             ),
-          ),
-          SizedBox(height: kDefaultPadding/2,),
-          Text(freelancer.name,style: TEXT_STYLE_PRIMARY.copyWith(fontWeight: FontWeight.w600),overflow: TextOverflow.ellipsis,),
-          SizedBox(height: kDefaultPadding/2,),
-          SmoothStarRating(
-            allowHalfRating: false,
-            starCount: 5,
-            rating: 4,
-            size: 40,
-            onRated: (value){
-            },
-            color: Colors.yellow,
-            borderColor: Colors.yellow,
-          ),
-          SizedBox(height: kDefaultPadding),
-          InputText(
-            hint: 'Nhập bình luận...',
-            maxLines: 6,
-          ),
-          Spacer(),
-          RoundedButton(onTap: (){}, child: Text('Gửi đánh giá',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),))
-        ],
-      ),
-    );
+            SizedBox(height: kDefaultPadding/2,),
+            Text('Nguyễn Nhật Huy',style: TEXT_STYLE_PRIMARY.copyWith(fontWeight: FontWeight.w600),overflow: TextOverflow.ellipsis,),
+            SizedBox(height: kDefaultPadding/2,),
+            SmoothStarRating(
+              allowHalfRating: false,
+              starCount: 5,
+              rating: 0,
+              size: 40,
+              onRated: (value){
+              },
+              color: Colors.yellow,
+              borderColor: Colors.yellow,
+            ),
+            SizedBox(height: kDefaultPadding),
+            InputText(
+              hint: 'Nhập bình luận...',
+              maxLines: 8,
+            ),
+            Spacer(),
+            RoundedButton(onTap: (){}, child: Text('Gửi đánh giá',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),))
+          ],
+        ));
   }
 }

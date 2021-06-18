@@ -24,20 +24,25 @@ class FreelancersScreen extends StatelessWidget {
       body: Obx(
         () {
           if (controller.progressState.value == sState.initial)
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: controller.freelancers.isNotEmpty
-                  ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: controller.freelancers.length,
-                itemBuilder: (context, index) {
-                  return FreelancerCard(
-                    freelancer: controller.freelancers[index],
-                    rate: 5,
-                  );
-                },
-              )
-                  : Center(child: Icon(Icons.error_outline),
+            return RefreshIndicator(
+              onRefresh: ()async{
+                await controller.loadFreelancer();
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: controller.freelancers.isNotEmpty
+                    ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.freelancers.length,
+                  itemBuilder: (context, index) {
+                    return FreelancerCard(
+                      freelancer: controller.freelancers[index],
+                      rate: 5,
+                    );
+                  },
+                )
+                    : Center(child: Icon(Icons.error_outline),
+                ),
               ),
             );
           else if (controller.progressState.value == sState.failure)

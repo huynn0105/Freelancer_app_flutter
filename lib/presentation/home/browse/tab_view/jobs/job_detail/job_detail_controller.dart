@@ -1,5 +1,7 @@
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/models/job_offer.dart';
+import 'package:freelance_app/domain/models/offer.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
@@ -13,12 +15,14 @@ class JobDetailController extends GetxController{
 
   JobDetailController({this.apiRepositoryInterface,this.jobId});
   var progressState = sState.loading.obs;
+  var progressClose = sState.initial.obs;
   TextEditingController offerPriceController = TextEditingController();
   TextEditingController expectedDayController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController todoListController = TextEditingController();
 
   Rx<Job> job = Job().obs;
+  RxList<Offer> offers = <Offer>[].obs;
 
   void loadJob() async {
     try {
@@ -66,6 +70,53 @@ class JobDetailController extends GetxController{
     }catch(e){
       print('lỗi: $e');
       Get.snackbar('Thất bại!', 'Thử lại sau!',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          maxWidth: 600,
+          snackPosition: SnackPosition.TOP);
+    }
+  }
+
+  Future loadOffer() async{
+    try{
+      progressState(sState.loading);
+      await apiRepositoryInterface.getJobOffer(jobId).then((value){
+        if(value!=null){
+          offers.assignAll(value);
+        }
+
+        progressState(sState.initial);
+      });
+    }catch(e){
+      print('lỗi: $e');
+      progressState(sState.initial);
+    }
+  }
+
+  Future choseFreelancer(int freelancerId) async {
+    try{
+      await apiRepositoryInterface.putJobOfferChoose(jobId, freelancerId);
+    }catch(e){
+      print('lỗi: $e');
+    }
+  }
+
+  Future closeJob() async {
+    try{
+      progressClose(sState.loading);
+      await apiRepositoryInterface.putJobClose(jobId).then((value){
+        progressClose(sState.initial);
+        Get.offAllNamed(Routes.home);
+        Get.snackbar('Thành công', 'Đã đóng công việc ${job.value.name}',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          maxWidth: 600,
+          colorText: Colors.white,);
+      });
+    }catch(e){
+      print('lỗi: $e');
+      progressClose(sState.initial);
+      Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
           backgroundColor: Colors.red,
           colorText: Colors.white,
           maxWidth: 600,

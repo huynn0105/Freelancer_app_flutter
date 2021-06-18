@@ -19,19 +19,24 @@ class JobsScreen extends StatelessWidget {
     return Obx(() {
       if (controller.progressState.value != sState.loading) {
         return Scaffold(
-          body: Container(
-            padding: EdgeInsets.all(kDefaultPadding / 2),
-            child: controller.jobs.isNotEmpty
-                ? ListView.builder(
-                    itemBuilder: (context, index) {
-                      return JobCard(job: controller.jobs[index]);
-                    },
-                    shrinkWrap: true,
-                    itemCount: controller.jobs.length,
-                  )
-                : Center(
-                    child: Icon(Icons.error_outline)
-                  ),
+          body: RefreshIndicator(
+            onRefresh: () async{
+              controller.loadJobs();
+            },
+            child: Container(
+              padding: EdgeInsets.all(kDefaultPadding / 2),
+              child: controller.jobs.isNotEmpty
+                  ? ListView.builder(
+                      itemBuilder: (context, index) {
+                        return JobCard(job: controller.jobs[index]);
+                      },
+                      shrinkWrap: true,
+                      itemCount: controller.jobs.length,
+                    )
+                  : Center(
+                      child: Icon(Icons.error_outline)
+                    ),
+            ),
           ),
           floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -111,8 +116,7 @@ class JobCard extends StatelessWidget {
                         SizedBox(height: kDefaultPadding / 5),
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
-                          child: Text(
-                            'Lập trình di động',
+                          child: Text(job.specialty.name,
                             style:TEXT_STYLE_FOREIGN.copyWith(fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -145,7 +149,7 @@ class JobCard extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: kDefaultPadding),
-                              child: Text('12 chào giá',
+                              child: Text('${job.bidCount} chào giá',
                                   style: TEXT_STYLE_FOREIGN.copyWith(fontSize: 16)),
                             ),
 

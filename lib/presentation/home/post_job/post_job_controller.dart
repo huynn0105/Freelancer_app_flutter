@@ -46,6 +46,7 @@ class PostJobController extends GetxController {
   final deadlineTextController = TextEditingController();
   final locationTextController = TextEditingController();
 
+
   Future postJob() async {
     try {
       progressState(sState.loading);
@@ -90,6 +91,8 @@ class PostJobController extends GetxController {
           snackPosition: SnackPosition.TOP);
     }
   }
+
+
 
   @override
   void onInit() async {

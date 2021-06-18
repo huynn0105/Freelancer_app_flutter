@@ -1,8 +1,10 @@
 class Chat {
   final String name, lastMessage, image, time;
   final bool isActive;
+  final int id;
 
   Chat({
+    this.id,
     this.name = '',
     this.lastMessage = '',
     this.image = '',
@@ -13,6 +15,7 @@ class Chat {
 
 List chatsData = [
   Chat(
+    id: 18,
     name: "Jenny Wilson",
     lastMessage: "Hope you are doing well...",
     image: "assets/images/avatar.jpg",
@@ -20,52 +23,11 @@ List chatsData = [
     isActive: false,
   ),
   Chat(
+    id: 17,
     name: "Esther Howard",
     lastMessage: "Hello Abdullah! I am...",
     image: "assets/images/avatar.jpg",
     time: "8m ago",
     isActive: true,
-  ),
-  Chat(
-    name: "Ralph Edwards",
-    lastMessage: "Do you have update...",
-    image: "assets/images/avatar.jpg",
-    time: "5d ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Jacob Jones",
-    lastMessage: "You’re welcome :)",
-    image: "assets/images/avatar.jpg",
-    time: "5d ago",
-    isActive: true,
-  ),
-  Chat(
-    name: "Albert Flores",
-    lastMessage: "Thanks",
-    image: "assets/images/avatar.jpg",
-    time: "6d ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Jenny Wilson",
-    lastMessage: "Hope you are doing well...",
-    image: "assets/images/avatar.jpg",
-    time: "3m ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Esther Howard",
-    lastMessage: "Hello Abdullah! I am...",
-    image: "assets/images/avatar.jpg",
-    time: "8m ago",
-    isActive: true,
-  ),
-  Chat(
-    name: "Ralph Edwards",
-    lastMessage: "Do you have update...",
-    image: "assets/images/avatar.jpg",
-    time: "5d ago",
-    isActive: false,
   ),
 ];

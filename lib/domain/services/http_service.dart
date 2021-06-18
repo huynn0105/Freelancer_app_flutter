@@ -22,6 +22,7 @@ const BANK_ACCOUNT = 'api/BankAccounts';
 const CAPACITY_PROFILE = 'api/CapacityProfiles';
 const ACCOUNT_PAGINATION = '/api/Accounts/pagination';
 const OFFER_HISTORIES = '/api/OfferHistories';
+const RATING = '/api/Ratings';
 
 // ignore: non_constant_identifier_names
 int CURRENT_ID;

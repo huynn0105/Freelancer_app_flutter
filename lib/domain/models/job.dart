@@ -16,6 +16,7 @@ part 'job.g.dart';
 class Job {
   int id;
   String name;
+  int bidCount;
   DateTime deadline;
   DateTime createAt;
   String details;
@@ -53,6 +54,8 @@ class Job {
     this.status,
     this.skills,
     this.avatarUrl,
+    this.bidCount,
+    this.offered,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);

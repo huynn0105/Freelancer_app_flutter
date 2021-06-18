@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_screen.dart';
-import 'package:freelance_app/presentation/home/browse/tab_view/jobs/jobs_screen.dart';
 import 'package:freelance_app/presentation/home/profile/review/components/rate_card.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 

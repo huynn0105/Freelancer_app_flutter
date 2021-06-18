@@ -1,6 +1,7 @@
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
+import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
 
@@ -39,5 +40,20 @@ class FreelancerDetailController extends GetxController{
   void onReady() {
     loadFreelancer();
     super.onReady();
+  }
+
+  void sendRating(int jobID,String comment, int star)async{
+    try{
+      await apiRepositoryInterface.postRating(
+          RatingRequest(
+            freelancerId: freelancerId,
+            jobID: jobID,
+            comment: comment,
+            star: star,
+          )
+      );
+    }catch(e){
+      print("lỗi: $e");
+    }
   }
 }

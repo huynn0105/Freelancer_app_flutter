@@ -124,13 +124,13 @@ class JobsController extends GetxController{
   }
 
 
-  void loadJobs() async {
+  Future loadJobs() async {
     progressState(sState.loading);
     try{await apiRepositoryInterface.getJobs().then((value){
-        jobs.assignAll(value);
+      if(value!=null)
+      jobs.assignAll(value);
         progressState(sState.initial);
       });
-
     }catch(e){
       progressState(sState.failure);
     }

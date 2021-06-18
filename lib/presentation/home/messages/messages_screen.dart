@@ -1,56 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/home/messages/setup_payment.dart';
+import 'package:get/get.dart';
+import 'chat_controller.dart';
 
 class MessagesScreen extends StatelessWidget {
+
+  var controller = Get.find<ChatController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            BackButton(),
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/images/avatar.jpg'),
-            ),
-            SizedBox(
-              width: kDefaultPadding * 0.75,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            elevation: 2,
+            title: Row(
               children: [
-                Text(
-                  'Huy Hyun',
-                  style: TextStyle(fontSize: 16),
+                BackButton(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Tuyển lập trình viên mobilesssssssss'),
+                      Text(
+                          'Huy Hyun',
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)
+                      ),
+
+                    ],
+                  ),
                 ),
-                Text(
-                  'Hoạt động 3m trước',
-                  style: TextStyle(fontSize: 12),
-                ),
+                ElevatedButton(onPressed: (){
+                  Get.to(()=>SetupPayment());
+                }, child: Text('Giao việc'))
               ],
             ),
-          ],
-        ),
-        actions: [
-          IconButton(icon: Icon(Icons.more_vert,color: Colors.blue,), onPressed: () {}),
-        ],
-      ),
+          ),
+
+
       body: Column(
         children: [
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              child: ListView.builder(
-                itemCount: demoChatMessages.length,
-                itemBuilder: (context, index) => Message(
-                  message: demoChatMessages[index],
+              child: Obx(
+                ()=> ListView.builder(
+                  itemCount: controller.chatMessages.length,
+                    reverse: true,
+                  controller: controller.scrollController,
+                  itemBuilder: (context, index) => Message(
+                    message: controller.chatMessages[index],
+                  ),
                 ),
               ),
             ),
           ),
-          ChatInputField()
+          ChatInputField(
+            ctrMessage: controller.ctrMessage,
+            onTap: (){
+              controller.sendMessage(CURRENT_ID);
+
+          },)
         ],
       ),
     );
@@ -71,8 +84,12 @@ class Message extends StatelessWidget {
     Widget messageContains(ChatMessage message) {
       switch (message.messageType) {
         case ChatMessageType.text:
-          return TextMessage(message: message);
-
+          return Flexible(child: Padding(
+            padding: message.isSender ?  const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
+            child: TextMessage(message: message),
+          ));
+        case ChatMessageType.request:
+          return RequestFinished();
         case ChatMessageType.image:
           return ImageMessage();
         default:
@@ -80,7 +97,7 @@ class Message extends StatelessWidget {
       }
     }
     return Padding(
-      padding: const EdgeInsets.only(top: kDefaultPadding),
+      padding: const EdgeInsets.only(top: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -98,7 +115,7 @@ class Message extends StatelessWidget {
               messageContains(message),
             ],
           ),
-          if (message.isSender) MessageStatusDot(status: message.messageStatus)
+         // if (message.isSender) MessageStatusDot(status: message.messageStatus)
         ],
       ),
     );
@@ -170,19 +187,47 @@ class TextMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: kDefaultPadding),
       padding: EdgeInsets.symmetric(
         horizontal: kDefaultPadding * 0.75,
         vertical: kDefaultPadding / 2,
       ),
       decoration: BoxDecoration(
         color: Colors.blue.withOpacity(message.isSender ? 1 : 0.1),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Text(
         message.text,
+        maxLines: 20,
         style:
             TextStyle(color: message.isSender ? Colors.white : Colors.black87,fontSize: 17),
+      ),
+    );
+  }
+}
+
+class RequestFinished extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[300],
+        ),
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text('Yêu cầu kết thúc công việc',style: TEXT_STYLE_ON_FOREGROUND,),
+            SizedBox(height: 10),
+            ElevatedButton(onPressed: (){}, child: Text('Hoàn thành',style: TextStyle(color: Colors.black,fontSize: 16),),style: ElevatedButton.styleFrom(primary: Colors.white,minimumSize: Size(double.infinity, 40),elevation: 0),),
+            SizedBox(height: 5),
+            ElevatedButton(onPressed: (){}, child: Text('Yêu cầu làm lại',style: TextStyle(color: Colors.black,fontSize: 16),),style: ElevatedButton.styleFrom(primary: Colors.white,minimumSize: Size(double.infinity, 40),elevation: 0),),
+            SizedBox(height: 5),
+            ElevatedButton(onPressed: (){}, child: Text('Huỷ công việc',style: TextStyle(color: Colors.black,fontSize: 16),),style: ElevatedButton.styleFrom(primary: Colors.white,minimumSize: Size(double.infinity, 40),elevation: 0),),
+          ],
+        ),
       ),
     );
   }
@@ -191,7 +236,12 @@ class TextMessage extends StatelessWidget {
 class ChatInputField extends StatelessWidget {
   const ChatInputField({
     Key key,
+    this.onTap,
+    this.ctrMessage,
   }) : super(key: key);
+
+  final TextEditingController ctrMessage;
+  final GestureTapCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +276,7 @@ class ChatInputField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
               ),
               child: TextField(
+                controller: ctrMessage,
                 decoration: InputDecoration(
                   hintText: 'Aa',
                   border: InputBorder.none,
@@ -236,10 +287,9 @@ class ChatInputField extends StatelessWidget {
           SizedBox(
             width: kDefaultPadding,
           ),
-          Icon(
-            Icons.send,
-            color: Colors.blue,
-          ),
+          IconButton(onPressed: onTap, icon:  Icon(Icons.send,
+              color: Colors.blue,
+          ),),
         ],
       ),
     );

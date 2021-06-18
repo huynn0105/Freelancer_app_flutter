@@ -6,6 +6,7 @@ import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/domain/models/level.dart';
+import 'package:freelance_app/domain/models/offer.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/domain/models/province.dart';
@@ -23,6 +24,7 @@ import 'package:freelance_app/domain/requests/post_job_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/requests/search_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:signalr_client/hub_connection_builder.dart';
 
 class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
@@ -54,15 +56,14 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future register(RegisterRequest registerRequest) async {
-    Map<String, dynamic> accountInput = {
-      'name': registerRequest.name,
-      'phone': '0909091341',
-      'email': registerRequest.email,
-      'roleID': registerRequest.role,
-      'password': registerRequest.password,
-    };
-    print('input: $accountInput');
-    return await HttpService.post(REGISTER, body: accountInput);
+    // Map<String, dynamic> accountInput = {
+    //   'name': registerRequest.name,
+    //   'phone': '0909091341',
+    //   'email': registerRequest.email,
+    //   'roleID': registerRequest.role,
+    //   'password': registerRequest.password,
+    // };
+    return await HttpService.post(REGISTER, body: registerRequest.toJson());
   }
 
   @override
@@ -185,7 +186,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('codeJobId: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonObject = jsonDecode(rs.body);
-      var job = Job.fromJson(jsonObject['job']);
+      var job = Job.fromJson(jsonObject);
 
       return job;
     }
@@ -528,5 +529,53 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
       return accounts;
     }
+  }
+
+  @override
+  Future getJobOffer(int id) async {
+   var rs = await HttpService.get('$JOB/$id/offerhistories',bearerToken: TOKEN);
+   print('code Job Offer : ${rs.statusCode}');
+   if(rs.statusCode == 200){
+     var jsonList = jsonDecode(rs.body) as List;
+     var offer = jsonList.map((e) => Offer.fromJson(e)).toList();
+     return offer;
+   }
+  }
+
+  @override
+  Future putJobOfferChoose(int jobId, int freelancerId) async {
+
+    var rs = await HttpService.put('$JOB/$jobId/offerhistories/$freelancerId/choose', bearerToken: TOKEN);
+    print('code job offerhistories choose ${rs.statusCode}');
+    if(rs.statusCode == 200){
+      print('dulieu: ${rs.body}');
+    }
+  }
+
+  @override
+  Future postRating(request) async {
+    var rs = await HttpService.post(RATING,body: request.toJson(),bearerToken: TOKEN);
+    print('code rating ${rs.statusCode}');
+    if(rs.statusCode == 200){
+      print('dulieu: ${rs.body}');
+    }
+  }
+
+  @override
+  Future putJobClose(int id) async {
+    var rs = await HttpService.put('$JOB/$id/close', bearerToken: TOKEN);
+    print('code put JobClose ${rs.statusCode}');
+  }
+
+  @override
+  Future createSignalConnection() async {
+   var connection = HubConnectionBuilder().withUrl('http://freelancervn.somee.com/chatHub').build();
+   await connection.start();
+   connection.on('ReceiveMessage', (data) {
+     print('fromUserId: ${data[0]}');
+     print('toUserId: ${data[1]}');
+     print('message: ${data[2]}');
+   });
+
   }
 }

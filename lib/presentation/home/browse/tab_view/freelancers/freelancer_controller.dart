@@ -1,5 +1,6 @@
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
+import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:get/get.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,7 @@ class FreelancerController extends GetxController{
 
 
 
-  void loadFreelancer() async {
+  Future loadFreelancer() async {
     progressState(sState.loading);
     try{
       await apiRepositoryInterface.getAccounts().then((value){
@@ -101,6 +102,7 @@ class FreelancerController extends GetxController{
         progressState(sState.initial);
       });
     }catch(e){
+      print("lỗi: $e");
       progressState(sState.failure);
     }
   }
@@ -110,5 +112,7 @@ class FreelancerController extends GetxController{
     loadFreelancer();
     super.onReady();
   }
+
+
 
 }

@@ -3,33 +3,59 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/offer.dart';
+import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_controller.dart';
+import 'package:freelance_app/presentation/home/messages/messages_screen.dart';
+import 'package:get/get.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-
 class JobOffersDetail extends StatelessWidget {
+  bool isClose = false;
+  JobOffersDetail({this.isClose});
+
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<JobDetailController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Nhận chào giá'),
       ),
-      backgroundColor: Colors.grey[200],
-      body: ListView.builder(itemBuilder: (_,index)=>ItemOffer(),itemCount: 10,),
+      body: Obx(
+          ()=> controller.progressState.value == sState.initial ? controller.offers.isNotEmpty
+            ? ListView.builder(
+                itemBuilder: (_, index) => ItemOffer(offer: controller.offers[index],
+                  isClose: isClose,
+                  onPressed: () {
+                    // controller.choseFreelancer(
+                    //     controller.offers[index].freelancerId);
+                    Get.to(()=>MessagesScreen());
+                  },
+                ),
+                itemCount: controller.offers.length,
+              )
+            :Center(child: Text('Chưa có chào giá nào!'),)
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
     );
   }
 }
 
 class ItemOffer extends StatelessWidget {
-  const ItemOffer({
-    Key key,
-  }) : super(key: key);
+  const ItemOffer({Key key, @required this.onPressed,@required this.offer,this.isClose}) : super(key: key);
+  final Function onPressed;
+  final Offer offer;
+  final isClose;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      elevation: 3,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: kDefaultPadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: 10, horizontal: kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -40,9 +66,8 @@ class ItemOffer extends StatelessWidget {
                   foregroundColor: Colors.transparent,
                   backgroundColor: Colors.grey.shade300,
                   child: CachedNetworkImage(
-                    imageUrl: 'https://thecastofcheers.com/images/9-best-online-avatars-and-how-to-make-your-own-[2020]-4.png',
-                    placeholder: (context, url) =>
-                        CupertinoActivityIndicator(),
+                    imageUrl:'http://${offer.freelancer.avatarUrl}',
+                    placeholder: (context, url) => CupertinoActivityIndicator(),
                     imageBuilder: (context, image) => CircleAvatar(
                       backgroundImage: image,
                       radius: 27,
@@ -50,7 +75,7 @@ class ItemOffer extends StatelessWidget {
                     errorWidget: (context, url, error) => CircleAvatar(
                       backgroundColor: Colors.grey,
                       backgroundImage:
-                      AssetImage('assets/images/avatarnull.png'),
+                          AssetImage('assets/images/avatarnull.png'),
                       radius: 27,
                     ),
                   ),
@@ -63,7 +88,7 @@ class ItemOffer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      'Nguyễn Nhật Huy',
+                      offer.freelancer.name,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 20),
@@ -87,37 +112,47 @@ class ItemOffer extends StatelessWidget {
               children: [
                 Icon(CupertinoIcons.money_dollar_circle),
                 SizedBox(width: 6),
-                Text('Chi phí đề xuất: 200.000 VNĐ',style: TEXT_STYLE_ON_FOREGROUND.copyWith(fontWeight: FontWeight.w500),),
-
+                Text(
+                  'Chi phí đề xuất: ${offer.offerPrice} VNĐ',
+                  style: TEXT_STYLE_ON_FOREGROUND.copyWith(
+                      fontWeight: FontWeight.w500),
+                ),
               ],
             ),
             Row(
               children: [
                 Icon(Icons.access_time_outlined),
                 SizedBox(width: 6),
-                Text('Dự kiến hoàn thành trong: 5 ngày',style: TEXT_STYLE_ON_FOREGROUND.copyWith(fontWeight: FontWeight.w500)),
+                Text('Dự kiến hoàn thành trong: ${offer.expectedDay}',
+                    style: TEXT_STYLE_ON_FOREGROUND.copyWith(
+                        fontWeight: FontWeight.w500)),
               ],
             ),
-            SizedBox(height: kDefaultPadding/2),
-            Text('Nội dung chào giá',style: TEXT_STYLE_PRIMARY,),
+            SizedBox(height: kDefaultPadding / 2),
+            Text(
+              'Nội dung chào giá',
+              style: TEXT_STYLE_PRIMARY,
+            ),
             SizedBox(width: 4),
-            ExpandableText('''Phần lớn là mình SỢ, sợ m.n sẽ không lời được từ việc đầu tư. Vì không ai chắc chắn ngày mai thị trường như thế nào, vì sao dự báo thời tiết lại gọi là  "dự báo", vì không thể chắc chắn ngày mai sẽ nắng nên gọi là dự báo. Nên không phải cứ xuống tiền là sẽ lời to, cái đó chỉ mấy ông đa cấp mới dám nói vậy.
-              Khi đầu tư có cả nguyên nhân khách quan và chủ quan dẫn đến việc bạn bị thua lỗ.''',
+            ExpandableText(
+              offer.description,
               expandText: 'Xem thêm',
               collapseText: 'Ẩn đi',
               maxLines: 3,
             ),
-            SizedBox(height: kDefaultPadding/2),
-            Text('Kế hoạch thực hiện',style: TEXT_STYLE_PRIMARY,),
+            SizedBox(height: kDefaultPadding / 2),
+            Text(
+              'Kế hoạch thực hiện',
+              style: TEXT_STYLE_PRIMARY,
+            ),
             SizedBox(width: 4),
-            ExpandableText('''Phần lớn là mình SỢ, sợ m.n sẽ không lời được từ việc đầu tư. Vì không ai chắc chắn ngày mai thị trường như thế nào, vì sao dự báo thời tiết lại gọi là  "dự báo", vì không thể chắc chắn ngày mai sẽ nắng nên gọi là dự báo. Nên không phải cứ xuống tiền là sẽ lời to, cái đó chỉ mấy ông đa cấp mới dám nói vậy.
-              Khi đầu tư có cả nguyên nhân khách quan và chủ quan dẫn đến việc bạn bị thua lỗ.''',
+            ExpandableText(
+              offer.todoList,
               expandText: 'Xem thêm',
               collapseText: 'Ẩn đi',
               maxLines: 3,
             ),
-            ElevatedButton(onPressed: (){}, child: Text('Giao việc')),
-
+            isClose ? ElevatedButton(onPressed: onPressed, child: Text('Thảo luận')) : SizedBox.shrink(),
           ],
         ),
       ),

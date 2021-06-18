@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/chat.dart';
+import 'package:freelance_app/presentation/home/messages/chat_controller.dart';
 import 'package:freelance_app/presentation/home/messages/messages_screen.dart';
 import 'package:get/get.dart';
 class ChatsScreen extends StatelessWidget {
+  var controller = Get.put<ChatController>(ChatController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +21,7 @@ class ChatsScreen extends StatelessWidget {
           Expanded(child: ListView.builder(
             itemCount: chatsData.length,
             itemBuilder: (context,index)=> ChatCard(chat: chatsData[index],onTap: (){
+              controller.connectUser(chatsData[index].id);
               Get.to(()=>MessagesScreen());
             },),
           ),),

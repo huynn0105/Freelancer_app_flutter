@@ -8,6 +8,7 @@ import 'package:freelance_app/domain/requests/image_request.dart';
 import 'package:freelance_app/domain/requests/login_request.dart';
 import 'package:freelance_app/domain/requests/offer_request.dart';
 import 'package:freelance_app/domain/requests/post_job_request.dart';
+import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/requests/search_request.dart';
 
@@ -59,4 +60,9 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> putService(int id, String name, List<Specialty> specialties);
   Future<dynamic> searchJob(SearchRequest request);
   Future<dynamic> searchFreelancer(SearchRequest request);
+  Future<dynamic> getJobOffer(int id);
+  Future<dynamic> putJobOfferChoose(int jobId, int freelancerId);
+  Future<dynamic> postRating(RatingRequest request);
+  Future<dynamic> putJobClose(int id);
+  Future<dynamic> createSignalConnection();
 }

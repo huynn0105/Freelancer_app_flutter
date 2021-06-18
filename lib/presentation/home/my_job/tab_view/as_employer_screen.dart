@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AsEmployerScreen extends GetWidget<HomeController> {
+
   @override
   Widget build(BuildContext context) {
     var _listTextTabToggle = [
@@ -32,17 +33,17 @@ class AsEmployerScreen extends GetWidget<HomeController> {
           return Colors.amber;
       }
     }
-
     return Obx(
       () => Scaffold(
-        body: SingleChildScrollView(
+        body: RefreshIndicator(
+          onRefresh: ()async{
+            controller.loadJobsRenter(controller.tabSelectedRenter.value);
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Column(
               children: [
-                SizedBox(
-                  height: kDefaultPadding / 2,
-                ),
+                SizedBox(height: 10),
                 FlutterToggleTab(
                   // width in percent
                   borderRadius: 10,
@@ -66,24 +67,24 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                       controller.loadJobsRenter(int);
                   },
                 ),
-
-
                 Obx(
-                  () => Padding(
-                      padding: EdgeInsets.all(kDefaultPadding / 4),
-                      child: controller.progressState.value == sState.initial ? controller.jobsRenter[controller.tabSelectedRenter.value].isNotEmpty
-                          ? ListView.builder(
-                              itemCount: controller.jobsRenter[controller.tabSelectedRenter.value].length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return MyJobCard(
-                                  job: controller.jobsRenter[controller.tabSelectedRenter.value][index],
-                                  color: selectedColor(controller.jobsRenter[controller.tabSelectedRenter.value][index].status),
-                                );
-                              })
-                          : Center(
-                              child: Column(
+                  () => Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                          padding: EdgeInsets.all(kDefaultPadding / 4),
+                          child: controller.progressState.value == sState.initial ? controller.jobsRenter[controller.tabSelectedRenter.value].isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: controller.jobsRenter[controller.tabSelectedRenter.value].length,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    var job = controller.jobsRenter[controller.tabSelectedRenter.value][index];
+                                    return MyJobCard(
+                                      job: job,
+                                      color: job.deadline.difference(DateTime.now()).inMinutes < 0 ? Colors.black.withOpacity(0.6) : selectedColor(job.status),
+                                    );
+                                  })
+                              : Column(
                                 children: [
                                   Image.asset(
                                     'assets/images/postjob.jpg',
@@ -100,11 +101,12 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                                     },
                                   )
                                 ],
-                              ),
-                            ) : Padding(
-                              padding: const EdgeInsets.only(top: 100),
-                              child: Center(child: CircularProgressIndicator(),),
-                            )),
+                              ) : Padding(
+                                  padding: const EdgeInsets.only(top: 100),
+                                  child: Center(child: CircularProgressIndicator(),),
+                                )),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -112,7 +114,9 @@ class AsEmployerScreen extends GetWidget<HomeController> {
         ),
       ),
     );
+
   }
+
 }
 
 class MyJobCard extends StatelessWidget {
@@ -154,7 +158,7 @@ class MyJobCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TEXT_STYLE_PRIMARY.copyWith(
-                    fontSize: 17, color: Colors.white),
+                    fontSize: 16, color: Colors.white),
               ),
             ),
             Container(
@@ -173,13 +177,14 @@ class MyJobCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
+                        job.status != 'Close' ?
                         job.deadline.difference(DateTime.now()).inDays >= 0
                             ? job.deadline.difference(DateTime.now()).inDays == 0
                                 ? job.deadline.difference(DateTime.now()).inHours <= 0
-                                    ? 'Đóng ${DateTime.now().difference(job.deadline).inHours} giờ trước'
+                                    ? 'Đã đóng'
                                     : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
                                 : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
-                            : 'Đóng ${DateTime.now().difference(job.deadline).inDays} ngày trước',
+                            : 'Đã đóng' : 'Đã đóng',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.black87,
@@ -191,7 +196,7 @@ class MyJobCard extends StatelessWidget {
                     height: kDefaultPadding / 2,
                   ),
                   Text(
-                    'Chưa có freelancer nào chào giá',
+                    job.bidCount == 0 ? 'Chưa có freelancer nào chào giá' : 'Có ${job.bidCount} chào giá',
                     style: TextStyle(
                       color: Colors.black54,
                     ),
