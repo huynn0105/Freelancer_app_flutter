@@ -109,7 +109,6 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
 
 class RangeValidatorss extends RangeValidator {
   @override
-  // TODO: implement errorText
   String get errorText => 'Số tiền nhỏ nhất là 200.000';
 
   @override

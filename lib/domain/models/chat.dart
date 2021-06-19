@@ -3,10 +3,10 @@ import 'package:freelance_app/domain/models/job.dart';
 import 'account.dart';
 
 class Chat {
+   Job job;
    String lastMessage;
    String status;
    String avatarSender;
-   Job job;
    Account freelancer;
    Account lastSender;
    DateTime time;

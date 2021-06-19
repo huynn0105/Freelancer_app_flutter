@@ -144,10 +144,8 @@ class FreelancerDetailScreen extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                   Review(
-                    rate: me.rate,
-                    totalMoney: freelancer.balance,
+                   avg: 5,
                     totalVote: 3,
-                    workValue: 99,
                   ),
                   SizedBox(
                     height: 100,

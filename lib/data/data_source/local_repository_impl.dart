@@ -35,6 +35,7 @@ class LocalRepositoryImpl extends LocalRepositoryInterface {
   @override
   Future saveAccount(Account account) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     var rs =  pref.setString(_pref_login, jsonEncode(account));
   }
 

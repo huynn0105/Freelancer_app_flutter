@@ -12,10 +12,11 @@ import 'package:get/get.dart';
 import 'chat_controller.dart';
 
 class MessagesScreen extends StatelessWidget {
-  MessagesScreen({this.job,this.userId,this.freelancerId});
+  MessagesScreen({this.job,this.toUserId,this.freelancerId,this.avatarUrl});
   final Job job;
-  final int userId;
+  final int toUserId;
   final int freelancerId;
+  final String avatarUrl;
 
   var controller = Get.find<ChatController>();
 
@@ -70,7 +71,7 @@ class MessagesScreen extends StatelessWidget {
           ChatInputField(
             ctrMessage: controller.ctrMessage,
             onTap: (){
-              controller.sendMessage(job.id,freelancerId,userId);
+              controller.sendMessage(job.id,freelancerId,toUserId);
 
           },)
         ],

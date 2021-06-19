@@ -14,15 +14,11 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 class Review extends StatelessWidget {
   const Review({
     Key key,
-    this.totalMoney,
     this.totalVote,
-    this.workValue,
-    this.rate,
+    this.avg,
   }) : super(key: key);
   final int totalVote;
-  final double totalMoney;
-  final double workValue;
-  final int rate;
+  final double avg;
 
   @override
   Widget build(BuildContext context) {
@@ -39,38 +35,45 @@ class Review extends StatelessWidget {
           ],
         ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(width: kDefaultPadding),
               Text('4.0',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 35),),
-              SizedBox(width: kDefaultPadding,),
-              SmoothStarRating(
-                allowHalfRating: false,
-                onRated: (v) {},
-                starCount: 5,
-                rating: rate.toDouble(),
-                size: 40,
-                isReadOnly: true,
-                color: Colors.yellow,
-                borderColor: Colors.yellow,
+              SizedBox(width: kDefaultPadding),
+              Column(
+                children: [
+                  SmoothStarRating(
+                    allowHalfRating: false,
+                    onRated: (v) {},
+                    starCount: 5,
+                    rating: avg,
+                    size: 30,
+                    isReadOnly: true,
+                    color: Colors.yellow,
+                    borderColor: Colors.yellow,
+                  ),
+                  SizedBox(width: kDefaultPadding/2),
+                  Text('Dựa trên $totalVote nhận xét')
+                ],
               ),
             ],
           ),
           Divider(),
 
-          Text('Việc hoàn thành',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
-          SizedBox(height: 5,),
-          ListView.builder(
-              itemCount: 1,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context,index)=>ReviewCard(rate: rate)),
-          Text('Việc đã hủy',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
-          SizedBox(height: 5,),
-          ListView.builder(
-              itemCount: 1,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context,index)=>ReviewCard(rate: rate)),
+          // Text('Việc hoàn thành',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
+          // SizedBox(height: 5,),
+          // ListView.builder(
+          //     itemCount: 1,
+          //     shrinkWrap: true,
+          //     physics: NeverScrollableScrollPhysics(),
+          //     itemBuilder: (context,index)=>ReviewCard(rate: rate)),
+          // Text('Việc đã hủy',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
+          // SizedBox(height: 5,),
+          // ListView.builder(
+          //     itemCount: 1,
+          //     shrinkWrap: true,
+          //     physics: NeverScrollableScrollPhysics(),
+          //     itemBuilder: (context,index)=>ReviewCard(rate: rate)),
         ],
 
       ),

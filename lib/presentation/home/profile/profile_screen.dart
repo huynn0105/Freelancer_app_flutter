@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/responsive.dart';
-import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_screen.dart';
@@ -222,10 +221,8 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Card(
                           child: Review(
-                            rate: me.rate,
-                            totalMoney: user.balance,
-                            totalVote: 3,
-                            workValue: 99,
+                            avg: user.totalRating.avg,
+                            totalVote: user.totalRating.count,
                           ),
                           margin: EdgeInsets.all(0.0),
                         ),
@@ -443,10 +440,8 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     Card(
                                       child: Review(
-                                        rate: me.rate,
-                                        totalMoney: user.balance,
-                                        totalVote: 3,
-                                        workValue: 99,
+                                        avg: user.totalRating.avg,
+                                        totalVote: user.totalRating.count,
                                       ),
                                       margin: EdgeInsets.all(0.0),
                                     ),
@@ -661,10 +656,8 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     Card(
                                       child: Review(
-                                        rate: me.rate,
-                                        totalMoney: user.balance,
-                                        totalVote: 3,
-                                        workValue: 99,
+                                        avg: user.totalRating.avg,
+                                        totalVote: user.totalRating.count,
                                       ),
                                       margin: EdgeInsets.all(0.0),
                                     ),
@@ -739,6 +732,7 @@ class Earn extends StatelessWidget {
   const Earn({
     Key key,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

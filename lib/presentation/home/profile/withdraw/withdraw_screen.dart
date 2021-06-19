@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/add_credit.dart';
 
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/payment_method_screen.dart';
+import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_controller.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 
 import 'package:get/get.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class WithdrawScreen extends StatelessWidget {
+
+  var controller = Get.put<WithdrawController>(WithdrawController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,19 +29,24 @@ class WithdrawScreen extends StatelessWidget {
             children: [
               Text('Số dư hiện có',style: TEXT_STYLE_PRIMARY),
               SizedBox(height: 5,),
-              Container(
-                padding: EdgeInsets.all(kDefaultPadding),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: BorderRadius.all(Radius.circular(5))
-                ),
-                child: Row(
-                  children: [
-                    Text('0.0',style: TextStyle(fontSize: 18,color: Colors.blue),),
-                    Spacer(),
-                    Text('VNĐ',style: TextStyle(fontSize: 18,color: Colors.blue),),
-                    Icon(Icons.keyboard_arrow_right_outlined,color: Colors.blue),
-                  ],
+              InkWell(
+                onTap: (){
+                   Get.to(()=>Deposit());
+                },
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.1),
+                      borderRadius: BorderRadius.all(Radius.circular(5))
+                  ),
+                  child: Row(
+                    children: [
+                      Obx(()=> Text(controller.balance.value,style: TextStyle(fontSize: 18,color: Colors.blue),)),
+                      Spacer(),
+                      Text('VNĐ',style: TextStyle(fontSize: 18,color: Colors.blue),),
+                      Icon(Icons.keyboard_arrow_right_outlined,color: Colors.blue),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: kDefaultPadding),
@@ -48,7 +58,7 @@ class WithdrawScreen extends StatelessWidget {
               SizedBox(height: kDefaultPadding),
               Text('Rút tiền',style: TEXT_STYLE_PRIMARY,),
               SizedBox(height: kDefaultPadding/2),
-              InputText(label: 'Số lượng',suffixIcon: TextButton(child: Text('TỐI ĐA'),onPressed: (){},),),
+              InputText(label: 'Số lượng',suffixIcon: TextButton(child: Text('TỐI ĐA'),onPressed: (){},),inputFormatters: [ThousandsFormatter()],keyboardType: TextInputType.number,),
               SizedBox(height: kDefaultPadding),
               Container(
                 padding: EdgeInsets.all(kDefaultPadding/2),
@@ -125,3 +135,44 @@ class PaymentMethodCard extends StatelessWidget {
     );
   }
 }
+
+class Deposit extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+    var ctrlBalance = TextEditingController();
+    var controller = Get.find<WithdrawController>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Nạp tiền'),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InputText(label: 'Số lượng',
+              controller: ctrlBalance,
+              inputFormatters: [ThousandsFormatter()],
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: kDefaultPadding),
+            RoundedButton(onTap: (){
+              Get.back();
+              controller.balance(ctrlBalance.text);
+              Get.snackbar(
+                  'Thành công', 'Nạp thành công ${controller.balance.value} VNĐ vào tài khoản',
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                  maxWidth: 600,
+                  snackPosition: SnackPosition.TOP);
+            }, child: Text('Nạp tiền')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

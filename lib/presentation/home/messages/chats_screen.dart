@@ -34,13 +34,13 @@ class ChatsScreen extends StatelessWidget {
                 return ChatCard(
                   chat: chat,
                   onTap: () {
-                   controller.connectUser();
                     controller
-                        .loadMessageChat(chat.job.id, 17)
+                        .loadMessageChat(chat.job.id, chat.freelancer.id)
                         .then((value) => Get.to(() => MessagesScreen(
-                              userId: chat.freelancer.id,
+                              toUserId: chat.freelancer.id != CURRENT_ID ? chat.freelancer.id :17,
                               job: chat.job,
                               freelancerId: chat.freelancer.id,
+                              avatarUrl: chat.avatarSender,
                             )));
                   },
                 );

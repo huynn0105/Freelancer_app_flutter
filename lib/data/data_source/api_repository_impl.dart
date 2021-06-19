@@ -621,4 +621,11 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
   }
 
+  @override
+  Future getRatingsFreelancerId(int freelancerId) async{
+    var rs = await HttpService.get('$RATING/freelancerId',bearerToken: TOKEN);
+    print('code get rating ${rs.statusCode}');
+    print('body: ${rs.body}');
+  }
+
 }

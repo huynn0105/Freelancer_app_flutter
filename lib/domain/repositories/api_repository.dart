@@ -70,6 +70,7 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> putJobCancel(int id);
   Future<dynamic> getMessageUser();
   Future<dynamic> getMessageChat(int jobId, int freelancerId);
+  Future<dynamic> getRatingsFreelancerId( int freelancerId);
 
 
 
