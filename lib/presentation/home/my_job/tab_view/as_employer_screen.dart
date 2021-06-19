@@ -9,15 +9,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AsEmployerScreen extends GetWidget<HomeController> {
-
   @override
   Widget build(BuildContext context) {
-    var _listTextTabToggle = [
-      "Tất cả",
-      "Đang giao",
-      "Đang chờ",
-      "Đã qua"
-    ];
+    var _listTextTabToggle = ["Tất cả", "Đang giao", "Đang chờ", "Đã qua"];
 
     Color selectedColor(String status) {
       switch (status) {
@@ -33,90 +27,118 @@ class AsEmployerScreen extends GetWidget<HomeController> {
           return Colors.amber;
       }
     }
+
     return Obx(
       () => Scaffold(
-        body: RefreshIndicator(
-          onRefresh: ()async{
-            controller.loadJobsRenter(controller.tabSelectedRenter.value);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                FlutterToggleTab(
-                  // width in percent
-                  borderRadius: 10,
-                  height: 30,
-                  initialIndex: controller.tabSelectedRenter.value,
-                  selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
-                  selectedTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700),
-                  unSelectedTextStyle: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500),
-                  labels: _listTextTabToggle,
-                  selectedIndex: controller.tabSelectedRenter.value,
-                  isScroll: false,
-                  selectedLabelIndex: (int) {
-                    controller.tabSelectedRenter(int);
-                    if (controller.jobsRenter[int].isEmpty)
-                      controller.loadJobsRenter(int);
-                  },
-                ),
-                Obx(
-                  () => Expanded(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              FlutterToggleTab(
+                // width in percent
+                borderRadius: 10,
+                height: 30,
+                initialIndex: controller.tabSelectedRenter.value,
+                selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
+                selectedTextStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700),
+                unSelectedTextStyle: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500),
+                labels: _listTextTabToggle,
+                selectedIndex: controller.tabSelectedRenter.value,
+                isScroll: false,
+                selectedLabelIndex: (int) {
+                  controller.tabSelectedRenter(int);
+                  if (controller.jobsRenter[int].isEmpty)
+                    controller.loadJobsRenter(int);
+                },
+              ),
+              Obx(
+                () => Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      controller.loadJobsRenter(controller.tabSelectedRenter.value);
+                    },
                     child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
                       child: Padding(
                           padding: EdgeInsets.all(kDefaultPadding / 4),
-                          child: controller.progressState.value == sState.initial ? controller.jobsRenter[controller.tabSelectedRenter.value].isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: controller.jobsRenter[controller.tabSelectedRenter.value].length,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    var job = controller.jobsRenter[controller.tabSelectedRenter.value][index];
-                                    return MyJobCard(
-                                      job: job,
-                                      color: job.deadline.difference(DateTime.now()).inMinutes < 0 ? Colors.black.withOpacity(0.6) : selectedColor(job.status),
-                                    );
-                                  })
-                              : Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/postjob.jpg',
-                                    height: 250,
-                                  ),
-                                  Text(
-                                    'Bạn chưa đăng việc nào!',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  ElevatedButton(
-                                    child: Text('Đăng việc ngay'),
-                                    onPressed: () {
-                                      controller.updateIndexSelected(2);
-                                    },
-                                  )
-                                ],
-                              ) : Padding(
+                          child: controller.progressState.value ==
+                                  sState.initial
+                              ? controller
+                                      .jobsRenter[
+                                          controller.tabSelectedRenter.value]
+                                      .isNotEmpty
+                                  ? ListView.builder(
+                                      itemCount: controller
+                                          .jobsRenter[controller
+                                              .tabSelectedRenter.value]
+                                          .length,
+                                      shrinkWrap: true,
+                                      reverse: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        var job = controller.jobsRenter[
+                                            controller.tabSelectedRenter
+                                                .value][index];
+                                        return MyJobCard(
+                                          job: job,
+                                          color: selectedColor(job.status),
+                                        );
+                                      })
+                                  : controller.tabSelectedRenter.value != 1
+                                      ? Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/postjob.jpg',
+                                              height: 250,
+                                            ),
+                                            Text(
+                                              'Bạn chưa đăng việc nào!',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text('Đăng việc ngay'),
+                                              onPressed: () {
+                                                controller
+                                                    .updateIndexSelected(2);
+                                              },
+                                            )
+                                          ],
+                                        )
+                                      : Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/postjob.jpg',
+                                              height: 250,
+                                            ),
+                                            Text(
+                                              'Không có việc nào đang giao!',
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                          ],
+                                        )
+                              : Padding(
                                   padding: const EdgeInsets.only(top: 100),
-                                  child: Center(child: CircularProgressIndicator(),),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
                                 )),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
-
   }
-
 }
 
 class MyJobCard extends StatelessWidget {
@@ -177,14 +199,22 @@ class MyJobCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        job.status != 'Close' ?
-                        job.deadline.difference(DateTime.now()).inDays >= 0
-                            ? job.deadline.difference(DateTime.now()).inDays == 0
-                                ? job.deadline.difference(DateTime.now()).inHours <= 0
-                                    ? 'Đã đóng'
-                                    : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
-                                : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
-                            : 'Đã đóng' : 'Đã đóng',
+                        job.status != 'Close'
+                            ? job.deadline.difference(DateTime.now()).inDays >=
+                                    0
+                                ? job.deadline
+                                            .difference(DateTime.now())
+                                            .inDays ==
+                                        0
+                                    ? job.deadline
+                                                .difference(DateTime.now())
+                                                .inHours <=
+                                            0
+                                        ? 'Đã đóng'
+                                        : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
+                                    : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
+                                : 'Đã đóng'
+                            : 'Đã đóng',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.black87,
@@ -196,7 +226,9 @@ class MyJobCard extends StatelessWidget {
                     height: kDefaultPadding / 2,
                   ),
                   Text(
-                    job.bidCount == 0 ? 'Chưa có freelancer nào chào giá' : 'Có ${job.bidCount} chào giá',
+                    job.bidCount == 0
+                        ? 'Chưa có freelancer nào chào giá'
+                        : 'Có ${job.bidCount} chào giá',
                     style: TextStyle(
                       color: Colors.black54,
                     ),

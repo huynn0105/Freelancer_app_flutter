@@ -1,12 +1,21 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/messages/setup_payment.dart';
 import 'package:get/get.dart';
 import 'chat_controller.dart';
 
 class MessagesScreen extends StatelessWidget {
+  MessagesScreen({this.job,this.userId,this.freelancerId});
+  final Job job;
+  final int userId;
+  final int freelancerId;
 
   var controller = Get.find<ChatController>();
 
@@ -24,9 +33,9 @@ class MessagesScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('Tuyển lập trình viên mobilesssssssss'),
+                      Text(job.name),
                       Text(
-                          'Huy Hyun',
+                          controller.chats[0].freelancer.name,
                           style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400,)
                       ),
 
@@ -61,7 +70,7 @@ class MessagesScreen extends StatelessWidget {
           ChatInputField(
             ctrMessage: controller.ctrMessage,
             onTap: (){
-              controller.sendMessage(CURRENT_ID);
+              controller.sendMessage(job.id,freelancerId,userId);
 
           },)
         ],
@@ -81,21 +90,21 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-    Widget messageContains(ChatMessage message) {
-      switch (message.messageType) {
-        case ChatMessageType.text:
-          return Flexible(child: Padding(
-            padding: message.isSender ?  const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
-            child: TextMessage(message: message),
-          ));
-        case ChatMessageType.request:
-          return RequestFinished();
-        case ChatMessageType.image:
-          return ImageMessage();
-        default:
-          return SizedBox();
-      }
-    }
+    // Widget messageContains(ChatMessage message) {
+    //   switch (message.messageType) {
+    //     case ChatMessageType.text:
+    //       return Flexible(child: Padding(
+    //         padding: message.isSender ?  const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
+    //         child: TextMessage(message: message),
+    //       ));
+    //     case ChatMessageType.request:
+    //       return RequestFinished();
+    //     case ChatMessageType.image:
+    //       return ImageMessage();
+    //     default:
+    //       return SizedBox();
+    //   }
+    // }
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Column(
@@ -103,16 +112,34 @@ class Message extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment:
-                message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+                message.sender.id == CURRENT_ID ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
-              if (!message.isSender) ...[
+              if (message.sender.id != CURRENT_ID) ...[
                 CircleAvatar(
-                  radius: 16,
-                  backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                  radius: 15,
+                  foregroundColor: Colors.transparent,
+                  backgroundColor: Colors.grey.shade300,
+                  child: CachedNetworkImage(
+                    imageUrl: 'http://${message.avatarUrl}',
+                    httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
+                    placeholder: (context, url) => CupertinoActivityIndicator(),
+                    imageBuilder: (context, image) => CircleAvatar(
+                      backgroundImage: image,
+                      radius: 13,
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      backgroundImage: AssetImage('assets/images/avatarnull.png'),
+                      radius: 13,
+                    ),
+                  ),
                 ),
                 SizedBox(width: kDefaultPadding/2,),
               ],
-              messageContains(message),
+              Flexible(child: Padding(
+                padding: message.sender.id == CURRENT_ID ?  const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
+                child: TextMessage(message: message),
+              ))
             ],
           ),
          // if (message.isSender) MessageStatusDot(status: message.messageStatus)
@@ -192,14 +219,14 @@ class TextMessage extends StatelessWidget {
         vertical: kDefaultPadding / 2,
       ),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(message.isSender ? 1 : 0.1),
+        color: Colors.blue.withOpacity(message.sender.id == CURRENT_ID ? 1 : 0.1),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Text(
-        message.text,
+        message.message,
         maxLines: 20,
         style:
-            TextStyle(color: message.isSender ? Colors.white : Colors.black87,fontSize: 17),
+            TextStyle(color: message.sender.id == CURRENT_ID ? Colors.white : Colors.black87,fontSize: 17),
       ),
     );
   }

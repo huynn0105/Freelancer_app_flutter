@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/offer.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_controller.dart';
+import 'package:freelance_app/presentation/home/messages/chat_controller.dart';
 import 'package:freelance_app/presentation/home/messages/messages_screen.dart';
 import 'package:get/get.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -16,6 +17,7 @@ class JobOffersDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<JobDetailController>();
+    var controllerChat = Get.find<ChatController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Nhận chào giá'),
@@ -23,14 +25,19 @@ class JobOffersDetail extends StatelessWidget {
       body: Obx(
           ()=> controller.progressState.value == sState.initial ? controller.offers.isNotEmpty
             ? ListView.builder(
-                itemBuilder: (_, index) => ItemOffer(offer: controller.offers[index],
-                  isClose: isClose,
-                  onPressed: () {
-                    // controller.choseFreelancer(
-                    //     controller.offers[index].freelancerId);
-                    Get.to(()=>MessagesScreen());
-                  },
-                ),
+                itemBuilder: (_, index) {
+                  final offer = controller.offers[index];
+                  return ItemOffer(offer: offer,
+                    isClose: isClose,
+                    onPressed: () {
+                      // controller.choseFreelancer(
+                      //     controller.offers[index].freelancerId);
+                      controllerChat.loadMessageChat(offer.jobId, offer.freelancerId).then((value)
+                      =>  Get.to(()=>MessagesScreen(userId: offer.freelancerId,)));
+
+                    },
+                  );
+                },
                 itemCount: controller.offers.length,
               )
             :Center(child: Text('Chưa có chào giá nào!'),)

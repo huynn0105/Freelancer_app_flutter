@@ -17,7 +17,7 @@ class PostJobController extends GetxController {
 
   PostJobController({this.apiRepositoryInterface});
 
-  var deadline = DateTime.now().obs;
+  DateTime deadline;
   RxList<Specialty> specialties = <Specialty>[].obs;
   RxList<Service> services = <Service>[].obs;
   RxList<Skill> skills = <Skill>[].obs;
@@ -47,6 +47,7 @@ class PostJobController extends GetxController {
   final locationTextController = TextEditingController();
 
 
+
   Future postJob() async {
     try {
       progressState(sState.loading);
@@ -56,7 +57,7 @@ class PostJobController extends GetxController {
         typeId: typeId.value,
         formId: formId.value,
         workatId: workAtId.value,
-        deadline: deadline.value,
+        deadline: DateTime(deadline.year,deadline.month,deadline.day,23,59,59),
         floorprice: int.parse(floorPriceTextController.text.replaceAll(',', '')),
         cellingprice: int.parse(cellingPriceTextController.text.replaceAll(',', '')),
         isPrivate: isPrivate.value ? 1 : 0,
@@ -97,8 +98,9 @@ class PostJobController extends GetxController {
   @override
   void onInit() async {
     await loadSpecialties();
+    deadline = DateTime.now();
     deadlineTextController.text =
-        '${deadline.value.day}/${deadline.value.month}/${deadline.value.year}';
+        '${deadline.day}/${deadline.month}/${deadline.year}';
     super.onInit();
   }
 

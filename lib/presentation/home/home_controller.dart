@@ -30,6 +30,8 @@ class HomeController extends GetxController {
   RxBool accountOnReady = true.obs;
   List<RxList<Job>> jobsRenter = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
 
+  RxList<JobOffer> offers = <JobOffer>[].obs;
+
   List<RxList<JobOffer>> jobsFreelancer = <RxList<JobOffer>>[<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs];
   var tabSelectedRenter = 0.obs;
   var tabSelectedFreelancer = 0.obs;

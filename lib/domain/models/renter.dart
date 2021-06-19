@@ -2,7 +2,7 @@ class Renter{
   int id;
   String name;
   String avatarRenter;
-  Renter({this.name,this.id,this.avatarRenter});
+  Renter({ this.name,this.id,this.avatarRenter});
 
   Renter.fromJson(Map<String, dynamic> json) {
     id = json['id'];

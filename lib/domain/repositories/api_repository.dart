@@ -64,5 +64,13 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> putJobOfferChoose(int jobId, int freelancerId);
   Future<dynamic> postRating(RatingRequest request);
   Future<dynamic> putJobClose(int id);
-  Future<dynamic> createSignalConnection();
+  Future<dynamic> putJobRequestFinish(int id);
+  Future<dynamic> putJobRequestRework(int id);
+  Future<dynamic> putJobDone(int id);
+  Future<dynamic> putJobCancel(int id);
+  Future<dynamic> getMessageUser();
+  Future<dynamic> getMessageChat(int jobId, int freelancerId);
+
+
+
 }

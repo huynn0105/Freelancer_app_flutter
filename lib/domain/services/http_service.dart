@@ -23,6 +23,9 @@ const CAPACITY_PROFILE = 'api/CapacityProfiles';
 const ACCOUNT_PAGINATION = '/api/Accounts/pagination';
 const OFFER_HISTORIES = '/api/OfferHistories';
 const RATING = '/api/Ratings';
+const MESSAGE_USER = '/api/MessageUsers';
+const MESSAGES = '/api/Messages';
+const CHAT_HUB = "http://freelancervn.somee.com/chatHub";
 
 // ignore: non_constant_identifier_names
 int CURRENT_ID;

@@ -1,63 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/domain/models/account.dart';
+import 'package:freelance_app/domain/models/job.dart';
 
 enum ChatMessageType { text, audio, image, request }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
-  final String text;
-  final ChatMessageType messageType;
+   String message;
+   String avatarUrl;
+   String status;
+   DateTime time;
+   Job job;
+   Account freelancer;
+   Account receiver;
+   Account sender;
 
-  final bool isSender;
+   ChatMessage({
+     this.message, this.avatarUrl, this.status, this.time, this.job,
+     this.freelancer, this.receiver, this.sender,
+});
 
-  ChatMessage({
-    this.text = '',
-    @required this.messageType,
-
-    @required this.isSender,
-  });
+   factory ChatMessage.fromJson(Map<String, dynamic> json){
+     return ChatMessage(
+       job: Job.fromJs(json['job'] as Map<String, dynamic>),
+       status:  json['status'],
+       freelancer: Account.fromJs(json['freelancer'] as Map<String, dynamic>),
+       avatarUrl: json['avatarUrl'],
+       message: json['message1'],
+       receiver: Account.fromJs(json['receiver'] as Map<String, dynamic>),
+       sender: Account.fromJs(json['sender'] as Map<String, dynamic>),
+       time: DateTime.parse(json['time'] as String),
+     );
+   }
 }
-
-List demoChatMessages = [
-  ChatMessage(
-    text: "Hi Sajol,",
-    messageType: ChatMessageType.text,
-
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "Hello, How are you?",
-    messageType: ChatMessageType.text,
-
-    isSender: true,
-  ),
-  ChatMessage(
-    text: "",
-    messageType: ChatMessageType.image,
-
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "",
-    messageType: ChatMessageType.request,
-
-    isSender: true,
-  ),
-  ChatMessage(
-    text: "Error happend",
-    messageType: ChatMessageType.text,
-
-    isSender: true,
-  ),
-  ChatMessage(
-    text: "This looks great man!!",
-    messageType: ChatMessageType.text,
-
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "Glad you like it",
-    messageType: ChatMessageType.request,
-
-    isSender: true,
-  ),
-];

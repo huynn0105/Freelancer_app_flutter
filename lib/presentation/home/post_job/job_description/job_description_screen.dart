@@ -110,14 +110,13 @@ Future<void> selectDate(
   final df = new DateFormat('dd-MM-yyyy');
   final DateTime pickedDate = await showDatePicker(
       context: context,
-      initialDate: controller.deadline.value,
+      initialDate: controller.deadline,
       firstDate: DateTime(2021),
       lastDate: DateTime(2050));
   if (pickedDate != null &&
-      pickedDate != controller.deadline.value &&
+      pickedDate != controller.deadline &&
       pickedDate.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-    controller.deadline.value = DateTime(pickedDate.year,pickedDate.month,pickedDate.day,23,59,59);
-    print('ngày ${controller.deadline.value}');
-    controller.deadlineTextController.text = df.format(controller.deadline.value);
+    controller.deadline = pickedDate;
+    controller.deadlineTextController.text = df.format(pickedDate);
   }
 }

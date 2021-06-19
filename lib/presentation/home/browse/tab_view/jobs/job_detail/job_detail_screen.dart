@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_offers/job_offers_detail.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
@@ -99,44 +98,66 @@ class JobDetailScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   SizedBox(height: kDefaultPadding / 4),
-                                  Wrap(
-                                    alignment: WrapAlignment.center,
-                                    crossAxisAlignment: WrapCrossAlignment.center,
-                                    spacing: 10,
-                                    runSpacing: 5,
-                                    children: [
-                                      NavItem(
-                                          title:
-                                              controller.job.value.formOfWork.name,
-                                          textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15,
-                                          ),
-                                          backgroundColor: Colors.green.shade400),
-                                      NavItem(
-                                        title: controller.job.value.typeOfWork.name,
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                        ),
-                                        backgroundColor: Colors.pinkAccent.shade200,
-                                      ),
-                                      NavItem(
-                                          title: controller.job.value.payform.name,
-                                          textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15,
-                                          ),
-                                          backgroundColor:
-                                              Colors.blueAccent.shade400),
-                                    ],
-                                  ),
+
                                   Divider(),
                                 ],
                               ),
+
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_pin_circle_outlined,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: kDefaultPadding / 2),
+                                  Text('Chủ dự án',style: TEXT_STYLE_PRIMARY),
+                                ],
+                              ),
+                              SizedBox(height: kDefaultPadding / 4),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                    controller.job.value.renter.name,
+                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                              ),
+                              SizedBox(height: kDefaultPadding),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.home_work_outlined,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: kDefaultPadding / 2),
+                                  Text('Hình thức làm việc',style: TEXT_STYLE_PRIMARY),
+                                ],
+                              ),
+                              SizedBox(height: kDefaultPadding / 4),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                    controller.job.value.formOfWork.name,
+                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                              ),
+                              SizedBox(height: kDefaultPadding),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.merge_type_outlined,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: kDefaultPadding / 2),
+                                  Text('Loại hình làm việc',style: TEXT_STYLE_PRIMARY),
+                                ],
+                              ),
+                              SizedBox(height: kDefaultPadding / 4),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                    controller.job.value.typeOfWork.name,
+                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                              ),
+                              SizedBox(height: kDefaultPadding),
+
                               Row(
                                 children: [
                                   Icon(
@@ -211,6 +232,25 @@ class JobDetailScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Icon(
+                                    Icons.person_pin_circle_outlined,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: kDefaultPadding / 2),
+                                  Text('Hình thức trả lương',style: TEXT_STYLE_PRIMARY),
+                                ],
+                              ),
+                              SizedBox(height: kDefaultPadding / 4),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                    controller.job.value.payform.name,
+                                    style: TEXT_STYLE_FOREIGN),
+                              ),
+                              SizedBox(height: kDefaultPadding),
+
+                              Row(
+                                children: [
+                                  Icon(
                                     CupertinoIcons.money_dollar_circle,
                                     color: Colors.black87,
                                   ),
@@ -269,7 +309,16 @@ class JobDetailScreen extends StatelessWidget {
                           ),
                         ),
                          controller.job.value.renter.id != CURRENT_ID
-                             ? !controller.job.value.offered
+                         ? controller.job.value.deadline.difference(DateTime.now()).inDays<0 ? Align(
+                           alignment: Alignment.bottomCenter,
+                           child: RoundedButton(
+                               backgroundColor: Color(0xFF1EC725),
+                               onTap: null,
+                               child:
+                               Text('Đã hết hạn nhận chào giá',style: TEXT_STYLE_PRIMARY)),
+                         ) :
+
+                              !controller.job.value.offered
                             ? Align(
                                 alignment: Alignment.bottomCenter,
                                 child: RoundedButton(

@@ -61,4 +61,11 @@ class Job {
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
 
   Map<String, dynamic> toJson() => _$JobToJson(this);
+
+  factory Job.fromJs(Map<String, dynamic> json) {
+   return Job(
+       id : json['id'],
+       name : json['name'],
+   );
+  }
 }

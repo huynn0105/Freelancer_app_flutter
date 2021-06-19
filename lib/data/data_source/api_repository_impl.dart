@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/bank.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
+import 'package:freelance_app/domain/models/chat.dart';
+import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
@@ -24,7 +26,6 @@ import 'package:freelance_app/domain/requests/post_job_request.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/requests/search_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:signalr_client/hub_connection_builder.dart';
 
 class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
@@ -164,6 +165,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     var rs = await HttpService.post(JOB,
         body: postJobRequest.toJson(), bearerToken: TOKEN);
     print('codeJob: ${rs.statusCode}');
+    print('time: ${postJobRequest.deadline}');
     if (rs.statusCode == 200) return true;
     return false;
   }
@@ -568,14 +570,55 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   }
 
   @override
-  Future createSignalConnection() async {
-   var connection = HubConnectionBuilder().withUrl('http://freelancervn.somee.com/chatHub').build();
-   await connection.start();
-   connection.on('ReceiveMessage', (data) {
-     print('fromUserId: ${data[0]}');
-     print('toUserId: ${data[1]}');
-     print('message: ${data[2]}');
-   });
-
+  Future putJobCancel(int id) async {
+    var rs = await HttpService.put('$JOB/$id/requestcancellation', bearerToken: TOKEN);
+    print('code put requestcancellation ${rs.statusCode}');
+    return rs.statusCode;
   }
+
+  @override
+  Future putJobDone(int id) async{
+
+    var rs = await HttpService.put('$JOB/$id/done', bearerToken: TOKEN);
+    print('code put done ${rs.statusCode}');
+    return rs.statusCode;
+  }
+
+  @override
+  Future putJobRequestRework(int id) async{
+    var rs = await HttpService.put('$JOB/$id/requestrework', bearerToken: TOKEN);
+    print('code put requestrework ${rs.statusCode}');
+    return rs.statusCode;
+  }
+
+  @override
+  Future putJobRequestFinish(int id)async {
+    var rs = await HttpService.put('$JOB/$id/requestfinish', bearerToken: TOKEN);
+    print('code put requestfinish ${rs.statusCode}');
+    return rs.statusCode;
+  }
+
+  @override
+  Future getMessageUser() async {
+    var rs = await HttpService.get(MESSAGE_USER, bearerToken: TOKEN);
+    print('code message user: ${rs.statusCode}');
+    if(rs.statusCode==200){
+      var jsonList = jsonDecode(rs.body) as List;
+      var chats = jsonList.map((e) => Chat.fromJson(e)).toList();
+      return chats;
+    }
+  }
+
+  @override
+  Future getMessageChat(int jobId, int freelancerId) async {
+    Map<String,String> param = {'jobId':'$jobId', 'freelancerId':'$freelancerId'};
+    var rs = await HttpService.get(MESSAGES,parameters: param, bearerToken: TOKEN);
+    print('code message chat: ${rs.statusCode}');
+    if(rs.statusCode==200){
+      var jsonList = jsonDecode(rs.body) as List;
+      var chatMessages = jsonList.map((e) => ChatMessage.fromJson(e)).toList();
+      return chatMessages;
+    }
+  }
+
 }

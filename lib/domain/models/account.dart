@@ -66,4 +66,12 @@ class Account {
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccountToJson(this);
+
+
+  factory Account.fromJs(Map<String, dynamic> json) {
+    return Account(
+        id : json['id'],
+        name : json['name'],
+    );
+  }
 }
