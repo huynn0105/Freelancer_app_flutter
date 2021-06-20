@@ -19,7 +19,7 @@ class HomeController extends GetxController {
   final LocalRepositoryInterface localRepositoryInterface;
 
   HomeController({this.apiRepositoryInterface, this.localRepositoryInterface});
-
+  RxInt balance = 0.obs;
   RxString imageURL = ''.obs;
   var progressState = sState.initial.obs;
   Rx<Account> account = Account().obs;
@@ -56,7 +56,7 @@ class HomeController extends GetxController {
      await apiRepositoryInterface.getAccountFromToken().then((value){
         progressState(sState.initial);
         if (value != null) {
-          account(value);
+          account(value);balance(account.value.balance);
         } else if (value == null) {
           print('lỗi: user null');
          logOut().then((value) => Get.offAllNamed(Routes.login));
@@ -74,8 +74,11 @@ class HomeController extends GetxController {
     progressState(sState.loading);
     await localRepositoryInterface.getAccount().then(
       (value) {
-        if(value!=null)
+        if(value!=null){
           account(value);
+          balance(account.value.balance);
+        }
+
       },
     );
     progressState(sState.initial);
@@ -219,6 +222,18 @@ class HomeController extends GetxController {
       await apiRepositoryInterface.putOnReady(account.value.id);
     }catch(e){
       print('lỗi ${e.toString()}');
+    }
+  }
+  
+  Future deposit(int money)async{
+    try{
+      await apiRepositoryInterface.putDeposit(money).then((value){
+        if(value==200){
+          account.value.balance+=200;
+        }
+      });
+    }catch(e){
+      print('lỗi $e');
     }
   }
 

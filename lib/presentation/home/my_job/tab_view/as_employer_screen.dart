@@ -17,14 +17,14 @@ class AsEmployerScreen extends GetWidget<HomeController> {
       switch (status) {
         case 'Waiting':
           return Color(0xFFEAB802);
-        case 'In progeress':
+        case 'In progress':
           return Colors.blue;
         case 'Done':
           return Colors.green;
         case 'Closed':
           return Colors.black.withOpacity(0.6);
         default:
-          return Colors.amber;
+          return Colors.brown;
       }
     }
 
@@ -88,7 +88,7 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                                                 .value][index];
                                         return MyJobCard(
                                           job: job,
-                                          color: selectedColor(job.status),
+                                          color: (job.status == 'Waiting' && job.deadline.difference(DateTime.now()).inSeconds <0) ? Colors.black.withOpacity(0.6) : selectedColor(job.status),
                                         );
                                       })
                                   : controller.tabSelectedRenter.value != 1
@@ -167,7 +167,7 @@ class MyJobCard extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: color,
+                color:  color,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(8),
                   topLeft: Radius.circular(8),
@@ -198,28 +198,25 @@ class MyJobCard extends StatelessWidget {
                             color: Colors.black87, fontWeight: FontWeight.w500),
                       ),
                       Spacer(),
-                      Text(
-                        job.status != 'Close'
-                            ? job.deadline.difference(DateTime.now()).inDays >=
-                                    0
-                                ? job.deadline
-                                            .difference(DateTime.now())
-                                            .inDays ==
-                                        0
-                                    ? job.deadline
-                                                .difference(DateTime.now())
-                                                .inHours <=
-                                            0
-                                        ? 'Đã đóng'
-                                        : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
-                                    : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
-                                : 'Đã đóng'
-                            : 'Đã đóng',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      )
+                      if(job.status == 'Closed')
+                        Text('Đã đóng'),
+                      if(job.status == 'In progress')
+                        Text('Đang giao'),
+                      if(job.status == 'Done')
+                        Text('Đã hoàn thành'),
+                      if(job.status == 'Waiting')
+                        Text(job.deadline.difference(DateTime.now()).inDays >= 0
+                              ? job.deadline.difference(DateTime.now()).inDays == 0
+                              ? job.deadline.difference(DateTime.now()).inHours <= 0
+                              ? 'Đã đóng'
+                              : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
+                              : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
+                              : 'Đã đóng',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                        )
                     ],
                   ),
                   SizedBox(

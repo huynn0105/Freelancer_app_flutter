@@ -628,4 +628,11 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     print('body: ${rs.body}');
   }
 
+  @override
+  Future putDeposit(int money) async {
+    var rs = await HttpService.put('$ACCOUNT/deposit/$money', bearerToken: TOKEN);
+    print('code put money ${rs.statusCode}');
+    return rs.statusCode;
+  }
+
 }

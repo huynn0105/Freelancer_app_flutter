@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/job.dart';
 
-enum ChatMessageType { text, audio, image, request }
+enum ChatMessageType { text, request }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
-   String message;
-   String avatarUrl;
-   String status;
-   DateTime time;
-   Job job;
-   Account freelancer;
-   Account receiver;
-   Account sender;
+   final String message;
+   final String avatarUrl;
+   final String status;
+   final DateTime time;
+   final Job job;
+   final ChatMessageType type;
+   final int money;
+   final Account freelancer;
+   final Account receiver;
+   final Account sender;
 
    ChatMessage({
      this.message, this.avatarUrl, this.status, this.time, this.job,
      this.freelancer, this.receiver, this.sender,
+     this.type = ChatMessageType.text,
+     this.money,
 });
 
    factory ChatMessage.fromJson(Map<String, dynamic> json){

@@ -3,13 +3,13 @@ import 'package:freelance_app/domain/models/job.dart';
 import 'account.dart';
 
 class Chat {
-   Job job;
-   String lastMessage;
-   String status;
-   String avatarSender;
-   Account freelancer;
-   Account lastSender;
-   DateTime time;
+   final Job job;
+   final String lastMessage;
+   final String status;
+   final Account freelancer;
+   final Account lastSender;
+   final Account toUser;
+   final DateTime time;
 
 
   Chat({
@@ -17,8 +17,8 @@ class Chat {
     this.status,
     this.freelancer,
     this.lastMessage,
-    this.avatarSender,
     this.lastSender,
+    this.toUser,
     this.time
   });
 
@@ -27,9 +27,9 @@ class Chat {
       job: Job.fromJs(json['job'] as Map<String, dynamic>),
       status:  json['status'],
       freelancer: Account.fromJs(json['freelancer'] as Map<String, dynamic>),
-      avatarSender: json['avatarSender'],
       lastSender: Account.fromJs(json['lastSender'] as Map<String, dynamic>),
       lastMessage: json['lastMessage'],
+      toUser: Account.fromJson(json['toUser'] as Map<String, dynamic>),
       time: DateTime.parse(json['time'] as String),
     );
   }

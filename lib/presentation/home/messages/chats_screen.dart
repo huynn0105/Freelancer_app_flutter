@@ -24,30 +24,37 @@ class ChatsScreen extends StatelessWidget {
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: controller.chats.length,
-              itemBuilder: (context, index) {
-                final chat = controller.chats[index];
-                return ChatCard(
-                  chat: chat,
-                  onTap: () {
-                    controller
-                        .loadMessageChat(chat.job.id, chat.freelancer.id)
-                        .then((value) => Get.to(() => MessagesScreen(
-                              toUserId: chat.freelancer.id != CURRENT_ID ? chat.freelancer.id :17,
-                              job: chat.job,
-                              freelancerId: chat.freelancer.id,
-                              avatarUrl: chat.avatarSender,
-                            )));
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          controller.loadMessageUser();
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: Obx(
+                ()=> ListView.builder(
+                  itemCount: controller.chats.length,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final chat = controller.chats[index];
+                    return ChatCard(
+                      chat: chat,
+                      onTap: () {
+                        controller
+                            .loadMessageChat(chat.job.id, chat.freelancer.id)
+                            .then((value) => Get.to(() => MessagesScreen(
+                                  toUser: chat.toUser,
+                                  job: chat.job,
+                                  freelancerId: chat.freelancer.id,
+                                )));
+                      },
+                    );
                   },
-                );
-              },
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -74,7 +81,7 @@ class ChatCard extends StatelessWidget {
                 foregroundColor: Colors.transparent,
                 backgroundColor: Colors.grey.shade300,
                 child: CachedNetworkImage(
-                  imageUrl: 'http://${chat.avatarSender}',
+                  imageUrl: 'http://${chat.toUser.avatarUrl}',
                   httpHeaders: {
                     HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
                   },
@@ -108,7 +115,7 @@ class ChatCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.64,
                       child: Text(
-                        chat.lastMessage,
+                        '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : ''} ${chat.lastMessage}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

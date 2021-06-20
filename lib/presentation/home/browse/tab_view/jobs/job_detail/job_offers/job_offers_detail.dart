@@ -33,7 +33,7 @@ class JobOffersDetail extends StatelessWidget {
                       // controller.choseFreelancer(
                       //     controller.offers[index].freelancerId);
                       controllerChat.loadMessageChat(offer.jobId, offer.freelancerId).then((value)
-                      =>  Get.to(()=>MessagesScreen(toUserId: offer.freelancerId,)));
+                      =>  Get.to(()=>MessagesScreen(toUser: offer.freelancer,freelancerId: offer.freelancerId,job: controller.job.value,)));
 
                     },
                   );

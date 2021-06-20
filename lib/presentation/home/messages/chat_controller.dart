@@ -46,6 +46,7 @@ class ChatController extends GetxController {
               sender: Account(id: data[2]),
               time: DateTime.parse(data[5]),
             ));
+        loadMessageUser();
       });
     } catch (e) {
       print('lỗi $e');
@@ -80,15 +81,55 @@ class ChatController extends GetxController {
     }
   }
 
+  Future seenMessage(int jobId, int freelancerId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SeeMessage", args: <Object>[jobId,freelancerId,CURRENT_ID]);
+    }
+  }
+
+  Future disconnectUser() async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("Disconnect", args: <Object>[CURRENT_ID]);
+    }
+  }
+
+  Future setupPrice(int jobId, int freelancerId, int money) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("PutMoney", args: <Object>[jobId,freelancerId,money]);
+    }
+  }
+
+  Future confirmSuggestedPrice(int jobId, int freelancerId, int money, bool confirm) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("ConfirmSuggestedPrice", args: <Object>[jobId,freelancerId,money,confirm]);
+    }
+  }
+
+  Future finishJob(int jobId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("FinishJob", args: <Object>[jobId]);
+    }
+  }
+
+  Future sendRequestRework(int jobId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SendRequestRework", args: <Object>[jobId]);
+    }
+  }
+
+  Future sendRequestCancel(int jobId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SendRequestCancellation", args: <Object>[jobId]);
+    }
+  }
+
   void sendMessage(int jobId, int freelancerId, int toUserId) async {
     try {
       if (ctrMessage.text.isNotEmpty) {
         if (connection.state == HubConnectionState.connected) {
           connection.invoke("SendMessage",
               args: <Object>[jobId, freelancerId, toUserId, ctrMessage.text]);
-          chatMessages.insert(
-              0,
-              ChatMessage(
+          chatMessages.insert(0, ChatMessage(
                 time: DateTime.now(),
                 message: ctrMessage.text,
                 sender: Account(id: CURRENT_ID),
@@ -96,6 +137,7 @@ class ChatController extends GetxController {
                 job: Job(id: jobId),
                 freelancer: Account(id: freelancerId),
               ));
+          seenMessage(jobId, freelancerId);
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,
@@ -103,6 +145,7 @@ class ChatController extends GetxController {
           );
         }
         ctrMessage.text = '';
+        loadMessageUser();
       }
     } catch (e) {
       print('lỗi: $e');
@@ -119,5 +162,11 @@ class ChatController extends GetxController {
     createSignalRConnection();
     loadMessageUser();
     super.onReady();
+  }
+
+  @override
+  void onClose() {
+    disconnectUser();
+    super.onClose();
   }
 }

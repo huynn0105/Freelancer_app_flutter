@@ -24,8 +24,8 @@ class Account {
   List<PaymentMethod> bankAccounts;
   String website;
   TotalRating totalRating;
-  double balance;
-  double earning;
+  int balance;
+  int earning;
   bool onReady;
   String avatarUrl;
   FormOfWork formOfWork;
@@ -79,8 +79,8 @@ class Account {
       province: json['province'] == null
           ? null
           : Province.fromJson(json['province'] as Map<String, dynamic>),
-      balance: (json['balance'] as num)?.toDouble(),
-      earning: (json['earning'] as num)?.toDouble(),
+      balance: json['balance'] as int,
+      earning: json['earning'] as int,
       onReady: json['onReady'] as bool,
       avatarUrl: json['avatarUrl'] as String,
       formOfWork: json['formOfWork'] == null

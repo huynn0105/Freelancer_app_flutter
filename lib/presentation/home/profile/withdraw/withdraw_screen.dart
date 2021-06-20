@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
+import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/post_job/widgets/input_text.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/add_credit.dart';
-
 import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/payment_method_screen.dart';
-import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_controller.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
-
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
+import 'deposit/deposit_screen.dart';
 
 class WithdrawScreen extends StatelessWidget {
 
-  var controller = Get.put<WithdrawController>(WithdrawController());
+
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
+    final formatter = new NumberFormat("#,###");
     return Scaffold(
       appBar: AppBar(
         title: Text('Tài sản cá nhân'),
@@ -41,7 +43,7 @@ class WithdrawScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Obx(()=> Text(controller.balance.value,style: TextStyle(fontSize: 18,color: Colors.blue),)),
+                      Obx(()=> Text('${formatter.format(controller.balance.value)}',style: TextStyle(fontSize: 18,color: Colors.blue),)),
                       Spacer(),
                       Text('VNĐ',style: TextStyle(fontSize: 18,color: Colors.blue),),
                       Icon(Icons.keyboard_arrow_right_outlined,color: Colors.blue),
@@ -136,43 +138,5 @@ class PaymentMethodCard extends StatelessWidget {
   }
 }
 
-class Deposit extends StatelessWidget {
 
-
-  @override
-  Widget build(BuildContext context) {
-    var ctrlBalance = TextEditingController();
-    var controller = Get.find<WithdrawController>();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Nạp tiền'),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InputText(label: 'Số lượng',
-              controller: ctrlBalance,
-              inputFormatters: [ThousandsFormatter()],
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: kDefaultPadding),
-            RoundedButton(onTap: (){
-              Get.back();
-              controller.balance(ctrlBalance.text);
-              Get.snackbar(
-                  'Thành công', 'Nạp thành công ${controller.balance.value} VNĐ vào tài khoản',
-                  backgroundColor: Colors.green,
-                  colorText: Colors.white,
-                  maxWidth: 600,
-                  snackPosition: SnackPosition.TOP);
-            }, child: Text('Nạp tiền')),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
