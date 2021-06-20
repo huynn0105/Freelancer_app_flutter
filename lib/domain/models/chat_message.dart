@@ -3,7 +3,6 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/job.dart';
 
 enum ChatMessageType { text, request }
-enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
    final String message;
@@ -12,10 +11,17 @@ class ChatMessage {
    final DateTime time;
    final Job job;
    final ChatMessageType type;
-   final int money;
    final Account freelancer;
    final Account receiver;
    final Account sender;
+
+
+
+
+
+
+   final int money;
+
 
    ChatMessage({
      this.message, this.avatarUrl, this.status, this.time, this.job,
@@ -36,4 +42,21 @@ class ChatMessage {
        time: DateTime.parse(json['time'] as String),
      );
    }
+
+   ChatMessage copyWith({String status}) {
+     return ChatMessage(
+       money: this.money,
+       type: this.type,
+       job: this.job,
+       time: this.time,
+       avatarUrl: this.avatarUrl,
+       sender: this.sender,
+       freelancer: this.freelancer,
+       receiver: this.receiver,
+       message: this.message,
+       status: status ?? this.status,
+     );
+   }
+
+
 }

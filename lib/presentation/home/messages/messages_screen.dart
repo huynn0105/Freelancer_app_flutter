@@ -53,69 +53,69 @@ class MessagesScreen extends StatelessWidget {
               ),
             ),
             if(freelancerId!=CURRENT_ID)
-              IconButton(onPressed: () {
-
-                GlobalKey<FormState> formKey = GlobalKey<FormState>();
-                showDialog(context: context, builder: (_)=>AlertDialog(
-                  title: Text('Số tiền bạn sẽ trả cho freelancer sau khi hoàn thành dự án'),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-
-                      Form(
-                        key: formKey,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          controller: ctrlPrice,
-                         validator: RequiredValidator(errorText: 'Không được bỏ trống'),
-                          inputFormatters: [ThousandsFormatter()],
-                          decoration: InputDecoration(
-                            suffixIcon: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: Text(
-                                  'VNĐ',
-                                  style: TextStyle(color: Colors.black54),
-                                )),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(onPressed: (){
-                            Get.back();
-                          }, child: Text('Huỷ',style: TextStyle(color: Colors.red),),),
-                          TextButton(onPressed: (){
-                            var price = int.parse(ctrlPrice.text.replaceAll(',', ''));
-                            if(formKey.currentState.validate())
-                            controller.setupPrice(job.id, freelancerId, price);
-                            Get.back();
-                            controller.chatMessages.insert(0, ChatMessage(
-                              time: DateTime.now(),
-                              sender: Account(id: CURRENT_ID),
-                              job: job,
-                              type: ChatMessageType.request,
-                              money: price
-                            ));
-                          }, child: Text('Xác nhận')),
-                        ],
-                      ),
-
-                    ],
-                  ),
-
-                ));
-              }, icon: Icon(Icons.add),
-
-              )
-            // ElevatedButton(
-            //     onPressed: () {
-            //       Get.to(() => SetupPayment());
-            //     },
-            //     child: Text('Giao việc'))
+              // IconButton(onPressed: () {
+              //
+              //   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+              //   showDialog(context: context, builder: (_)=>AlertDialog(
+              //     title: Text('Số tiền bạn sẽ trả cho freelancer sau khi hoàn thành dự án'),
+              //     contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              //     content: Column(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //
+              //         Form(
+              //           key: formKey,
+              //           child: TextFormField(
+              //             keyboardType: TextInputType.number,
+              //             controller: ctrlPrice,
+              //            validator: RequiredValidator(errorText: 'Không được bỏ trống'),
+              //             inputFormatters: [ThousandsFormatter()],
+              //             decoration: InputDecoration(
+              //               suffixIcon: Padding(
+              //                   padding: EdgeInsets.all(15),
+              //                   child: Text(
+              //                     'VNĐ',
+              //                     style: TextStyle(color: Colors.black54),
+              //                   )),
+              //             ),
+              //           ),
+              //         ),
+              //
+              //         SizedBox(height: 10),
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              //             TextButton(onPressed: (){
+              //               Get.back();
+              //             }, child: Text('Huỷ',style: TextStyle(color: Colors.red),),),
+              //             TextButton(onPressed: (){
+              //               var price = int.parse(ctrlPrice.text.replaceAll(',', ''));
+              //               if(formKey.currentState.validate())
+              //               controller.setupPrice(job.id, freelancerId, price);
+              //               Get.back();
+              //               controller.chatMessages.insert(0, ChatMessage(
+              //                 time: DateTime.now(),
+              //                 sender: Account(id: CURRENT_ID),
+              //                 job: job,
+              //                 type: ChatMessageType.request,
+              //                 money: price
+              //               ));
+              //             }, child: Text('Xác nhận')),
+              //           ],
+              //         ),
+              //
+              //       ],
+              //     ),
+              //
+              //   ));
+              // }, icon: Icon(Icons.add),
+              //
+              // )
+            ElevatedButton(
+                onPressed: () {
+                  Get.to(() => SetupPayment());
+                },
+                child: Text('Giao việc'))
           ],
         ),
       ),
@@ -436,11 +436,11 @@ class ConfirmWork extends StatelessWidget {
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-        child: message.sender.id != CURRENT_ID ? Column(
+        child: message.sender.id == CURRENT_ID ? Column(
 
           children: [
             Text(
-              'Bạn có đồng ý thực hiện dự án với mức lương ${formatter.format(money)} VNĐ?',
+              'Bạn có đồng ý thực hiện dự án với mức lương VNĐ?',
               style: TEXT_STYLE_ON_FOREGROUND,
             ),
             SizedBox(height: 10),
@@ -488,7 +488,7 @@ class ConfirmWork extends StatelessWidget {
         ) : Column(
           children: [
             Text(
-              'Bạn đã gửi yêu cầu làm việc cho freelancer với mức lương ${formatter.format(money)} VNĐ',
+              'Bạn đã gửi yêu cầu làm việc cho freelancer với mức lương  VNĐ',
               style: TEXT_STYLE_ON_FOREGROUND,
             ),
             SizedBox(height: 5),

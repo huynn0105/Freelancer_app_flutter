@@ -40,6 +40,7 @@ class ChatsScreen extends StatelessWidget {
                     return ChatCard(
                       chat: chat,
                       onTap: () {
+                        controller.seenMessage(chat.job.id, chat.freelancer.id);
                         controller
                             .loadMessageChat(chat.job.id, chat.freelancer.id)
                             .then((value) => Get.to(() => MessagesScreen(

@@ -8,6 +8,12 @@ import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:get/get.dart';
 import 'package:signalr_core/signalr_core.dart';
 
+import '../../../domain/models/account.dart';
+import '../../../domain/models/account.dart';
+import '../../../domain/models/chat_message.dart';
+import '../../../domain/models/chat_message.dart';
+import '../../../domain/services/http_service.dart';
+
 class ChatController extends GetxController {
   final ApiRepositoryInterface apiRepositoryInterface;
 
@@ -25,8 +31,8 @@ class ChatController extends GetxController {
       connection = HubConnectionBuilder().withUrl(CHAT_HUB).build();
       await connection.start();
       await connectUser();
+      print('đã kết nối ${connection.state}');
       connection.on("ReceiveMessage", (data) {
-        print('đã kết nối,$data');
 
         // print('rev: $data');
         // print("jobId: " + data[0].toString());
@@ -46,7 +52,7 @@ class ChatController extends GetxController {
               sender: Account(id: data[2]),
               time: DateTime.parse(data[5]),
             ));
-        loadMessageUser();
+        //loadMessageUser();
       });
     } catch (e) {
       print('lỗi $e');
@@ -123,25 +129,25 @@ class ChatController extends GetxController {
     }
   }
 
-  void sendMessage(int jobId, int freelancerId, int toUserId) async {
+  void sendMessage(int jobId, int freelancerId, int toUserId)  {
     try {
       if (ctrMessage.text.isNotEmpty) {
         if (connection.state == HubConnectionState.connected) {
           connection.invoke("SendMessage",
               args: <Object>[jobId, freelancerId, toUserId, ctrMessage.text]);
-           connection.on("SendMessage_Successfully",(data){
-             print('dataaaaa: $data');
 
-            // chatMessages.insert(0,ChatMessage(
-            //   message: data[4],
-            //   job: Job(id: data[0]),
-            //   freelancer: Account(id: data[1]),
-            //   receiver: Account(id: data[3]),
-            //   sender: Account(id: data[2]),
-            //   time: DateTime.parse(data[5]),
-            // ));
-          });
-          //seenMessage(jobId, freelancerId);
+          chatMessages.insert(0, ChatMessage(
+            job: Job(id: jobId),
+            sender: Account(id: CURRENT_ID),
+            freelancer: Account(id: freelancerId),
+            receiver: Account(id: toUserId),
+            type: ChatMessageType.text,
+            message: ctrMessage.text,
+            time: DateTime.now(),
+            status: 'UnSeen'
+          ));
+
+          seenMessage(jobId, freelancerId);
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,
@@ -166,11 +172,5 @@ class ChatController extends GetxController {
     createSignalRConnection();
     loadMessageUser();
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    disconnectUser();
-    super.onClose();
   }
 }
