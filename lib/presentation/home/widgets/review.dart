@@ -31,9 +31,10 @@ class Review extends StatelessWidget {
           children: [
             Text('Tóm lượt', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
             Spacer(),
-            TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: Text('Xem tất cả'))
+            TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: totalVote!=0 ?  Text('Xem tất cả') : SizedBox.shrink())
           ],
         ),
+          totalVote==0 ? Text('Chưa có lượt đánh giá nào!',style: TextStyle(fontSize: 18),) :
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

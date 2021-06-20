@@ -3,16 +3,14 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
-import 'package:freelance_app/domain/repositories/api_repository.dart';
-import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:get/get.dart';
 import 'package:signalr_core/signalr_core.dart';
 
-import '../../../domain/models/account.dart';
-import '../../../domain/models/account.dart';
 import '../../../domain/models/chat_message.dart';
-import '../../../domain/models/chat_message.dart';
+import '../../../domain/repositories/api_repository.dart';
 import '../../../domain/services/http_service.dart';
+import '../../../domain/services/http_service.dart';
+
 
 class ChatController extends GetxController {
   final ApiRepositoryInterface apiRepositoryInterface;
@@ -33,7 +31,6 @@ class ChatController extends GetxController {
       await connectUser();
       print('đã kết nối ${connection.state}');
       connection.on("ReceiveMessage", (data) {
-
         // print('rev: $data');
         // print("jobId: " + data[0].toString());
         // print("freelancerId: " + data[1].toString());
@@ -41,7 +38,6 @@ class ChatController extends GetxController {
         // print("toUserId: " + data[3].toString());
         // print("message: " + data[4].toString());
         // print("msg.Time: " + data[5].toString());
-
         chatMessages.insert(
             0,
             ChatMessage(
@@ -52,13 +48,27 @@ class ChatController extends GetxController {
               sender: Account(id: data[2]),
               time: DateTime.parse(data[5]),
             ));
-        //loadMessageUser();
+        loadMessageUser();
+        seenMessage(data[0],  data[1]);
       });
+      connection.on('Seen', (data) {
+        seenMesLocal();
+      });
+
+
     } catch (e) {
       print('lỗi $e');
       print('trạng thái: ${connection.state}');
       //createSignalRConnection();
     }
+  }
+
+  void seenMesLocal(){
+    chatMessages.forEach((element) {
+        element.status = 'Seen';
+    });
+
+
   }
 
   void loadMessageUser() async {
@@ -146,8 +156,7 @@ class ChatController extends GetxController {
             time: DateTime.now(),
             status: 'UnSeen'
           ));
-
-          seenMessage(jobId, freelancerId);
+          loadMessageUser();
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,

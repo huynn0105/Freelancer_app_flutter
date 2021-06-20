@@ -7,7 +7,7 @@ enum ChatMessageType { text, request }
 class ChatMessage {
    final String message;
    final String avatarUrl;
-   final String status;
+   String status;
    final DateTime time;
    final Job job;
    final ChatMessageType type;

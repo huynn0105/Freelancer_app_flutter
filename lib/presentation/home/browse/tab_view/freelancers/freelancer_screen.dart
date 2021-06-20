@@ -90,7 +90,7 @@ class FreelancerCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.to(
-          () => FreelancerDetailScreen(freelancerId: freelancer.id),
+          () => FreelancerDetailScreen(freelancer: freelancer),
         );
       },
       child: Card(

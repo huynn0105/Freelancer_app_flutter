@@ -41,9 +41,7 @@ class ChatsScreen extends StatelessWidget {
                       chat: chat,
                       onTap: () {
                         controller.seenMessage(chat.job.id, chat.freelancer.id);
-                        controller
-                            .loadMessageChat(chat.job.id, chat.freelancer.id)
-                            .then((value) => Get.to(() => MessagesScreen(
+                        controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value) => Get.to(() => MessagesScreen(
                                   toUser: chat.toUser,
                                   job: chat.job,
                                   freelancerId: chat.freelancer.id,
@@ -116,7 +114,7 @@ class ChatCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.64,
                       child: Text(
-                        '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : ''} ${chat.lastMessage}',
+                        '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : chat.toUser.name} ${chat.lastMessage}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

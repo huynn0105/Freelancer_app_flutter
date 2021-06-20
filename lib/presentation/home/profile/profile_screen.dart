@@ -122,7 +122,9 @@ class ProfileScreen extends StatelessWidget {
                               height: kDefaultPadding / 2,
                             ),
                             Card(
-                              child: Earn(balance: controllerHome.balance.value),
+                              child: InkWell(
+                                  onTap: () => Get.to(() => WithdrawScreen()),
+                                  child: Earn(balance: controllerHome.balance.value)),
                               margin: EdgeInsets.all(0.0),
                             ),
                             SizedBox(
@@ -320,7 +322,9 @@ class ProfileScreen extends StatelessWidget {
                                           height: kDefaultPadding / 2,
                                         ),
                                         Card(
-                                          child: Earn(balance: controllerHome.balance.value),
+                                          child: InkWell(
+                                              onTap: () => Get.to(() => WithdrawScreen()),
+                                              child: Earn(balance: controllerHome.balance.value)),
                                           margin: EdgeInsets.all(0.0),
                                         ),
                                         SizedBox(
@@ -545,7 +549,9 @@ class ProfileScreen extends StatelessWidget {
                                           height: kDefaultPadding / 2,
                                         ),
                                         Card(
-                                          child: Earn(balance: controllerHome.balance.value),
+                                          child: InkWell(
+                                              onTap: () => Get.to(() => WithdrawScreen()),
+                                              child: Earn(balance: controllerHome.balance.value)),
                                           margin: EdgeInsets.all(0.0),
                                         ),
                                         SizedBox(
@@ -739,28 +745,22 @@ class Earn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatter = new NumberFormat("#,###");
-    return InkWell(
-      onTap: () => Get.to(() => WithdrawScreen()),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
-        child: Row(
-          children: [
-            Text(
-              'Kiếm được',
-              style: TEXT_STYLE_PRIMARY,
-            ),
-            Spacer(),
-            Text(
-              '${formatter.format(balance)} VNĐ' ,
-              style: TEXT_STYLE_ON_FOREGROUND,
-            ),
-            SizedBox(
-              width: kDefaultPadding,
-            ),
-            Icon(Icons.arrow_right),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
+      child: Row(
+        children: [
+          Text(
+            'Kiếm được',
+            style: TEXT_STYLE_PRIMARY,
+          ),
+          Spacer(),
+          Text(
+            '${formatter.format(balance)} VNĐ' ,
+            style: TEXT_STYLE_ON_FOREGROUND,
+          ),
+
+        ],
       ),
     );
   }
