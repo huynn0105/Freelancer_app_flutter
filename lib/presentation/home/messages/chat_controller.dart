@@ -129,15 +129,19 @@ class ChatController extends GetxController {
         if (connection.state == HubConnectionState.connected) {
           connection.invoke("SendMessage",
               args: <Object>[jobId, freelancerId, toUserId, ctrMessage.text]);
-          chatMessages.insert(0, ChatMessage(
-                time: DateTime.now(),
-                message: ctrMessage.text,
-                sender: Account(id: CURRENT_ID),
-                receiver: Account(id: toUserId),
-                job: Job(id: jobId),
-                freelancer: Account(id: freelancerId),
-              ));
-          seenMessage(jobId, freelancerId);
+           connection.on("SendMessage_Successfully",(data){
+             print('dataaaaa: $data');
+
+            // chatMessages.insert(0,ChatMessage(
+            //   message: data[4],
+            //   job: Job(id: data[0]),
+            //   freelancer: Account(id: data[1]),
+            //   receiver: Account(id: data[3]),
+            //   sender: Account(id: data[2]),
+            //   time: DateTime.parse(data[5]),
+            // ));
+          });
+          //seenMessage(jobId, freelancerId);
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,
@@ -145,7 +149,7 @@ class ChatController extends GetxController {
           );
         }
         ctrMessage.text = '';
-        loadMessageUser();
+        //loadMessageUser();
       }
     } catch (e) {
       print('lỗi: $e');
