@@ -352,7 +352,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return false;
 
   }
-
+  @override
   Future<dynamic> getJobRenters(int id) async {
     var rs =
         await HttpService.get('$ACCOUNT/$id/jobrenters', bearerToken: TOKEN);
@@ -364,7 +364,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobRentersWaiting(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/waiting',
         bearerToken: TOKEN);
@@ -376,7 +376,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobRentersInProgress(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/inprogress',
         bearerToken: TOKEN);
@@ -388,7 +388,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobRentersPast(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobrenters/past',
         bearerToken: TOKEN);
@@ -400,35 +400,47 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobFreelancers(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers',
         bearerToken: TOKEN);
     print('code Job Freelancer Part: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
-      return jobsOffer;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobFreelancersInProgress(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/inprogress',
         bearerToken: TOKEN);
     print('code Job freelancers inprogress: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
-      var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
-      return jobsOffer;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
     }
     return null;
   }
-
+  @override
   Future<dynamic> getJobFreelancersPast(int id) async {
     var rs = await HttpService.get('$ACCOUNT/$id/jobfreelancers/past',
         bearerToken: TOKEN);
     print('code Job freelancers past: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
+    }
+    return null;
+  }
+  @override
+  Future<dynamic> getOfferHistories(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/offerhistories',
+        bearerToken: TOKEN);
+    print('code Job OfferHistories: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
@@ -437,10 +449,11 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     return null;
   }
 
-  Future<dynamic> getOfferHistories(int id) async {
-    var rs = await HttpService.get('$ACCOUNT/$id/offerhistories',
+  @override
+  Future<dynamic> getOfferHistoriesWaiting(int id) async {
+    var rs = await HttpService.get('$ACCOUNT/$id/offerhistories/waiting',
         bearerToken: TOKEN);
-    print('code Job OfferHistories: ${rs.statusCode}');
+    print('code Job OfferHistories waiting: ${rs.statusCode}');
     if (rs.statusCode == 200) {
       var jsonList = jsonDecode(rs.body) as List;
       var jobsOffer = jsonList.map((e) => JobOffer.fromJson(e)).toList();
@@ -533,15 +546,17 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     }
   }
 
+
+
   @override
   Future getJobOffer(int id) async {
-   var rs = await HttpService.get('$JOB/$id/offerhistories',bearerToken: TOKEN);
-   print('code Job Offer : ${rs.statusCode}');
-   if(rs.statusCode == 200){
-     var jsonList = jsonDecode(rs.body) as List;
-     var offer = jsonList.map((e) => Offer.fromJson(e)).toList();
-     return offer;
-   }
+    var rs = await HttpService.get('$JOB/$id/offerhistories',bearerToken: TOKEN);
+    print('code Job Offer : ${rs.statusCode}');
+    if(rs.statusCode == 200){
+      var jsonList = jsonDecode(rs.body) as List;
+      var offer = jsonList.map((e) => Offer.fromJson(e)).toList();
+      return offer;
+    }
   }
 
   @override

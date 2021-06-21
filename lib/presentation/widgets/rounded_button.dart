@@ -21,6 +21,7 @@ class RoundedButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
           primary: backgroundColor,
+
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8))),
           minimumSize: Size(

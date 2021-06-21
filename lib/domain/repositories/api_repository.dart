@@ -50,6 +50,7 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getJobFreelancersInProgress(int id);
   Future<dynamic> getJobFreelancersPast(int id);
   Future<dynamic> getOfferHistories(int id);
+  Future<dynamic> getOfferHistoriesWaiting(int id);
   Future<dynamic> putOnReady(int id);
   Future<dynamic> getBanks();
   Future<dynamic> getBankAccounts();

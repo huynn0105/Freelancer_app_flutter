@@ -22,6 +22,7 @@ class JobOffersDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text('Nhận chào giá'),
       ),
+      backgroundColor: Colors.grey[100],
       body: Obx(
           ()=> controller.progressState.value == sState.initial ? controller.offers.isNotEmpty
             ? ListView.builder(
@@ -33,7 +34,7 @@ class JobOffersDetail extends StatelessWidget {
                       // controller.choseFreelancer(
                       //     controller.offers[index].freelancerId);
                       controllerChat.loadMessageChat(offer.jobId, offer.freelancerId).then((value)
-                      =>  Get.to(()=>MessagesScreen(toUser: offer.freelancer,freelancerId: offer.freelancerId,job: controller.job.value,)));
+                      =>  Get.to(()=>MessagesScreen(toUser: offer.freelancer,freelancer: offer.freelancer,job: controller.job.value,)));
 
                     },
                   );
@@ -58,8 +59,8 @@ class ItemOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-      elevation: 3,
+      margin: EdgeInsets.only(left: 0,right: 0,top: 0,bottom: 10),
+
       child: Padding(
         padding: const EdgeInsets.symmetric(
             vertical: 10, horizontal: kDefaultPadding),

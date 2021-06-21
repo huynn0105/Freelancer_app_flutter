@@ -222,7 +222,7 @@ class FreelancerDetailScreen extends StatelessWidget {
           child: Icon(Icons.work_outlined),
           onTap: (){
             chatController.loadMessageChat(job.id, freelancer.id).then((value)
-            =>  Get.to(()=>MessagesScreen(toUser: freelancer,freelancerId: freelancer.id,job: job,)));
+            =>  Get.to(()=>MessagesScreen(toUser: freelancer,freelancer: freelancer,job: job,)));
 
           }
 

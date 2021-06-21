@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
@@ -12,16 +11,14 @@ import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/messages/setup_payment.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pattern_formatter/numeric_formatter.dart';
-import 'package:signalr_core/signalr_core.dart';
 import 'chat_controller.dart';
 
 class MessagesScreen extends StatelessWidget {
-  MessagesScreen({this.job, this.toUser, this.freelancerId});
+  MessagesScreen({this.job, this.toUser, this.freelancer});
 
   final Job job;
   final Account toUser;
-  final int freelancerId;
+  final Account freelancer;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,10 @@ class MessagesScreen extends StatelessWidget {
         elevation: 1,
         title: Row(
           children: [
-            BackButton(),
+            BackButton(onPressed: (){
+              controller.loadMessageUser().then((value) => Get.back());
+              Get.back();
+            },),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class MessagesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            if(freelancerId!=CURRENT_ID)
+            if(freelancer.id!=CURRENT_ID)
               // IconButton(onPressed: () {
               //
               //   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -113,7 +113,7 @@ class MessagesScreen extends StatelessWidget {
               // )
             ElevatedButton(
                 onPressed: () {
-                  Get.to(() => SetupPayment());
+                  Get.to(() => SetupPayment(job: job,freelancer: freelancer,));
                 },
                 child: Text('Giao việc'))
           ],
@@ -130,19 +130,21 @@ class MessagesScreen extends StatelessWidget {
                   itemCount: controller.chatMessages.length,
                   reverse: true,
                   controller: controller.scrollController,
-                  itemBuilder: (context, index) => Message(
+                  itemBuilder: (context, index) {
+                    controller.seenMessage(job.id, freelancer.id);
+                    return Message(
                     message: controller.chatMessages[index],
                     avatarUrl: toUser.avatarUrl,
                     prevDateTime: index<controller.chatMessages.length-1? controller.chatMessages[index+1].time : null,
-                  ),
-                ),
+                  );
+                    })
               ),
             ),
           ),
           ChatInputField(
             ctrMessage: controller.ctrMessage,
             onTap: () {
-              controller.sendMessage(job.id, freelancerId, toUser.id);
+              controller.sendMessage(job.id, freelancer.id, toUser.id);
             },
           )
         ],
@@ -166,12 +168,12 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Widget messageContains(ChatMessage message) {
-      switch (message.type) {
+      switch (ChatMessageType.text) {
         case ChatMessageType.text:
           return  Flexible(
               child: TextMessage(message: message));
         case ChatMessageType.request:
-          return ConfirmWork(money: message.money,message: message,);
+          //return ConfirmWork(money: message.money,message: message,);
         default:
           return SizedBox();
       }
@@ -191,13 +193,13 @@ class Message extends StatelessWidget {
                 child: Center(child: Text(DateFormat('dd/MM').format(message.time)),),
               ),
           Row(
-            mainAxisAlignment: message.sender.id == CURRENT_ID
+            mainAxisAlignment: message.senderId == CURRENT_ID
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
 
-              if (message.sender.id != CURRENT_ID)
+              if (message.senderId != CURRENT_ID)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5,right: 10),
                   child: CircleAvatar(
@@ -287,15 +289,15 @@ class TextMessage extends StatelessWidget {
     final df = new DateFormat('HH:mm');
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: kDefaultPadding / 2,
-        horizontal: 15
+        vertical: 10,
+        horizontal: 12
       ),
-      margin: message.sender.id == CURRENT_ID
-          ? const EdgeInsets.only(left: 30)
-          : const EdgeInsets.only(right: 30),
+      margin: message.senderId == CURRENT_ID
+          ? const EdgeInsets.only(left: 40)
+          : const EdgeInsets.only(right: 40),
       decoration: BoxDecoration(
         color:
-            Colors.blue.withOpacity(message.sender.id == CURRENT_ID ? 1 : 0.1),
+            Colors.blue.withOpacity(message.senderId == CURRENT_ID ? 1 : 0.1),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Wrap(
@@ -307,16 +309,16 @@ class TextMessage extends StatelessWidget {
             maxLines: 20,
             style: TextStyle(
                 color:
-                    message.sender.id == CURRENT_ID ? Colors.white : Colors.black87,
-                fontSize: 17),
+                    message.senderId == CURRENT_ID ? Colors.white : Colors.black87,
+                fontSize: 16),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(df.format(message.time),style: TextStyle(fontSize: 13,color: message.sender.id == CURRENT_ID ? Colors.white : Colors.black87),),
-                if(message.sender.id == CURRENT_ID)
+                Text(df.format(message.time),style: TextStyle(fontSize: 13,color: message.senderId == CURRENT_ID ? Colors.white : Colors.black87),),
+                if(message.senderId == CURRENT_ID)
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Icon(
@@ -348,7 +350,7 @@ class RequestFinished extends StatelessWidget {
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.all(20),
-        child: message.sender.id != CURRENT_ID ? Column(
+        child: message.senderId != CURRENT_ID ? Column(
           children: [
             Text(
               'Yêu cầu kết thúc công việc',
@@ -402,7 +404,7 @@ class RequestFinished extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(df.format(message.time),style: TextStyle(fontSize: 13,color:Colors.black87),),
-                if(message.sender.id == CURRENT_ID)
+                if(message.senderId == CURRENT_ID)
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Icon(
@@ -436,7 +438,7 @@ class ConfirmWork extends StatelessWidget {
           color: Colors.grey[300],
         ),
         padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-        child: message.sender.id == CURRENT_ID ? Column(
+        child: message.senderId == CURRENT_ID ? Column(
 
           children: [
             Text(
@@ -472,7 +474,7 @@ class ConfirmWork extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(df.format(message.time),style: TextStyle(fontSize: 13,color:Colors.black87),),
-                if(message.sender.id == CURRENT_ID)
+                if(message.senderId == CURRENT_ID)
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Icon(
@@ -496,7 +498,7 @@ class ConfirmWork extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(df.format(message.time),style: TextStyle(fontSize: 13,color:Colors.black87),),
-                if(message.sender.id == CURRENT_ID)
+                if(message.senderId == CURRENT_ID)
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Icon(

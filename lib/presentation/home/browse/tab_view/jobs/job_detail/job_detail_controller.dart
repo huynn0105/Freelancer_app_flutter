@@ -47,7 +47,7 @@ class JobDetailController extends GetxController{
           jobId: job.value.id,
           freelancerId: CURRENT_ID,
           offerPrice: int.parse(offerPriceController.text.replaceAll(',','')),
-          expectedDay: expectedDayController.text + 'Ngày',
+          expectedDay: '${expectedDayController.text} Ngày',
           description: descriptionController.text,
           todoList: todoListController.text
       )).then((value){

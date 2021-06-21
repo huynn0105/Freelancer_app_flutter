@@ -10,6 +10,7 @@ import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,7 +33,7 @@ class HomeController extends GetxController {
 
   RxList<JobOffer> offers = <JobOffer>[].obs;
 
-  List<RxList<JobOffer>> jobsFreelancer = <RxList<JobOffer>>[<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs,<JobOffer>[].obs];
+  List<RxList<dynamic>> jobsFreelancer = <RxList<dynamic>>[<Job>[].obs,<Job>[].obs,<JobOffer>[].obs,<Job>[].obs];
   var tabSelectedRenter = 0.obs;
   var tabSelectedFreelancer = 0.obs;
 
@@ -186,8 +187,16 @@ class HomeController extends GetxController {
 
   }
 
+  Future loadOfferHistories()async{
+    try{
+      await apiRepositoryInterface.getOfferHistories(CURRENT_ID).then((value) => offers.assignAll(value));
+    }catch(e){
+      print('lỗi $e');
+    }
+  }
+
   void loadJobsFreelancer(int selected) async {
-    List<JobOffer> result;
+    List<dynamic> result;
     progressState(sState.loading);
     switch (selected) {
       case 0:
@@ -198,7 +207,7 @@ class HomeController extends GetxController {
         break;
       case 2:
         result =
-        await apiRepositoryInterface.getOfferHistories(account.value.id);
+        await apiRepositoryInterface.getOfferHistoriesWaiting(account.value.id);
         break;
       case 3:
         result =

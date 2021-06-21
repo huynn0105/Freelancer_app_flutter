@@ -10,6 +10,7 @@ class Chat {
    final Account lastSender;
    final Account toUser;
    final DateTime time;
+   final String lastMsgStatus;
 
 
   Chat({
@@ -19,7 +20,8 @@ class Chat {
     this.lastMessage,
     this.lastSender,
     this.toUser,
-    this.time
+    this.time,
+    this.lastMsgStatus
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Chat {
       lastMessage: json['lastMessage'],
       toUser: Account.fromJson(json['toUser'] as Map<String, dynamic>),
       time: DateTime.parse(json['time'] as String),
+      lastMsgStatus: json['lastMsgStatus'],
     );
   }
 }

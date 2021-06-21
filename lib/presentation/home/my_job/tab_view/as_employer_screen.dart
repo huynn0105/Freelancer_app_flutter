@@ -92,25 +92,31 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                                         );
                                       })
                                   : controller.tabSelectedRenter.value != 1
-                                      ? Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/postjob.jpg',
-                                              height: 250,
-                                            ),
-                                            Text(
-                                              'Bạn chưa đăng việc nào!',
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            ElevatedButton(
-                                              child: Text('Đăng việc ngay'),
-                                              onPressed: () {
-                                                controller
-                                                    .updateIndexSelected(2);
-                                              },
-                                            )
-                                          ],
-                                        )
+                                      ? SingleChildScrollView(
+                            physics: AlwaysScrollableScrollPhysics(),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 40),
+                                              Image.asset(
+                                                'assets/images/postjob.jpg',
+                                                height: 250,
+                                              ),
+                                              Text(
+                                                'Bạn chưa đăng việc nào!',
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                              ElevatedButton(
+                                                child: Text('Đăng việc ngay'),
+                                                onPressed: () {
+                                                  controller
+                                                      .updateIndexSelected(2);
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                      )
                                       : Column(
                                           children: [
                                             Image.asset(

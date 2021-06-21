@@ -41,10 +41,11 @@ class ChatsScreen extends StatelessWidget {
                       chat: chat,
                       onTap: () {
                         controller.seenMessage(chat.job.id, chat.freelancer.id);
-                        controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value) => Get.to(() => MessagesScreen(
+                        controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
+                        => Get.to(() => MessagesScreen(
                                   toUser: chat.toUser,
                                   job: chat.job,
-                                  freelancerId: chat.freelancer.id,
+                                  freelancer: chat.freelancer,
                                 )));
                       },
                     );
@@ -106,28 +107,30 @@ class ChatCard extends StatelessWidget {
                   children: [
                     Text(
                       chat.job.name,
-                      style: TEXT_STYLE_ON_FOREGROUND,
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4),
-                    Opacity(
-                      opacity: 0.64,
-                      child: Text(
-                        '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : chat.toUser.name} ${chat.lastMessage}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    Text(
+                      '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : '${chat.toUser.name}: '} ${chat.lastMessage}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
                       ),
                     )
                   ],
                 ),
               ),
             ),
-            Opacity(
-                opacity: 0.64,
-                child: Text(DateTime.now().difference(chat.time).inDays < 1
-                    ? DateFormat('HH:mm').format(chat.time)
-                    : DateFormat('dd:MM').format(chat.time))),
+            Text(DateTime.now().difference(chat.time).inDays < 1
+                ? DateFormat('HH:mm').format(chat.time)
+                : DateFormat('dd:MM').format(chat.time),
+              style: TextStyle(
+                  fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
+              ),
+            ),
           ],
         ),
       ),

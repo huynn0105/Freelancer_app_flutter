@@ -3,6 +3,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
@@ -13,8 +14,10 @@ import 'package:pattern_formatter/numeric_formatter.dart';
 import 'chat_controller.dart';
 class SetupPayment extends StatelessWidget {
 
-  SetupPayment();
+  final Job job;
+  final Account freelancer;
 
+  SetupPayment({this.job,this.freelancer});
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -106,8 +109,10 @@ class SetupPayment extends StatelessWidget {
                             SizedBox(width: 20),
                             ElevatedButton(
                                 onPressed: () {
-                                  chatController.chatMessages.insert(0, ChatMessage(type: ChatMessageType.request,time: DateTime.now(),sender: Account(id: CURRENT_ID),));
-                                },
+                                  chatController.setupPrice(job.id, freelancer.id, int.parse(ctrlPrice.text.replaceAll(',', '')));
+                                  chatController.loadMessageChat(job.id, freelancer.id).then((value) => Get.back());
+                                  Get.back();
+                                  },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.blue, minimumSize: Size(120, 40)),
                                 child: Text('Xác nhận')),

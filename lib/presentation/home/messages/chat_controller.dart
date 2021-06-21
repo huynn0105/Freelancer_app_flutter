@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
-import 'package:freelance_app/domain/models/job.dart';
 import 'package:get/get.dart';
 import 'package:signalr_core/signalr_core.dart';
 
 import '../../../domain/models/chat_message.dart';
 import '../../../domain/repositories/api_repository.dart';
-import '../../../domain/services/http_service.dart';
 import '../../../domain/services/http_service.dart';
 
 
@@ -24,6 +23,7 @@ class ChatController extends GetxController {
   RxList<Chat> chats = <Chat>[].obs;
   TextEditingController ctrMessage = TextEditingController();
 
+
   Future<void> createSignalRConnection() async {
     try {
       connection = HubConnectionBuilder().withUrl(CHAT_HUB).build();
@@ -31,30 +31,35 @@ class ChatController extends GetxController {
       await connectUser();
       print('đã kết nối ${connection.state}');
       connection.on("ReceiveMessage", (data) {
-        // print('rev: $data');
-        // print("jobId: " + data[0].toString());
-        // print("freelancerId: " + data[1].toString());
-        // print("fromUserId: " + data[2].toString());
-        // print("toUserId: " + data[3].toString());
-        // print("message: " + data[4].toString());
-        // print("msg.Time: " + data[5].toString());
-        chatMessages.insert(
-            0,
-            ChatMessage(
-              message: data[4],
-              job: Job(id: data[0]),
-              freelancer: Account(id: data[1]),
-              receiver: Account(id: data[3]),
-              sender: Account(id: data[2]),
-              time: DateTime.parse(data[5]),
-            ));
+        print('nhận $data');
         loadMessageUser();
-        seenMessage(data[0],  data[1]);
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        chatMessages.insert(0,message);
       });
       connection.on('Seen', (data) {
+        print('đã xem: $data');
+
         seenMesLocal();
       });
+      connection.on('SuggestedPrice', (data) {
+        print('nhận Suggested $data');
+      });
 
+      connection.on('PutMoney_Successfully', (data) {
+        print('gửi Suggested $data');
+      });
+      connection.on('Confirm', (arguments) { });
+      connection.on('Requestfinish', (arguments) { });
+      connection.on('SendFinishRequest_Successfull', (arguments) { });
+      connection.on('SendMessage_Successfully', (data) {
+
+        chatMessages.insert(
+            0,ChatMessage.fromJson(data[0]));
+      });
+      connection.on('Finish', (arguments) { });
+      connection.on('RequestRework', (arguments) { });
+      connection.on('RequestCancellation', (arguments) { });
+      connection.on('ConfirmRequest', (arguments) { });
 
     } catch (e) {
       print('lỗi $e');
@@ -67,11 +72,12 @@ class ChatController extends GetxController {
     chatMessages.forEach((element) {
         element.status = 'Seen';
     });
+    chatMessages.refresh();
 
 
   }
 
-  void loadMessageUser() async {
+  Future loadMessageUser() async {
     try {
       await apiRepositoryInterface
           .getMessageUser()
@@ -111,7 +117,7 @@ class ChatController extends GetxController {
 
   Future setupPrice(int jobId, int freelancerId, int money) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("PutMoney", args: <Object>[jobId,freelancerId,money]);
+      await connection.invoke("SuggestedPrice", args: <Object>[jobId,freelancerId,money]);
     }
   }
 
@@ -133,6 +139,18 @@ class ChatController extends GetxController {
     }
   }
 
+  Future sendConfirmRequest(int jobId, String status, int adminId,String message) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SendConfirmRequest", args: <Object>[jobId,status,adminId,message]);
+    }
+  }
+
+  Future sendFinishRequest(int jobId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SendFinishRequest", args: <Object>[jobId]);
+    }
+  }
+
   Future sendRequestCancel(int jobId) async {
     if (connection.state == HubConnectionState.connected) {
       await connection.invoke("SendRequestCancellation", args: <Object>[jobId]);
@@ -146,17 +164,16 @@ class ChatController extends GetxController {
           connection.invoke("SendMessage",
               args: <Object>[jobId, freelancerId, toUserId, ctrMessage.text]);
 
-          chatMessages.insert(0, ChatMessage(
-            job: Job(id: jobId),
-            sender: Account(id: CURRENT_ID),
-            freelancer: Account(id: freelancerId),
-            receiver: Account(id: toUserId),
-            type: ChatMessageType.text,
-            message: ctrMessage.text,
-            time: DateTime.now(),
-            status: 'UnSeen'
-          ));
-          loadMessageUser();
+          // chatMessages.insert(0, ChatMessage(
+          //   job: Job(id: jobId),
+          //   sender: Account(id: CURRENT_ID),
+          //   freelancer: Account(id: freelancerId),
+          //   receiver: Account(id: toUserId),
+          //   message: ctrMessage.text,
+          //   time: DateTime.now(),
+          //   status: 'UnSeen'
+          // ));
+
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,
