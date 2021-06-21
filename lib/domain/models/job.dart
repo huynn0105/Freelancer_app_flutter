@@ -17,6 +17,7 @@ class Job {
   int id;
   String name;
   int bidCount;
+  int price;
   DateTime deadline;
   DateTime createAt;
   String details;
@@ -51,6 +52,7 @@ class Job {
     this.typeOfWork,
     this.formOfWork,
     this.province,
+    this.price,
     this.status,
     this.skills,
     this.avatarUrl,

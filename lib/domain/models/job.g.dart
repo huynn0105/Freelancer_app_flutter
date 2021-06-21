@@ -25,6 +25,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
         : Account.fromJson(json['freelancer'] as Map<String, dynamic>),
     floorprice: json['floorprice'] as int,
     cellingprice: json['cellingprice'] as int,
+    price : json['price'] as int,
     payform: json['payform'] == null
         ? null
         : PayForm.fromJson(json['payform'] as Map<String, dynamic>),
@@ -64,6 +65,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'avatarUrl': instance.avatarUrl,
       'renter': instance.renter,
       'freelancer': instance.freelancer,
+      'price': instance.price,
       'floorprice': instance.floorprice,
       'cellingprice': instance.cellingprice,
       'payform': instance.payform,

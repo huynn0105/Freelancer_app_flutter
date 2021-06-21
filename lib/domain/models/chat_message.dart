@@ -14,7 +14,7 @@ class ChatMessage {
   final DateTime time;
   final int freelancerId;
   final String avatarUrl;
-  final String form;
+  final String type;
   final String confirmation;
 
 
@@ -28,7 +28,7 @@ class ChatMessage {
     this.receiveId,
     this.senderId,
     this.id,
-    this.form,
+    this.type,
     this.confirmation,
   });
 
@@ -42,7 +42,7 @@ class ChatMessage {
       senderId: json['senderId'],
       freelancerId: json['freelancerId'],
       receiveId: json['receiveId'],
-      form: json['form'],
+      type: json['type'],
       confirmation: json['confirmation'],
       time: DateTime.parse(json['time'] as String),
     );

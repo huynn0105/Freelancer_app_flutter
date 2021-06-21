@@ -41,6 +41,8 @@ class ChatsScreen extends StatelessWidget {
                       chat: chat,
                       onTap: () {
                         controller.seenMessage(chat.job.id, chat.freelancer.id);
+                        print('trạng THái: ${chat.status}');
+                        controller.status(chat.status);
                         controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
                         => Get.to(() => MessagesScreen(
                                   toUser: chat.toUser,

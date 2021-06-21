@@ -3,6 +3,7 @@ import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:get/get.dart';
 import 'package:signalr_core/signalr_core.dart';
 
@@ -18,11 +19,11 @@ class ChatController extends GetxController {
 
   HubConnection connection;
   ScrollController scrollController = ScrollController();
-
+  RxString status = ''.obs;
   RxList<ChatMessage> chatMessages = <ChatMessage>[].obs;
   RxList<Chat> chats = <Chat>[].obs;
   TextEditingController ctrMessage = TextEditingController();
-
+  Rx<Job> job = Job().obs;
 
   Future<void> createSignalRConnection() async {
     try {
@@ -42,23 +43,39 @@ class ChatController extends GetxController {
         seenMesLocal();
       });
       connection.on('SuggestedPrice', (data) {
-        print('nhận Suggested $data');
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        chatMessages.insert(0,message);
       });
 
       connection.on('PutMoney_Successfully', (data) {
         print('gửi Suggested $data');
       });
-      connection.on('Confirm', (arguments) { });
-      connection.on('Requestfinish', (arguments) { });
-      connection.on('SendFinishRequest_Successfull', (arguments) { });
+      connection.on('Confirm', (data) {
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        loadMessageChat(message.jobId, message.freelancerId);
+      });
+      connection.on('Requestfinish', (data) {
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        chatMessages.insert(0,message);
+      });
+      connection.on('SendFinishRequest_Successfull', (data) {
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        chatMessages.insert(0,message);
+      });
       connection.on('SendMessage_Successfully', (data) {
 
         chatMessages.insert(
             0,ChatMessage.fromJson(data[0]));
       });
-      connection.on('Finish', (arguments) { });
-      connection.on('RequestRework', (arguments) { });
-      connection.on('RequestCancellation', (arguments) { });
+      connection.on('Finish', (data) {
+        loadMessageChat(data[0],data[1]);
+      });
+      connection.on('RequestRework', (data) {
+        loadMessageChat(data[0],data[1]);
+      });
+      connection.on('RequestCancellation', (data) {
+        loadMessageChat(data[0],data[1]);
+      });
       connection.on('ConfirmRequest', (arguments) { });
 
     } catch (e) {
@@ -73,7 +90,18 @@ class ChatController extends GetxController {
         element.status = 'Seen';
     });
     chatMessages.refresh();
+  }
 
+  Future loadJob(jobId) async {
+    try {
+      await apiRepositoryInterface.getJobFromId(jobId).then((value) {
+        if(value!=null){
+          job(value);
+        }
+      });
+    }catch(e){
+      print('lỗi: $e');
+    }
 
   }
 
@@ -121,9 +149,9 @@ class ChatController extends GetxController {
     }
   }
 
-  Future confirmSuggestedPrice(int jobId, int freelancerId, int money, bool confirm) async {
+  Future confirmSuggestedPrice(int jobId, int freelancerId, int msgId, bool confirm) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("ConfirmSuggestedPrice", args: <Object>[jobId,freelancerId,money,confirm]);
+      await connection.invoke("ConfirmSuggestedPrice", args: <Object>[jobId,freelancerId,msgId,confirm]);
     }
   }
 
@@ -163,17 +191,6 @@ class ChatController extends GetxController {
         if (connection.state == HubConnectionState.connected) {
           connection.invoke("SendMessage",
               args: <Object>[jobId, freelancerId, toUserId, ctrMessage.text]);
-
-          // chatMessages.insert(0, ChatMessage(
-          //   job: Job(id: jobId),
-          //   sender: Account(id: CURRENT_ID),
-          //   freelancer: Account(id: freelancerId),
-          //   receiver: Account(id: toUserId),
-          //   message: ctrMessage.text,
-          //   time: DateTime.now(),
-          //   status: 'UnSeen'
-          // ));
-
           scrollController.animateTo(
             0.0,
             curve: Curves.easeOut,
