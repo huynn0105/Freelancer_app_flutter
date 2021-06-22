@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/domain/models/account.dart';
-import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/rating/rating_screen.dart';
 import 'package:freelance_app/presentation/home/messages/chat_controller.dart';
 import 'package:freelance_app/presentation/home/messages/setup_payment.dart';
 import 'package:get/get.dart';

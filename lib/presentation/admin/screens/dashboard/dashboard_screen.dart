@@ -136,7 +136,6 @@ _createSampleData() {
 }
 
 _graphBarSection() {
-
   return Container(
     padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
     height: 300,
@@ -180,7 +179,6 @@ _createBarSampleData() {
   ];
 
   return [
-// Blue bars with a lighter center color.
     new charts.Series<OrdinalSales, String>(
       id: 'Desktop',
       domainFn: (OrdinalSales sales, _) => sales.year,
@@ -189,8 +187,7 @@ _createBarSampleData() {
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
     ),
-// Solid red bars. Fill color will default to the series color if no
-// fillColorFn is configured.
+
     new charts.Series<OrdinalSales, String>(
       id: 'Tablet',
       measureFn: (OrdinalSales sales, _) => sales.sales,
@@ -198,7 +195,7 @@ _createBarSampleData() {
       colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       domainFn: (OrdinalSales sales, _) => sales.year,
     ),
-// Hollow green bars.
+
     new charts.Series<OrdinalSales, String>(
       id: 'Mobile',
       domainFn: (OrdinalSales sales, _) => sales.year,
@@ -216,6 +213,8 @@ class LinearSales {
 
   LinearSales(this.month, this.sales);
 }
+
+
 class OrdinalSales {
   final String year;
   final int sales;

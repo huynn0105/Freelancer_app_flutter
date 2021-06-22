@@ -19,7 +19,7 @@ class ChatController extends GetxController {
 
   HubConnection connection;
   ScrollController scrollController = ScrollController();
-  RxString status = ''.obs;
+  RxString status = 'Waiting'.obs;
   RxList<ChatMessage> chatMessages = <ChatMessage>[].obs;
   RxList<Chat> chats = <Chat>[].obs;
   TextEditingController ctrMessage = TextEditingController();
@@ -58,7 +58,7 @@ class ChatController extends GetxController {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         chatMessages.insert(0,message);
       });
-      connection.on('SendFinishRequest_Successfull', (data) {
+      connection.on('SendFinishRequest_Successfully', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         chatMessages.insert(0,message);
       });
@@ -69,6 +69,7 @@ class ChatController extends GetxController {
       });
       connection.on('Finish', (data) {
         loadMessageChat(data[0],data[1]);
+        print('nhận $data');
       });
       connection.on('RequestRework', (data) {
         loadMessageChat(data[0],data[1]);
@@ -155,15 +156,15 @@ class ChatController extends GetxController {
     }
   }
 
-  Future finishJob(int jobId) async {
+  Future finishJob(int jobId,int msgId) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("FinishJob", args: <Object>[jobId]);
+      await connection.invoke("FinishJob", args: <Object>[jobId,msgId]);
     }
   }
 
-  Future sendRequestRework(int jobId) async {
+  Future sendRequestRework(int jobId, int msgId) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("SendRequestRework", args: <Object>[jobId]);
+      await connection.invoke("SendRequestRework", args: <Object>[jobId,msgId]);
     }
   }
 
@@ -179,9 +180,9 @@ class ChatController extends GetxController {
     }
   }
 
-  Future sendRequestCancel(int jobId) async {
+  Future sendRequestCancel(int jobId, int msgId) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("SendRequestCancellation", args: <Object>[jobId]);
+      await connection.invoke("SendRequestCancellation", args: <Object>[jobId,msgId]);
     }
   }
 

@@ -9,7 +9,7 @@ import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/messages/chat_details_screen.dart';
-import 'package:freelance_app/presentation/home/messages/setup_payment.dart';
+import 'package:freelance_app/presentation/home/messages/rating/rating_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'chat_controller.dart';
@@ -42,19 +42,15 @@ class MessagesScreen extends StatelessWidget {
               backgroundColor: Colors.grey.shade300,
               child: CachedNetworkImage(
                 imageUrl: 'http://${toUser.avatarUrl}',
-                httpHeaders: {
-                  HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
-                },
-                placeholder: (context, url) =>
-                    CupertinoActivityIndicator(),
+                httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
+                placeholder: (context, url) => CupertinoActivityIndicator(),
                 imageBuilder: (context, image) => CircleAvatar(
                   backgroundImage: image,
                   radius: 17,
                 ),
                 errorWidget: (context, url, error) => CircleAvatar(
                   backgroundColor: Colors.grey,
-                  backgroundImage:
-                  AssetImage('assets/images/avatarnull.png'),
+                  backgroundImage: AssetImage('assets/images/avatarnull.png'),
                   radius: 17,
                 ),
               ),
@@ -77,11 +73,15 @@ class MessagesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(onPressed: (){
-              controller.loadJob(job.id).then((value) => Get.to(()=>
-                  ChatDetailsScreen(freelancerId: freelancer.id,)));
-            },icon:Icon(Icons.more_vert)),
-
+            IconButton(
+                onPressed: () {
+                  controller
+                      .loadJob(job.id)
+                      .then((value) => Get.to(() => ChatDetailsScreen(
+                            freelancerId: freelancer.id,
+                          )));
+                },
+                icon: Icon(Icons.more_vert)),
           ],
         ),
       ),
@@ -99,7 +99,7 @@ class MessagesScreen extends StatelessWidget {
                     controller.seenMessage(job.id, freelancer.id);
                     return Message(
                       message: controller.chatMessages[index],
-                      avatarUrl: toUser.avatarUrl,
+                      toUser: toUser,
                       prevDateTime: index < controller.chatMessages.length - 1
                           ? controller.chatMessages[index + 1].time
                           : null,
@@ -123,11 +123,11 @@ class Message extends StatelessWidget {
   const Message({
     Key key,
     @required this.message,
-    @required this.avatarUrl,
+    @required this.toUser,
     this.prevDateTime,
   }) : super(key: key);
   final ChatMessage message;
-  final String avatarUrl;
+  final Account toUser;
   final DateTime prevDateTime;
 
   @override
@@ -141,7 +141,9 @@ class Message extends StatelessWidget {
             return SuggestPrice(message: message);
           return ConfirmPrice(message: message);
         case 'FinishRequest':
-          return RequestFinished(message: message);
+          if (message.confirmation == null)
+            return RequestFinished(message: message);
+          return ConfirmFinish(message: message,toUser: toUser,);
         default:
           return SizedBox();
       }
@@ -161,7 +163,7 @@ class Message extends StatelessWidget {
                 ),
               ),
           Row(
-            mainAxisAlignment: message.confirmation != null
+            mainAxisAlignment: message.type!='Text'
                 ? MainAxisAlignment.center
                 : message.senderId == CURRENT_ID
                     ? MainAxisAlignment.end
@@ -169,7 +171,7 @@ class Message extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (message.senderId != CURRENT_ID)
-                if (message.confirmation == null)
+                if (message.type=='Text')
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5, right: 10),
                     child: CircleAvatar(
@@ -177,7 +179,7 @@ class Message extends StatelessWidget {
                       foregroundColor: Colors.transparent,
                       backgroundColor: Colors.grey.shade300,
                       child: CachedNetworkImage(
-                        imageUrl: 'http://$avatarUrl',
+                        imageUrl: 'http://${toUser.avatarUrl}',
                         httpHeaders: {
                           HttpHeaders.authorizationHeader: 'Bearer $TOKEN'
                         },
@@ -318,14 +320,15 @@ class RequestFinished extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
     final df = new DateFormat('HH:mm');
-    return Expanded(
+    return Flexible(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        margin: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey[300],
         ),
-        padding: EdgeInsets.all(20),
+
         child: message.senderId != CURRENT_ID
             ? Column(
                 children: [
@@ -336,7 +339,7 @@ class RequestFinished extends StatelessWidget {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      controller.finishJob(message.jobId);
+                      controller.finishJob(message.jobId, message.id);
                     },
                     child: Text(
                       'Hoàn thành',
@@ -344,13 +347,13 @@ class RequestFinished extends StatelessWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.white,
-                        minimumSize: Size(double.infinity, 40),
+                        minimumSize: Size(300, 40),
                         elevation: 0),
                   ),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {
-                      controller.sendRequestRework(message.jobId);
+                      controller.finishJob(message.jobId, message.id);
                     },
                     child: Text(
                       'Yêu cầu làm lại',
@@ -358,13 +361,14 @@ class RequestFinished extends StatelessWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.white,
-                        minimumSize: Size(double.infinity, 40),
+                        minimumSize: Size(300, 40),
                         elevation: 0),
                   ),
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {
-                      controller.sendRequestCancel(message.jobId);
+                      controller.finishJob(message.jobId, message.id);
+                      print('gửi Jobid ${message.jobId} và ${message.id}');
                     },
                     child: Text(
                       'Huỷ công việc',
@@ -372,7 +376,7 @@ class RequestFinished extends StatelessWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                         primary: Colors.white,
-                        minimumSize: Size(double.infinity, 40),
+                        minimumSize: Size(300, 40),
                         elevation: 0),
                   ),
                 ],
@@ -422,14 +426,12 @@ class SuggestPrice extends StatelessWidget {
     final df = new DateFormat('HH:mm');
     return Flexible(
       child: Container(
-          margin: message.senderId == CURRENT_ID
-              ? const EdgeInsets.only(left: 40)
-              : const EdgeInsets.only(right: 40),
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey[200],
           ),
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: message.senderId != CURRENT_ID
               ? Column(
                   children: [
@@ -444,7 +446,6 @@ class SuggestPrice extends StatelessWidget {
                             message.freelancerId, message.id, true);
                         controller.loadMessageChat(
                             message.jobId, message.freelancerId);
-
                       },
                       child: Text(
                         'Tôi sẽ hoàn thành nó',
@@ -452,7 +453,7 @@ class SuggestPrice extends StatelessWidget {
                       ),
                       style: ElevatedButton.styleFrom(
                           primary: Colors.white,
-                          minimumSize: Size(double.infinity, 40),
+                          minimumSize: Size(300, 40),
                           elevation: 0),
                     ),
                     SizedBox(height: 5),
@@ -467,7 +468,7 @@ class SuggestPrice extends StatelessWidget {
                       ),
                       style: ElevatedButton.styleFrom(
                           primary: Colors.white,
-                          minimumSize: Size(double.infinity, 40),
+                          minimumSize: Size(300, 40),
                           elevation: 0),
                     ),
                     SizedBox(height: 5),
@@ -550,6 +551,52 @@ class ConfirmPrice extends StatelessWidget {
                 df.format(message.time),
                 style: TextStyle(fontSize: 13, color: Colors.black87),
               ),
+            ],
+          )),
+    );
+  }
+}
+
+class ConfirmFinish extends StatelessWidget {
+  final ChatMessage message;
+  final Account toUser;
+
+  ConfirmFinish({this.message,this.toUser});
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.green[200],
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: Column(
+            children: [
+              if (message.confirmation == 'Finished')
+                if(message.freelancerId == CURRENT_ID)
+                  Text(
+                        'Dự án đã hoàn thành, Bạn sẽ sớm nhận được tiền từ hệ thống'),
+                    if(message.freelancerId != CURRENT_ID)...[
+                      Text('Dự án đã hoàn thành, Đánh giá freelancer nào!'),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.to(()=>RatingScreen(freelancer: toUser));
+                        },
+                        child: Text(
+                          'Đánh giá',
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            minimumSize: Size(300, 40),
+                            elevation: 0),
+                      ),
+                    ],
+
             ],
           )),
     );
