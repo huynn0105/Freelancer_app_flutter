@@ -6,6 +6,7 @@ import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
+import 'package:freelance_app/presentation/home/messages/messages_screen.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/deposit/deposit_screen.dart';
 import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_screen.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
@@ -17,9 +18,10 @@ import 'chat_controller.dart';
 class SetupPayment extends StatelessWidget {
 
   final Job job;
-  final int freelancerId;
+  final Account freelancer;
+  final Account toUser;
 
-  SetupPayment({this.job,this.freelancerId});
+  SetupPayment({this.job,this.freelancer,this.toUser});
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -113,9 +115,9 @@ class SetupPayment extends StatelessWidget {
                             SizedBox(width: 20),
                             ElevatedButton(
                                 onPressed: () {
-                                  chatController.setupPrice(job.id, freelancerId, int.parse(ctrlPrice.text.replaceAll(',', '')));
-                                  chatController.loadMessageChat(job.id, freelancerId).then((value) => Get.back());
-                                  Get.back();
+                                  chatController.setupPrice(job.id, freelancer.id, int.parse(ctrlPrice.text.replaceAll(',', '')));
+                                  chatController.loadMessageChat(job.id, freelancer.id).then((value) =>Get.off(()=>MessagesScreen(job: job,freelancer: freelancer,toUser: toUser,)));
+
                                   },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.blue, minimumSize: Size(120, 40)),

@@ -42,18 +42,5 @@ class FreelancerDetailController extends GetxController{
     super.onReady();
   }
 
-  void sendRating(int jobID,String comment, int star)async{
-    try{
-      await apiRepositoryInterface.postRating(
-          RatingRequest(
-            freelancerId: freelancerId,
-            jobID: jobID,
-            comment: comment,
-            star: star,
-          )
-      );
-    }catch(e){
-      print("lỗi: $e");
-    }
-  }
+
 }

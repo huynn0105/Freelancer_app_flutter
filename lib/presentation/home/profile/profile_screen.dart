@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/presentation/home/profile/review/reviews_screen.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
@@ -225,6 +226,9 @@ class ProfileScreen extends StatelessWidget {
                               child: Review(
                                 avg: user.totalRating.avg,
                                 totalVote: user.totalRating.count,
+                                onTap: (){
+                                  controllerHome.loadRatingFormId(user.id).then((value) => Get.to(()=>ReviewsScreen(totalRating: user.totalRating,)));
+                                },
                               ),
                               margin: EdgeInsets.all(0.0),
                             ),
@@ -446,6 +450,10 @@ class ProfileScreen extends StatelessWidget {
                                           child: Review(
                                             avg: user.totalRating.avg,
                                             totalVote: user.totalRating.count,
+                                            onTap: (){
+                                              controllerHome.loadRatingFormId(user.id).then((value) => Get.to(()=>ReviewsScreen(totalRating: user.totalRating,)));
+
+                                            },
                                           ),
                                           margin: EdgeInsets.all(0.0),
                                         ),
@@ -664,6 +672,9 @@ class ProfileScreen extends StatelessWidget {
                                           child: Review(
                                             avg: user.totalRating.avg,
                                             totalVote: user.totalRating.count,
+                                            onTap: (){
+                                              controllerHome.loadRatingFormId(user.id).then((value) => Get.to(()=>ReviewsScreen(totalRating: user.totalRating,)));
+                                            },
                                           ),
                                           margin: EdgeInsets.all(0.0),
                                         ),

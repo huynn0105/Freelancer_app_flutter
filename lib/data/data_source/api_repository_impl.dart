@@ -12,6 +12,7 @@ import 'package:freelance_app/domain/models/offer.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/domain/models/province.dart';
+import 'package:freelance_app/domain/models/rate.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
@@ -638,9 +639,14 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getRatingsFreelancerId(int freelancerId) async{
-    var rs = await HttpService.get('$RATING/freelancerId',bearerToken: TOKEN);
+    var rs = await HttpService.get('$RATING/$freelancerId',bearerToken: TOKEN);
     print('code get rating ${rs.statusCode}');
-    print('body: ${rs.body}');
+    if(rs.statusCode==200){
+      var jsonList = jsonDecode(rs.body) as List;
+      var ratings = jsonList.map((e) => Rating.fromJson(e)).toList();
+      return ratings;
+    }
+
   }
 
   @override

@@ -52,6 +52,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
     avatarUrl: json['avatarUrl'] as String,
     bidCount: json['bidCount'] as int,
     offered: json['offered'] as bool,
+      rating: json['rating'] == null ? null : Rating.fromJson(json['rating'])
   );
 }
 
@@ -77,4 +78,5 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'province': instance.province,
       'status': instance.status,
       'skills': instance.skills,
+      'rating': instance.rating,
     };

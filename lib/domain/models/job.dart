@@ -1,5 +1,6 @@
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/province.dart';
+import 'package:freelance_app/domain/models/rate.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
@@ -34,6 +35,7 @@ class Job {
   FormOfWork formOfWork;
   Province province;
   String status;
+  Rating rating;
   List<Skill> skills;
 
   Job({
@@ -44,6 +46,7 @@ class Job {
     this.details,
     this.renter,
     this.freelancer,
+    this.rating,
     this.floorprice,
     this.cellingprice,
     this.payform,

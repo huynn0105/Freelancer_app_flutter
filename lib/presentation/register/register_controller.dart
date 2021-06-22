@@ -95,6 +95,11 @@ class RegisterController extends GetxController {
     } catch (e) {
       registerState(sState.initial);
       print("Lỗi: ${e.toString()}");
+      Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          maxWidth: 600,
+          snackPosition: SnackPosition.TOP);
     }
   }
 }

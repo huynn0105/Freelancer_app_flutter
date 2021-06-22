@@ -5,80 +5,88 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
     Key key,
-    @required this.rate,
+    @required this.star,
+    this.renter,
+    this.comment,
   }) : super(key: key);
 
-  final int rate;
+  final int star;
+  final String comment;
+  final Account renter;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: kDefaultPadding),
-      child: Column(
-        children: [
-          Text('Lập trình website học trực tuyến có tính năng bán khoá học và làm bài tập trắc nghiệm',
-            style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17,color: Colors.teal,),
-            overflow: TextOverflow.ellipsis,),
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                foregroundColor: Colors.transparent,
-                backgroundColor: Colors.grey.shade300,
-                child: CachedNetworkImage(
-                  imageUrl: 'https://www.thebalancesmb.com/thmb/6gflK8z4FzPq6JwDNWIGJzlA9w8=/4086x2298/smart/filters:no_upscale()/no-cost-online-business-58a6434c3df78c345bae15ae.jpg',
-                  httpHeaders: {
-                    HttpHeaders.authorizationHeader:
-                    'Bearer $TOKEN'
-                  },
-                  placeholder: (context, url) =>
-                      CupertinoActivityIndicator(),
-                  imageBuilder: (context, image) => CircleAvatar(
-                    backgroundImage: image,
-                    radius: 18,
+    return Card(
+      margin: EdgeInsets.only(left: 0,right: 0,bottom: 10,top: 0),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Text('$comment',
+              style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 17,color: Colors.teal,),
+              overflow: TextOverflow.ellipsis,),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  foregroundColor: Colors.transparent,
+                  backgroundColor: Colors.grey.shade300,
+                  child: CachedNetworkImage(
+                    imageUrl: 'http://${renter.avatarUrl}',
+                    httpHeaders: {
+                      HttpHeaders.authorizationHeader:
+                      'Bearer $TOKEN'
+                    },
+                    placeholder: (context, url) =>
+                        CupertinoActivityIndicator(),
+                    imageBuilder: (context, image) => CircleAvatar(
+                      backgroundImage: image,
+                      radius: 18,
+                    ),
+                    errorWidget: (context, url, error) =>
+                        CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          backgroundImage: AssetImage(
+                              'assets/images/avatarnull.png'),
+                          radius: 18,
+                        ),
                   ),
-                  errorWidget: (context, url, error) =>
-                      CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: AssetImage(
-                            'assets/images/avatarnull.png'),
-                        radius: 18,
-                      ),
                 ),
-              ),
-              SizedBox(width: kDefaultPadding/2,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nguyễn Nhật Huy',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 15),),
-                  SmoothStarRating(
-                    allowHalfRating: false,
-                    onRated: (v) {},
-                    starCount: 5,
-                    rating: rate.toDouble(),
-                    size: 20,
-                    isReadOnly: true,
-                    color: Colors.yellow,
-                    borderColor: Colors.yellow,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: kDefaultPadding/4,),
-          ExpandableText("The Centrifuge Option 1 Sale has not yet started. When it starts (at 17:00 UTC May 26), you will be assigned a random place in line alongside everyone else who arrived before the start and in front of those who arrive at or after the start.",
-            style: TextStyle(fontSize: 15,color: Colors.black.withOpacity(0.7)),
-            expandText: 'ẩn bớt',
-            collapseText: 'xem thêm',
-            maxLines: 2,
-          )
-        ],
+                SizedBox(width: kDefaultPadding/2,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(renter.name,style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 15),),
+                    SmoothStarRating(
+                      allowHalfRating: false,
+                      onRated: (v) {},
+                      starCount: 5,
+                      rating: star.toDouble(),
+                      size: 20,
+                      isReadOnly: true,
+                      color: Colors.yellow,
+                      borderColor: Colors.yellow,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: kDefaultPadding/4,),
+            ExpandableText("$comment",
+              style: TextStyle(fontSize: 15,color: Colors.black.withOpacity(0.7)),
+              expandText: 'ẩn bớt',
+              collapseText: 'xem thêm',
+              maxLines: 2,
+            )
+          ],
+        ),
       ),
     );
   }

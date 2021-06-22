@@ -3,6 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity.dart';
 import 'package:freelance_app/presentation/home/profile/profile_screen.dart';
+import 'package:freelance_app/presentation/home/profile/review/reviews_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
 import 'package:freelance_app/presentation/home/widgets/header.dart';
 import 'package:freelance_app/presentation/home/widgets/information.dart';
@@ -165,6 +166,9 @@ class FreelancerDetailScreen extends StatelessWidget {
                   Review(
                     avg: freelancer.totalRating.avg,
                     totalVote: freelancer.totalRating.count,
+                    onTap: (){
+                      homeController.loadRatingFormId(freelancer.id).then((value) => Get.to(()=>ReviewsScreen(totalRating: freelancer.totalRating,)));
+                    },
                   ),
                   SizedBox(
                     height: 100,

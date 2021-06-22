@@ -16,9 +16,11 @@ class Review extends StatelessWidget {
     Key key,
     this.totalVote,
     this.avg,
+    this.onTap,
   }) : super(key: key);
   final int totalVote;
   final double avg;
+  final GestureTapCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class Review extends StatelessWidget {
           children: [
             Text('Tóm lượt', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
             Spacer(),
-            TextButton(onPressed: ()=>Get.to(()=>ReviewsScreen()), child: totalVote!=0 ?  Text('Xem tất cả') : SizedBox.shrink())
+            TextButton(onPressed: onTap, child: totalVote!=0 ?  Text('Xem tất cả') : SizedBox.shrink())
           ],
         ),
           totalVote==0 ? Text('Chưa có lượt đánh giá nào!',style: TextStyle(fontSize: 18),) :

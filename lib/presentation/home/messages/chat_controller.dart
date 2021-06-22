@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
+import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:get/get.dart';
 import 'package:signalr_core/signalr_core.dart';
 
@@ -18,10 +20,12 @@ class ChatController extends GetxController {
   ChatController({this.apiRepositoryInterface});
 
   HubConnection connection;
+  var progress = sState.initial.obs;
   ScrollController scrollController = ScrollController();
   RxString status = 'Waiting'.obs;
   RxList<ChatMessage> chatMessages = <ChatMessage>[].obs;
   RxList<Chat> chats = <Chat>[].obs;
+  RxInt currentStep = 0.obs;
   TextEditingController ctrMessage = TextEditingController();
   Rx<Job> job = Job().obs;
 
@@ -216,5 +220,24 @@ class ChatController extends GetxController {
     createSignalRConnection();
     loadMessageUser();
     super.onReady();
+  }
+
+
+  Future sendRating(int jobID,String comment, int star,freelancerId)async{
+    try{
+
+      progress(sState.loading);
+      await apiRepositoryInterface.postRating(
+          RatingRequest(
+            freelancerId: freelancerId,
+            jobID: jobID,
+            comment: comment,
+            star: star,
+          )
+      ).then((value) => progress(sState.initial));
+    }catch(e){
+      print("lỗi: $e");
+      progress(sState.initial);
+    }
   }
 }

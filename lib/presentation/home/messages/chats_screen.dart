@@ -15,6 +15,15 @@ class ChatsScreen extends StatelessWidget {
   var controller = Get.put<ChatController>(
       ChatController(apiRepositoryInterface: Get.find()));
 
+  int currentStatus(String status){
+    switch(status){
+      case 'In discussion' : return 0;
+      case 'In progress' : return 1;
+      case 'Finished' : return 2;
+      default: return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +50,8 @@ class ChatsScreen extends StatelessWidget {
                       chat: chat,
                       onTap: () {
                         controller.seenMessage(chat.job.id, chat.freelancer.id);
-                        print('trạng THái: ${chat.status}');
                         controller.status(chat.status);
+                        controller.currentStep(currentStatus(chat.status));
                         controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
                         => Get.to(() => MessagesScreen(
                                   toUser: chat.toUser,

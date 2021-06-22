@@ -12,6 +12,7 @@ import 'package:freelance_app/presentation/widgets/nav_item.dart';
 import 'package:freelance_app/presentation/widgets/rounded_button.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'job_detail_controller.dart';
 import 'job_offers/job_offers_screen.dart';
 
@@ -87,10 +88,44 @@ class JobDetailScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: kDefaultPadding / 2),
-                                  Text(controller.job.value.name,
-                                      textAlign: TextAlign.center,
-                                      style: TEXT_STYLE_PRIMARY.copyWith(
-                                          fontSize: 22)),
+                                  Wrap(
+                                    children: [
+                                      Text(controller.job.value.name,
+                                          textAlign: TextAlign.center,
+                                          style: TEXT_STYLE_PRIMARY.copyWith(
+                                              fontSize: 22)),
+                                      if(controller.job.value.status == 'Waiting')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Icon(CupertinoIcons.time,color: Colors.amber,),
+                                        ),
+                                      if(controller.job.value.status == 'Finished')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Icon(CupertinoIcons.check_mark_circled,color: Colors.green,),
+                                        ),
+                                      if(controller.job.value.status == 'In progress')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Icon(CupertinoIcons.slowmo,color: Colors.blue,),
+                                        ),
+                                      if(controller.job.value.status == 'Request rework')
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: Icon(CupertinoIcons.arrow_2_circlepath_circle,color: Colors.limeAccent,),
+                                      ),
+                                      if(controller.job.value.status == 'Request cancellation')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Icon(CupertinoIcons.xmark_circle,color: Colors.red,),
+                                        ),
+                                      if(controller.job.value.status == 'Cancellation')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Icon(CupertinoIcons.xmark_circle,color: Colors.red,),
+                                        ),
+                                    ],
+                                  ),
                                   SizedBox(height: kDefaultPadding / 2),
                                   Text(
                                     controller.job.value.specialty.name,
@@ -199,6 +234,66 @@ class JobDetailScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Icon(
+                                    CupertinoIcons.square_stack_3d_up,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: kDefaultPadding / 2),
+                                  Text('Trạng thái', style: TEXT_STYLE_PRIMARY),
+                                ],
+                              ),
+                              SizedBox(height: kDefaultPadding / 4),
+                              if(controller.job.value.status == 'Finished')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Đã hoàn thành',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
+                                  ),
+                                ),
+                                if(controller.job.value.status == 'Request rework')
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                     'Yêu cầu làm lại',
+                                      style: TEXT_STYLE_ON_FOREGROUND,
+                                    ),
+                                  ),
+                                  if(controller.job.value.status == 'Request cancellation')
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        'Yêu cầu huỷ dự án',
+                                        style: TEXT_STYLE_ON_FOREGROUND,
+                                      ),
+                                    ),
+                                    if(controller.job.value.status == 'In progress')
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          'Đang làm',
+                                          style: TEXT_STYLE_ON_FOREGROUND,
+                                        ),
+                                      ),
+                                      if(controller.job.value.status == 'Cancellation')
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            'Dự án đã đóng',
+                                            style: TEXT_STYLE_ON_FOREGROUND,
+                                          ),
+                                        ),
+                                        if(controller.job.value.status == 'Waiting')
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  'Đang xử lý',
+                                  style: TEXT_STYLE_ON_FOREGROUND,
+                                ),
+                              ),
+                              SizedBox(height: kDefaultPadding),
+                              Row(
+                                children: [
+                                  Icon(
                                     Icons.psychology_outlined,
                                     color: Colors.black87,
                                   ),
@@ -232,7 +327,7 @@ class JobDetailScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.person_pin_circle_outlined,
+                                    CupertinoIcons.money_dollar_circle,
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
@@ -255,21 +350,21 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Ngân sách', style: TEXT_STYLE_PRIMARY),
+                                  Text(controller.job.value.price==0 ? 'Ngân sách' : 'Số tiền', style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                    '${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ',
+                                child: Text(controller.job.value.price==0 ?
+                                    '${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ' : '${formatter.format(controller.job.value.price)} VNĐ',
                                     style: TEXT_STYLE_FOREIGN),
                               ),
                               SizedBox(height: kDefaultPadding),
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.access_time_outlined,
+                                    CupertinoIcons.timer,
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
@@ -287,7 +382,7 @@ class JobDetailScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.location_on_outlined,
+                                    CupertinoIcons.location,
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
@@ -304,6 +399,34 @@ class JobDetailScreen extends StatelessWidget {
                                         : 'Toàn quốc',
                                     style: TEXT_STYLE_FOREIGN),
                               ),
+                              SizedBox(height: kDefaultPadding),
+                              if(controller.job.value.rating!=null)...[
+                                Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.star,
+                                      color: Colors.black87,
+                                    ),
+                                    SizedBox(width: kDefaultPadding / 2),
+                                    Text('Đánh giá',
+                                        style: TEXT_STYLE_PRIMARY),
+                                  ],
+                                ),
+                                SizedBox(height: kDefaultPadding / 4),
+                                SmoothStarRating(
+                                  allowHalfRating: false,
+                                  isReadOnly: true,
+                                  starCount: 5,
+                                  rating: controller.job.value.rating.star.toDouble(),
+                                  size: 40,
+                                  onRated: (value){
+                                  },
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                ),
+                                Text(controller.job.value.rating.comment)
+                              ],
+
                               SizedBox(height: kDefaultPadding * 5)
                             ],
                           ),
@@ -322,16 +445,23 @@ class JobDetailScreen extends StatelessWidget {
                                  ),
                                ),
                              ),
-                           if(controller.job.value.status=='Finish')
+                           if(controller.job.value.status=='Finished')
                              Align(
                                alignment: Alignment.bottomCenter,
                                child: RoundedButton(
                                  onTap: (){},
-
-                                 child: Text(
-                                   'Dự án đã hoàn thành\nFreelancer: ${controller.job.value.freelancer.name}',
-                                   style: TEXT_STYLE_PRIMARY.copyWith(
-                                       color: Colors.white),
+                                 child: Column(
+                                   mainAxisSize: MainAxisSize.min,
+                                   children: [
+                                     Text(
+                                       'Dự án đã được hoàn thành bởi',
+                                       style: TEXT_STYLE_PRIMARY.copyWith(
+                                           color: Colors.white),
+                                     ),
+                                           Text('Freelancer: ${controller.job.value.freelancer.name}',
+                                               style: TEXT_STYLE_PRIMARY.copyWith(
+                                                   color: Colors.white)),
+                                   ],
                                  ),
                                ),
                              ),

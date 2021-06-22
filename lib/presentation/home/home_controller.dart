@@ -6,10 +6,12 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
+import 'package:freelance_app/domain/models/rate.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
+import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
@@ -30,8 +32,8 @@ class HomeController extends GetxController {
   RxList<CapacityProfile> capacityProfiles = <CapacityProfile>[].obs;
   RxBool accountOnReady = true.obs;
   List<RxList<Job>> jobsRenter = <RxList<Job>>[<Job>[].obs,<Job>[].obs,<Job>[].obs,<Job>[].obs];
-
   RxList<JobOffer> offers = <JobOffer>[].obs;
+  RxList<Rating> ratings = <Rating>[].obs;
 
   List<RxList<dynamic>> jobsFreelancer = <RxList<dynamic>>[<Job>[].obs,<Job>[].obs,<JobOffer>[].obs,<Job>[].obs];
   var tabSelectedRenter = 0.obs;
@@ -245,5 +247,17 @@ class HomeController extends GetxController {
       print('lỗi $e');
     }
   }
+  
+  Future loadRatingFormId(int freelancerId)async{
+    try{
+      apiRepositoryInterface.getRatingsFreelancerId(freelancerId).then((value) => ratings.assignAll(value));
+    }catch(e){
+      print('lỗi: $e');
+    }
+  }
+
+
+
+
 
 }

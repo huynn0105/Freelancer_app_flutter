@@ -77,9 +77,13 @@ class MessagesScreen extends StatelessWidget {
                 onPressed: () {
                   controller
                       .loadJob(job.id)
-                      .then((value) => Get.to(() => ChatDetailsScreen(
-                            freelancerId: freelancer.id,
-                          )));
+                      .then((value){
+                        if(controller.job.value.rating!=null)
+                          controller.currentStep(3);
+                        return Get.to(() => ChatDetailsScreen(
+                          freelancer: freelancer,toUser: toUser,
+                        ));
+                  });
                 },
                 icon: Icon(Icons.more_vert)),
           ],
@@ -333,13 +337,15 @@ class RequestFinished extends StatelessWidget {
             ? Column(
                 children: [
                   Text(
-                    'Freelancer đã gửi yêu cầu kết thúc công việc',
+                    'Yêu cầu kết thúc dự án',
                     style: TEXT_STYLE_ON_FOREGROUND,
                   ),
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
+                      controller.currentStep(2);
                       controller.finishJob(message.jobId, message.id);
+                      controller.loadMessageChat(message.jobId, message.freelancerId);
                     },
                     child: Text(
                       'Hoàn thành',
@@ -353,7 +359,9 @@ class RequestFinished extends StatelessWidget {
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {
-                      controller.finishJob(message.jobId, message.id);
+                      controller.currentStep(2);
+                      controller.sendRequestRework(message.jobId, message.id);
+                      controller.loadMessageChat(message.jobId, message.freelancerId);
                     },
                     child: Text(
                       'Yêu cầu làm lại',
@@ -367,11 +375,12 @@ class RequestFinished extends StatelessWidget {
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {
-                      controller.finishJob(message.jobId, message.id);
-                      print('gửi Jobid ${message.jobId} và ${message.id}');
+                      controller.currentStep(2);
+                      controller.sendRequestCancel(message.jobId, message.id);
+                      controller.loadMessageChat(message.jobId, message.freelancerId);
                     },
                     child: Text(
-                      'Huỷ công việc',
+                      'Huỷ dự án',
                       style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -384,7 +393,7 @@ class RequestFinished extends StatelessWidget {
             : Column(
                 children: [
                   Text(
-                    'Bạn đã gửi yêu cầu kết thúc công việc cho chủ dự án',
+                    'Bạn đã gửi yêu cầu kết thúc dự án',
                     style: TEXT_STYLE_ON_FOREGROUND,
                   ),
                   SizedBox(height: 5),
@@ -442,6 +451,7 @@ class SuggestPrice extends StatelessWidget {
                     SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
+                        controller.currentStep(1);
                         controller.confirmSuggestedPrice(message.jobId,
                             message.freelancerId, message.id, true);
                         controller.loadMessageChat(
@@ -543,8 +553,8 @@ class ConfirmPrice extends StatelessWidget {
             children: [
               Text(
                 message.confirmation == 'Accept'
-                    ? 'Xác nhận thành công, hãy bắt đầu công việc!'
-                    : 'Công việc không được thông qua!',
+                    ? 'Xác nhận thành công, hãy bắt đầu dự án!'
+                    : 'dự án không được thông qua!',
                 style: TEXT_STYLE_ON_FOREGROUND,
               ),
               Text(
@@ -584,7 +594,7 @@ class ConfirmFinish extends StatelessWidget {
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Get.to(()=>RatingScreen(freelancer: toUser));
+                          Get.to(()=>RatingScreen(freelancer: toUser,jobId: message.jobId,));
                         },
                         child: Text(
                           'Đánh giá',

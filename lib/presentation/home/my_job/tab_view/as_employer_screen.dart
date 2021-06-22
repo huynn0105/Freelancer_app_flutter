@@ -19,7 +19,7 @@ class AsEmployerScreen extends GetWidget<HomeController> {
           return Color(0xFFEAB802);
         case 'In progress':
           return Colors.blue;
-        case 'Done':
+        case 'Finished':
           return Colors.green;
         case 'Closed':
           return Colors.black.withOpacity(0.6);
@@ -88,7 +88,7 @@ class AsEmployerScreen extends GetWidget<HomeController> {
                                                 .value][index];
                                         return MyJobCard(
                                           job: job,
-                                          color: (job.status == 'Waiting' && job.deadline.difference(DateTime.now()).inSeconds <0) ? Colors.black.withOpacity(0.6) : selectedColor(job.status),
+                                          color: selectedColor(job.status),
                                         );
                                       })
                                   : controller.tabSelectedRenter.value != 1
@@ -214,10 +214,10 @@ class MyJobCard extends StatelessWidget {
                         Text(job.deadline.difference(DateTime.now()).inDays >= 0
                               ? job.deadline.difference(DateTime.now()).inDays == 0
                               ? job.deadline.difference(DateTime.now()).inHours <= 0
-                              ? 'Đã đóng'
+                              ? 'Hết hạn nhận hồ sơ'
                               : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
                               : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
-                              : 'Đã đóng',
+                              : 'Hết hạn nhận hồ sơ',
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.black87,
@@ -228,14 +228,14 @@ class MyJobCard extends StatelessWidget {
                   SizedBox(
                     height: kDefaultPadding / 2,
                   ),
-                  Text(
+                  job.status != 'Finished' ? Text(
                     job.bidCount == 0
                         ? 'Chưa có freelancer nào chào giá'
                         : 'Có ${job.bidCount} chào giá',
                     style: TextStyle(
                       color: Colors.black54,
                     ),
-                  )
+                  ) : Text('Đã hoàn thành bơi freelancer ${job.freelancer.name}')
                 ],
               ),
             )
