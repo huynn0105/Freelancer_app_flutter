@@ -293,8 +293,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                     minimumSize: Size(220, 40)),
                                 label: Text('Yêu cầu huỷ dự án')),
                           if (controller.job.value.freelancer != null)
-                            if (controller.job.value.freelancer.id ==
-                                CURRENT_ID)
+                            if (controller.job.value.freelancer.id == CURRENT_ID)
                               ElevatedButton.icon(
                                 onPressed: () {
                                   controller.sendFinishRequest(controller.job.value.id);

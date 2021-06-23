@@ -39,6 +39,7 @@ class ChatController extends GetxController {
         print('nhận $data');
         loadMessageUser();
         ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
         chatMessages.insert(0,message);
       });
       connection.on('Seen', (data) {

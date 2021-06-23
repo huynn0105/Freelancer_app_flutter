@@ -225,8 +225,9 @@ class FreelancerDetailScreen extends StatelessWidget {
           labelStyle: TextStyle(fontSize: 18.0),
           child: Icon(Icons.work_outlined),
           onTap: (){
-            chatController.loadMessageChat(job.id, freelancer.id).then((value)
-            =>  Get.to(()=>MessagesScreen(toUser: freelancer,freelancer: freelancer,job: job,)));
+            chatController.loadJob(job.id).then((value) =>   chatController.loadMessageChat(job.id, freelancer.id).then((value)
+            =>  Get.to(()=>MessagesScreen(toUser: freelancer,freelancer: freelancer,job: job,))));
+
 
           }
 
