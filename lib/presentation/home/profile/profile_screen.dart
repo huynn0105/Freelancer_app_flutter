@@ -41,7 +41,6 @@ class ProfileScreen extends StatelessWidget {
           body: RefreshIndicator(
               onRefresh: ()async {
                 controllerHome.loadAccountFromToken();
-                user = controllerHome.account.value;
               },
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
@@ -186,10 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                             onPressed: () {
                                               if (controllerHome
                                                   .capacityProfiles.isEmpty)
-                                                controllerHome
-                                                    .getCapacityProfiles(user.id);
-                                              Get.to(() => CapacityProfilesScreen(
-                                              ));
+                                                controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                             },
                                             child: user.capacityProfiles.isNotEmpty
                                                 ? Text('Xem tất cả')
@@ -201,12 +197,7 @@ class ProfileScreen extends StatelessWidget {
                                           ? Capacity(
                                         capacityProfiles: user.capacityProfiles,
                                         onTap: () {
-                                          if (controllerHome
-                                              .capacityProfiles.isEmpty)
-                                            controllerHome
-                                                .getCapacityProfiles(user.id);
-                                          Get.to(() => CapacityProfilesScreen(
-                                          ));
+                                          controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                         },
                                       )
                                           : Center(
@@ -398,15 +389,7 @@ class ProfileScreen extends StatelessWidget {
                                                       Spacer(),
                                                       TextButton(
                                                         onPressed: () {
-                                                          if (controllerHome
-                                                              .capacityProfiles
-                                                              .isEmpty)
-                                                            controllerHome
-                                                                .getCapacityProfiles(
-                                                                user.id);
-                                                          Get.to(() =>
-                                                              CapacityProfilesScreen(
-                                                              ));
+                                                          controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                                         },
                                                         child: user.capacityProfiles
                                                             .isNotEmpty
@@ -420,15 +403,7 @@ class ProfileScreen extends StatelessWidget {
                                                     capacityProfiles:
                                                     user.capacityProfiles,
                                                     onTap: () {
-                                                      if (controllerHome
-                                                          .capacityProfiles
-                                                          .isEmpty)
-                                                        controllerHome
-                                                            .getCapacityProfiles(
-                                                            user.id);
-                                                      Get.to(() =>
-                                                          CapacityProfilesScreen(
-                                                          ));
+                                                      controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                                     },
                                                   )
                                                       : Center(
@@ -629,14 +604,7 @@ class ProfileScreen extends StatelessWidget {
                                                       Spacer(),
                                                       TextButton(
                                                         onPressed: () {
-                                                          if (controllerHome
-                                                              .capacityProfiles
-                                                              .isEmpty)
-                                                            controllerHome
-                                                                .getCapacityProfiles(
-                                                                user.id);
-                                                          Get.to(() =>
-                                                              CapacityProfilesScreen());
+                                                          controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                                         },
                                                         child: user.capacityProfiles
                                                             .isNotEmpty
@@ -648,9 +616,7 @@ class ProfileScreen extends StatelessWidget {
                                                   user.capacityProfiles.isNotEmpty
                                                       ? Capacity(capacityProfiles: user.capacityProfiles,
                                                     onTap: () {
-                                                      if (controllerHome.capacityProfiles.isEmpty)
-                                                        controllerHome.getCapacityProfiles(user.id);
-                                                      Get.to(() => CapacityProfilesScreen());
+                                                      controllerHome.getCapacityProfiles(user.id).then((value) =>  Get.to(() => CapacityProfilesScreen(capacityProfiles: controllerHome.capacityProfiles,)));
                                                     },
                                                   )
                                                       : Center(

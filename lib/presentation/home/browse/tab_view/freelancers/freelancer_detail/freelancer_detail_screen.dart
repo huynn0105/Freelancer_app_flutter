@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
 import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity.dart';
+import 'package:freelance_app/presentation/home/profile/capacity_profile/components/capacity_card.dart';
 import 'package:freelance_app/presentation/home/profile/profile_screen.dart';
 import 'package:freelance_app/presentation/home/profile/review/reviews_screen.dart';
 import 'package:freelance_app/presentation/home/widgets/about.dart';
@@ -136,8 +137,8 @@ class FreelancerDetailScreen extends StatelessWidget {
                             Spacer(),
                             TextButton(
                               onPressed: () {
-                                controller.getCapacityProfiles(freelancer.id);
-                                Get.to(() => CapacityProfilesScreen());
+                                controller.getCapacityProfiles(freelancer.id).then((value) => Get.to(() => CapacityProfilesScreen(capacityProfiles: controller.capacityProfiles,)));
+
                               },
                               child: freelancer.capacityProfiles.isNotEmpty
                                   ? Text('Xem tất cả')
@@ -238,6 +239,6 @@ class FreelancerDetailScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
+
+

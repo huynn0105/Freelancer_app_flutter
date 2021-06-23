@@ -74,6 +74,9 @@ class HomeScreen extends GetWidget<HomeController> {
 
                 onTap: (index) {
                   controller.updateIndexSelected(index);
+                  // switch(index){
+                  //   case 0:
+                  // }
                 },
                 // new
                 currentIndex: controller.indexSelected.value,

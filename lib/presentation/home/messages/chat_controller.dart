@@ -49,6 +49,7 @@ class ChatController extends GetxController {
       });
       connection.on('SuggestedPrice', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
         chatMessages.insert(0,message);
         loadMessageUser();
       });
@@ -56,6 +57,7 @@ class ChatController extends GetxController {
       connection.on('PutMoney_Successfully', (data) {
         print('gửi Suggested $data');
         ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
         chatMessages.insert(0,message);
         loadMessageUser();
       });
@@ -68,18 +70,21 @@ class ChatController extends GetxController {
       });
       connection.on('Requestfinish', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
         chatMessages.insert(0,message);
         loadMessageUser();
 
       });
       connection.on('SendFinishRequest_Successfully', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
         chatMessages.insert(0,message);
         loadMessageUser();
       });
       connection.on('SendMessage_Successfully', (data) {
-        chatMessages.insert(
-            0,ChatMessage.fromJson(data[0]));
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        if(message.jobId==job.value.id)
+        chatMessages.insert(0,message);
         loadMessageUser();
       });
       connection.on('Finish', (data) {
@@ -223,13 +228,14 @@ class ChatController extends GetxController {
     }
   }
 
-  Future<bool> checkAssign(int jobId,int freelancerId)async{
-    final assign = await apiRepositoryInterface.getCheckAssign(jobId, freelancerId);
-    return assign;
+  Future checkAssign(int jobId,int freelancerId)async{
+   await apiRepositoryInterface.getCheckAssign(jobId, freelancerId).then((value) => assign(value));
+
   }
 
   Future<bool> checkRequest(int jobId,int freelancerId)async{
     var request = await apiRepositoryInterface.getCheckRequest(jobId, freelancerId);
+    print('gửi $request');
     return request;
   }
 

@@ -46,6 +46,12 @@ class CapacityProfile {
     return data;
   }
 
+
+  @override
+  String toString() {
+    return 'CapacityProfile{name: $name}';
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

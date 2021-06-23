@@ -118,6 +118,7 @@ class SetupPayment extends StatelessWidget {
                             ElevatedButton(
                                 onPressed: () {
                                   chatController.setupPrice(job.id, freelancer.id, int.parse(ctrlPrice.text.replaceAll(',', '')));
+                                  print('gửi số tiền ${int.parse(ctrlPrice.text.replaceAll(',', ''))}');
                                   chatController.loadMessageChat(job.id, freelancer.id).then((value) =>Get.off(()=>MessagesScreen(job: job,freelancer: freelancer,toUser: toUser,)));
 
                                   },

@@ -28,7 +28,7 @@ class FreelancerDetailController extends GetxController{
      progressState(sState.failure);
     }
   }
-  void getCapacityProfiles(int freelancerId) async {
+  Future getCapacityProfiles(int freelancerId) async {
     try{
      await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
          capacityProfiles.assignAll(value);

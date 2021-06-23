@@ -48,9 +48,6 @@ class SplashController extends GetxController {
       }
     }catch(e){
       print('lỗi: user ${e.toString()}');
-      await apiRepositoryInterface.logout();
-      await localRepositoryInterface.clearData();
-      Get.offAllNamed(Routes.login);
     }
   }
 

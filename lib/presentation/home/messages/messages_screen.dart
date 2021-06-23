@@ -80,8 +80,7 @@ class MessagesScreen extends StatelessWidget {
                   controller.loadJob(job.id).then((value) {
                     if (controller.job.value.rating != null)
                       controller.currentStep(3);
-                    controller
-                        .checkAssign(job.id, freelancer.id)
+                    controller.checkAssign(job.id, freelancer.id)
                         .then((value) => Get.to(() => ChatDetailsScreen(
                               freelancer: freelancer,
                               toUser: toUser,

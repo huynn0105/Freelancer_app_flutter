@@ -21,31 +21,31 @@ class CapacityProfileDetailScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: Icon(Icons.delete_outline_outlined),
-              onPressed: () {
-                Get.defaultDialog(
-                    radius: 10,
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () => Get.back(),
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.grey, minimumSize: Size(120, 40)),
-                          child: Text('Huỷ')),
-                      ElevatedButton(
-                          onPressed: () {
-                            controller.deleteCapacityProfile(capacityProfile);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.blue, minimumSize: Size(120, 40)),
-                          child: Text('Xoá')),
-                    ],
-                    title: 'Xác nhận xoá?',
-                    middleText: 'Bạn có chắc là muốn xoá hồ sơ này?');
-              },
-            )
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(Icons.delete_outline_outlined),
+          //     onPressed: () {
+          //       Get.defaultDialog(
+          //           radius: 10,
+          //           actions: [
+          //             ElevatedButton(
+          //                 onPressed: () => Get.back(),
+          //                 style: ElevatedButton.styleFrom(
+          //                     primary: Colors.grey, minimumSize: Size(120, 40)),
+          //                 child: Text('Huỷ')),
+          //             ElevatedButton(
+          //                 onPressed: () {
+          //                   controller.deleteCapacityProfile(capacityProfile);
+          //                 },
+          //                 style: ElevatedButton.styleFrom(
+          //                     primary: Colors.blue, minimumSize: Size(120, 40)),
+          //                 child: Text('Xoá')),
+          //           ],
+          //           title: 'Xác nhận xoá?',
+          //           middleText: 'Bạn có chắc là muốn xoá hồ sơ này?');
+          //     },
+          //   )
+          // ],
         ),
         body: SingleChildScrollView(
           child: Padding(

@@ -6,27 +6,30 @@ import 'package:freelance_app/constant.dart';
 import 'capacity_profile_controller.dart';
 import 'components/capacity_card.dart';
 class CapacityProfilesScreen extends StatelessWidget {
+
+
+  final List<CapacityProfile> capacityProfiles;
+  CapacityProfilesScreen({this.capacityProfiles});
+
   @override
   Widget build(BuildContext context) {
-    final controller =  Get.find<HomeController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Hồ sơ năng lực'),
       ),
-      body: Obx(
-        ()=> controller.capacityProfiles.isNotEmpty ? ListView.builder(
-                itemCount: controller.capacityProfiles.length,
+      body: capacityProfiles.isNotEmpty ? ListView.builder(
+                itemCount: capacityProfiles.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(kDefaultPadding),
                     child: CapacityCard(
-                      capacityProfile: controller.capacityProfiles[index],
+                      capacityProfile: capacityProfiles[index],
                     ),
                   );
                 },
               ) : Center(
                 child: CircularProgressIndicator(),
-        ),
+
       ),
     );
   }

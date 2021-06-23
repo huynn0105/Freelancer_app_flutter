@@ -96,7 +96,7 @@ class HomeController extends GetxController {
     await localRepositoryInterface.clearData();
   }
 
-  void getCapacityProfiles(int freelancerId) async {
+  Future getCapacityProfiles(int freelancerId) async {
     try {
           await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
             if(value!=null)

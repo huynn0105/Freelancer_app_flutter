@@ -316,8 +316,8 @@ class ChatDetailsScreen extends StatelessWidget {
                                 onPressed: () {
                                   controller.checkRequest(controller.job.value.id, freelancer.id).then((value){
                                     if(value){
-                                      controller.sendRequestCancel(
-                                          controller.job.value.id, 0);
+                                      controller.sendFinishRequest(
+                                          controller.job.value.id);
                                       controller
                                           .loadMessageChat(controller.job.value.id,
                                           freelancer.id)
