@@ -136,8 +136,7 @@ class FreelancerDetailScreen extends StatelessWidget {
                             Spacer(),
                             TextButton(
                               onPressed: () {
-                                if (controller.capacityProfiles.isEmpty)
-                                  controller.getCapacityProfiles(freelancer.id);
+                                controller.getCapacityProfiles(freelancer.id);
                                 Get.to(() => CapacityProfilesScreen());
                               },
                               child: freelancer.capacityProfiles.isNotEmpty
@@ -225,8 +224,11 @@ class FreelancerDetailScreen extends StatelessWidget {
           labelStyle: TextStyle(fontSize: 18.0),
           child: Icon(Icons.work_outlined),
           onTap: (){
-            chatController.loadJob(job.id).then((value) =>   chatController.loadMessageChat(job.id, freelancer.id).then((value)
-            =>  Get.to(()=>MessagesScreen(toUser: freelancer,freelancer: freelancer,job: job,))));
+            chatController.loadJob(job.id).then((value)
+            =>   chatController.loadMessageChat(job.id, freelancer.id).then((value){
+              chatController.currentStep(0);
+                Get.to(()=>MessagesScreen(toUser: freelancer,freelancer: freelancer,job: job,));
+            }));
 
 
           }
@@ -236,4 +238,6 @@ class FreelancerDetailScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }

@@ -30,7 +30,10 @@ class FreelancerDetailController extends GetxController{
   }
   void getCapacityProfiles(int freelancerId) async {
     try{
-     await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value) => capacityProfiles.assignAll(value));
+     await apiRepositoryInterface.getCapacityProfiles(freelancerId).then((value){
+         capacityProfiles.assignAll(value);
+         print('data: $value');
+     });
     }catch(e){
       print('Lỗi: ${e.toString()}');
     }

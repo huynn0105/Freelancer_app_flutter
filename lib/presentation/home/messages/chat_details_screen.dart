@@ -229,6 +229,7 @@ class ChatDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          if(controller.job.value.renter.id == CURRENT_ID)...[
                           if (controller.assign.value) ...[
                             Text("Nạp tiền vào dự án để bắt đầu làm việc",
                                 style: TextStyle(fontSize: 16)),
@@ -249,6 +250,7 @@ class ChatDetailsScreen extends StatelessWidget {
                           ],
                           if(!controller.assign.value)...[
                             Text('Bạn đã nạp ${formatter.format(controller.job.value.price)} VNĐ vào dự án, hãy chờ freelancer xác nhận'),
+                            SizedBox(height: 5),
                             ElevatedButton.icon(
                                 icon: Icon(CupertinoIcons.clear_circled),
                                 onPressed: () {
@@ -265,6 +267,10 @@ class ChatDetailsScreen extends StatelessWidget {
                                 label: Text('Thu hồi tiền đã nạp vào dự án')),
                           ]
                         ],
+                          if(freelancer.id == CURRENT_ID)
+                            Text('Đang trong quá trình thảo luận')
+    ],
+
                       )),
                   Step(
                     isActive: true,
