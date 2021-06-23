@@ -276,17 +276,29 @@ class ChatDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        if (controller.request.value) ...[
+
                           if (controller.job.value.renter.id == CURRENT_ID)
                             ElevatedButton.icon(
                                 icon: Icon(CupertinoIcons.clear_circled),
                                 onPressed: () {
-                                  controller.sendRequestCancel(
-                                      controller.job.value.id, 0);
-                                  controller
-                                      .loadMessageChat(controller.job.value.id,
+                                  controller.checkRequest(controller.job.value.id, freelancer.id).then((value){
+                                    if(value){
+                                      controller.sendRequestCancel(
+                                          controller.job.value.id, 0);
+                                      controller
+                                          .loadMessageChat(controller.job.value.id,
                                           freelancer.id)
-                                      .then((value) => Get.back());
+                                          .then((value) => Get.back());
+                                    }
+                                      else{
+                                      Get.snackbar('Lỗi','Đã có 1 lệnh yêu cầu được gửi lên',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          maxWidth: 600,
+                                          snackPosition: SnackPosition.TOP);
+                                    }
+                                  });
+
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.red,
@@ -296,7 +308,23 @@ class ChatDetailsScreen extends StatelessWidget {
                             if (controller.job.value.freelancer.id == CURRENT_ID)
                               ElevatedButton.icon(
                                 onPressed: () {
-                                  controller.sendFinishRequest(controller.job.value.id);
+                                  controller.checkRequest(controller.job.value.id, freelancer.id).then((value){
+                                    if(value){
+                                      controller.sendRequestCancel(
+                                          controller.job.value.id, 0);
+                                      controller
+                                          .loadMessageChat(controller.job.value.id,
+                                          freelancer.id)
+                                          .then((value) => Get.back());
+                                    }
+                                    else
+                                      Get.snackbar('Lỗi','Đã có 1 lệnh yêu cầu được gửi lên',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          maxWidth: 600,
+                                          snackPosition: SnackPosition.TOP);
+                                  });
+
                                 },
                                 icon: Icon(CupertinoIcons.check_mark_circled),
                                 label: Text('Yêu cầu kết thúc dự án'),
@@ -304,9 +332,9 @@ class ChatDetailsScreen extends StatelessWidget {
                                     primary: Colors.green,
                                     minimumSize: Size(220, 40)),
                               ),
-                        ],
-                        if (!controller.request.value)
-                          Text('Đã có 1 lệnh yêu cầu được gửi lên',style: TextStyle(fontSize: 16),)
+
+
+
                       ],
                     ),
                   ),

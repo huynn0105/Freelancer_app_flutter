@@ -223,16 +223,14 @@ class ChatController extends GetxController {
     }
   }
 
-  Future checkAssign(int jobId,int freelancerId)async{
-    await apiRepositoryInterface.getCheckAssign(jobId, freelancerId).then((value){
-      if(value!=null)assign(value);
-    });
+  Future<bool> checkAssign(int jobId,int freelancerId)async{
+    final assign = await apiRepositoryInterface.getCheckAssign(jobId, freelancerId);
+    return assign;
   }
 
-  Future checkRequest(int jobId,int freelancerId)async{
-    await apiRepositoryInterface.getCheckRequest(jobId, freelancerId).then((value){
-      if(value!=null) request(value);
-    });
+  Future<bool> checkRequest(int jobId,int freelancerId)async{
+    var request = await apiRepositoryInterface.getCheckRequest(jobId, freelancerId);
+    return request;
   }
 
   @override
