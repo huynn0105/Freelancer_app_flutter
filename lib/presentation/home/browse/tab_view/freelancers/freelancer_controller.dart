@@ -109,7 +109,7 @@ class FreelancerController extends GetxController{
 
   @override
   void onReady() {
-    loadFreelancer();
+
     super.onReady();
   }
 

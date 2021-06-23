@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       initialBinding: MainBinding(),
       theme: ThemeData(
         canvasColor: secondaryColor,
+
         appBarTheme: AppBarTheme(backgroundColor: Colors.white,elevation: 0),
         scaffoldBackgroundColor: Colors.white,
         primaryIconTheme:

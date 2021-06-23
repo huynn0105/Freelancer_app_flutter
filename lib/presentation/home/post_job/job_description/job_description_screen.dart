@@ -7,6 +7,8 @@ import 'package:freelance_app/presentation/home/post_job/widgets/post_job_detail
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../responsive.dart';
+
 class JobDescriptionScreen extends StatelessWidget {
   final controller = Get.find<PostJobController>();
   final dateTextController = TextEditingController();
@@ -14,89 +16,93 @@ class JobDescriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        bottom: MyLinearProgressIndicator(
-          value: 0.2,
-        ),
-        title: Text(
-          'Đăng việc',
-        ),
-
-        actions: [
-          TextButton(
-            onPressed: () {
-              if (formKey.currentState.validate()) {
-                controller.getSkills();
-                Get.to(() => JobSkillsScreen(id: 1));
-              }
-            },
-            child: Text(
-              'Tiếp theo',
-              style: TextStyle(fontSize: 18),
-            ),
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: MyLinearProgressIndicator(
+            value: 0.2,
           ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                Text(
-                  "Nội dung chi tiết, và các đầu việc cần Freelancer thực hiện (càng chi tiết, freelancer càng có đầy đủ thông tin để gửi báo giá chính xác hơn)",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+          title: Text(
+            'Đăng việc',
+          ),
+
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (formKey.currentState.validate()) {
+                  controller.getSkills();
+                  Get.to(() => JobSkillsScreen(id: 1));
+                }
+              },
+              child: Text(
+                'Tiếp theo',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  Text(
+                    "Nội dung chi tiết, và các đầu việc cần Freelancer thực hiện (càng chi tiết, freelancer càng có đầy đủ thông tin để gửi báo giá chính xác hơn)",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                InputText(
-                    maxLines: 10,
-                    controller: controller.descriptionTextController,
-                    maxLength: 1000,
-                    validator: MinLengthValidator(20,
-                        errorText: 'Vui lòng nhập ít nhất 20 ký tự')),
-                SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      'Hạn chót nhận hồ sơ',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      readOnly: true,
-                      onTap: () {
-                        selectDate(context, controller);
-                      },
-                      style: TextStyle(fontSize: 18),
-                      controller: controller.deadlineTextController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.calendar_today_outlined,
-                          color: Colors.blue,
-                        ),
-                        suffixStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.blue,
-                        ),
-                        suffixText: 'Chọn ngày',
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InputText(
+                      maxLines: 10,
+                      controller: controller.descriptionTextController,
+                      maxLength: 1000,
+                      validator: MinLengthValidator(20,
+                          errorText: 'Vui lòng nhập ít nhất 20 ký tự')),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Hạn chót nhận hồ sơ',
+                        style:
+                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
-                ),
-              ],
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        readOnly: true,
+                        onTap: () {
+                          selectDate(context, controller);
+                        },
+                        style: TextStyle(fontSize: 18),
+                        controller: controller.deadlineTextController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.calendar_today_outlined,
+                            color: Colors.blue,
+                          ),
+                          suffixStyle: TextStyle(
+                            fontSize: 18,
+                            color: Colors.blue,
+                          ),
+                          suffixText: 'Chọn ngày',
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

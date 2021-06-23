@@ -5,15 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:get/get.dart';
+import '../../../responsive.dart';
 import 'job_name/job_name_screen.dart';
 
-class PostJobScreen extends StatelessWidget {
+class PostJobScreen extends GetWidget<PostJobController> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put<PostJobController>(PostJobController(
-      apiRepositoryInterface: Get.find(),
-    ));
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Đăng việc'),
@@ -35,7 +34,7 @@ class PostJobScreen extends StatelessWidget {
                   child: Container(
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: Responsive.isMobile(context) ? 2 : 5,
                       ),
                       itemBuilder: (context, index) {
                         final specialty = controller.specialties[index];

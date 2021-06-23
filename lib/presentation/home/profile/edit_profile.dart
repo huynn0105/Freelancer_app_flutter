@@ -12,6 +12,7 @@ import 'package:freelance_app/presentation/home/widgets/item_box.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
+import '../../../responsive.dart';
 import 'skills_screen.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -32,285 +33,289 @@ class EditProfileScreen extends StatelessWidget {
 
     return Stack(
       children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Edit profile',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  controller.uploadProfile(account.id).then((value) {
+        Container(
+          color:  Colors.grey[100],
+          padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Edit profile',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    controller.uploadProfile(account.id).then((value) {
 
-                    if(value) {
-                      controllerHome.loadAccountFromToken().then((value) {
-                        Get.offAllNamed(Routes.home);
-                        Get.snackbar(
-                            'Thành công', 'Cập nhập thông tin thành công',
-                            backgroundColor: Colors.green,
+                      if(value) {
+                        controllerHome.loadAccountFromToken().then((value) {
+                          Get.offAllNamed(Routes.home);
+                          Get.snackbar(
+                              'Thành công', 'Cập nhập thông tin thành công',
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                              maxWidth: 600,
+                              snackPosition: SnackPosition.TOP);
+                        });
+                      }
+                      else
+                        Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
+                            backgroundColor: Colors.red,
                             colorText: Colors.white,
                             maxWidth: 600,
                             snackPosition: SnackPosition.TOP);
-                      });
-                    }
-                    else
-                      Get.snackbar('Thất bại', 'Server bận, thử lại sau!',
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                          maxWidth: 600,
-                          snackPosition: SnackPosition.TOP);
-                  });
-                },
-                child: Text(
-                  'Hoàn thành',
-                  style: TextStyle(fontSize: 18),
+                    });
+                  },
+                  child: Text(
+                    'Hoàn thành',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
+              ],
+              backgroundColor: Colors.white,
+              leading: BackButton(
+                onPressed: () async {
+                  if (controller.isChange.value) {
+                    await controllerHome.loadAccountFromToken();
+                    Get.offAllNamed(Routes.home);
+                  } else
+                    Get.back();
+                },
               ),
-            ],
-            backgroundColor: Colors.white,
-            leading: BackButton(
-              onPressed: () async {
-                if (controller.isChange.value) {
-                  await controllerHome.loadAccountFromToken();
-                  Get.offAllNamed(Routes.home);
-                } else
-                  Get.back();
-              },
             ),
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Information',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InputText(
-                          hint: 'Họ và tên',
-                          controller: controller.ctrlName,
-                          label: 'Tên đầy đủ',
-                        ),
-                        SizedBox(height: 10),
-                        InputText(
-                          hint: 'Điện thoại',
-                          controller: controller.ctrlPhoneNumber,
-                          label: 'Số điện thoại',
-                        ),
-                        SizedBox(height: 10),
-                        InputText(
-                          hint: 'Website cá nhân',
-                          controller: controller.ctrlWebsite,
-                          label: 'Website (nếu có)',
-                        ),
-                        SizedBox(height: 10),
-                        InputText(
-                          hint: 'Lập trình viên mobile',
-                          controller: controller.ctrlTitle,
-                          label: 'Chức danh',
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Thành phố',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onTap: () {
-                            controller.loadProvinces();
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Danh sách thành phố'),
-                                    content: setupLocation(),
-                                  );
-                                });
-                          },
-                          readOnly: true,
-                          controller: controller.ctrlProvince,
-                        ),
-                        SizedBox(height: 10),
-                      ],
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Information',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Giới thiệu bản thân',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 5),
-                  InputText(
-                    hint: '1. Bạn là ai?\n2. Kinh nghiệm và chuyển môn?...',
-                    controller: controller.ctrlDescription,
-                    maxLines: 8,
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Lĩnh vực',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InputText(
+                            hint: 'Họ và tên',
+                            controller: controller.ctrlName,
+                            label: 'Tên đầy đủ',
+                          ),
+                          SizedBox(height: 10),
+                          InputText(
+                            hint: 'Điện thoại',
+                            controller: controller.ctrlPhoneNumber,
+                            label: 'Số điện thoại',
+                          ),
+                          SizedBox(height: 10),
+                          InputText(
+                            hint: 'Website cá nhân',
+                            controller: controller.ctrlWebsite,
+                            label: 'Website (nếu có)',
+                          ),
+                          SizedBox(height: 10),
+                          InputText(
+                            hint: 'Lập trình viên mobile',
+                            controller: controller.ctrlTitle,
+                            label: 'Chức danh',
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Thành phố',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onTap: () {
+                              controller.loadProvinces();
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Danh sách thành phố'),
+                                      content: setupLocation(),
+                                    );
+                                  });
+                            },
+                            readOnly: true,
+                            controller: controller.ctrlProvince,
+                          ),
+                          SizedBox(height: 10),
+                        ],
                       ),
                     ),
-                    onTap: () {
-                      controller.loadSpecialties();
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Danh sách lĩnh vực'),
-                              content: setupSpecialties(),
-                            );
-                          });
-                    },
-                    readOnly: true,
-                    controller: controller.ctrlSpecialty,
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Trình độ',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                    SizedBox(height: 20),
+                    Text(
+                      'Giới thiệu bản thân',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    InputText(
+                      hint: '1. Bạn là ai?\n2. Kinh nghiệm và chuyển môn?...',
+                      controller: controller.ctrlDescription,
+                      maxLines: 8,
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Lĩnh vực',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        SizedBox(height: 4),
-                        Obx(
-                          () => Row(
-                            children: List.generate(
-                              controller.levels.length,
-                              (index) {
-                                var level = controller.levels[index];
-                                return ItemBox(
-                                  name: level.name,
-                                  active: controller.levelId.value,
-                                  index: level.id,
-                                  onTap: () {
-                                    controller.levelId.value = level.id;
-                                  },
-                                );
+                      ),
+                      onTap: () {
+                        controller.loadSpecialties();
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Danh sách lĩnh vực'),
+                                content: setupSpecialties(),
+                              );
+                            });
+                      },
+                      readOnly: true,
+                      controller: controller.ctrlSpecialty,
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Trình độ',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Obx(
+                            () => Row(
+                              children: List.generate(
+                                controller.levels.length,
+                                (index) {
+                                  var level = controller.levels[index];
+                                  return ItemBox(
+                                    name: level.name,
+                                    active: controller.levelId.value,
+                                    index: level.id,
+                                    onTap: () {
+                                      controller.levelId.value = level.id;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Kỹ năng',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          Obx(
+                            () => controller.skillsSelected.isNotEmpty
+                                ? ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.skillsSelected.length,
+                                    itemBuilder: (context, index) {
+                                      var skill =
+                                          controller.skillsSelected[index];
+                                      return CheckboxListTile(
+                                        title: Text(skill.name),
+                                        value: skill.isValue,
+                                        onChanged: (bool value) {
+                                          controller.changeValueSkill(
+                                            skill.copyWith(isValue: value),
+                                            controller.skillsSelected,
+                                          );
+                                          controller.changeValueSkill(
+                                            skill.copyWith(isValue: value),
+                                            controller.skills,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
+                                : SizedBox.shrink(),
+                          ),
+                          Center(
+                            child: TextButton(
+                              child: Text('Thêm kỹ năng'),
+                              onPressed: () {
+                                if (controller.skills.isEmpty)
+                                  controller.getSkills();
+                                Get.to(() => SkillsScreen());
                               },
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Kỹ năng',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        Obx(
-                          () => controller.skillsSelected.isNotEmpty
-                              ? ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: controller.skillsSelected.length,
-                                  itemBuilder: (context, index) {
-                                    var skill =
-                                        controller.skillsSelected[index];
-                                    return CheckboxListTile(
-                                      title: Text(skill.name),
-                                      value: skill.isValue,
-                                      onChanged: (bool value) {
-                                        controller.changeValueSkill(
-                                          skill.copyWith(isValue: value),
-                                          controller.skillsSelected,
-                                        );
-                                        controller.changeValueSkill(
-                                          skill.copyWith(isValue: value),
-                                          controller.skills,
-                                        );
-                                      },
-                                    );
-                                  },
-                                )
-                              : SizedBox.shrink(),
-                        ),
-                        Center(
-                          child: TextButton(
-                            child: Text('Thêm kỹ năng'),
-                            onPressed: () {
-                              if (controller.skills.isEmpty)
-                                controller.getSkills();
-                              Get.to(() => SkillsScreen());
-                            },
+                    SizedBox(height: 20),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Dịch vụ',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Dịch vụ',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        Obx(
-                          () => controller.servicesSelected.isNotEmpty
-                              ? ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: controller.servicesSelected.length,
-                                  itemBuilder: (context, index) {
-                                    var service =
-                                        controller.servicesSelected[index];
-                                    return CheckboxListTile(
-                                      title: Text(service.name),
-                                      value: service.isValue,
-                                      onChanged: (bool value) {
-                                        controller.changeValueService(
-                                          service.copyWith(isValue: value),
-                                          controller.servicesSelected,
-                                        );
-                                        controller.changeValueService(
-                                          service.copyWith(isValue: value),
-                                          controller.services,
-                                        );
-                                      },
-                                    );
-                                  },
-                                )
-                              : SizedBox.shrink(),
-                        ),
-                        Center(
-                          child: TextButton(
-                            child: Text('Thêm dịch vụ'),
-                            onPressed: () {
-                              if (controller.services.isEmpty)
-                                controller.loadServices();
-                              Get.to(() => ServiceScreen(
-                                controller: controller,
-                              ));
-                            },
+                          Obx(
+                            () => controller.servicesSelected.isNotEmpty
+                                ? ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.servicesSelected.length,
+                                    itemBuilder: (context, index) {
+                                      var service =
+                                          controller.servicesSelected[index];
+                                      return CheckboxListTile(
+                                        title: Text(service.name),
+                                        value: service.isValue,
+                                        onChanged: (bool value) {
+                                          controller.changeValueService(
+                                            service.copyWith(isValue: value),
+                                            controller.servicesSelected,
+                                          );
+                                          controller.changeValueService(
+                                            service.copyWith(isValue: value),
+                                            controller.services,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
+                                : SizedBox.shrink(),
                           ),
-                        ),
-                      ],
+                          Center(
+                            child: TextButton(
+                              child: Text('Thêm dịch vụ'),
+                              onPressed: () {
+                                if (controller.services.isEmpty)
+                                  controller.loadServices();
+                                Get.to(() => ServiceScreen(
+                                  controller: controller,
+                                ));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

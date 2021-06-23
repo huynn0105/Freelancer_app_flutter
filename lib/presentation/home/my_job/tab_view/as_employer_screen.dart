@@ -8,6 +8,8 @@ import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../responsive.dart';
+
 class AsEmployerScreen extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
@@ -33,121 +35,119 @@ class AsEmployerScreen extends GetWidget<HomeController> {
           return Colors.brown;
       }
     }
+    var size = MediaQuery.of(context).size;
 
     return Obx(
-      () => Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              FlutterToggleTab(
-                // width in percent
-                borderRadius: 10,
-                height: 30,
-                initialIndex: controller.tabSelectedRenter.value,
-                selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
-                selectedTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700),
-                unSelectedTextStyle: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500),
-                labels: _listTextTabToggle,
-                selectedIndex: controller.tabSelectedRenter.value,
-                isScroll: false,
-                selectedLabelIndex: (int) {
-                  controller.tabSelectedRenter(int);
-                  if (controller.jobsRenter[int].isEmpty)
-                    controller.loadJobsRenter(int);
+      () =>  Column(
+        children: [
+          SizedBox(height: 10),
+          Flexible(
+            child: FlutterToggleTab(
+              width:  Responsive.isMobile(context) ? null : size.width/24,
+              // width in percent
+              borderRadius: 10,
+              height: 30,
+              initialIndex: controller.tabSelectedRenter.value,
+              selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
+              selectedTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700),
+              unSelectedTextStyle: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500),
+              labels: _listTextTabToggle,
+              selectedIndex: controller.tabSelectedRenter.value,
+              isScroll: false,
+              selectedLabelIndex: (int) {
+                controller.tabSelectedRenter(int);
+                controller.loadJobsRenter(int);
+              },
+            ),
+          ),
+          Obx(
+            () => Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.loadJobsRenter(controller.tabSelectedRenter.value);
                 },
-              ),
-              Obx(
-                () => Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      controller.loadJobsRenter(controller.tabSelectedRenter.value);
-                    },
-                    child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                          padding: EdgeInsets.all(kDefaultPadding / 4),
-                          child: controller.progressState.value ==
-                                  sState.initial
-                              ? controller
-                                      .jobsRenter[
-                                          controller.tabSelectedRenter.value]
-                                      .isNotEmpty
-                                  ? ListView.builder(
-                                      itemCount: controller
-                                          .jobsRenter[controller
-                                              .tabSelectedRenter.value]
-                                          .length,
-                                      shrinkWrap: true,
-                                      reverse: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        var job = controller.jobsRenter[
-                                            controller.tabSelectedRenter
-                                                .value][index];
-                                        return MyJobCard(
-                                          job: job,
-                                          color: selectedColor(job.status),
-                                        );
-                                      })
-                                  : controller.tabSelectedRenter.value != 1
-                                      ? SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(height: 40),
-                                              Image.asset(
-                                                'assets/images/postjob.jpg',
-                                                height: 250,
-                                              ),
-                                              Text(
-                                                'Bạn chưa đăng việc nào!',
-                                                style: TextStyle(fontSize: 18),
-                                              ),
-                                              ElevatedButton(
-                                                child: Text('Đăng việc ngay'),
-                                                onPressed: () {
-                                                  controller
-                                                      .updateIndexSelected(2);
-                                                },
-                                              )
-                                            ],
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                      padding: EdgeInsets.all(kDefaultPadding / 4),
+                      child: controller.progressState.value ==
+                              sState.initial
+                          ? controller
+                                  .jobsRenter[
+                                      controller.tabSelectedRenter.value]
+                                  .isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: controller
+                                      .jobsRenter[controller
+                                          .tabSelectedRenter.value]
+                                      .length,
+                                  shrinkWrap: true,
+                                  reverse: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    var job = controller.jobsRenter[
+                                        controller.tabSelectedRenter
+                                            .value][index];
+                                    return MyJobCard(
+                                      job: job,
+                                      color: selectedColor(job.status),
+                                    );
+                                  })
+                              : controller.tabSelectedRenter.value != 1
+                                  ? SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 40),
+                                          Image.asset(
+                                            'assets/images/postjob.jpg',
+                                            height: 250,
                                           ),
-                                      )
-                                      : Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/postjob.jpg',
-                                              height: 250,
-                                            ),
-                                            Text(
-                                              'Không có việc nào đang giao!',
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                          ],
-                                        )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 100),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )),
-                    ),
-                  ),
+                                          Text(
+                                            'Bạn chưa đăng việc nào!',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          ElevatedButton(
+                                            child: Text('Đăng việc ngay'),
+                                            onPressed: () {
+                                              controller
+                                                  .updateIndexSelected(2);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                  )
+                                  : Column(
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/postjob.jpg',
+                                          height: 250,
+                                        ),
+                                        Text(
+                                          'Không có việc nào đang giao!',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ],
+                                    )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 100),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -11,12 +11,14 @@ import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../responsive.dart';
 import 'as_employer_screen.dart';
 class AsFreelancerScreen extends GetWidget<HomeController> {
   @override
 
   Widget build(BuildContext context) {
     var _listTextTabToggle = ["Đã nhận", "Đang nhận", "Chào giá", "Đã qua"];
+    var size = MediaQuery.of(context).size;
     return Obx(
       ()=> Scaffold(
         floatingActionButton: controller.tabSelectedFreelancer.value == 2 ? FloatingActionButton.extended(label: Text('Lịch sử chào giá'), onPressed: () {
@@ -28,6 +30,7 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
             SizedBox(height: kDefaultPadding/2,),
             FlutterToggleTab(
               borderRadius: 10,
+              width:  Responsive.isMobile(context) ? null : size.width/24,
               height: 30,
               initialIndex: controller.tabSelectedFreelancer.value,
               isScroll: false,
@@ -44,7 +47,6 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
               labels: _listTextTabToggle,
               selectedLabelIndex: (int) {
                 controller.tabSelectedFreelancer(int);
-                if (controller.jobsFreelancer[int].isEmpty)
                   controller.loadJobsFreelancer(int);
               },
             ),
@@ -123,14 +125,18 @@ class OfferHistories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lịch sử chào giá'),
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Lịch sử chào giá'),
+        ),
+        backgroundColor: Colors.grey[100],
+        body: offers.isNotEmpty ? ListView.builder(
+          itemCount:  offers.length,
+            itemBuilder: (_,index)=>OfferCard(jobOffer: offers[index],)) : Center(child: Text('Bạn chưa chào giá công việc nào!'),),
       ),
-      backgroundColor: Colors.grey[100],
-      body: offers.isNotEmpty ? ListView.builder(
-        itemCount:  offers.length,
-          itemBuilder: (_,index)=>OfferCard(jobOffer: offers[index],)) : Center(child: Text('Bạn chưa chào giá công việc nào!'),),
     );
   }
 }
@@ -244,12 +250,16 @@ class MyOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chào giá của tôi'),
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Chào giá của tôi'),
+        ),
+        backgroundColor: Colors.grey[100],
+        body: OfferCard(jobOffer: jobOffer),
       ),
-      backgroundColor: Colors.grey[100],
-      body: OfferCard(jobOffer: jobOffer),
     );
   }
 }

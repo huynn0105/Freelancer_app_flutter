@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/jobs_screen.dart';
+import '../../../responsive.dart';
 import 'tab_view/freelancers/freelancer_screen.dart';
 
 
@@ -14,6 +15,7 @@ class BrowseScreen extends StatelessWidget {
     return DefaultTabController(
       length: tab.length,
       child: Scaffold(
+
         appBar: AppBar(
           bottom: TabBar(
             labelColor: Colors.white,
@@ -41,20 +43,7 @@ class BrowseScreen extends StatelessWidget {
             FreelancersScreen(),
           ],
         ),
-          // floatingActionButton: FloatingActionButton(
-          //   heroTag: 'search',
-          //   onPressed: () {
-          //     showCupertinoModalBottomSheet(
-          //         expand: false,
-          //         context: context,
-          //         builder: (builder) {
-          //           return FilterSearchScreen();
-          //         });
-          //   },
-          //   child: Icon(
-          //     Icons.search,
-          //   ),
-          // )
+
       ),
     );
   }

@@ -42,7 +42,6 @@ class HomeController extends GetxController {
   @override
   void onReady() async {
     await loadAccountLocal();
-    accountOnReady(account.value.onReady);
     loadJobsRenter(tabSelectedRenter.value);
     loadJobsFreelancer(tabSelectedFreelancer.value);
     super.onReady();
@@ -59,7 +58,9 @@ class HomeController extends GetxController {
      await apiRepositoryInterface.getAccountFromToken().then((value){
         progressState(sState.initial);
         if (value != null) {
-          account(value);balance(account.value.balance);
+          account(value);
+          accountOnReady(account.value.onReady);
+          balance(account.value.balance);
         } else if (value == null) {
           print('lỗi: user null');
          logOut().then((value) => Get.offAllNamed(Routes.login));
@@ -79,6 +80,7 @@ class HomeController extends GetxController {
       (value) {
         if(value!=null){
           account(value);
+          accountOnReady(account.value.onReady);
           balance(account.value.balance);
         }
 

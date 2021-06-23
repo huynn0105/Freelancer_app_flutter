@@ -14,6 +14,7 @@ import 'package:freelance_app/presentation/home/messages/rating/rating_screen.da
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../responsive.dart';
 import 'chat_controller.dart';
 
 class MessagesScreen extends StatelessWidget {
@@ -26,100 +27,104 @@ class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 1,
-        title: Row(
-          children: [
-            BackButton(
-              onPressed: () {
-                controller.loadMessageUser().then((value) => Get.back());
-                Get.offAllNamed(Routes.home);
-              },
-            ),
-            CircleAvatar(
-              radius: 20,
-              foregroundColor: Colors.transparent,
-              backgroundColor: Colors.grey.shade300,
-              child: CachedNetworkImage(
-                imageUrl: 'http://${toUser.avatarUrl}',
-                httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
-                placeholder: (context, url) => CupertinoActivityIndicator(),
-                imageBuilder: (context, image) => CircleAvatar(
-                  backgroundImage: image,
-                  radius: 17,
-                ),
-                errorWidget: (context, url, error) => CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: AssetImage('assets/images/avatarnull.png'),
-                  radius: 17,
-                ),
-              ),
-            ),
-            SizedBox(width: 7),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(job.name,
-                      style: TextStyle(
-                        fontSize: 17,
-                      )),
-                  Text(toUser.name,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey)),
-                ],
-              ),
-            ),
-            IconButton(
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 1,
+          title: Row(
+            children: [
+              BackButton(
                 onPressed: () {
-                  controller.loadJob(job.id).then((value) {
-                    if (controller.job.value.rating != null)
-                      controller.currentStep(3);
-                    controller.checkAssign(job.id, freelancer.id)
-                        .then((value) => Get.to(() => ChatDetailsScreen(
-                              freelancer: freelancer,
-                              toUser: toUser,
-                            )));
-                  });
+                  controller.loadMessageUser().then((value) => Get.back());
+                  Get.offAllNamed(Routes.home);
                 },
-                icon: Icon(Icons.more_vert)),
+              ),
+              CircleAvatar(
+                radius: 20,
+                foregroundColor: Colors.transparent,
+                backgroundColor: Colors.grey.shade300,
+                child: CachedNetworkImage(
+                  imageUrl: 'http://${toUser.avatarUrl}',
+                  httpHeaders: {HttpHeaders.authorizationHeader: 'Bearer $TOKEN'},
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
+                  imageBuilder: (context, image) => CircleAvatar(
+                    backgroundImage: image,
+                    radius: 17,
+                  ),
+                  errorWidget: (context, url, error) => CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: AssetImage('assets/images/avatarnull.png'),
+                    radius: 17,
+                  ),
+                ),
+              ),
+              SizedBox(width: 7),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(job.name,
+                        style: TextStyle(
+                          fontSize: 17,
+                        )),
+                    Text(toUser.name,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey)),
+                  ],
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    controller.loadJob(job.id).then((value) {
+                      if (controller.job.value.rating != null)
+                        controller.currentStep(3);
+                      controller.checkAssign(job.id, freelancer.id)
+                          .then((value) => Get.to(() => ChatDetailsScreen(
+                                freelancer: freelancer,
+                                toUser: toUser,
+                              )));
+                    });
+                  },
+                  icon: Icon(Icons.more_vert)),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
+                child: Obx(() => ListView.builder(
+                    itemCount: controller.chatMessages.length,
+                    reverse: true,
+                    controller: controller.scrollController,
+                    itemBuilder: (context, index) {
+                      controller.seenMessage(job.id, freelancer.id);
+                      return Message(
+                        message: controller.chatMessages[index],
+                        toUser: toUser,
+                        prevDateTime: index < controller.chatMessages.length - 1
+                            ? controller.chatMessages[index + 1].time
+                            : null,
+                      );
+                    })),
+              ),
+            ),
+            ChatInputField(
+              ctrMessage: controller.ctrMessage,
+              onTap: () {
+                controller.sendMessage(job.id, freelancer.id, toUser.id);
+              },
+            )
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-              child: Obx(() => ListView.builder(
-                  itemCount: controller.chatMessages.length,
-                  reverse: true,
-                  controller: controller.scrollController,
-                  itemBuilder: (context, index) {
-                    controller.seenMessage(job.id, freelancer.id);
-                    return Message(
-                      message: controller.chatMessages[index],
-                      toUser: toUser,
-                      prevDateTime: index < controller.chatMessages.length - 1
-                          ? controller.chatMessages[index + 1].time
-                          : null,
-                    );
-                  })),
-            ),
-          ),
-          ChatInputField(
-            ctrMessage: controller.ctrMessage,
-            onTap: () {
-              controller.sendMessage(job.id, freelancer.id, toUser.id);
-            },
-          )
-        ],
       ),
     );
   }
@@ -331,15 +336,16 @@ class RequestFinished extends StatelessWidget {
     final df = new DateFormat('HH:mm');
     return Flexible(
         child: Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[300],
       ),
-      child: Column(
-        children: [
-          if (message.senderId != CURRENT_ID) ...[
+      child: message.senderId != CURRENT_ID ? Padding(
+        padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 150),
+        child: Column(
+          children: [
             Text(
               'Yêu cầu kết thúc dự án',
               style: TEXT_STYLE_ON_FOREGROUND,
@@ -393,32 +399,32 @@ class RequestFinished extends StatelessWidget {
                   elevation: 0),
             ),
           ],
-          if (message.senderId == CURRENT_ID) ...[
-            Text(
-              'Bạn đã gửi yêu cầu kết thúc dự án',
-              style: TEXT_STYLE_ON_FOREGROUND,
+        ),
+      ) : Wrap(
+        crossAxisAlignment: WrapCrossAlignment.end,
+        alignment: WrapAlignment.end,
+        children: [
+          Text(
+            'Bạn đã gửi yêu cầu kết thúc dự án',
+            style: TEXT_STYLE_ON_FOREGROUND,
+          ),
+          SizedBox(width: 5),
+          Text(
+            df.format(message.time),
+            style: TextStyle(fontSize: 13, color: Colors.black87),
+          ),
+          if (message.senderId == CURRENT_ID)
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Icon(
+                  message.status == 'Seen' ? Icons.done_all : Icons.done,
+                  size: 15,
+                  color: Colors.black87),
             ),
-            SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  df.format(message.time),
-                  style: TextStyle(fontSize: 13, color: Colors.black87),
-                ),
-                if (message.senderId == CURRENT_ID)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Icon(
-                        message.status == 'Seen' ? Icons.done_all : Icons.done,
-                        size: 15,
-                        color: Colors.black87),
-                  ),
-              ],
-            ),
-          ]
         ],
-      ),
+      )
+
+
     ));
   }
 }

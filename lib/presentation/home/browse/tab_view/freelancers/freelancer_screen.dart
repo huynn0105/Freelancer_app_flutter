@@ -7,16 +7,15 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/freelancers/freelancer_controller.dart';
 import 'package:freelance_app/presentation/widgets/rate.dart';
+import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'filter/ffilter_search_screen.dart';
 import 'freelancer_detail/freelancer_detail_screen.dart';
 
-class FreelancersScreen extends StatelessWidget {
-  final controller = Get.put<FreelancerController>(FreelancerController(
-    apiRepositoryInterface: Get.find(),
-  ));
+class FreelancersScreen extends GetWidget<FreelancerController> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +25,7 @@ class FreelancersScreen extends StatelessWidget {
           await controller.loadFreelancer();
         },
         child: SingleChildScrollView(
+
           physics: AlwaysScrollableScrollPhysics(),
           child: Obx(
             ()=> Column(

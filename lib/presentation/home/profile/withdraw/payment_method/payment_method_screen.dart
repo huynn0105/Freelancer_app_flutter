@@ -4,6 +4,8 @@ import 'package:freelance_app/presentation/home/profile/withdraw/payment_method/
 import 'package:freelance_app/presentation/home/profile/withdraw/withdraw_screen.dart';
 import 'package:get/get.dart';
 
+import '../../../../../responsive.dart';
+
 class PaymentMethodScreen extends StatelessWidget {
 
   @override
@@ -13,64 +15,68 @@ class PaymentMethodScreen extends StatelessWidget {
     ));
 
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Phương thức thanh toán'),
-        actions: [
-          PopupMenuButton(
-            icon: Icon(Icons.add),
-            itemBuilder: (BuildContext bc) => [
-              PopupMenuItem(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.credit_card,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Chuyển khoản ngân hàng',
-                    )
-                  ],
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Phương thức thanh toán'),
+          actions: [
+            PopupMenuButton(
+              icon: Icon(Icons.add),
+              itemBuilder: (BuildContext bc) => [
+                PopupMenuItem(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.credit_card,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Chuyển khoản ngân hàng',
+                      )
+                    ],
+                  ),
+                  value: "/add_credit",
                 ),
-                value: "/add_credit",
-              ),
-              PopupMenuItem(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.payment,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'MoMo',
-                    )
-                  ],
+                PopupMenuItem(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.payment,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'MoMo',
+                      )
+                    ],
+                  ),
+                  value: "/add_momo",
                 ),
-                value: "/add_momo",
-              ),
-            ],
-            onSelected: (value){
-              Get.toNamed(value);
-            },
+              ],
+              onSelected: (value){
+                Get.toNamed(value);
+              },
+            ),
+          ],
+        ),
+        body: Obx(
+          ()=> controller.progress.value == sState.initial
+                  ? controller.paymentMethods.isNotEmpty ?  ListView.builder(
+                itemCount: controller.paymentMethods.length,
+                  itemBuilder: (context,index){
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
+                  child: PaymentMethodCard(paymentMethod: controller.paymentMethods[index],),
+                );
+              }): Text('Trống') : Center(child: CircularProgressIndicator(),),
+        ),
           ),
-        ],
-      ),
-      body: Obx(
-        ()=> controller.progress.value == sState.initial
-                ? controller.paymentMethods.isNotEmpty ?  ListView.builder(
-              itemCount: controller.paymentMethods.length,
-                itemBuilder: (context,index){
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding,vertical: kDefaultPadding/2),
-                child: PaymentMethodCard(paymentMethod: controller.paymentMethods[index],),
-              );
-            }): Text('Trống') : Center(child: CircularProgressIndicator(),),
-      ),
-        );
+    );
   }
 }
 

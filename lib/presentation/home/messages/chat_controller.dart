@@ -247,7 +247,6 @@ class ChatController extends GetxController {
   @override
   void onReady() {
     createSignalRConnection();
-    loadMessageUser();
     super.onReady();
   }
 
@@ -256,7 +255,6 @@ class ChatController extends GetxController {
 
   Future sendRating(int jobID,String comment, int star,freelancerId)async{
     try{
-
       progress(sState.loading);
       await apiRepositoryInterface.postRating(
           RatingRequest(

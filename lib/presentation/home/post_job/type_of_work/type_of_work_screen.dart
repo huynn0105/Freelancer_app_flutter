@@ -4,49 +4,55 @@ import 'package:freelance_app/presentation/home/post_job/post_job_controller.dar
 
 import 'package:get/get.dart';
 
+import '../../../../responsive.dart';
+
 class TypeOfWorkScreen extends StatelessWidget {
   final controller = Get.find<PostJobController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Đăng việc',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: Obx(
-        ()=> controller.typeOfWorks.isNotEmpty ? Container(
-          padding: EdgeInsets.all(25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Loại hình công việc',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  var typeOfWork = controller.typeOfWorks[index];
-                  return ItemWork(
-                      title: typeOfWork.name,
-                      onTap: () {
-                        controller.typeId.value = typeOfWork.id;
-                        Get.to(() => FormOfWorkScreen());
-                      });
-                },
-                itemCount: controller.typeOfWorks.length,
-              ),
-            ],
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Đăng việc',
+            style: TextStyle(color: Colors.black),
           ),
-        ) : const Center(
-          child: CircularProgressIndicator(),
+        ),
+        body: Obx(
+          ()=> controller.typeOfWorks.isNotEmpty ? Container(
+            padding: EdgeInsets.all(25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Loại hình công việc',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    var typeOfWork = controller.typeOfWorks[index];
+                    return ItemWork(
+                        title: typeOfWork.name,
+                        onTap: () {
+                          controller.typeId.value = typeOfWork.id;
+                          Get.to(() => FormOfWorkScreen());
+                        });
+                  },
+                  itemCount: controller.typeOfWorks.length,
+                ),
+              ],
+            ),
+          ) : const Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ),
     );

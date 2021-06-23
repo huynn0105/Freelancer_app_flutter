@@ -106,7 +106,6 @@ class PostJobController extends GetxController {
 
   @override
   void onReady() {
-    getFormOfWorks();
     super.onReady();
   }
 

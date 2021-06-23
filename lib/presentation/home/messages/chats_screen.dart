@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
@@ -11,9 +12,9 @@ import 'package:freelance_app/presentation/home/messages/messages_screen.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ChatsScreen extends StatelessWidget {
-  var controller = Get.put<ChatController>(
-      ChatController(apiRepositoryInterface: Get.find()));
+import '../../../responsive.dart';
+
+class ChatsScreen extends GetWidget<ChatController> {
 
   int currentStatus(String status){
     switch(status){
@@ -29,9 +30,9 @@ class ChatsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tin nhắn'),
-        actions: [
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-        ],
+        // actions: [
+        //   IconButton(icon: Icon(Icons.search), onPressed: () {}),
+        // ],
       ),
       body: RefreshIndicator(
         onRefresh: ()async{
@@ -39,40 +40,49 @@ class ChatsScreen extends StatelessWidget {
         },
         child: Column(
           children: [
-            Expanded(
-              child: Obx(
-                ()=> ListView.builder(
-                  itemCount: controller.chats.length,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final chat = controller.chats[index];
-                    return ChatCard(
-                      chat: chat,
-                      onTap: () {
-                        controller.seenMessage(chat.job.id, chat.freelancer.id);
-                        controller.status(chat.status);
-                        controller.currentStep(currentStatus(chat.status));
-                        controller
-                            .loadJob(chat.job.id)
-                            .then((value) {
-                          if (controller.job.value.rating != null)
-                            controller.currentStep(3);
+            Obx(
+              ()=> controller.chats.isNotEmpty ? Expanded(
+                child:ListView.builder(
+                    itemCount: controller.chats.length,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final chat = controller.chats[index];
+                      return ChatCard(
+                        chat: chat,
+                        onTap: () {
+                          controller.seenMessage(chat.job.id, chat.freelancer.id);
+                          controller.status(chat.status);
+                          controller.currentStep(currentStatus(chat.status));
+                          controller
+                              .loadJob(chat.job.id)
+                              .then((value) {
+                            if (controller.job.value.rating != null)
+                              controller.currentStep(3);
+                            controller.loadMessageChat(chat.job.id, chat.freelancer.id);
+                            Get.to(() => MessagesScreen(
+                              toUser: chat.toUser,
+                              job: chat.job,
+                              freelancer: chat.freelancer,
+                            ));
+                          });
 
-                          controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
-                          => Get.to(() => MessagesScreen(
-                            toUser: chat.toUser,
-                            job: chat.job,
-                            freelancer: chat.freelancer,
-                          )));
-                        });
 
+                        },
+                      );
+                    },
+                  )
+                ) : Center(
+                  child: Column(
 
-                      },
-                    );
-                  },
-                ),
+                  children: [
+                    SizedBox(height: 100,),
+                    Text('Chưa có tin nhắn nào!',style: TEXT_STYLE_PRIMARY,),
+                    SvgPicture.asset('assets/images/message_empty.svg',height: 200,),
+                  ],
               ),
+                ),
             ),
+
           ],
         ),
       ),
@@ -97,7 +107,7 @@ class ChatCard extends StatelessWidget {
           children: [
             Stack(children: [
               CircleAvatar(
-                radius: 24,
+                radius: 26,
                 foregroundColor: Colors.transparent,
                 backgroundColor: Colors.grey.shade300,
                 child: CachedNetworkImage(
@@ -108,12 +118,12 @@ class ChatCard extends StatelessWidget {
                   placeholder: (context, url) => CupertinoActivityIndicator(),
                   imageBuilder: (context, image) => CircleAvatar(
                     backgroundImage: image,
-                    radius: 23,
+                    radius: 25,
                   ),
                   errorWidget: (context, url, error) => CircleAvatar(
                     backgroundColor: Colors.grey,
                     backgroundImage: AssetImage('assets/images/avatarnull.png'),
-                    radius: 23,
+                    radius: 25,
                   ),
                 ),
               ),
@@ -131,7 +141,14 @@ class ChatCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 4),
+
+                    Text(
+                      chat.toUser.name,
+                      style: TextStyle(fontWeight: FontWeight.w400,fontSize: 14,fontStyle: FontStyle.italic),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
                     Text(
                       '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : '${chat.toUser.name}: '} ${chat.lastMessage}',
                       maxLines: 1,

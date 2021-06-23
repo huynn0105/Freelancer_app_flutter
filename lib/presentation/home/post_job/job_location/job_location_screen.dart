@@ -5,6 +5,8 @@ import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../responsive.dart';
+
 class JobLocationScreen extends StatefulWidget {
   @override
   _JobLocationScreenState createState() => _JobLocationScreenState();
@@ -40,59 +42,63 @@ class _JobLocationScreenState extends State<JobLocationScreen> {
   @override
   Widget build(BuildContext context) {
     var controller = widget.controller;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Địa điểm',
-        ),
-      ),
-      body: Obx(
-        ()=> controller.provinces.length != 1 ? Container(
-          padding: EdgeInsets.all(25),
-          child: Column(
-            children: [
-              Text(
-                'Cần tuyển freelancer làm việc tại',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Expanded(
-                child: Column(children: [
-                  SearchBox(
-                    controller: _searchEdit,
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Expanded(
-                    child: _isSearch ? ListView.builder(
-                      itemCount: controller.provinces.length,
-                      itemBuilder: (context, index) {
-                        var province = controller.provinces[index];
-                        return ItemLocation(
-                          name: province.name,
-                          onTap: () {
-                            controller.provinceId.value = province.provinceId;
-                            controller.locationTextController.text = province.name;
-                            if(widget.id == 1){
-                              controller.getPayForms();
-                              Get.to(() => PayFormScreen());
-                            }else if(widget.id==0){
-                              Get.back();
-                            }
-                          },
-                        );
-                      },
-                    ) : _searchListView(controller),
-                  ),
-                ]),
-              )
-            ],
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Địa điểm',
           ),
-        ) : const Center(
-          child: CircularProgressIndicator(),
+        ),
+        body: Obx(
+          ()=> controller.provinces.length != 1 ? Container(
+            padding: EdgeInsets.all(25),
+            child: Column(
+              children: [
+                Text(
+                  'Cần tuyển freelancer làm việc tại',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Expanded(
+                  child: Column(children: [
+                    SearchBox(
+                      controller: _searchEdit,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Expanded(
+                      child: _isSearch ? ListView.builder(
+                        itemCount: controller.provinces.length,
+                        itemBuilder: (context, index) {
+                          var province = controller.provinces[index];
+                          return ItemLocation(
+                            name: province.name,
+                            onTap: () {
+                              controller.provinceId.value = province.provinceId;
+                              controller.locationTextController.text = province.name;
+                              if(widget.id == 1){
+                                controller.getPayForms();
+                                Get.to(() => PayFormScreen());
+                              }else if(widget.id==0){
+                                Get.back();
+                              }
+                            },
+                          );
+                        },
+                      ) : _searchListView(controller),
+                    ),
+                  ]),
+                )
+              ],
+            ),
+          ) : const Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ),
     );

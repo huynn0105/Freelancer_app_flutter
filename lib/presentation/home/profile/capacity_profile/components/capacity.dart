@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
-import 'package:freelance_app/presentation/home/profile/capacity_profile/capacity_profiles_screen.dart';
-import 'package:get/get.dart';
 import 'capacity_card.dart';
 
 class Capacity extends StatefulWidget {

@@ -141,7 +141,6 @@ class JobsController extends GetxController{
 
   @override
   void onReady() {
-    loadJobs();
     super.onReady();
   }
 }

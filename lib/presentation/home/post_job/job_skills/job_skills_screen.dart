@@ -5,6 +5,8 @@ import 'package:freelance_app/presentation/home/post_job/type_of_work/type_of_wo
 import 'package:freelance_app/presentation/home/widgets/search_box.dart';
 import 'package:get/get.dart';
 
+import '../../../../responsive.dart';
+
 class JobSkillsScreen extends StatefulWidget {
   const JobSkillsScreen({Key key, this.id}) : super(key: key);
 
@@ -49,59 +51,63 @@ class _JobSkillsScreenState extends State<JobSkillsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Chọn kỹ năng',
-          ),
-          actions: [
-            TextButton(
-              onPressed:  () {
-                controller.skillSelected();
-                if(widget.id == 1){
-                  controller.getTypeOfWorks();
-                  Get.to(() => TypeOfWorkScreen());
-                }else{
-                  Get.back();
-                }
-              },
-              child: Text(
-                widget.id == 1 ? 'Tiếp theo' : 'Hoàn thành',
-                style: TextStyle(fontSize: 18),
-              ),
+    return Container(
+      color:  Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      child: new Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Chọn kỹ năng',
             ),
-          ],
-        ),
-        body: Obx(
-          () => controller.skills.isNotEmpty
-              ? Container(
-                  padding: EdgeInsets.all(30),
-                  child: Column(children: [
-                    SearchBox(
-                      controller: _searchEdit,
-                    ),
-                    Expanded(
-                      child: _isSearch
-                          ? ListView.builder(
-                          itemCount: controller.skills.length,
-                          itemBuilder: (context, index) {
-                            var skill = controller.skills[index];
-                            return CheckboxListTile(
-                                title: new Text(skill.name),
-                                value: skill.isValue,
-                                onChanged: (bool value) {
-                                  controller.changeValue(
-                                      skill.copyWith(isValue: value),controller.skills);
-                                });
-                          })
-                          : _searchListView(),
-                    )
-                  ]),
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
+            actions: [
+              TextButton(
+                onPressed:  () {
+                  controller.skillSelected();
+                  if(widget.id == 1){
+                    controller.getTypeOfWorks();
+                    Get.to(() => TypeOfWorkScreen());
+                  }else{
+                    Get.back();
+                  }
+                },
+                child: Text(
+                  widget.id == 1 ? 'Tiếp theo' : 'Hoàn thành',
+                  style: TextStyle(fontSize: 18),
                 ),
-        ));
+              ),
+            ],
+          ),
+          body: Obx(
+            () => controller.skills.isNotEmpty
+                ? Container(
+                    padding: EdgeInsets.all(30),
+                    child: Column(children: [
+                      SearchBox(
+                        controller: _searchEdit,
+                      ),
+                      Expanded(
+                        child: _isSearch
+                            ? ListView.builder(
+                            itemCount: controller.skills.length,
+                            itemBuilder: (context, index) {
+                              var skill = controller.skills[index];
+                              return CheckboxListTile(
+                                  title: new Text(skill.name),
+                                  value: skill.isValue,
+                                  onChanged: (bool value) {
+                                    controller.changeValue(
+                                        skill.copyWith(isValue: value),controller.skills);
+                                  });
+                            })
+                            : _searchListView(),
+                      )
+                    ]),
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+          )),
+    );
   }
 
   Widget _searchListView() {

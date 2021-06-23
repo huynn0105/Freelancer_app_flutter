@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:freelance_app/presentation/home/my_job/tab_view/as_employer_screen.dart';
 import 'package:freelance_app/presentation/home/my_job/tab_view/as_freelancer_screen.dart';
 
+import '../../../responsive.dart';
+
 class MyJobScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
