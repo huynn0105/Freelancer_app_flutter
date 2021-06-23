@@ -18,7 +18,7 @@ class RegisterRequest {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['email'] = this.email;
-    data['role'] = this.role;
+    data['roleID '] = this.role;
     data['password'] = this.password;
     return data;
   }
