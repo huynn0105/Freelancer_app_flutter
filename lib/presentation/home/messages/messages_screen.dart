@@ -4,12 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/data/data.dart';
 import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/messages/chat_details_screen.dart';
 import 'package:freelance_app/presentation/home/messages/rating/rating_screen.dart';
+import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'chat_controller.dart';
@@ -33,7 +35,7 @@ class MessagesScreen extends StatelessWidget {
             BackButton(
               onPressed: () {
                 controller.loadMessageUser().then((value) => Get.back());
-                Get.back();
+                Get.offAllNamed(Routes.home);
               },
             ),
             CircleAvatar(
@@ -75,14 +77,15 @@ class MessagesScreen extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  controller
-                      .loadJob(job.id)
-                      .then((value){
-                        if(controller.job.value.rating!=null)
-                          controller.currentStep(3);
-                        return Get.to(() => ChatDetailsScreen(
-                          freelancer: freelancer,toUser: toUser,
-                        ));
+                  controller.loadJob(job.id).then((value) {
+                    if (controller.job.value.rating != null)
+                      controller.currentStep(3);
+                    controller
+                        .checkAssign(job.id, freelancer.id)
+                        .then((value) => Get.to(() => ChatDetailsScreen(
+                              freelancer: freelancer,
+                              toUser: toUser,
+                            )));
                   });
                 },
                 icon: Icon(Icons.more_vert)),
@@ -147,7 +150,10 @@ class Message extends StatelessWidget {
         case 'FinishRequest':
           if (message.confirmation == null)
             return RequestFinished(message: message);
-          return ConfirmFinish(message: message,toUser: toUser,);
+          return ConfirmFinish(
+            message: message,
+            toUser: toUser,
+          );
         default:
           return SizedBox();
       }
@@ -167,7 +173,7 @@ class Message extends StatelessWidget {
                 ),
               ),
           Row(
-            mainAxisAlignment: message.type!='Text'
+            mainAxisAlignment: message.type != 'Text'
                 ? MainAxisAlignment.center
                 : message.senderId == CURRENT_ID
                     ? MainAxisAlignment.end
@@ -175,7 +181,7 @@ class Message extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (message.senderId != CURRENT_ID)
-                if (message.type=='Text')
+                if (message.type == 'Text')
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5, right: 10),
                     child: CircleAvatar(
@@ -325,101 +331,96 @@ class RequestFinished extends StatelessWidget {
     var controller = Get.find<ChatController>();
     final df = new DateFormat('HH:mm');
     return Flexible(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.grey[300],
-        ),
-
-        child: message.senderId != CURRENT_ID
-            ? Column(
-                children: [
-                  Text(
-                    'Yêu cầu kết thúc dự án',
-                    style: TEXT_STYLE_ON_FOREGROUND,
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.currentStep(2);
-                      controller.finishJob(message.jobId, message.id);
-                      controller.loadMessageChat(message.jobId, message.freelancerId);
-                    },
-                    child: Text(
-                      'Hoàn thành',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: Size(300, 40),
-                        elevation: 0),
-                  ),
-                  SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.currentStep(2);
-                      controller.sendRequestRework(message.jobId, message.id);
-                      controller.loadMessageChat(message.jobId, message.freelancerId);
-                    },
-                    child: Text(
-                      'Yêu cầu làm lại',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: Size(300, 40),
-                        elevation: 0),
-                  ),
-                  SizedBox(height: 5),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.currentStep(2);
-                      controller.sendRequestCancel(message.jobId, message.id);
-                      controller.loadMessageChat(message.jobId, message.freelancerId);
-                    },
-                    child: Text(
-                      'Huỷ dự án',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: Size(300, 40),
-                        elevation: 0),
-                  ),
-                ],
-              )
-            : Column(
-                children: [
-                  Text(
-                    'Bạn đã gửi yêu cầu kết thúc dự án',
-                    style: TEXT_STYLE_ON_FOREGROUND,
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        df.format(message.time),
-                        style: TextStyle(fontSize: 13, color: Colors.black87),
-                      ),
-                      if (message.senderId == CURRENT_ID)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Icon(
-                              message.status == 'Seen'
-                                  ? Icons.done_all
-                                  : Icons.done,
-                              size: 15,
-                              color: Colors.black87),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
+        child: Container(
+      margin: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey[300],
       ),
-    );
+      child: Column(
+        children: [
+          if (message.senderId != CURRENT_ID) ...[
+            Text(
+              'Yêu cầu kết thúc dự án',
+              style: TEXT_STYLE_ON_FOREGROUND,
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                controller.currentStep(2);
+                controller.finishJob(message.jobId, message.id);
+                controller.loadMessageChat(message.jobId, message.freelancerId);
+              },
+              child: Text(
+                'Hoàn thành',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  minimumSize: Size(300, 40),
+                  elevation: 0),
+            ),
+            SizedBox(height: 5),
+            ElevatedButton(
+              onPressed: () {
+                controller.currentStep(2);
+                controller.sendRequestRework(message.jobId, message.id);
+                controller.loadMessageChat(message.jobId, message.freelancerId);
+              },
+              child: Text(
+                'Yêu cầu làm lại',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  minimumSize: Size(300, 40),
+                  elevation: 0),
+            ),
+            SizedBox(height: 5),
+            ElevatedButton(
+              onPressed: () {
+                controller.currentStep(2);
+                controller.sendRequestCancel(message.jobId, message.id);
+                controller.loadMessageChat(message.jobId, message.freelancerId);
+              },
+              child: Text(
+                'Huỷ dự án',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  minimumSize: Size(300, 40),
+                  elevation: 0),
+            ),
+          ],
+          if (message.senderId == CURRENT_ID) ...[
+            Text(
+              'Bạn đã gửi yêu cầu kết thúc dự án',
+              style: TEXT_STYLE_ON_FOREGROUND,
+            ),
+            SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  df.format(message.time),
+                  style: TextStyle(fontSize: 13, color: Colors.black87),
+                ),
+                if (message.senderId == CURRENT_ID)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Icon(
+                        message.status == 'Seen' ? Icons.done_all : Icons.done,
+                        size: 15,
+                        color: Colors.black87),
+                  ),
+              ],
+            ),
+          ]
+        ],
+      ),
+    ));
   }
 }
 
@@ -471,6 +472,8 @@ class SuggestPrice extends StatelessWidget {
                       onPressed: () {
                         controller.confirmSuggestedPrice(message.jobId,
                             message.freelancerId, message.id, false);
+                        controller.loadMessageChat(
+                            message.jobId, message.freelancerId);
                       },
                       child: Text(
                         'Từ chối',
@@ -543,7 +546,9 @@ class ConfirmPrice extends StatelessWidget {
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.green[200],
+            color: message.confirmation == 'Accept'
+                ? Colors.green[200]
+                : Colors.red[200],
           ),
           margin: EdgeInsets.symmetric(horizontal: 16),
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
@@ -551,12 +556,15 @@ class ConfirmPrice extends StatelessWidget {
             alignment: WrapAlignment.end,
             crossAxisAlignment: WrapCrossAlignment.end,
             children: [
-              Text(
-                message.confirmation == 'Accept'
-                    ? 'Xác nhận thành công, hãy bắt đầu dự án!'
-                    : 'dự án không được thông qua!',
-                style: TEXT_STYLE_ON_FOREGROUND,
-              ),
+              if (message.confirmation == 'Accept')
+                Text(
+                  'Xác nhận thành công, hãy bắt đầu dự án!',
+                  style: TEXT_STYLE_ON_FOREGROUND,
+                ),
+              if (message.confirmation == 'Decline')
+                message.freelancerId != CURRENT_ID
+                    ? Text('Freelancer đã từ chối nhận dự án ')
+                    : Text('Bạn đã từ chối dự án'),
               Text(
                 df.format(message.time),
                 style: TextStyle(fontSize: 13, color: Colors.black87),
@@ -571,44 +579,61 @@ class ConfirmFinish extends StatelessWidget {
   final ChatMessage message;
   final Account toUser;
 
-  ConfirmFinish({this.message,this.toUser});
+  ConfirmFinish({this.message, this.toUser});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ChatController>();
     return Flexible(
       child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.green[200],
+            color: message.confirmation == 'Finished'
+                ? Colors.green[200]
+                : Colors.red[200],
           ),
           margin: EdgeInsets.symmetric(horizontal: 16),
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: Column(
-            children: [
-              if (message.confirmation == 'Finished')
-                if(message.freelancerId == CURRENT_ID)
-                  Text(
-                        'Dự án đã hoàn thành, Bạn sẽ sớm nhận được tiền từ hệ thống'),
-                    if(message.freelancerId != CURRENT_ID)...[
-                      Text('Dự án đã hoàn thành, Đánh giá freelancer nào!'),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          Get.to(()=>RatingScreen(freelancer: toUser,jobId: message.jobId,));
-                        },
-                        child: Text(
-                          'Đánh giá',
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            minimumSize: Size(300, 40),
-                            elevation: 0),
-                      ),
-                    ],
-
+          child: Column(children: [
+            if (message.confirmation == 'Finished') ...[
+              Text('Dự án đã hoàn thành'),
+              if (message.freelancerId == CURRENT_ID)
+                Text('Bạn sẽ sớm nhận được tiền từ hệ thống'),
+              if (controller.job.value.rating == null)
+                if (message.freelancerId != CURRENT_ID) ...[
+                  Text('Đánh giá freelancer nào!'),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => RatingScreen(
+                            freelancer: toUser,
+                            jobId: message.jobId,
+                          ));
+                    },
+                    child: Text(
+                      'Đánh giá',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        minimumSize: Size(300, 40),
+                        elevation: 0),
+                  ),
+                ],
             ],
-          )),
+            if (message.confirmation == 'Request rework') ...[
+              if (message.freelancerId == CURRENT_ID)
+                Text('Bạn đã gửi yêu cầu làm lại dự án cho freelancer'),
+              if (message.freelancerId != CURRENT_ID)
+                Text('Chủ dự án đã yêu cầu bạn làm lại'),
+            ],
+            if (message.confirmation == 'Request cancellation') ...[
+              if (message.freelancerId != CURRENT_ID)
+                Text('Bạn đã gửi yêu cầu huỷ dự án cho freelancer'),
+              if (message.freelancerId == CURRENT_ID)
+                Text('Chủ dự án đã yêu cầu huỷ bỏ dự'),
+            ]
+          ])),
     );
   }
 }

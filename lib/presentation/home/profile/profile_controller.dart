@@ -64,7 +64,6 @@ class ProfileController extends GetxController {
           ));
       if(rs == 200){
         progressState(sState.initial);
-        print('Giá trị $rs');
         return true;
       }else{
         progressState(sState.failure);

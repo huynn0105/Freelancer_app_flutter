@@ -37,7 +37,6 @@ class Information extends StatelessWidget {
           ),
           location!=null ? ListTile(
             leading: Icon(Icons.location_on),
-
             visualDensity: VisualDensity(horizontal: 0, vertical: -4),
             title: Text(location),
           ) : const SizedBox.shrink(),

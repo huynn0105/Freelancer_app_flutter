@@ -16,6 +16,12 @@ Job _$JobFromJson(Map<String, dynamic> json) {
     createAt: json['createAt'] == null
         ? null
         : DateTime.parse(json['createAt'] as String),
+      finishAt: json['finishAt'] == null
+          ? null
+          : DateTime.parse(json['finishAt'] as String),
+      startAt: json['startAt'] == null
+          ? null
+          : DateTime.parse(json['startAt'] as String),
     details: json['details'] as String,
     renter: json['renter'] == null
         ? null
@@ -79,4 +85,6 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'status': instance.status,
       'skills': instance.skills,
       'rating': instance.rating,
+      'startAt' : instance.startAt,
+      'finishAt' : instance.finishAt,
     };

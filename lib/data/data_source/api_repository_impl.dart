@@ -12,7 +12,7 @@ import 'package:freelance_app/domain/models/offer.dart';
 import 'package:freelance_app/domain/models/pay_form.dart';
 import 'package:freelance_app/domain/models/payment_method.dart';
 import 'package:freelance_app/domain/models/province.dart';
-import 'package:freelance_app/domain/models/rate.dart';
+import 'package:freelance_app/domain/models/rating.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
@@ -65,6 +65,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     //   'roleID': registerRequest.role,
     //   'password': registerRequest.password,
     // };
+    print('register: ${registerRequest.toJson()}');
     return await HttpService.post(REGISTER, body: registerRequest.toJson());
   }
 
@@ -654,6 +655,32 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
     var rs = await HttpService.put('$ACCOUNT/deposit/$money', bearerToken: TOKEN);
     print('code put money ${rs.statusCode}');
     return rs.statusCode;
+  }
+
+  @override
+  Future getCheckAssign(int jobId, int freelancerId) async{
+    Map<String,String> param = {'jobId': '$jobId','freelancerId': '$freelancerId'};
+    var rs = await HttpService.get('$MESSAGE_USER/checkassign',parameters: param,bearerToken: TOKEN);
+    print('code get check assign ${rs.statusCode}');
+    if(rs.statusCode==200){
+      var jsonObject = jsonDecode(rs.body);
+      bool canAssign = jsonObject['canAssign'];
+      return canAssign;
+    }
+
+  }
+
+  @override
+  Future getCheckRequest(int jobId, int freelancerId) async{
+    Map<String,String> param = {'jobId': '$jobId','freelancerId': '$freelancerId'};
+    var rs = await HttpService.get('$MESSAGE_USER/checkrequest',parameters: param,bearerToken: TOKEN);
+    print('code get check canRequest ${rs.statusCode}');
+    if(rs.statusCode==200){
+      var jsonObject = jsonDecode(rs.body);
+      bool canRequest = jsonObject['canRequest'];
+      return canRequest;
+    }
+
   }
 
 }

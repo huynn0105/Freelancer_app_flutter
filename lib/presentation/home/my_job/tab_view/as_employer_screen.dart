@@ -19,9 +19,15 @@ class AsEmployerScreen extends GetWidget<HomeController> {
           return Color(0xFFEAB802);
         case 'In progress':
           return Colors.blue;
+        case 'Request rework':
+          return Colors.blue;
+        case 'Request cancellation':
+          return Colors.blue;
         case 'Finished':
           return Colors.green;
         case 'Closed':
+          return Colors.black.withOpacity(0.6);
+        case 'Cancellation':
           return Colors.black.withOpacity(0.6);
         default:
           return Colors.brown;
@@ -228,14 +234,28 @@ class MyJobCard extends StatelessWidget {
                   SizedBox(
                     height: kDefaultPadding / 2,
                   ),
-                  job.status != 'Finished' ? Text(
+                  if(job.status == 'Finished')
+                    Text('Đã hoàn thành bởi freelancer ${job.freelancer.name}'),
+                    if(job.status == 'In progress')
+                    Text('Đang thực hiện bởi freelancer ${job.freelancer.name}'),
+                    if(job.status == 'Waiting')
+                    Text(
                     job.bidCount == 0
                         ? 'Chưa có freelancer nào chào giá'
                         : 'Có ${job.bidCount} chào giá',
                     style: TextStyle(
                       color: Colors.black54,
-                    ),
-                  ) : Text('Đã hoàn thành bơi freelancer ${job.freelancer.name}')
+
+                    ),),
+                    if(job.status == 'Closed')
+                      Text(
+                        job.bidCount == 0
+                            ? 'Chưa có freelancer nào chào giá'
+                            : 'Có ${job.bidCount} chào giá',
+                        style: TextStyle(
+                          color: Colors.black54,
+
+                        ),),
                 ],
               ),
             )

@@ -67,20 +67,22 @@ class SetupPayment extends StatelessWidget {
                   ),
                   SizedBox(height: kDefaultPadding),
                   Text('Số tiền bạn phải trả cho dự án',style: TEXT_STYLE_PRIMARY,),
-                  Form(
-                    key: formKey,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: ctrlPrice,
-                      validator: RangeValida(min: homeController.balance.value),
-                      inputFormatters: [ThousandsFormatter()],
-                      decoration: InputDecoration(
-                        suffixIcon: Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Text(
-                              'VNĐ',
-                              style: TextStyle(color: Colors.black54),
-                            )),
+                  Obx(
+                    ()=> Form(
+                      key: formKey,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: ctrlPrice,
+                        validator: RangeValida(min: homeController.balance.value),
+                        inputFormatters: [ThousandsFormatter()],
+                        decoration: InputDecoration(
+                          suffixIcon: Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Text(
+                                'VNĐ',
+                                style: TextStyle(color: Colors.black54),
+                              )),
+                        ),
                       ),
                     ),
                   ),

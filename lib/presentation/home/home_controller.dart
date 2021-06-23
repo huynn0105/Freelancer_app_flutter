@@ -6,7 +6,7 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
-import 'package:freelance_app/domain/models/rate.dart';
+import 'package:freelance_app/domain/models/rating.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';

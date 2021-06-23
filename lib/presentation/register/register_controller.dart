@@ -33,6 +33,7 @@ class RegisterController extends GetxController {
 
   final usernameTextController = TextEditingController();
   final emailTextController = TextEditingController();
+  final phoneTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
   var registerState = sState.initial.obs;
@@ -44,6 +45,7 @@ class RegisterController extends GetxController {
   void register() async {
     final name = usernameTextController.text;
     final email = emailTextController.text;
+    final phone = phoneTextController.text;
     final password = passwordTextController.text;
 
     try {
@@ -51,6 +53,7 @@ class RegisterController extends GetxController {
       var response = await apiRepositoryInterface.register(RegisterRequest(
           name: name,
           email: email,
+          phone: phone,
           password: password,
           role: roleSelected.value));
       print('codeRegister ${response.statusCode}');

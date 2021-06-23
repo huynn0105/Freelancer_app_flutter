@@ -43,8 +43,8 @@ class JobDetailScreen extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           body: Padding(
-            padding:
-                const EdgeInsets.only(right: 15, left: 15, bottom: kDefaultPadding),
+            padding: const EdgeInsets.only(
+                right: 15, left: 15, bottom: kDefaultPadding),
             child: Obx(
               () => controller.progressState.value == sState.initial
                   ? Stack(
@@ -94,35 +94,66 @@ class JobDetailScreen extends StatelessWidget {
                                           textAlign: TextAlign.center,
                                           style: TEXT_STYLE_PRIMARY.copyWith(
                                               fontSize: 22)),
-                                      if(controller.job.value.status == 'Waiting')
+                                      if (controller.job.value.status ==
+                                          'Waiting')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Icon(CupertinoIcons.time,color: Colors.amber,),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons.time,
+                                            color: Colors.amber,
+                                          ),
                                         ),
-                                      if(controller.job.value.status == 'Finished')
+                                      if (controller.job.value.status ==
+                                          'Finished')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Icon(CupertinoIcons.check_mark_circled,color: Colors.green,),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons.check_mark_circled,
+                                            color: Colors.green,
+                                          ),
                                         ),
-                                      if(controller.job.value.status == 'In progress')
+                                      if (controller.job.value.status ==
+                                          'In progress')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Icon(CupertinoIcons.slowmo,color: Colors.blue,),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons.slowmo,
+                                            color: Colors.blue,
+                                          ),
                                         ),
-                                      if(controller.job.value.status == 'Request rework')
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Icon(CupertinoIcons.arrow_2_circlepath_circle,color: Colors.limeAccent,),
-                                      ),
-                                      if(controller.job.value.status == 'Request cancellation')
+                                      if (controller.job.value.status ==
+                                          'Request rework')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Icon(CupertinoIcons.xmark_circle,color: Colors.red,),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons
+                                                .arrow_2_circlepath_circle,
+                                            color: Colors.limeAccent,
+                                          ),
                                         ),
-                                      if(controller.job.value.status == 'Cancellation')
+                                      if (controller.job.value.status ==
+                                          'Request cancellation')
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Icon(CupertinoIcons.xmark_circle,color: Colors.red,),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons.xmark_circle,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      if (controller.job.value.status ==
+                                          'Cancellation')
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: Icon(
+                                            CupertinoIcons.xmark_circle,
+                                            color: Colors.red,
+                                          ),
                                         ),
                                     ],
                                   ),
@@ -133,11 +164,9 @@ class JobDetailScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   SizedBox(height: kDefaultPadding / 4),
-
                                   Divider(),
                                 ],
                               ),
-
                               Row(
                                 children: [
                                   Icon(
@@ -145,15 +174,15 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Chủ dự án',style: TEXT_STYLE_PRIMARY),
+                                  Text('Chủ dự án', style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                    controller.job.value.renter.name,
-                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                                child: Text(controller.job.value.renter.name,
+                                    style: TEXT_STYLE_FOREIGN.copyWith(
+                                        color: Colors.blueAccent)),
                               ),
                               SizedBox(height: kDefaultPadding),
                               Row(
@@ -163,7 +192,8 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Hình thức làm việc',style: TEXT_STYLE_PRIMARY),
+                                  Text('Hình thức làm việc',
+                                      style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
@@ -171,7 +201,8 @@ class JobDetailScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                     controller.job.value.formOfWork.name,
-                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                                    style: TEXT_STYLE_FOREIGN.copyWith(
+                                        color: Colors.blueAccent)),
                               ),
                               SizedBox(height: kDefaultPadding),
                               Row(
@@ -181,7 +212,8 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Loại hình làm việc',style: TEXT_STYLE_PRIMARY),
+                                  Text('Loại hình làm việc',
+                                      style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
@@ -189,10 +221,10 @@ class JobDetailScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
                                     controller.job.value.typeOfWork.name,
-                                    style: TEXT_STYLE_FOREIGN.copyWith(color: Colors.blueAccent)),
+                                    style: TEXT_STYLE_FOREIGN.copyWith(
+                                        color: Colors.blueAccent)),
                               ),
                               SizedBox(height: kDefaultPadding),
-
                               Row(
                                 children: [
                                   Icon(
@@ -219,7 +251,8 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Mô tả chi tiết', style: TEXT_STYLE_PRIMARY),
+                                  Text('Mô tả chi tiết',
+                                      style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
@@ -242,7 +275,7 @@ class JobDetailScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
-                              if(controller.job.value.status == 'Finished')
+                              if (controller.job.value.status == 'Finished')
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
@@ -250,46 +283,48 @@ class JobDetailScreen extends StatelessWidget {
                                     style: TEXT_STYLE_ON_FOREGROUND,
                                   ),
                                 ),
-                                if(controller.job.value.status == 'Request rework')
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text(
-                                     'Yêu cầu làm lại',
-                                      style: TEXT_STYLE_ON_FOREGROUND,
-                                    ),
+                              if (controller.job.value.status ==
+                                  'Request rework')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Yêu cầu làm lại',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
                                   ),
-                                  if(controller.job.value.status == 'Request cancellation')
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        'Yêu cầu huỷ dự án',
-                                        style: TEXT_STYLE_ON_FOREGROUND,
-                                      ),
-                                    ),
-                                    if(controller.job.value.status == 'In progress')
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          'Đang làm',
-                                          style: TEXT_STYLE_ON_FOREGROUND,
-                                        ),
-                                      ),
-                                      if(controller.job.value.status == 'Cancellation')
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            'Dự án đã đóng',
-                                            style: TEXT_STYLE_ON_FOREGROUND,
-                                          ),
-                                        ),
-                                        if(controller.job.value.status == 'Waiting')
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  'Đang xử lý',
-                                  style: TEXT_STYLE_ON_FOREGROUND,
                                 ),
-                              ),
+                              if (controller.job.value.status ==
+                                  'Request cancellation')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Yêu cầu huỷ dự án',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
+                                  ),
+                                ),
+                              if (controller.job.value.status == 'In progress')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Đang làm',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
+                                  ),
+                                ),
+                              if (controller.job.value.status == 'Cancellation')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Dự án đã đóng',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
+                                  ),
+                                ),
+                              if (controller.job.value.status == 'Waiting')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Đang xử lý',
+                                    style: TEXT_STYLE_ON_FOREGROUND,
+                                  ),
+                                ),
                               SizedBox(height: kDefaultPadding),
                               Row(
                                 children: [
@@ -312,8 +347,8 @@ class JobDetailScreen extends StatelessWidget {
                                           right: kDefaultPadding / 3,
                                           top: kDefaultPadding / 3),
                                       child: NavItem(
-                                        title:
-                                            controller.job.value.skills[index].name,
+                                        title: controller
+                                            .job.value.skills[index].name,
                                         textStyle: TextStyle(
                                             color: Colors.black54,
                                             fontSize: 16,
@@ -331,18 +366,17 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text('Hình thức trả lương',style: TEXT_STYLE_PRIMARY),
+                                  Text('Hình thức trả lương',
+                                      style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                    controller.job.value.payform.name,
+                                child: Text(controller.job.value.payform.name,
                                     style: TEXT_STYLE_FOREIGN),
                               ),
                               SizedBox(height: kDefaultPadding),
-
                               Row(
                                 children: [
                                   Icon(
@@ -350,14 +384,20 @@ class JobDetailScreen extends StatelessWidget {
                                     color: Colors.black87,
                                   ),
                                   SizedBox(width: kDefaultPadding / 2),
-                                  Text(controller.job.value.price==0 ? 'Ngân sách' : 'Số tiền', style: TEXT_STYLE_PRIMARY),
+                                  Text(
+                                      controller.job.value.price == 0
+                                          ? 'Ngân sách'
+                                          : 'Số tiền',
+                                      style: TEXT_STYLE_PRIMARY),
                                 ],
                               ),
                               SizedBox(height: kDefaultPadding / 4),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Text(controller.job.value.price==0 ?
-                                    '${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ' : '${formatter.format(controller.job.value.price)} VNĐ',
+                                child: Text(
+                                    controller.job.value.price == 0
+                                        ? '${formatter.format(controller.job.value.floorprice)} - ${formatter.format(controller.job.value.cellingprice)} VNĐ'
+                                        : '${formatter.format(controller.job.value.price)} VNĐ',
                                     style: TEXT_STYLE_FOREIGN),
                               ),
                               SizedBox(height: kDefaultPadding),
@@ -375,7 +415,8 @@ class JobDetailScreen extends StatelessWidget {
                               SizedBox(height: kDefaultPadding / 4),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Text('${df.format(controller.job.value.deadline)}',
+                                child: Text(
+                                    '${df.format(controller.job.value.deadline)}',
                                     style: TEXT_STYLE_FOREIGN),
                               ),
                               SizedBox(height: kDefaultPadding),
@@ -400,7 +441,7 @@ class JobDetailScreen extends StatelessWidget {
                                     style: TEXT_STYLE_FOREIGN),
                               ),
                               SizedBox(height: kDefaultPadding),
-                              if(controller.job.value.rating!=null)...[
+                              if (controller.job.value.rating != null) ...[
                                 Row(
                                   children: [
                                     Icon(
@@ -408,8 +449,7 @@ class JobDetailScreen extends StatelessWidget {
                                       color: Colors.black87,
                                     ),
                                     SizedBox(width: kDefaultPadding / 2),
-                                    Text('Đánh giá',
-                                        style: TEXT_STYLE_PRIMARY),
+                                    Text('Đánh giá', style: TEXT_STYLE_PRIMARY),
                                   ],
                                 ),
                                 SizedBox(height: kDefaultPadding / 4),
@@ -417,267 +457,308 @@ class JobDetailScreen extends StatelessWidget {
                                   allowHalfRating: false,
                                   isReadOnly: true,
                                   starCount: 5,
-                                  rating: controller.job.value.rating.star.toDouble(),
+                                  rating: controller.job.value.rating.star
+                                      .toDouble(),
                                   size: 40,
-                                  onRated: (value){
-                                  },
+                                  onRated: (value) {},
                                   color: Colors.yellow,
                                   borderColor: Colors.yellow,
                                 ),
                                 Text(controller.job.value.rating.comment)
                               ],
-
                               SizedBox(height: kDefaultPadding * 5)
                             ],
                           ),
                         ),
-                         if(controller.job.value.renter.id == CURRENT_ID)...[
-                           if(controller.job.value.status=='Closed')
-                             Align(
-                               alignment: Alignment.bottomCenter,
-                               child: RoundedButton(
-                                 onTap: (){},
-                                 backgroundColor: Colors.black87,
-                                 child: Text(
-                                   'Đã đóng',
-                                   style: TEXT_STYLE_PRIMARY.copyWith(
-                                       color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                           if(controller.job.value.status=='Finished')
-                             Align(
-                               alignment: Alignment.bottomCenter,
-                               child: RoundedButton(
-                                 onTap: (){},
-                                 child: Column(
-                                   mainAxisSize: MainAxisSize.min,
-                                   children: [
-                                     Text(
-                                       'Dự án đã được hoàn thành bởi',
-                                       style: TEXT_STYLE_PRIMARY.copyWith(
-                                           color: Colors.white),
-                                     ),
-                                           Text('Freelancer: ${controller.job.value.freelancer.name}',
-                                               style: TEXT_STYLE_PRIMARY.copyWith(
-                                                   color: Colors.white)),
-                                   ],
-                                 ),
-                               ),
-                             ),
-                           if(controller.job.value.status=='Waiting')
-                             Align(
-                               alignment: Alignment.bottomCenter,
-                               child: RoundedButton(
-                                 onTap: (){
-                                   controller.loadOffer();
-                                   Get.to(() => JobOffersDetail(isClose: true));
-                                 },
-                                 backgroundColor: Colors.amber,
-                                 child: Text(
-                                   '${controller.job.value.bidCount} chào giá',
-                                   style: TEXT_STYLE_PRIMARY.copyWith(
-                                       color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                           if(controller.job.value.status=='In progress')
-                             Align(
-                               alignment: Alignment.bottomCenter,
-                               child: RoundedButton(
-                                 onTap: (){},
-                                 child: Text(
-                                   'Đang làm\nFreelancer: ${controller.job.value.freelancer.name}',
-                                   style: TEXT_STYLE_PRIMARY.copyWith(
-                                       color: Colors.white),textAlign: TextAlign.center,
-                                 ),
-                               ),
-                             ),
-                           if(controller.job.value.status=='Cancellation')
-                             Align(
-                               alignment: Alignment.bottomCenter,
-                               child: RoundedButton(
-                                 onTap: null,
-                                 child: Text(
-                                   'Chưa hoàn tất/ Đã huỷ',
-                                   style: TEXT_STYLE_PRIMARY.copyWith(
-                                       color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                         ] else if(controller.job.value.renter.id != CURRENT_ID)...[
-                           controller.job.value.deadline.difference(DateTime.now()).inDays<0 ?
-                           Align(
-                             alignment: Alignment.bottomCenter,
-                             child: RoundedButton(
-                                 backgroundColor: Color(0xFF343333),
-                                 onTap: (){},
-                                 child:
-                                 Text('Đã hết hạn nhận chào giá',style: TEXT_STYLE_PRIMARY)),
-                           ) :
-                           !controller.job.value.offered
-                               ? Align(
-                             alignment: Alignment.bottomCenter,
-                             child: RoundedButton(
-                               onTap: () {
-                                 var current = homeController.account.value;
-                                 if (current.phone == '' ||
-                                     current.province == null ||
-                                     current.specialty == null ||
-                                     current.title == '' ||
-                                     current.level == null ||
-                                     current.freelancerSkills.length < 2 ||
-                                     current.freelancerServices.isEmpty ||
-                                     current.description == '') {
-                                   showDialog(
-                                       context: context,
-                                       builder: (_) => AlertDialog(
-                                         insetPadding: EdgeInsets.all(5),
-                                         title: Text(
-                                           'Bạn chưa có quyền gửi chào giá!',
-                                           style: TextStyle(fontSize: 23),
-                                         ),
-                                         contentPadding: EdgeInsets.all(10),
-                                         content: Container(
-                                           child: Column(
-                                             mainAxisSize: MainAxisSize.min,
-                                             children: [
-                                               Text(
-                                                   'Để gửi chào giá, bạn phải hoàn thiện hồ sơ cá nhân. Hiện tại hồ sơ của bạn đang thiếu các thông tin sau:'),
-                                               Column(
-                                                 children: [
-                                                   if (current.province == null)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Thành phố',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current.specialty == null)
-                                                     ListTile(title: Text(
-                                                       'Lĩnh vực chuyên môn',
-                                                       style: TextStyle(
-                                                           fontWeight:
-                                                           FontWeight
-                                                               .w500,
-                                                           color:
-                                                           Colors.red),
-                                                     )),
-                                                   if (current
-                                                       .description.isEmpty)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Giới thiệu bản thân',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current.phone.isEmpty)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Số điện thoại',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current.title.isEmpty)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Chức danh',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current.level == null)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Trình độ',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current
-                                                       .freelancerSkills
-                                                       .length <
-                                                       2)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Tối thiếu 2 kỹ năng',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                   if (current
-                                                       .freelancerServices
-                                                       .isEmpty)
-                                                     ListTile(
-                                                         title: Text(
-                                                           'Hồ sơ dịch vụ',
-                                                           style: TextStyle(
-                                                               fontWeight:
-                                                               FontWeight
-                                                                   .w500,
-                                                               color:
-                                                               Colors.red),
-                                                         )),
-                                                 ],
-                                               ),
-                                               ElevatedButton(
-                                                   onPressed: () {
-                                                     Get.to(() =>
-                                                         EditProfileScreen(
-                                                             account:
-                                                             current));
-                                                   },
-                                                   child:
-                                                   Text('Bổ sung ngay'))
-                                             ],
-                                           ),
-                                         ),
-                                       ));
-                                 } else
-                                   Get.to(() => JobOffersScreen());
-                               },
-                               child: Text(
-                                 'Gửi chào giá',
-                                 style: TEXT_STYLE_PRIMARY.copyWith(
-                                     color: Colors.white),
-                               ),
-                             ),
-                           )
-                               : Align(
-                             alignment: Alignment.bottomCenter,
-                             child: RoundedButton(
-                                 backgroundColor: Colors.amber,
-                                 onTap: () {
-                                   controllerHome.loadOfferHistories().then((value) => Get.to(() => MyOffer(jobOffer: controllerHome.offers.firstWhere((jobOffer) => jobOffer.jobId == jobId))));
-                                 },
-                                 child:
-                                 Text('Đã gửi chào giá',style: TEXT_STYLE_PRIMARY.copyWith(
-                                     color: Colors.white))),
-                           )
-                         ],
-
-
+                        if (controller.job.value.renter.id == CURRENT_ID) ...[
+                          if (controller.job.value.status == 'Closed')
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RoundedButton(
+                                onTap: () {},
+                                backgroundColor: Colors.black87,
+                                child: Text(
+                                  'Đã đóng',
+                                  style: TEXT_STYLE_PRIMARY.copyWith(
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          if (controller.job.value.status == 'Finished')
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RoundedButton(
+                                onTap: () {},
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Dự án đã được hoàn thành bởi',
+                                      style: TEXT_STYLE_PRIMARY.copyWith(
+                                          color: Colors.white),
+                                    ),
+                                    Text(
+                                        'Freelancer: ${controller.job.value.freelancer.name}',
+                                        style: TEXT_STYLE_PRIMARY.copyWith(
+                                            color: Colors.white)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (controller.job.value.status == 'Waiting')
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RoundedButton(
+                                onTap: () {
+                                  controller.loadOffer();
+                                  Get.to(() => JobOffersDetail(isClose: true));
+                                },
+                                backgroundColor: Colors.amber,
+                                child: Text(
+                                  '${controller.job.value.bidCount} chào giá',
+                                  style: TEXT_STYLE_PRIMARY.copyWith(
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          if (controller.job.value.status == 'In progress')
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RoundedButton(
+                                onTap: () {},
+                                child: Text(
+                                  'Đang làm\nFreelancer: ${controller.job.value.freelancer.name}',
+                                  style: TEXT_STYLE_PRIMARY.copyWith(
+                                      color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          if (controller.job.value.status == 'Cancellation')
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: RoundedButton(
+                                onTap: null,
+                                child: Text(
+                                  'Chưa hoàn tất/ Đã huỷ',
+                                  style: TEXT_STYLE_PRIMARY.copyWith(
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                        ] else if (controller.job.value.renter.id !=
+                            CURRENT_ID) ...[
+                          controller.job.value.deadline
+                                      .difference(DateTime.now())
+                                      .inDays <
+                                  0
+                              ? Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: RoundedButton(
+                                      backgroundColor: Color(0xFF343333),
+                                      onTap: () {},
+                                      child: Text('Đã hết hạn nhận chào giá',
+                                          style: TEXT_STYLE_PRIMARY)),
+                                )
+                              : !controller.job.value.offered
+                                  ? Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: RoundedButton(
+                                        onTap: () {
+                                          var current =
+                                              homeController.account.value;
+                                          if (current.phone == '' ||
+                                              current.province == null ||
+                                              current.specialty == null ||
+                                              current.title == '' ||
+                                              current.level == null ||
+                                              current.freelancerSkills.length <
+                                                  2 ||
+                                              current
+                                                  .freelancerServices.isEmpty ||
+                                              current.description == '') {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) => AlertDialog(
+                                                      insetPadding:
+                                                          EdgeInsets.all(5),
+                                                      title: Text(
+                                                        'Bạn chưa có quyền gửi chào giá!',
+                                                        style: TextStyle(
+                                                            fontSize: 23),
+                                                      ),
+                                                      contentPadding:
+                                                          EdgeInsets.all(10),
+                                                      content: Container(
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Text(
+                                                                'Để gửi chào giá, bạn phải hoàn thiện hồ sơ cá nhân. Hiện tại hồ sơ của bạn đang thiếu các thông tin sau:'),
+                                                            Column(
+                                                              children: [
+                                                                if (current
+                                                                        .province ==
+                                                                    null)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Thành phố',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                        .specialty ==
+                                                                    null)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Lĩnh vực chuyên môn',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                    .description
+                                                                    .isEmpty)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Giới thiệu bản thân',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                    .phone
+                                                                    .isEmpty)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Số điện thoại',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                    .title
+                                                                    .isEmpty)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Chức danh',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                        .level ==
+                                                                    null)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Trình độ',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                        .freelancerSkills
+                                                                        .length <
+                                                                    2)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Tối thiếu 2 kỹ năng',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                                if (current
+                                                                    .freelancerServices
+                                                                    .isEmpty)
+                                                                  ListTile(
+                                                                      title:
+                                                                          Text(
+                                                                    'Hồ sơ dịch vụ',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: Colors
+                                                                            .red),
+                                                                  )),
+                                                              ],
+                                                            ),
+                                                            ElevatedButton(
+                                                                onPressed: () {
+                                                                  Get.to(() =>
+                                                                      EditProfileScreen(
+                                                                          account:
+                                                                              current));
+                                                                },
+                                                                child: Text(
+                                                                    'Bổ sung ngay'))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ));
+                                          } else
+                                            Get.to(() => JobOffersScreen());
+                                        },
+                                        child: Text(
+                                          'Gửi chào giá',
+                                          style: TEXT_STYLE_PRIMARY.copyWith(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )
+                                  : Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: RoundedButton(
+                                          backgroundColor: Colors.amber,
+                                          onTap: () {
+                                            controllerHome
+                                                .loadOfferHistories()
+                                                .then((value) => Get.to(() =>
+                                                    MyOffer(
+                                                        jobOffer: controllerHome
+                                                            .offers
+                                                            .firstWhere(
+                                                                (jobOffer) =>
+                                                                    jobOffer
+                                                                        .jobId ==
+                                                                    jobId))));
+                                          },
+                                          child: Text('Đã gửi chào giá',
+                                              style:
+                                                  TEXT_STYLE_PRIMARY.copyWith(
+                                                      color: Colors.white))),
+                                    )
+                        ],
                       ],
                     )
                   : const Center(

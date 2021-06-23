@@ -11,6 +11,7 @@ class Chat {
    final Account toUser;
    final DateTime time;
    final String lastMsgStatus;
+   final int unseenCount;
 
 
   Chat({
@@ -21,7 +22,8 @@ class Chat {
     this.lastSender,
     this.toUser,
     this.time,
-    this.lastMsgStatus
+    this.lastMsgStatus,
+    this.unseenCount
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class Chat {
       toUser: Account.fromJson(json['toUser'] as Map<String, dynamic>),
       time: DateTime.parse(json['time'] as String),
       lastMsgStatus: json['lastMsgStatus'],
+      unseenCount: json['unseenCount'],
     );
   }
 }

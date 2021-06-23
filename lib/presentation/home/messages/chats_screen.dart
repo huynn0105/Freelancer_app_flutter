@@ -52,12 +52,21 @@ class ChatsScreen extends StatelessWidget {
                         controller.seenMessage(chat.job.id, chat.freelancer.id);
                         controller.status(chat.status);
                         controller.currentStep(currentStatus(chat.status));
-                        controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
-                        => Get.to(() => MessagesScreen(
-                                  toUser: chat.toUser,
-                                  job: chat.job,
-                                  freelancer: chat.freelancer,
-                                )));
+                        controller
+                            .loadJob(chat.job.id)
+                            .then((value) {
+                          if (controller.job.value.rating != null)
+                            controller.currentStep(3);
+
+                          controller.loadMessageChat(chat.job.id, chat.freelancer.id).then((value)
+                          => Get.to(() => MessagesScreen(
+                            toUser: chat.toUser,
+                            job: chat.job,
+                            freelancer: chat.freelancer,
+                          )));
+                        });
+
+
                       },
                     );
                   },

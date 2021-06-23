@@ -1,6 +1,6 @@
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/province.dart';
-import 'package:freelance_app/domain/models/rate.dart';
+import 'package:freelance_app/domain/models/rating.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
@@ -21,6 +21,8 @@ class Job {
   int price;
   DateTime deadline;
   DateTime createAt;
+  DateTime startAt;
+  DateTime finishAt;
   String details;
   String avatarUrl;
   Renter renter;
@@ -61,6 +63,8 @@ class Job {
     this.avatarUrl,
     this.bidCount,
     this.offered,
+    this.finishAt,
+    this.startAt,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);

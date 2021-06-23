@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
-import 'package:freelance_app/data/data.dart';
-import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
@@ -28,6 +26,8 @@ class ChatController extends GetxController {
   RxInt currentStep = 0.obs;
   TextEditingController ctrMessage = TextEditingController();
   Rx<Job> job = Job().obs;
+  RxBool assign = true.obs;
+  RxBool request = true.obs;
 
   Future<void> createSignalRConnection() async {
     try {
@@ -49,37 +49,49 @@ class ChatController extends GetxController {
       connection.on('SuggestedPrice', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         chatMessages.insert(0,message);
+        loadMessageUser();
       });
 
       connection.on('PutMoney_Successfully', (data) {
         print('gửi Suggested $data');
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        chatMessages.insert(0,message);
+        loadMessageUser();
       });
       connection.on('Confirm', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         loadMessageChat(message.jobId, message.freelancerId);
+        if(message.confirmation=='Accept')
+          currentStep(1);
+        loadMessageUser();
       });
       connection.on('Requestfinish', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         chatMessages.insert(0,message);
+        loadMessageUser();
+
       });
       connection.on('SendFinishRequest_Successfully', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         chatMessages.insert(0,message);
+        loadMessageUser();
       });
       connection.on('SendMessage_Successfully', (data) {
-
         chatMessages.insert(
             0,ChatMessage.fromJson(data[0]));
+        loadMessageUser();
       });
       connection.on('Finish', (data) {
         loadMessageChat(data[0],data[1]);
-        print('nhận $data');
+        loadMessageUser();
       });
       connection.on('RequestRework', (data) {
         loadMessageChat(data[0],data[1]);
+        loadMessageUser();
       });
       connection.on('RequestCancellation', (data) {
         loadMessageChat(data[0],data[1]);
+        loadMessageUser();
       });
       connection.on('ConfirmRequest', (arguments) { });
 
@@ -210,6 +222,18 @@ class ChatController extends GetxController {
     }
   }
 
+  Future checkAssign(int jobId,int freelancerId)async{
+    await apiRepositoryInterface.getCheckAssign(jobId, freelancerId).then((value){
+      if(value!=null)assign(value);
+    });
+  }
+
+  Future checkRequest(int jobId,int freelancerId)async{
+    await apiRepositoryInterface.getCheckRequest(jobId, freelancerId).then((value){
+      if(value!=null) request(value);
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -221,6 +245,8 @@ class ChatController extends GetxController {
     loadMessageUser();
     super.onReady();
   }
+
+
 
 
   Future sendRating(int jobID,String comment, int star,freelancerId)async{

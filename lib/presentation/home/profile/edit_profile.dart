@@ -41,7 +41,7 @@ class EditProfileScreen extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   controller.uploadProfile(account.id).then((value) {
-                    print('Giá trị ngoài: $value');
+
                     if(value) {
                       controllerHome.loadAccountFromToken().then((value) {
                         Get.offAllNamed(Routes.home);

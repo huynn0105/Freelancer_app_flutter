@@ -250,6 +250,29 @@ class FormRegister extends StatelessWidget {
             height: 10,
           ),
           Text(
+            'Số tiện thoại',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          TextFormField(
+            controller: controller.phoneTextController,
+            keyboardType: TextInputType.number,
+            validator: MultiValidator([
+              MinLengthValidator(1,
+                  errorText: 'Không được bỏ trống'),
+              MaxLengthValidator(10, errorText: 'Sai định dạng số điện thoại')
+            ]),
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.phone,
+                ),hintText: 'Số điện thoại'),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
             'Mật khẩu',
             style: TextStyle(
               fontSize: 16,
