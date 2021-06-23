@@ -7,7 +7,7 @@ class Rate extends StatelessWidget {
     @required this.rate,
   }) : super(key: key);
 
-  final int rate;
+  final double rate;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class Rate extends StatelessWidget {
           allowHalfRating: false,
           onRated: (v) {},
           starCount: 5,
-          rating: rate.toDouble(),
+          rating: rate,
           size: 20,
           isReadOnly: true,
           color: Colors.yellow,

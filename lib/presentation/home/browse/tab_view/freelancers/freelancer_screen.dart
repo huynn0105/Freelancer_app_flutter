@@ -21,35 +21,42 @@ class FreelancersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () {
-          if (controller.progressState.value == sState.initial)
-            return RefreshIndicator(
-              onRefresh: ()async{
-                await controller.loadFreelancer();
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: controller.freelancers.isNotEmpty
-                    ? ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: controller.freelancers.length,
-                  itemBuilder: (context, index) {
-                    return FreelancerCard(
-                      freelancer: controller.freelancers[index],
-                      rate: 5,
-                    );
-                  },
-                )
-                    : Center(child: Icon(Icons.error_outline),
-                ),
-              ),
-            );
-          else if (controller.progressState.value == sState.failure)
-            return Center(child: Text('Lỗi, thử lại sau!',style: TEXT_STYLE_PRIMARY,));
-          else
-            return Center(child: CircularProgressIndicator());
-        }
+      body: RefreshIndicator(
+        onRefresh: ()async{
+          await controller.loadFreelancer();
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Obx(
+            ()=> Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                if (controller.progressState.value == sState.initial)
+                   Padding(
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: controller.freelancers.isNotEmpty
+                        ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controller.freelancers.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return FreelancerCard(
+                          freelancer: controller.freelancers[index],
+                        );
+                      },
+                    )
+                        : Center(child: Icon(Icons.error_outline),
+                    ),
+                  ),
+                 if(controller.progressState.value == sState.loading)
+                  Center(child: Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: CircularProgressIndicator(),
+                  ))
+],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -78,12 +85,11 @@ class FreelancersScreen extends StatelessWidget {
 
 class FreelancerCard extends StatelessWidget {
   const FreelancerCard({
-    @required this.rate,
     @required this.freelancer,
     Key key,
   }) : super(key: key);
   final Account freelancer;
-  final int rate;
+
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +179,9 @@ class FreelancerCard extends StatelessWidget {
                               )
                             : SizedBox.shrink(),
                         SizedBox(height: kDefaultPadding / 4),
-                        Rate(rate: rate),
+                        if(freelancer.totalRating!=null)
+                          if(freelancer.totalRating.count!=0)
+                            Rate(rate: freelancer.totalRating.avg),
                       ],
                     ),
                   ),

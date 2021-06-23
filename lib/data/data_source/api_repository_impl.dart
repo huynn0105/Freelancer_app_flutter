@@ -58,13 +58,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future register(RegisterRequest registerRequest) async {
-    // Map<String, dynamic> accountInput = {
-    //   'name': registerRequest.name,
-    //   'phone': '0909091341',
-    //   'email': registerRequest.email,
-    //   'roleID': registerRequest.role,
-    //   'password': registerRequest.password,
-    // };
+
     print('register: ${registerRequest.toJson()}');
     return await HttpService.post(REGISTER, body: registerRequest.toJson());
   }
@@ -640,7 +634,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
 
   @override
   Future getRatingsFreelancerId(int freelancerId) async{
-    var rs = await HttpService.get('$RATING/$freelancerId',bearerToken: TOKEN);
+    var rs = await HttpService.get('$ACCOUNT/$freelancerId/ratings',bearerToken: TOKEN);
     print('code get rating ${rs.statusCode}');
     if(rs.statusCode==200){
       var jsonList = jsonDecode(rs.body) as List;

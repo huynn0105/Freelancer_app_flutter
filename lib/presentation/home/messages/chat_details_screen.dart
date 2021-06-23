@@ -297,7 +297,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                 CURRENT_ID)
                               ElevatedButton.icon(
                                 onPressed: () {
-
+                                  controller.sendFinishRequest(controller.job.value.id);
                                 },
                                 icon: Icon(CupertinoIcons.check_mark_circled),
                                 label: Text('Yêu cầu kết thúc dự án'),
@@ -307,7 +307,7 @@ class ChatDetailsScreen extends StatelessWidget {
                               ),
                         ],
                         if (!controller.request.value)
-                          Text('Đã có 1 lệnh yêu cầu được gửi lên')
+                          Text('Đã có 1 lệnh yêu cầu được gửi lên',style: TextStyle(fontSize: 16),)
                       ],
                     ),
                   ),
