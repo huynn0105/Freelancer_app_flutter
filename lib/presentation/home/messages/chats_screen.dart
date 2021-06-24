@@ -148,15 +148,33 @@ class ChatCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-
+                    if(chat.lastSender.id == CURRENT_ID)
                     Text(
-                      '${chat.lastSender.id == CURRENT_ID ?'Bạn:' : '${chat.toUser.name}: '} ${chat.lastMessage}',
+                      'Bạn: ${chat.lastMessage}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
                       ),
-                    )
+                    ),
+                    if(chat.lastSender.id== chat.toUser.id)
+                      Text(
+                        '${chat.toUser.name}: ${chat.lastMessage}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
+                        ),
+                      ),
+                    if(chat.lastSender.id!= chat.toUser.id && chat.lastSender.id != CURRENT_ID)
+                      Text(
+                        'ADMIN :${chat.lastMessage}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
+                        ),
+                      ),
                   ],
                 ),
               ),

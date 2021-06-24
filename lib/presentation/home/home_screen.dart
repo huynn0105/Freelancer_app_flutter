@@ -5,19 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
-import 'package:freelance_app/presentation/home/messages/chat_controller.dart';
 import 'package:freelance_app/presentation/home/messages/chats_screen.dart';
 import 'package:freelance_app/presentation/home/my_job/my_job_screen.dart';
-import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:freelance_app/presentation/login/login_controller.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/responsive.dart';
 import 'browse/browse_screen.dart';
-import 'browse/tab_view/freelancers/freelancer_controller.dart';
-import 'browse/tab_view/freelancers/freelancer_controller.dart';
-import 'browse/tab_view/jobs/jobs_controller.dart';
 import 'home_controller.dart';
-import 'post_job/post_job_controller.dart';
 import 'post_job/post_job_screen.dart';
 import 'package:get/get.dart';
 
@@ -39,7 +33,7 @@ class HomeScreen extends GetWidget<HomeController> {
     ];
     return Container(
       color:  Colors.grey[100],
-      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
+      padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 222),
       child: Obx(
         () => Scaffold(
           appBar: !Responsive.isMobile(context)
@@ -119,6 +113,7 @@ class HomeScreen extends GetWidget<HomeController> {
                                   '${controller.account.value.name}',
                                   style: TextStyle(fontSize: 16),
                                 ),
+                              if (Responsive.isDesktop(context) )
                               Icon(
                                 Icons.keyboard_arrow_down,
                               ),
