@@ -20,7 +20,7 @@ class Rate extends StatelessWidget {
             color: Colors.yellow,
           ),
           child: Text(
-            rate.toString(),
+            rate.toStringAsFixed(2),
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,

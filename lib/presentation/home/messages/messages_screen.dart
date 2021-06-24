@@ -658,7 +658,6 @@ class ConfirmAdmin extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 16),
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
           child: Column(children: [
-            if (message.confirmation == 'Finished' || message.confirmation == 'Cancellation') ...[
               Text(message.message),
               if (message.freelancerId == CURRENT_ID)
                 if(message.confirmation == 'Finished')
@@ -685,9 +684,7 @@ class ConfirmAdmin extends StatelessWidget {
                   ),
                 ],
             ],
-            if (message.confirmation == 'In progress')
-              Text(message.message),
-          ])),
+           )),
     );
   }
 }

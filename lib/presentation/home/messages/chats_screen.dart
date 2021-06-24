@@ -20,6 +20,7 @@ class ChatsScreen extends StatelessWidget {
     switch(status){
       case 'In discussion' : return 0;
       case 'In progress' : return 1;
+      case 'Stop discussion' : return 2;
       case 'Finished' : return 2;
       default: return 0;
     }

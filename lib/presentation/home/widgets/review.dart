@@ -41,7 +41,7 @@ class Review extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(width: kDefaultPadding),
-              Text('$avg',style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 35),),
+              Text(avg.toStringAsFixed(2),style: TEXT_STYLE_PRIMARY.copyWith(fontSize: 35),),
               SizedBox(width: kDefaultPadding),
               Column(
                 children: [

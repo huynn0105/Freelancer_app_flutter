@@ -64,7 +64,7 @@ class LoginController extends GetxController {
               snackPosition: SnackPosition.TOP);
 
       }
-      if (response.statusCode == 400) {
+      else if (response.statusCode == 400) {
         var js = jsonDecode(response.body);
         loginState(sState.initial);
         Get.snackbar(
@@ -76,6 +76,7 @@ class LoginController extends GetxController {
         );
       }
       else{
+        print('vào else');
         loginState(sState.initial);
         Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
             backgroundColor: Colors.red,

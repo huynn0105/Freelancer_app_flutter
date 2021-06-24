@@ -28,7 +28,7 @@ class ReviewsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${totalRating.avg}',
+                        totalRating.avg.toStringAsFixed(2),
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
@@ -36,7 +36,7 @@ class ReviewsScreen extends StatelessWidget {
                         allowHalfRating: false,
                         onRated: (v) {},
                         starCount: 5,
-                        rating: totalRating.avg,
+                        rating: double.parse(totalRating.avg.toStringAsFixed(2)),
                         size: 50,
                         isReadOnly: true,
                         color: Colors.yellow,
