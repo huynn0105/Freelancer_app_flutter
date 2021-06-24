@@ -26,6 +26,7 @@ const RATING = '/api/Ratings';
 const MESSAGE_USER = '/api/MessageUsers';
 const MESSAGES = '/api/Messages';
 const CHAT_HUB = "http://freelancervn.somee.com/chatHub";
+const ADMIN = "/api/Admin";
 
 // ignore: non_constant_identifier_names
 int CURRENT_ID;

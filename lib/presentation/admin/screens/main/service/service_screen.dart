@@ -110,7 +110,7 @@ class ServiceDetail extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text( '${service!=null ? 'Sửa' : 'Thêm' } chuyên ngành'),
+        title: Text( '${service!=null ? 'Sửa' : 'Thêm' } dịch vụ'),
         centerTitle:true,
         automaticallyImplyLeading: false,
         actions: [
@@ -130,7 +130,7 @@ class ServiceDetail extends StatelessWidget {
                     children: [
                       SizedBox(
                         child: Text(
-                          "Tên chuyên ngành",
+                          "Tên dịch vụ",
                           style: TextStyle(
                               color: Colors.black54,
                               fontSize: 16

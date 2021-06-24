@@ -21,6 +21,7 @@ class SideMenu extends GetWidget<AdminController> {
             title: 'Dashboard',
             svgSrc: 'assets/icons/menu_dashboard.svg',
             press: () {
+              controller.onReady();
               controller.indexSelected(0);
               if(enable) Get.back();
             },
@@ -82,6 +83,7 @@ class SideMenu extends GetWidget<AdminController> {
             svgSrc: 'assets/icons/menu_store.svg',
             press: () {
               controller.indexSelected(6);
+              controller.loadRequest();
               if(enable) Get.back();
             },
           ),

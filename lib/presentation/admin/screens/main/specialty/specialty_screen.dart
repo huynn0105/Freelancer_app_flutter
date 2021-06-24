@@ -115,10 +115,12 @@ class SpecialDetail extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     if (specialty != null) {
       controller.ctrlName.text = specialty.name;
+      controller.servicesSelected.assignAll(specialty.services);
       controller.base64img.value = '';
     } else {
       controller.ctrlName.text = '';
       controller.base64img.value = '';
+      controller.servicesSelected.clear();
       controller.nameImage.value = '';
     }
     return Scaffold(

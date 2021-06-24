@@ -9,7 +9,7 @@ import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
-
+String AVATAR_CURRENT = '';
 
 class LoginController extends GetxController {
   final LocalRepositoryInterface localRepositoryInterface;
@@ -48,6 +48,7 @@ class LoginController extends GetxController {
         TOKEN = jsonObject['token'];
         var accountJs = jsonObject['account'];
         Account account = Account.fromJson(accountJs);
+        AVATAR_CURRENT = account.avatarUrl;
         print('token: $TOKEN');
         await localRepositoryInterface.saveToken(TOKEN);
         await localRepositoryInterface.saveAccount(account);

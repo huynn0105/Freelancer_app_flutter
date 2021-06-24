@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
@@ -11,8 +11,8 @@ import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/image_request.dart';
-import 'package:freelance_app/domain/requests/rating_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/login/login_controller.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,6 +59,7 @@ class HomeController extends GetxController {
         progressState(sState.initial);
         if (value != null) {
           account(value);
+          AVATAR_CURRENT = value.avatarUrl;
           accountOnReady(account.value.onReady);
           balance(account.value.balance);
         } else if (value == null) {
@@ -137,11 +138,17 @@ class HomeController extends GetxController {
       var pickedFile = await ImagePicker().getImage(source: imageSource);
       final bytes = await pickedFile.readAsBytes();
       String base64Image = base64Encode(bytes);
+      var name = '';
       print('path: ${pickedFile.path}');
       if (pickedFile != null) {
+        if (kIsWeb){
+          name = pickedFile.path.split("/").last.replaceAll('-', '_')+'.jpg';
+        }else{
+          name = pickedFile.path.split("/").last;
+        }
         var result = await apiRepositoryInterface.uploadAvatar(
           ImageRequest(
-            name: pickedFile.path.split("/").last,
+            name: name,
             imageBase64: base64Image,
           ),
         );

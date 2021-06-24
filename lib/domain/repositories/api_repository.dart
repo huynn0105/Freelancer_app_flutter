@@ -77,4 +77,19 @@ abstract class ApiRepositoryInterface{
   Future<dynamic> getCheckRequest(int jobId, int freelancerId);
 
 
+
+
+  //Admin
+  Future<dynamic> getAdminDashboard();
+  Future<dynamic> getAdminAccounts();
+  Future<dynamic> getAdminJobs();
+  Future<dynamic> getAdminJobsRequest();
+  Future<dynamic> getAdminJobsRequestId(int id);
+
+
+  Future<dynamic> deleteAccount(int id);
+
+
+
+
 }

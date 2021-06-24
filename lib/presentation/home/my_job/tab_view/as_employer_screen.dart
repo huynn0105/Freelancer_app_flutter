@@ -41,30 +41,28 @@ class AsEmployerScreen extends GetWidget<HomeController> {
       () =>  Column(
         children: [
           SizedBox(height: 10),
-          Flexible(
-            child: FlutterToggleTab(
-              width:  Responsive.isMobile(context) ? null : size.width/24,
-              // width in percent
-              borderRadius: 10,
-              height: 30,
-              initialIndex: controller.tabSelectedRenter.value,
-              selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
-              selectedTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700),
-              unSelectedTextStyle: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500),
-              labels: _listTextTabToggle,
-              selectedIndex: controller.tabSelectedRenter.value,
-              isScroll: false,
-              selectedLabelIndex: (int) {
-                controller.tabSelectedRenter(int);
-                controller.loadJobsRenter(int);
-              },
-            ),
+          FlutterToggleTab(
+            width:  Responsive.isMobile(context) ? null : size.width/24,
+            // width in percent
+            borderRadius: 10,
+            height: 30,
+            initialIndex: controller.tabSelectedRenter.value,
+            selectedBackgroundColors: [Colors.blue, Colors.blueAccent],
+            selectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w700),
+            unSelectedTextStyle: TextStyle(
+                color: Colors.black54,
+                fontSize: 13,
+                fontWeight: FontWeight.w500),
+            labels: _listTextTabToggle,
+            selectedIndex: controller.tabSelectedRenter.value,
+            isScroll: false,
+            selectedLabelIndex: (int) {
+              controller.tabSelectedRenter(int);
+              controller.loadJobsRenter(int);
+            },
           ),
           Obx(
             () => Expanded(

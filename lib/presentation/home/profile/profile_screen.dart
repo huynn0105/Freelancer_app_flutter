@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/presentation/home/profile/review/reviews_screen.dart';
+import 'package:freelance_app/presentation/login/login_controller.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/profile/edit_profile.dart';
@@ -41,6 +42,7 @@ class ProfileScreen extends StatelessWidget {
           body: RefreshIndicator(
               onRefresh: ()async {
                 controllerHome.loadAccountFromToken();
+                user = controllerHome.account.value;
               },
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
@@ -60,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                                       Obx(() => Avatar(
                                         url: controllerHome.imageURL.value != ''
                                             ? controllerHome.imageURL.value
-                                            : user.avatarUrl,
+                                            : controllerHome.account.value.avatarUrl,
                                         onTap: getImage,
                                       )),
                                       SizedBox(
@@ -246,7 +248,7 @@ class ProfileScreen extends StatelessWidget {
                                       Obx(() => Avatar(
                                         url: controllerHome.imageURL.value != ''
                                             ? controllerHome.imageURL.value
-                                            : user.avatarUrl,
+                                            : controllerHome.account.value.avatarUrl,
                                         onTap: getImage,
                                       )),
                                       SizedBox(
@@ -458,7 +460,7 @@ class ProfileScreen extends StatelessWidget {
                                       Obx(() => Avatar(
                                         url: controllerHome.imageURL.value != ''
                                             ? controllerHome.imageURL.value
-                                            : user.avatarUrl,
+                                            : controllerHome.account.value.avatarUrl,
                                         onTap: getImage,
                                       )),
                                       SizedBox(

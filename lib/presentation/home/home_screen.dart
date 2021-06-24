@@ -1,10 +1,16 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/messages/chat_controller.dart';
 import 'package:freelance_app/presentation/home/messages/chats_screen.dart';
 import 'package:freelance_app/presentation/home/my_job/my_job_screen.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
+import 'package:freelance_app/presentation/login/login_controller.dart';
+import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/responsive.dart';
 import 'browse/browse_screen.dart';
 import 'browse/tab_view/freelancers/freelancer_controller.dart';
@@ -73,16 +79,81 @@ class HomeScreen extends GetWidget<HomeController> {
                           chatController.loadMessageUser();
                           controller.updateIndexSelected(3);
                         }),
-                    TextButton(
-                        style: TextButton.styleFrom(minimumSize: Size(100, 50)),
-                        child: Text('Hồ Sơ', style: TextStyle(fontSize: 18)),
-                        onPressed: () {
-                          controller.updateIndexSelected(4);
-                        }),
+
+                    Obx(
+                      ()=> PopupMenuButton(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:kDefaultPadding/2 ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 17,
+                                foregroundColor: Colors.transparent,
+                                backgroundColor: Colors.grey.shade300,
+                                child: CachedNetworkImage(
+                                  imageUrl: controller.imageURL.value != ''
+                                ? 'http://${controller.imageURL.value}'
+                                    : 'http://$AVATAR_CURRENT',
+                                  httpHeaders: {
+                                    HttpHeaders.authorizationHeader:
+                                    'Bearer $TOKEN'
+                                  },
+                                  placeholder: (context, url) =>
+                                      CupertinoActivityIndicator(),
+                                  imageBuilder: (context, image) => CircleAvatar(
+                                    backgroundImage: image,
+                                    radius: 15,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      CircleAvatar(
+                                        backgroundColor: Colors.grey,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/avatarnull.png'),
+                                        radius: 15,
+                                      ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: kDefaultPadding / 2,
+                              ),
+                              if (!Responsive.isMobile(context))
+                                Text(
+                                  '${controller.account.value.name}',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                              ),
+                            ],
+                          ),
+                        ),
+                        onSelected: (value) {
+                          if(value == 1){
+                            controller.logOut();
+                            Get.offAllNamed(Routes.login);
+                          }
+                          else if(value == 2){
+                            controller.updateIndexSelected(4);
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Text('Hồ sơ'),
+                            value: 2,
+                          ),
+                          PopupMenuItem(
+                            child: Text('Đăng xuất'),
+                            value: 1,
+                          ),
+
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       width: kDefaultPadding * 2,
                     ),
                   ],
+            elevation: 2,
                 )
               : null,
           body: _children[controller.indexSelected.value],

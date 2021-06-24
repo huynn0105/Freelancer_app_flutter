@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 class ManageJobScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
+    
     return SingleChildScrollView(
       padding: Responsive.isDesktop(context)
           ? EdgeInsets.symmetric(
@@ -35,10 +36,13 @@ class ManageJobScreen extends GetWidget<AdminController> {
                           overflow: TextOverflow.ellipsis,
                         )),
                         DataColumn(
-                            label: Text('FreelancerId',
+                            label: Text('Ngày tạo',
                                 overflow: TextOverflow.ellipsis)),
                         DataColumn(
                             label: Text('Người đăng',
+                                overflow: TextOverflow.ellipsis)),
+                        DataColumn(
+                            label: Text('Trạng thái',
                                 overflow: TextOverflow.ellipsis)),
                         DataColumn(
                             label: Text('Tuỳ chọn',
@@ -60,14 +64,15 @@ class ManageJobScreen extends GetWidget<AdminController> {
   }
 
   DataRow recentDataRow(Job job, context) {
+    print('Ngày đăng ${job.createAt.toString()}');
+    final df = new DateFormat('dd-MM-yyyy');
     return DataRow(
       cells: [
         DataCell(Text('${job.id}')),
-        DataCell(
-          Text(job.name),
-        ),
-        DataCell(Text('${job.renter.id}')),
+        DataCell(SizedBox(width: 200,child: Text(job.name)),),
+        DataCell(Text(job.createAt!=null ? '${df.format(job.createAt)}': '')),
         DataCell(Text(job.renter.name)),
+        DataCell(Text(job.status)),
         DataCell(ElevatedButton(
           onPressed: () async {
             await controller.loadJobFromId(job.id).then((value){
@@ -101,6 +106,30 @@ class JobDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final df = new DateFormat('dd-MM-yyyy');
+
+    String convertStatus(String status){
+      switch(status){
+        case 'Finished':
+          return 'Đã hoàn thành';
+        case 'Finished':
+          return 'In progress';
+        case 'Request finish':
+          return 'Yêu cầu kết thúc';
+        case 'Request rework':
+          return 'Yêu cầu làm lại';
+        case 'Request cancellation':
+          return 'Yêu cầu huỷ';
+        case 'Cancellation':
+          return 'Đã huỷ';
+        case 'Waiting':
+          return 'Đang chờ';
+        case 'Closed':
+          return 'Đã đóng';
+        default : return 'Đang chờ';
+      }
+
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('CHI TIẾT CÔNG VIỆC'),
@@ -127,6 +156,26 @@ class JobDetail extends StatelessWidget {
               ),
 
               ItemRow(title: 'Tên công việc', content: job.name),
+              Divider(),
+              ItemRow(
+                title: 'Trạng thái',
+                content: convertStatus(job.status),
+              ),
+              Divider(),
+              ItemRow(
+                title: 'Ngày đăng',
+                content:job.createAt!=null ? df.format(job.createAt) : '',
+              ),
+              Divider(),
+              ItemRow(
+                title: 'Bắt đầu làm lúc',
+                content:job.startAt!=null ? df.format(job.startAt) : '',
+              ),
+              Divider(),
+              ItemRow(
+                title: 'Kết thúc lúc',
+                content: job.finishAt!=null ? df.format(job.finishAt) : '',
+              ),
               Divider(),
               ItemRow(
                 title: 'Mô tả công việc',
@@ -191,6 +240,18 @@ class JobDetail extends StatelessWidget {
               Divider(),
               ItemRow(title: 'Tên nhà tuyển dụng', content: job.renter.name),
               Divider(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                width: double.infinity,
+                color: Colors.grey[200],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
+                  child: Text('Thông tin freelancer',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),),
+                ),
+              ),
+              ItemRow(title: 'Id freelancer', content:job.freelancer!=null ? '${job.freelancer.id}' : ''),
+              Divider(),
+              ItemRow(title: 'Tên freelancer', content:job.freelancer!=null ? '${job.freelancer.name}' : ''),
             ],
           ),
         ),

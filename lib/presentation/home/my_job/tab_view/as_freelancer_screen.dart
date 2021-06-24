@@ -22,10 +22,10 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
     return Obx(
       ()=> Scaffold(
         floatingActionButton: controller.tabSelectedFreelancer.value == 2 ? FloatingActionButton.extended(label: Text('Lịch sử chào giá'), onPressed: () {
-
           controller.loadOfferHistories().then((value) => Get.to(()=>OfferHistories(offers: controller.offers)));
            },icon: Icon(Icons.filter_alt_rounded),) : null,
         body: Column(
+
           children: [
             SizedBox(height: kDefaultPadding/2,),
             FlutterToggleTab(
@@ -50,7 +50,6 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
                   controller.loadJobsFreelancer(int);
               },
             ),
-
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),

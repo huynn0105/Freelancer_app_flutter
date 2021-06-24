@@ -1,88 +1,119 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/total_job_months.dart';
+import 'package:freelance_app/domain/models/total_user_months.dart';
 import 'package:freelance_app/presentation/admin/admin_controller.dart';
 import 'package:freelance_app/presentation/admin/screens/main/components/my_feilds.dart';
 import 'package:freelance_app/responsive.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DashboardScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
-    var _size = MediaQuery.of(context).size;
+
+    final customTickFormatter = charts.BasicNumericTickFormatterSpec((num value) => 'Tháng $value');
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(kDefaultPadding),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Tổng số công việc',style: TEXT_STYLE_PRIMARY,),
-                SizedBox(height: 5,),
-                Responsive(mobile: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.jobs.length,color: Colors.blue,)),
-                        SizedBox(width: kDefaultPadding),
-                        Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.jobs.length,color: Colors.amber,))
-                      ],
-                    ),
-                    SizedBox(height: kDefaultPadding),
-                    Row(
-                      children: [
-                        Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.jobs.length,color: Colors.green,)),
-                        SizedBox(width: kDefaultPadding),
-                        Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.jobs.length,color: Colors.red,))
-                      ],
-                    )
-                  ],
-                ),
-                    desktop: Row(
-                      children: [
-                        Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.jobs.length,color: Colors.blue,)),
-                        SizedBox(width: kDefaultPadding),
-                        Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.jobs.length,color: Colors.amber,)),
-                        SizedBox(width: kDefaultPadding),
-                        Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.jobs.length,color: Colors.green,)),
-                        SizedBox(width: kDefaultPadding),
-                        Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.jobs.length,color: Colors.red,))
-                      ],
-                    ),
-                )
-
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
-                SizedBox(height: 5,),
-                Padding(
-                  padding: Responsive.isDesktop(context) ? const EdgeInsets.only(right: 300) : EdgeInsets.all(0),
-                  child: Row(
+      child: Obx(
+        ()=> Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Tổng số công việc',style: TEXT_STYLE_PRIMARY,),
+                  SizedBox(height: 5,),
+                  Responsive(mobile: Column(
                     children: [
-                      Expanded(child: ItemInfoCard(color: Colors.blue, title: 'Tổng người dùng', num: controller.freelancers.length)),
-                      SizedBox(width: kDefaultPadding),
-                      Expanded(child: ItemInfoCard(color: Colors.green, title: 'Đã xác thức', num: controller.freelancers.length)),
+                      Row(
+                        children: [
+                          Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(title: 'Đang giao',num: controller.dashboard.value.totalAssigned,color: Colors.amber,))
+                        ],
+                      ),
+                      SizedBox(height: kDefaultPadding),
+                      Row(
+                        children: [
+                          Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.dashboard.value.totalDone,color: Colors.green,)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.dashboard.value.totalCancelled,color: Colors.red,))
+                        ],
+                      )
                     ],
                   ),
-                )
-              ],
+                      desktop: Row(
+                        children: [
+                          Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.dashboard.value.totalAssigned,color: Colors.amber,)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(title: 'Hoàn thành',num: controller.dashboard.value.totalDone,color: Colors.green,)),
+                          SizedBox(width: kDefaultPadding),
+                          Expanded(child: ItemInfoCard(title: 'Đã huỷ',num: controller.dashboard.value.totalCancelled,color: Colors.red,))
+                        ],
+                      ),
+                  )
+
+                ],
+              ),
             ),
-          ),
-          Text('Công việc theo tháng',style: TEXT_STYLE_PRIMARY,),
-          _graphBarSection(),
-          SizedBox(height: kDefaultPadding*4,),
-          Text('Người dùng mới theo tháng',style: TEXT_STYLE_PRIMARY),
-          _graphSection()
-        ],
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
+                  SizedBox(height: 5,),
+                  Padding(
+                    padding: Responsive.isDesktop(context) ? const EdgeInsets.only(right: 600) : EdgeInsets.all(0),
+                    child: Row(
+                      children: [
+                        Expanded(child: ItemInfoCard(color: Colors.blue, title: 'Tổng người dùng', num: controller.dashboard.value.totalUser)),
+
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Text('Công việc theo tháng',style: TEXT_STYLE_PRIMARY,),
+            controller.dashboard.value.totalJobMonths!=null?
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
+              height: 300,
+              child: charts.BarChart(
+                _createBarSampleData(controller.dashboard.value.totalJobMonths),
+                defaultRenderer: new charts.BarRendererConfig(
+                    groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
+                animate: false,
+                // Sets up a currency formatter for the measure axis.
+
+              ),
+            ) : CircularProgressIndicator(),
+            SizedBox(height: kDefaultPadding*4,),
+            Text('Người dùng mới theo tháng',style: TEXT_STYLE_PRIMARY),
+            controller.dashboard.value.totalUserMonths!=null ?
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
+              height: 300,
+              child: charts.LineChart(
+                _createSampleData(controller.dashboard.value.totalUserMonths),
+                defaultRenderer: new charts.LineRendererConfig(includePoints: true),
+                animate: false,
+                // Sets up a currency formatter for the measure axis.
+
+              ),
+            ): CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
@@ -91,127 +122,68 @@ class DashboardScreen extends GetWidget<AdminController> {
 }
 
 
-_graphSection() {
-  final customTickFormatter =
-      // ignore: missing_return
-      charts.BasicNumericTickFormatterSpec((num value) => 'Tháng ${value + 1}');
 
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
-    height: 300,
-    child: charts.LineChart(
-      _createSampleData(),
-      defaultRenderer: new charts.LineRendererConfig(includePoints: true),
-      animate: false,
-      // Sets up a currency formatter for the measure axis.
 
-      domainAxis: charts.NumericAxisSpec(
-        tickProviderSpec:
-            charts.BasicNumericTickProviderSpec(desiredTickCount: 6),
-        tickFormatterSpec: customTickFormatter,
-      ),
-    ),
-  );
-}
-
-_createSampleData() {
-  final myFakeDesktopData = [
-    new LinearSales(0, 140),
-    new LinearSales(1, 200),
-    new LinearSales(2, 300),
-    new LinearSales(3, 250),
-    new LinearSales(4, 222),
-    new LinearSales(5, 240),
-  ];
-
+_createSampleData(List<TotalUserMonths> totalUserMonths) {
+  final userList = List.generate(totalUserMonths.length, (index) => LinearSales(DateFormat("yyyy-MM").parse(totalUserMonths[index].month), totalUserMonths[index].newUser));
   return [
     charts.Series<LinearSales, int>(
-      id: 'Sales',
+      id: 'User new',
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      domainFn: (LinearSales sales, _) => sales.month,
+      domainFn: (LinearSales sales, _) => sales.month.month,
       measureFn: (LinearSales sales, _) => sales.sales,
-      data: myFakeDesktopData,
+      data: userList,
+      labelAccessorFn: (LinearSales sales, _) => 'Tháng ${sales.month.month}'
     )
   ];
 }
 
-_graphBarSection() {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
-    height: 300,
-    child: charts.BarChart(
-      _createBarSampleData(),
-      defaultRenderer: new charts.BarRendererConfig(
-          groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
-      animate: false,
-      // Sets up a currency formatter for the measure axis.
+class LinearSales {
+  final DateTime month;
+  final int sales;
 
-    ),
-  );
+  LinearSales(this.month, this.sales);
 }
 
-_createBarSampleData() {
-  final desktopSalesData = [
-    new OrdinalSales('Tháng 1', 15),
-    new OrdinalSales('Tháng 2', 25),
-    new OrdinalSales('Tháng 3', 100),
-    new OrdinalSales('Tháng 4', 75),
-    new OrdinalSales('Tháng 5', 50),
-    new OrdinalSales('Tháng 6', 65),
-  ];
 
-  final tableSalesData = [
-    new OrdinalSales('Tháng 1', 25),
-    new OrdinalSales('Tháng 2', 50),
-    new OrdinalSales('Tháng 3', 10),
-    new OrdinalSales('Tháng 4', 20),
-    new OrdinalSales('Tháng 5', 50),
-    new OrdinalSales('Tháng 6', 20),
-  ];
+_createBarSampleData(List<TotalJobMonths> totalJobMonths) {
 
-  final mobileSalesData = [
-    new OrdinalSales('Tháng 1', 10),
-    new OrdinalSales('Tháng 2', 50),
-    new OrdinalSales('Tháng 3', 50),
-    new OrdinalSales('Tháng 4', 45),
-    new OrdinalSales('Tháng 5', 25),
-    new OrdinalSales('Tháng 6', 65),
-  ];
+
+
+  final jobNew = List.generate(totalJobMonths.length, (index) => OrdinalSales(totalJobMonths[index].month, totalJobMonths[index].newJob));
+  final jobDone = List.generate(totalJobMonths.length, (index) => OrdinalSales(totalJobMonths[index].month, totalJobMonths[index].done));
+  final jonCancel = List.generate(totalJobMonths.length, (index) => OrdinalSales(totalJobMonths[index].month, totalJobMonths[index].cancelled));
+
+
+
 
   return [
     new charts.Series<OrdinalSales, String>(
-      id: 'Desktop',
+      id: 'Job New',
       domainFn: (OrdinalSales sales, _) => sales.year,
       measureFn: (OrdinalSales sales, _) => sales.sales,
-      data: desktopSalesData,
+      data: jobNew,
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
     ),
 
     new charts.Series<OrdinalSales, String>(
-      id: 'Tablet',
+      id: 'Job Done',
       measureFn: (OrdinalSales sales, _) => sales.sales,
-      data: tableSalesData,
-      colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+      data: jobDone,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
       domainFn: (OrdinalSales sales, _) => sales.year,
     ),
 
     new charts.Series<OrdinalSales, String>(
-      id: 'Mobile',
+      id: 'Job Cancel',
       domainFn: (OrdinalSales sales, _) => sales.year,
       measureFn: (OrdinalSales sales, _) => sales.sales,
-      data: mobileSalesData,
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      data: jonCancel,
+      colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       fillColorFn: (_, __) => charts.MaterialPalette.transparent,
     ),
   ];
-}
-
-class LinearSales {
-  final int month;
-  final int sales;
-
-  LinearSales(this.month, this.sales);
 }
 
 

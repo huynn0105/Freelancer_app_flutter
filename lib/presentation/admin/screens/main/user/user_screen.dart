@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
@@ -17,24 +18,7 @@ class UserScreen extends GetWidget<AdminController> {
           children: [
             Padding(
               padding: const EdgeInsets.all(kDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
-                  SizedBox(height: 5,),
-                  //InfoCardGridView(list:demoUserM,crossAxisCount: Responsive.isMobile(context) ? 2 : 4,),
-                  Padding(
-                    padding: Responsive.isDesktop(context) ? const EdgeInsets.only(right: 300) : EdgeInsets.all(0),
-                    child: Row(
-                        children: [
-                          Expanded(child: ItemInfoCard(color: Colors.blue, title: 'Tổng người dùng', num: controller.freelancers.length)),
-                          SizedBox(width: kDefaultPadding),
-                          Expanded(child: ItemInfoCard(color: Colors.green, title: 'Đã xác thức', num: controller.freelancers.length)),
-                        ],
-                    ),
-                  )
-                ],
-              ),
+              child: Text('Người dùng',style: TEXT_STYLE_PRIMARY,),
             ),
             SizedBox(height: kDefaultPadding),
             Container(
@@ -87,14 +71,46 @@ class FreelancerDetail extends StatelessWidget {
 
   final Account freelancer;
 
+
   @override
   Widget build(BuildContext context) {
     final df = new DateFormat('dd-MM-yyyy');
+    final controller = Get.find<AdminController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Thông tin người dùng'),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(CupertinoIcons.trash_circle, color: Colors.red,size: 30,),
+          onPressed: () => showDialog(context: context, builder: (_){
+            return AlertDialog(
+              title: Text('Bạn muốn khoá tài khoản của freelancer ${freelancer.name}'),
+              actions: [
+                TextButton(onPressed: (){
+                  Get.back();
+                }, child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text('Huỷ',style: TextStyle(fontSize: 18),),
+                )),
+                TextButton(onPressed: (){
+                  controller.banAccount(freelancer.id).then((value){
+                    Get.back();
+                    Get.back();
+                    Get.snackbar('Thành công', 'Khoá tài khoản của freelancer ${freelancer.name}',
+                        backgroundColor: Colors.green,
+                        colorText: Colors.white,
+                        maxWidth: 600,
+                        snackPosition: SnackPosition.TOP);
+                  });
+                }, child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text('Khoá tài khoản',style: TextStyle(fontSize: 18,color: Colors.red),),
+                ))
+              ],
+            );
+          }),
+        ),
         actions: [
           IconButton(icon: Icon(Icons.clear), onPressed: ()=>Get.back())
         ],
@@ -106,6 +122,16 @@ class FreelancerDetail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              if(freelancer.bannedAtDate!=null)
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                width: double.infinity,
+                color: Colors.grey[200],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding/2),
+                  child: Text('Tài khoản đã bị khoá ngày ${df.format(freelancer.bannedAtDate)}',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),),
+                ),
+              ),
               Divider(),
               ItemRow(title: 'Tên freelancer',content: freelancer.name),
               Divider(),
@@ -148,7 +174,7 @@ class FreelancerDetail extends StatelessWidget {
                         return Text('${freelancer.freelancerServices[index].name}, ');
                       return Text(freelancer.freelancerServices[index].name);
                     }),
-                  ):Text('Chưa cập nhập'),)
+                  ):Text(''),)
                 ],
               ),),
               Divider(),
@@ -169,7 +195,7 @@ class FreelancerDetail extends StatelessWidget {
                         return Text('${freelancer.freelancerSkills[index].name}, ');
                       return Text(freelancer.freelancerSkills[index].name);
                     }),
-                  ):Text('Chưa cập nhập'),)
+                  ):Text(''),)
                 ],
               ),),
             ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freelance_app/constant.dart';
@@ -10,9 +11,10 @@ class Header extends StatelessWidget {
   const Header({
     Key key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+
+
     return Row(
       children: [
         if (!Responsive.isMobile(context))
@@ -34,49 +36,46 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<AdminController>();
-    return Container(
-        margin: EdgeInsets.only(left: kDefaultPadding),
-        padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 3),
-        decoration: BoxDecoration(
-            color: secondaryColor,
-            border: Border.all(color: Colors.white10),
-            borderRadius:
-                BorderRadius.all(Radius.circular(kDefaultPadding / 2))),
-        child: PopupMenuButton(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:kDefaultPadding/2 ),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 15,
-                  backgroundImage: AssetImage('assets/images/avatar.jpg'),
-                ),
-                SizedBox(
-                  width: kDefaultPadding / 2,
-                ),
-                if (!Responsive.isMobile(context))
-                  Text(
-                    'Nguyễn Nhật Huy',
-                    style: TextStyle(fontSize: 13),
+    return Obx(
+      ()=> Container(
+          margin: EdgeInsets.only(left: kDefaultPadding),
+          padding: EdgeInsets.symmetric(vertical: kDefaultPadding / 3),
+          decoration: BoxDecoration(
+              color: secondaryColor,
+              border: Border.all(color: Colors.white10),
+              borderRadius:
+                  BorderRadius.all(Radius.circular(kDefaultPadding / 2))),
+          child: PopupMenuButton(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal:kDefaultPadding/2 ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: kDefaultPadding / 2,
                   ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                ),
-              ],
+                    Text(
+                        '${controller.admin.value.name}',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                  ),
+                ],
+              ),
             ),
-          ),
-          onSelected: (value) {
-            controller.logOut();
-            Get.offAndToNamed(value);
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              child: Text('Đăng xuất'),
-              value: Routes.login,
-            ),
+            onSelected: (value) {
+              controller.logOut();
+              Get.offAndToNamed(value);
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text('Đăng xuất'),
+                value: Routes.login,
+              ),
 
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }
 

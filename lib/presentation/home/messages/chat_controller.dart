@@ -99,7 +99,11 @@ class ChatController extends GetxController {
         loadMessageChat(data[0],data[1]);
         loadMessageUser();
       });
-      connection.on('ConfirmRequest', (arguments) { });
+      connection.on('ConfirmRequest', (data) {
+        ChatMessage message = ChatMessage.fromJson(data[0]);
+        loadMessageChat(message.jobId, message.freelancerId);
+        loadMessageUser();
+      });
 
     } catch (e) {
       print('lỗi $e');
@@ -190,11 +194,7 @@ class ChatController extends GetxController {
     }
   }
 
-  Future sendConfirmRequest(int jobId, String status, int adminId,String message) async {
-    if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("SendConfirmRequest", args: <Object>[jobId,status,adminId,message]);
-    }
-  }
+
 
   Future sendFinishRequest(int jobId) async {
     if (connection.state == HubConnectionState.connected) {

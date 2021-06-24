@@ -158,6 +158,11 @@ class Message extends StatelessWidget {
             message: message,
             toUser: toUser,
           );
+        case 'Notification':
+          return ConfirmAdmin(
+            message: message,
+            toUser: toUser,
+          );
         default:
           return SizedBox();
       }
@@ -168,14 +173,6 @@ class Message extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (prevDateTime != null)
-            if (message.time.difference(prevDateTime).inDays >= 1)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 9),
-                child: Center(
-                  child: Text(DateFormat('dd/MM').format(message.time)),
-                ),
-              ),
           Row(
             mainAxisAlignment: message.type != 'Text'
                 ? MainAxisAlignment.center
@@ -270,7 +267,7 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final df = new DateFormat('HH:mm');
+    final df = new DateFormat('dd-MM HH:mm');
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       margin: message.senderId == CURRENT_ID
@@ -302,7 +299,7 @@ class TextMessage extends StatelessWidget {
                 Text(
                   df.format(message.time),
                   style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       color: message.senderId == CURRENT_ID
                           ? Colors.white
                           : Colors.black87),
@@ -333,7 +330,7 @@ class RequestFinished extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
-    final df = new DateFormat('HH:mm');
+    final df = new DateFormat('dd-MM HH:mm');
     return Flexible(
         child: Container(
             margin: EdgeInsets.symmetric(horizontal: 16),
@@ -411,7 +408,7 @@ class RequestFinished extends StatelessWidget {
           SizedBox(width: 5),
           Text(
             df.format(message.time),
-            style: TextStyle(fontSize: 13, color: Colors.black87),
+            style: TextStyle(fontSize: 12, color: Colors.black87),
           ),
           if (message.senderId == CURRENT_ID)
             Padding(
@@ -438,7 +435,7 @@ class SuggestPrice extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
     final formatter = new NumberFormat("#,###");
-    final df = new DateFormat('HH:mm');
+    final df = new DateFormat('dd-MM HH:mm');
     return Flexible(
       child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16),
@@ -495,7 +492,7 @@ class SuggestPrice extends StatelessWidget {
                       children: [
                         Text(
                           df.format(message.time),
-                          style: TextStyle(fontSize: 13, color: Colors.black87),
+                          style: TextStyle(fontSize: 12, color: Colors.black87),
                         ),
                         if (message.senderId == CURRENT_ID)
                           Padding(
@@ -521,7 +518,7 @@ class SuggestPrice extends StatelessWidget {
                     ),
                     Text(
                       df.format(message.time),
-                      style: TextStyle(fontSize: 13, color: Colors.black87),
+                      style: TextStyle(fontSize: 12, color: Colors.black87),
                     ),
                     if (message.senderId == CURRENT_ID)
                       Padding(
@@ -546,7 +543,7 @@ class ConfirmPrice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final df = new DateFormat('HH:mm');
+    final df = new DateFormat('dd-MM HH:mm');
     return Flexible(
       child: Container(
           decoration: BoxDecoration(
@@ -572,7 +569,7 @@ class ConfirmPrice extends StatelessWidget {
                     : Text('Bạn đã từ chối dự án'),
               Text(
                 df.format(message.time),
-                style: TextStyle(fontSize: 13, color: Colors.black87),
+                style: TextStyle(fontSize: 12, color: Colors.black87),
               ),
             ],
           )),
@@ -638,6 +635,58 @@ class ConfirmFinish extends StatelessWidget {
               if (message.freelancerId == CURRENT_ID)
                 Text('Chủ dự án đã yêu cầu huỷ bỏ dự'),
             ]
+          ])),
+    );
+  }
+}
+
+class ConfirmAdmin extends StatelessWidget {
+  final ChatMessage message;
+  final Account toUser;
+
+  ConfirmAdmin({this.message, this.toUser});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<ChatController>();
+    return Flexible(
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey[200],
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: Column(children: [
+            if (message.confirmation == 'Finished' || message.confirmation == 'Cancellation') ...[
+              Text(message.message),
+              if (message.freelancerId == CURRENT_ID)
+                if(message.confirmation == 'Finished')
+                Text('Bạn sẽ sớm nhận được tiền từ hệ thống'),
+              if (controller.job.value.rating == null)
+                if (message.freelancerId != CURRENT_ID) ...[
+                  Text('Đánh giá freelancer nào!'),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => RatingScreen(
+                        freelancer: toUser,
+                        jobId: message.jobId,
+                      ));
+                    },
+                    child: Text(
+                      'Đánh giá',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        minimumSize: Size(300, 40),
+                        elevation: 0),
+                  ),
+                ],
+            ],
+            if (message.confirmation == 'In progress')
+              Text(message.message),
           ])),
     );
   }

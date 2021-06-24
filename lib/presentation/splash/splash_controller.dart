@@ -1,6 +1,7 @@
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/login/login_controller.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +34,7 @@ class SplashController extends GetxController {
         print('token: $TOKEN');
         var account = await apiRepositoryInterface.getAccountFromToken();
         await localRepositoryInterface.saveAccount(account);
+        AVATAR_CURRENT = account.avatarUrl;
         CURRENT_ID = account.id;
         if(account.role.id ==  1){
           print('admin');

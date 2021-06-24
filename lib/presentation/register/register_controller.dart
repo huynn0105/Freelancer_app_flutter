@@ -6,6 +6,7 @@ import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
 import 'package:freelance_app/domain/requests/register_request.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/login/login_controller.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,7 @@ class RegisterController extends GetxController {
         var jsonObject = jsonDecode(response.body);
         TOKEN = jsonObject['token'];
         Account account = Account.fromJson(jsonObject['account']);
+        AVATAR_CURRENT = account.avatarUrl;
         await localRepositoryInterface.saveToken(TOKEN);
         await localRepositoryInterface.saveAccount(account);
         CURRENT_ID = account.id;

@@ -4,6 +4,7 @@ import 'package:freelance_app/domain/models/bank.dart';
 import 'package:freelance_app/domain/models/capacity_profile.dart';
 import 'package:freelance_app/domain/models/chat.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/models/dash_board_admin.dart';
 import 'package:freelance_app/domain/models/form_of_work.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
@@ -675,6 +676,79 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       return canRequest;
     }
 
+  }
+
+  @override
+  Future getAdminAccounts()async {
+    var rs = await HttpService.get('$ADMIN/accounts', bearerToken: TOKEN);
+    print('codeAccounts ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      var accounts = jsonList.map((e) => Account.fromJson(e)).toList();
+      return accounts;
+    }
+    return null;
+  }
+
+
+
+  @override
+  Future getAdminDashboard() async {
+    var rs = await HttpService.get('$ADMIN/dashboard',bearerToken: TOKEN);
+    print('code dashboard ${rs.statusCode}');
+    if(rs.statusCode == 200){
+      var jsonObject = jsonDecode(rs.body);
+      var dashboard = DashboardAdmin.fromJson(jsonObject);
+      return dashboard;
+    }
+  }
+
+
+
+  @override
+  Future getAdminJobs()async {
+    var rs = await HttpService.get('$ADMIN/jobs', bearerToken: TOKEN);
+    print('codeJobs: ${rs.statusCode}');
+    if (rs.statusCode == 200) {
+      var jsonList = jsonDecode(rs.body) as List;
+      var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+      return jobs;
+    }
+    return null;
+  }
+
+  @override
+  Future getAdminJobsRequest()async {
+   var rs = await HttpService.get('$ADMIN/jobrequests',bearerToken: TOKEN);
+   print('code jobrequests ${rs.statusCode}');
+   if (rs.statusCode == 200) {
+     var jsonList = jsonDecode(rs.body) as List;
+     var jobs = jsonList.map((e) => Job.fromJson(e)).toList();
+     return jobs;
+   }
+  }
+
+  @override
+  Future getAdminJobsRequestId(int jobId) async {
+    var rs = await HttpService.get('$ADMIN/jobrequests/$jobId', bearerToken: TOKEN);
+    print('code message admin chat: ${rs.statusCode}');
+    if(rs.statusCode==200){
+      var jsonList = jsonDecode(rs.body) as List;
+      var chatMessages = jsonList.map((e) => ChatMessage.fromJson(e)).toList();
+      return chatMessages;
+    }
+  }
+
+
+
+
+
+
+  @override
+  Future deleteAccount(int id)async{
+    var rs = await HttpService.delete('$ACCOUNT/$id',bearerToken: TOKEN);
+    print('code delete account ${rs.statusCode}');
+    print('data: ${rs.body}');
   }
 
 }

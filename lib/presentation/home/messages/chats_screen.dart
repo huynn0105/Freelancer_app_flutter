@@ -161,9 +161,8 @@ class ChatCard extends StatelessWidget {
                 ),
               ),
             ),
-            Text(DateTime.now().difference(chat.time).inDays < 1
-                ? DateFormat('HH:mm').format(chat.time)
-                : DateFormat('dd:MM').format(chat.time),
+            Text(DateFormat('dd-MM HH:mm').format(chat.time),
+
               style: TextStyle(
                   fontWeight: chat.lastSender.id != CURRENT_ID  ? chat.lastMsgStatus == "Seen" ? FontWeight.w400 :   FontWeight.bold : FontWeight.w400
               ),

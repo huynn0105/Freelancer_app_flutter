@@ -3,14 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/account.dart';
+import 'package:freelance_app/domain/models/chat_message.dart';
+import 'package:freelance_app/domain/models/dash_board_admin.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/service.dart';
 import 'package:freelance_app/domain/models/skill.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/domain/repositories/api_repository.dart';
 import 'package:freelance_app/domain/repositories/local_storage_repository.dart';
+import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:signalr_core/signalr_core.dart';
 
 class AdminController extends GetxController {
   final ApiRepositoryInterface apiRepositoryInterface;
@@ -24,18 +28,74 @@ class AdminController extends GetxController {
 
   RxInt indexSelected = 0.obs;
 
+  Rx<DashboardAdmin> dashboard = DashboardAdmin().obs;
+
   var progressState = sState.loading.obs;
 
   RxList<Job> jobs = <Job>[].obs;
-
+  RxList<Job> requests = <Job>[].obs;
+  HubConnection connection;
   Rx<Job> job = Job().obs;
 
   RxList<Service> services = <Service>[].obs;
+  Rx<Account> admin = Account().obs;
+
+  RxList<ChatMessage> chatMessages = <ChatMessage>[].obs;
+
+  Future loadDashboard()async{
+    await apiRepositoryInterface.getAdminDashboard().then((value) => dashboard(value));
+  }
+
+  Future<void> createSignalRConnection() async {
+    try {
+      connection = HubConnectionBuilder().withUrl(CHAT_HUB).build();
+      await connection.start();
+      await connectUser();
+      print('đã kết nối ${connection.state}');
 
 
+
+    } catch (e) {
+      print('lỗi $e');
+      print('trạng thái: ${connection.state}');
+
+    }
+  }
+
+  Future connectUser() async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("Connect", args: <Object>[CURRENT_ID]);
+    }
+  }
+
+
+  Future loadMessageChat(int jobId) async {
+    try {
+      await apiRepositoryInterface
+          .getAdminJobsRequestId(jobId)
+          .then((value) => chatMessages.assignAll(value));
+    } catch (e) {
+      print('Lỗi mess: $e');
+    }
+  }
+
+
+  Future loadAccountLocal() async {
+    progressState(sState.loading);
+    await localRepositoryInterface.getAccount().then(
+          (value) {
+        if(value!=null){
+          admin(value);
+          CURRENT_ID = admin.value.id;
+        }
+
+      },
+    );
+    progressState(sState.initial);
+  }
 
   RxList<Account> freelancers = <Account>[].obs;
-  Rx<Account> freelancer = Account().obs;
+
 
   final ctrlName = TextEditingController();
   final ctrlSubName = TextEditingController();
@@ -82,11 +142,20 @@ class AdminController extends GetxController {
     }
   }
 
+  Future banAccount(int id)async{
+    await apiRepositoryInterface.deleteAccount(id);
+  }
+
   @override
   void onReady() {
-    loadJobs();
-    loadFreelancers();
+    loadDashboard();
+    loadAccountLocal();
     super.onReady();
+  }
+  @override
+  void onInit() {
+    createSignalRConnection();
+    super.onInit();
   }
 
   void updateIndexSelected(int index) {
@@ -110,7 +179,7 @@ class AdminController extends GetxController {
   Future loadJobs() async {
     progressState(sState.loading);
     try {
-      await apiRepositoryInterface.getJobs().then((value){
+      await apiRepositoryInterface.getAdminJobs().then((value){
         jobs.assignAll(value);
         progressState(sState.initial);
       });
@@ -127,7 +196,7 @@ class AdminController extends GetxController {
         specialties.assignAll(value);
         if(specialtiesSelected.isNotEmpty)
         value.forEach((element) {
-          specialtiesSelected.forEach((e) {
+          servicesSelected.forEach((e) {
             if (e.id == element.id) {
               element.isValue = true;
               return;
@@ -224,7 +293,7 @@ class AdminController extends GetxController {
   Future loadFreelancers() async {
     progressState(sState.loading);
     try {
-      await apiRepositoryInterface.getAccounts().then((value){
+      await apiRepositoryInterface.getAdminAccounts().then((value){
         if (value != null) {
           freelancers.assignAll(value);
         }
@@ -242,6 +311,25 @@ class AdminController extends GetxController {
       print('lỗi: ${e.toString()}');
     }
   }
+
+  Future sendConfirmRequest(int jobId, String status, int adminId,String message) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("SendConfirmRequest", args: <Object>[jobId,status,adminId,message]);
+    }
+  }
+
+  Future loadRequest()async{
+    progressState(sState.loading);
+    try{
+      await apiRepositoryInterface.getAdminJobsRequest().then((value) => requests.assignAll(value));
+      progressState(sState.initial);
+    }catch(e){
+      print('lỗi: ${e.toString()}');
+      progressState(sState.initial);
+    }
+  }
+
+
 
 
   Future loadSkills() async {
