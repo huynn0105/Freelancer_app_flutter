@@ -14,8 +14,10 @@ import 'package:freelance_app/presentation/routes/navigation.dart';
 import 'package:freelance_app/responsive.dart';
 import 'browse/browse_screen.dart';
 import 'browse/tab_view/freelancers/freelancer_controller.dart';
+import 'browse/tab_view/freelancers/freelancer_controller.dart';
 import 'browse/tab_view/jobs/jobs_controller.dart';
 import 'home_controller.dart';
+import 'post_job/post_job_controller.dart';
 import 'post_job/post_job_screen.dart';
 import 'package:get/get.dart';
 
@@ -26,10 +28,7 @@ class HomeScreen extends GetWidget<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final jobController = Get.put<JobsController>(JobsController(apiRepositoryInterface: Get.find()));
-    final freelancerController = Get.put<FreelancerController>(FreelancerController(apiRepositoryInterface: Get.find()));
-    final postJobController = Get.put<PostJobController>(PostJobController(apiRepositoryInterface: Get.find()));
-    var chatController = Get.put<ChatController>(ChatController(apiRepositoryInterface: Get.find()));
+
 
     final List<Widget> _children = [
       MyJobScreen(),
@@ -62,21 +61,20 @@ class HomeScreen extends GetWidget<HomeController> {
                         onPressed: () {
                           controller.updateIndexSelected(1);
 
-                          jobController.loadJobs();
-                          freelancerController.loadFreelancer();
+
                         }),
                     TextButton(
                         style: TextButton.styleFrom(minimumSize: Size(100, 50)),
                         child: Text('Đăng việc', style: TextStyle(fontSize: 18)),
                         onPressed: () {
                           controller.updateIndexSelected(2);
-                          postJobController.getFormOfWorks();
+
                         }),
                     TextButton(
                         style: TextButton.styleFrom(minimumSize: Size(100, 50)),
                         child: Text('Tin nhắn', style: TextStyle(fontSize: 18)),
                         onPressed: () {
-                          chatController.loadMessageUser();
+
                           controller.updateIndexSelected(3);
                         }),
 
@@ -165,16 +163,7 @@ class HomeScreen extends GetWidget<HomeController> {
 
                   onTap: (index) {
                     controller.updateIndexSelected(index);
-                    if(index == 0)
-                      controller.onReady();
-                    if(index == 1){
-                      jobController.loadJobs();
-                      freelancerController.loadFreelancer();
-                    }
-                    if(index == 2)
-                      postJobController.getFormOfWorks();
-                    if(index == 3)
-                      chatController.loadMessageUser();
+
                   },
                   // new
                   currentIndex: controller.indexSelected.value,

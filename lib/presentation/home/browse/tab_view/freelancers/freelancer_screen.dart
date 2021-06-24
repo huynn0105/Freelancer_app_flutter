@@ -14,9 +14,10 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'filter/ffilter_search_screen.dart';
 import 'freelancer_detail/freelancer_detail_screen.dart';
 
-class FreelancersScreen extends GetWidget<FreelancerController> {
+class FreelancersScreen extends StatelessWidget {
 
 
+  var controller = Get.put<FreelancerController>(FreelancerController(apiRepositoryInterface: Get.find()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(

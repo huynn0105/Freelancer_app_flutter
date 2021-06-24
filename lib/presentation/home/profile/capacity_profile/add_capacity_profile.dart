@@ -25,7 +25,7 @@ class AddCapacityProfile extends StatelessWidget {
   final CapacityProfile capacityProfile;
 
   AddCapacityProfile({this.capacityProfile, Key key}) : super(key: key);
-
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 
   @override
@@ -44,7 +44,7 @@ class AddCapacityProfile extends StatelessWidget {
       controller.nameImage.value = '';
       controller.servicesSelected.clear();
     }
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Stack(
       children: [
         Scaffold(

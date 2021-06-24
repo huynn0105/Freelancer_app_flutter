@@ -24,7 +24,8 @@ class PostJobController extends GetxController {
   RxList<TypeOfWork> typeOfWorks = <TypeOfWork>[].obs;
   RxList<FormOfWork> formOfWorks = <FormOfWork>[].obs;
   RxList<PayForm> payForms = <PayForm>[].obs;
-  RxList<Province> provinces = <Province>[Province(provinceId: null,name: 'Toàn quốc')].obs;
+  RxList<Province> provinces =
+      <Province>[Province(provinceId: null, name: 'Toàn quốc')].obs;
   var progressState = sState.initial.obs;
   RxList<Skill> skillsSelected = <Skill>[].obs;
   RxInt specialtyId = 0.obs;
@@ -46,42 +47,44 @@ class PostJobController extends GetxController {
   final deadlineTextController = TextEditingController();
   final locationTextController = TextEditingController();
 
-
-
   Future postJob() async {
     try {
       progressState(sState.loading);
-       await apiRepositoryInterface.postJob(PostJobRequest(
+      await apiRepositoryInterface
+          .postJob(PostJobRequest(
         name: nameTextController.text,
         details: descriptionTextController.text,
         typeId: typeId.value,
         formId: formId.value,
         workatId: workAtId.value,
-        deadline: DateTime(deadline.year,deadline.month,deadline.day,23,59,59),
-        floorprice: int.parse(floorPriceTextController.text.replaceAll(',', '')),
-        cellingprice: int.parse(cellingPriceTextController.text.replaceAll(',', '')),
+        deadline:
+            DateTime(deadline.year, deadline.month, deadline.day, 23, 59, 59),
+        floorprice:
+            int.parse(floorPriceTextController.text.replaceAll(',', '')),
+        cellingprice:
+            int.parse(cellingPriceTextController.text.replaceAll(',', '')),
         isPrivate: isPrivate.value ? 1 : 0,
         specialtyId: specialtyId.value,
         serviceId: serviceId.value,
         provinceId: provinceId.value,
         payformId: payFormId.value,
         skills: skillsSelected,
-      )).then((value){
+      ))
+          .then((value) {
         progressState(sState.initial);
-        if(value){
+        if (value) {
           Get.offAll(() => SuccessfulScreen());
           nameTextController.text = '';
           descriptionTextController.text = '';
           floorPriceTextController.text = '';
           cellingPriceTextController.text = '';
-        }else
+        } else
           Get.snackbar('Lỗi', '',
               backgroundColor: Colors.red,
               colorText: Colors.white,
               maxWidth: 600,
               snackPosition: SnackPosition.TOP);
       });
-
     } catch (e) {
       print("Lỗi: ${e.toString()}");
       progressState(sState.initial);
@@ -92,8 +95,6 @@ class PostJobController extends GetxController {
           snackPosition: SnackPosition.TOP);
     }
   }
-
-
 
   @override
   void onInit() async {
@@ -106,11 +107,15 @@ class PostJobController extends GetxController {
 
   @override
   void onReady() {
+    getFormOfWorks();
     super.onReady();
   }
 
   Future loadSpecialties() async {
-    try { await apiRepositoryInterface.getSpecialties().then((value) => specialties.assignAll(value));
+    try {
+      await apiRepositoryInterface
+          .getSpecialties()
+          .then((value) => specialties.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -118,9 +123,9 @@ class PostJobController extends GetxController {
 
   Future getSpecialtyServices(int specialtyId) async {
     try {
-
-          await apiRepositoryInterface.getSpecialtyServices(specialtyId).then((value) => services.assignAll(value));
-
+      await apiRepositoryInterface
+          .getSpecialtyServices(specialtyId)
+          .then((value) => services.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -128,8 +133,9 @@ class PostJobController extends GetxController {
 
   Future getSkills() async {
     try {
-      await apiRepositoryInterface.getSkills().then((value) => skills.assignAll(value));
-
+      await apiRepositoryInterface
+          .getSkills()
+          .then((value) => skills.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -137,8 +143,9 @@ class PostJobController extends GetxController {
 
   Future getTypeOfWorks() async {
     try {
-       await apiRepositoryInterface.getTypeOfWorks().then((value) => typeOfWorks.assignAll(value));
-
+      await apiRepositoryInterface
+          .getTypeOfWorks()
+          .then((value) => typeOfWorks.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -146,8 +153,9 @@ class PostJobController extends GetxController {
 
   Future getFormOfWorks() async {
     try {
-      await apiRepositoryInterface.getFormOfWorks().then((value) =>  formOfWorks.assignAll(value));
-
+      await apiRepositoryInterface
+          .getFormOfWorks()
+          .then((value) => formOfWorks.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -155,8 +163,9 @@ class PostJobController extends GetxController {
 
   Future getPayForms() async {
     try {
-     await apiRepositoryInterface.getPayForms().then((value) => payForms.assignAll(value));
-
+      await apiRepositoryInterface
+          .getPayForms()
+          .then((value) => payForms.assignAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }
@@ -164,8 +173,9 @@ class PostJobController extends GetxController {
 
   Future getProvinces() async {
     try {
-      await apiRepositoryInterface.getProvinces().then((value) => provinces.addAll(value));
-
+      await apiRepositoryInterface
+          .getProvinces()
+          .then((value) => provinces.addAll(value));
     } catch (e) {
       print('lỗi ${e.toString()}');
     }

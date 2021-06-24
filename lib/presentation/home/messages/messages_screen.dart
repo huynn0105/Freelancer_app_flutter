@@ -736,6 +736,7 @@ class ChatInputField extends StatelessWidget {
               ),
               child: TextField(
                 controller: ctrMessage,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: 'Aa',
                   border: InputBorder.none,

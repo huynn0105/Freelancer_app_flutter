@@ -133,17 +133,21 @@ class ChatController extends GetxController {
   }
 
   Future loadMessageUser() async {
+    progress(sState.loading);
     try {
       await apiRepositoryInterface
           .getMessageUser()
           .then((value) => chats.assignAll(value));
+      progress(sState.initial);
     } catch (e) {
       print('Lỗi mess: $e');
+      progress(sState.loading);
     }
   }
 
   Future loadMessageChat(int jobId, int freelancerId) async {
     try {
+      chatMessages.clear();
       await apiRepositoryInterface
           .getMessageChat(jobId, freelancerId)
           .then((value) => chatMessages.assignAll(value));
@@ -247,6 +251,7 @@ class ChatController extends GetxController {
   @override
   void onReady() {
     createSignalRConnection();
+    loadMessageUser();
     super.onReady();
   }
 

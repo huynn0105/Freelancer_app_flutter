@@ -6,10 +6,11 @@ import 'package:freelance_app/domain/services/http_service.dart';
 import 'package:freelance_app/presentation/home/post_job/post_job_controller.dart';
 import 'package:get/get.dart';
 import '../../../responsive.dart';
+import '../browse/tab_view/jobs/jobs_controller.dart';
 import 'job_name/job_name_screen.dart';
 
-class PostJobScreen extends GetWidget<PostJobController> {
-
+class PostJobScreen extends StatelessWidget {
+  final controller = Get.put<PostJobController>(PostJobController(apiRepositoryInterface: Get.find()));
   @override
   Widget build(BuildContext context) {
 

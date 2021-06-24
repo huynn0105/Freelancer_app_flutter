@@ -161,7 +161,7 @@ class ReportDetail extends StatelessWidget {
                 Text('Loại yêu cầu'),
                 SizedBox(width: kDefaultPadding),
                 Text(
-                  formatter.format(job.status),
+                  job.status,
                   style:
                   TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
                 ),
@@ -220,7 +220,7 @@ class ReportDetail extends StatelessWidget {
             ),
             Row(
               children: [
-                if(job.status == 'Request Cancellation')...[
+                if(job.status == 'Request cancellation')...[
                   Expanded(
                       child: RoundedButton(
                         onTap: () {
@@ -244,16 +244,9 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'Cancellation',CURRENT_ID,ctrlText.text).then((value){
-                                    Get.back();
-                                    Get.back();
-                                    Get.snackbar('Thành công', 'Gửi thành công',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        maxWidth: 600,
-                                        snackPosition: SnackPosition.TOP);
-                                  });
-                                }, child: Padding(
+                                  controller.sendConfirmRequest(job.id,'Cancellation',CURRENT_ID,ctrlText.text);
+                                  print('data gửi: ${job.id}, Finished,$CURRENT_ID,${ctrlText.text}');
+                                  }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),
                                 )),
@@ -294,15 +287,7 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text).then((value){
-                                    Get.back();
-                                    Get.back();
-                                    Get.snackbar('Thành công', 'Gửi yêu cầu thành công',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        maxWidth: 600,
-                                        snackPosition: SnackPosition.TOP);
-                                  });
+                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text);
                                 }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),
@@ -342,15 +327,7 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'In progress',CURRENT_ID,ctrlText.text).then((value){
-                                    Get.back();
-                                    Get.back();
-                                    Get.snackbar('Thành công', 'Gửi yêu cầu thành công',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        maxWidth: 600,
-                                        snackPosition: SnackPosition.TOP);
-                                  });
+                                  controller.sendConfirmRequest(job.id,'In progress',CURRENT_ID,ctrlText.text);
                                 }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),
@@ -366,7 +343,7 @@ class ReportDetail extends StatelessWidget {
                         backgroundColor: Colors.blue,
                       )),
                 ],
-                if(job.status == 'Request Rework')...[
+                if(job.status == 'Request rework')...[
                   Expanded(
                       child: RoundedButton(
                         onTap: () {
@@ -390,15 +367,8 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text).then((value){
-                                    Get.back();
-                                    Get.back();
-                                    Get.snackbar('Thành công', 'Gửi thành công',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        maxWidth: 600,
-                                        snackPosition: SnackPosition.TOP);
-                                  });
+                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text);
+                                  print('data gửi: ${job.id}, Finished,$CURRENT_ID,${ctrlText.text}');
                                 }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),
@@ -440,15 +410,7 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text).then((value){
-                                    Get.back();
-                                    Get.back();
-                                    Get.snackbar('Thành công', 'Gửi yêu cầu thành công',
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white,
-                                        maxWidth: 600,
-                                        snackPosition: SnackPosition.TOP);
-                                  });
+                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text);
                                 }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),

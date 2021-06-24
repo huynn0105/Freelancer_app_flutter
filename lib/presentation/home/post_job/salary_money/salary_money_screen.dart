@@ -11,9 +11,10 @@ import 'package:pattern_formatter/numeric_formatter.dart';
 import '../../../../responsive.dart';
 
 class SalaryMoneyScreen extends GetWidget<PostJobController> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Container(
       color:  Colors.grey[100],
       padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
@@ -25,7 +26,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
           actions: [
             TextButton(
               onPressed: () {
-                if (formKey.currentState.validate()) {
+                if (_formKey.currentState.validate()) {
                   if (int.parse(controller.floorPriceTextController.value.text
                           .replaceAll(',', '')) >
                       int.parse(controller.cellingPriceTextController.value.text
@@ -49,7 +50,7 @@ class SalaryMoneyScreen extends GetWidget<PostJobController> {
         body: Container(
           padding: EdgeInsets.all(30),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               children: [
                 Text(

@@ -12,9 +12,10 @@ import '../../../../../../../responsive.dart';
 
 class JobOffersScreen extends StatelessWidget {
   final controller = Get.find<JobDetailController>();
+  GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
     void sendOffer() async {
       if (_keyForm.currentState.validate()) {
         controller.sendOffer();

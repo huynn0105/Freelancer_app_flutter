@@ -21,11 +21,11 @@ class SetupPayment extends StatelessWidget {
   final Job job;
   final Account freelancer;
   final Account toUser;
-
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   SetupPayment({this.job,this.freelancer,this.toUser});
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     final homeController = Get.find<HomeController>();
     final chatController = Get.find<ChatController>();
     final formatter = new NumberFormat("#,###");
@@ -71,25 +71,27 @@ class SetupPayment extends StatelessWidget {
                     ),
                     SizedBox(height: kDefaultPadding),
                     Text('Số tiền bạn phải trả cho dự án',style: TEXT_STYLE_PRIMARY,),
-                    Obx(
-                      ()=> Form(
-                        key: formKey,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          controller: ctrlPrice,
-                          validator: RangeValida(min: homeController.balance.value),
-                          inputFormatters: [ThousandsFormatter()],
-                          decoration: InputDecoration(
-                            suffixIcon: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: Text(
-                                  'VNĐ',
-                                  style: TextStyle(color: Colors.black54),
-                                )),
+
+                   Form(
+                        key: _formKey,
+                        child: Obx(
+                          ()=> TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: ctrlPrice,
+                            validator: RangeValida(min: homeController.balance.value),
+                            inputFormatters: [ThousandsFormatter()],
+                            decoration: InputDecoration(
+                              suffixIcon: Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Text(
+                                    'VNĐ',
+                                    style: TextStyle(color: Colors.black54),
+                                  )),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+
                     SizedBox(height: kDefaultPadding),
                     Text('Nếu freelancer hoàn thành dự án của bạn, chúng tôi sẽ lấy 5% phí cho dự án',style: TextStyle(fontSize: 16)),
 
@@ -100,7 +102,7 @@ class SetupPayment extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: RoundedButton(onTap: (){
-                  if(formKey.currentState.validate())
+                  if(_formKey.currentState.validate())
                   showDialog(context: context, builder: (_){
                     return AlertDialog(
                       title: Text('Xác nhận số tiền',textAlign: TextAlign.center),
@@ -122,7 +124,7 @@ class SetupPayment extends StatelessWidget {
                               ElevatedButton(
                                   onPressed: () {
                                     chatController.setupPrice(job.id, freelancer.id, int.parse(ctrlPrice.text.replaceAll(',', '')));
-                                    print('gửi số tiền ${int.parse(ctrlPrice.text.replaceAll(',', ''))}');
+                                    homeController.account.value.balance-= int.parse(ctrlPrice.text);
                                     chatController.loadMessageChat(job.id, freelancer.id).then((value) =>Get.off(()=>MessagesScreen(job: job,freelancer: freelancer,toUser: toUser,)));
 
                                     },

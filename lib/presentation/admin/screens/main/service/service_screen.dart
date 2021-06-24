@@ -94,12 +94,12 @@ class ServiceDetail extends StatelessWidget {
   }) : super(key: key);
    final Service service;
 
-
+   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AdminController>();
 
-    final _formKey = GlobalKey<FormState>();
+
     if (service != null) {
       controller.ctrlName.text = service.name;
       controller.specialtiesSelected.assignAll(service.specialties);

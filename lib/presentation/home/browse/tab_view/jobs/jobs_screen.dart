@@ -11,9 +11,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'filter/filter_search_screen.dart';
 import 'job_detail/job_detail_screen.dart';
 
-class JobsScreen extends GetWidget<JobsController> {
+class JobsScreen extends StatelessWidget {
 
-
+  var controller = Get.put<JobsController>(JobsController(apiRepositoryInterface: Get.find()));
   @override
   Widget build(BuildContext context) {
     return Obx(() {

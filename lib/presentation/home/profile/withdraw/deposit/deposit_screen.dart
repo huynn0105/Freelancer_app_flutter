@@ -10,10 +10,11 @@ import 'package:pattern_formatter/numeric_formatter.dart';
 import '../../../../../responsive.dart';
 
 class Deposit extends StatelessWidget {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var ctrlBalance = TextEditingController();
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     var controller = Get.find<HomeController>();
     return Container(
       color:  Colors.grey[100],

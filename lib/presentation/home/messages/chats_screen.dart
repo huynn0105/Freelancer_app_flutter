@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 
 import '../../../responsive.dart';
 
-class ChatsScreen extends GetWidget<ChatController> {
+class ChatsScreen extends StatelessWidget {
 
   int currentStatus(String status){
     switch(status){
@@ -24,7 +24,7 @@ class ChatsScreen extends GetWidget<ChatController> {
       default: return 0;
     }
   }
-
+  var controller = Get.put<ChatController>(ChatController(apiRepositoryInterface: Get.find()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,7 @@ class ChatsScreen extends GetWidget<ChatController> {
         child: Column(
           children: [
             Obx(
-              ()=> controller.chats.isNotEmpty ? Expanded(
+              ()=> controller.progress.value == sState.initial ? controller.chats.isNotEmpty ? Expanded(
                 child:ListView.builder(
                     itemCount: controller.chats.length,
                     physics: AlwaysScrollableScrollPhysics(),
@@ -80,7 +80,7 @@ class ChatsScreen extends GetWidget<ChatController> {
                     SvgPicture.asset('assets/images/message_empty.svg',height: 200,),
                   ],
               ),
-                ),
+                ) : Center(child: CircularProgressIndicator(),),
             ),
 
           ],

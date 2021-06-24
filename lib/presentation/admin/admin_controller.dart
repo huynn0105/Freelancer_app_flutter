@@ -42,6 +42,19 @@ class AdminController extends GetxController {
 
   RxList<ChatMessage> chatMessages = <ChatMessage>[].obs;
 
+  RxList<Account> freelancers = <Account>[].obs;
+
+
+  final ctrlName = TextEditingController();
+  final ctrlSubName = TextEditingController();
+
+  RxList<Service> servicesSelected = <Service>[].obs;
+  RxList<Specialty> specialtiesSelected = <Specialty>[].obs;
+
+  RxString base64img = ''.obs;
+  RxString nameImage = ''.obs;
+
+
   Future loadDashboard()async{
     await apiRepositoryInterface.getAdminDashboard().then((value) => dashboard(value));
   }
@@ -94,17 +107,7 @@ class AdminController extends GetxController {
     progressState(sState.initial);
   }
 
-  RxList<Account> freelancers = <Account>[].obs;
 
-
-  final ctrlName = TextEditingController();
-  final ctrlSubName = TextEditingController();
-
-  RxList<Service> servicesSelected = <Service>[].obs;
-  RxList<Specialty> specialtiesSelected = <Specialty>[].obs;
-
-  RxString base64img = ''.obs;
-  RxString nameImage = ''.obs;
 
   Future uploadImage() async {
     try {
@@ -130,7 +133,6 @@ class AdminController extends GetxController {
           specialtiesSelected.forEach((e) {
             if (e.id == element.id) {
               element.isValue = true;
-              return;
             }
           });
         });
@@ -194,7 +196,7 @@ class AdminController extends GetxController {
     try {
       await apiRepositoryInterface.getSpecialties().then((value){
         specialties.assignAll(value);
-        if(specialtiesSelected.isNotEmpty)
+        if(servicesSelected.isNotEmpty)
         value.forEach((element) {
           servicesSelected.forEach((e) {
             if (e.id == element.id) {
@@ -313,8 +315,27 @@ class AdminController extends GetxController {
   }
 
   Future sendConfirmRequest(int jobId, String status, int adminId,String message) async {
+
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("SendConfirmRequest", args: <Object>[jobId,status,adminId,message]);
+      try {
+        await connection.invoke("SendConfirmRequest",
+            args: <Object>[jobId, status, adminId, message]).then((value) {
+          Get.back();
+          Get.back();
+          Get.snackbar('Thành công', 'Gửi thành công',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              maxWidth: 600,
+              snackPosition: SnackPosition.TOP);
+        });
+      }catch(e){
+        print('lỗi: $e');
+        Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            maxWidth: 600,
+            snackPosition: SnackPosition.TOP);
+    }
     }
   }
 

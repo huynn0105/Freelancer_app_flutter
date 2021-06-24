@@ -108,11 +108,11 @@ class SpecialDetail extends StatelessWidget {
   }) : super(key: key);
   final Specialty specialty;
 
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AdminController>();
-    final _formKey = GlobalKey<FormState>();
+
     var size = MediaQuery.of(context).size;
     if (specialty != null) {
       controller.ctrlName.text = specialty.name;
