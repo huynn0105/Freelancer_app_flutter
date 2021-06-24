@@ -111,9 +111,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       'imageBase64': imageBase64,
       'services': services,
     };
-
-    var rs =
-        await HttpService.post(SPECIALTIES, body: input, bearerToken: TOKEN);
+    var rs = await HttpService.post(SPECIALTIES, body: input, bearerToken: TOKEN);
     print('POST Specialty ${rs.statusCode}');
   }
 
@@ -126,7 +124,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
       'imageBase64': imageBase64,
       'services': services,
     };
-
+    print('data: $input');
     var rs = await HttpService.put('$SPECIALTIES/$id',
         body: input, bearerToken: TOKEN);
     print('PUT Specialty $id ${rs.statusCode}');

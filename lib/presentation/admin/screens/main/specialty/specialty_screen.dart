@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:freelance_app/constant.dart';
 import 'package:freelance_app/domain/models/specialty.dart';
 import 'package:freelance_app/presentation/admin/admin_controller.dart';
@@ -154,12 +155,7 @@ class SpecialDetail extends StatelessWidget {
                         key: _formKey,
                         child: TextFormField(
                     controller: controller.ctrlName,
-                          validator: (text){
-                            if (text == null || text.isEmpty) {
-                              return 'Yêu cầu nhập';
-                            }
-                            return null;
-                          },
+                    validator: RequiredValidator(errorText: 'Yêu cầu nhập'),
                     decoration: InputDecoration(
                         hintText: 'Lập trình web',
                     ),
@@ -282,7 +278,7 @@ class SpecialDetail extends StatelessWidget {
               SizedBox(height: kDefaultPadding),
               RoundedButton(
                   onTap: () {
-                    if (_formKey.currentState.validate()) {
+                    if (!_formKey.currentState.validate()) {
                       Get.snackbar('Lỗi', 'Kiểm tra lại thông tin',
                           backgroundColor: Colors.red,
                           colorText: Colors.white,
