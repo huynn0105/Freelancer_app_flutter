@@ -203,7 +203,7 @@ class ServiceDetail extends StatelessWidget {
                                     controller.specialtiesSelected[index]
                                         .copyWith(isValue: false),
                                   );
-                                  controller.specialtiesSelected.remove(this);
+                                  controller.specialtiesSelected.remove(controller.specialtiesSelected[index]);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(4),

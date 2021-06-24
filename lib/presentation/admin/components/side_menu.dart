@@ -26,14 +26,35 @@ class SideMenu extends GetWidget<AdminController> {
               if(enable) Get.back();
             },
           ),
-          DrawerListTile(
-            title: 'Quảng lý công việc',
-            svgSrc: 'assets/icons/menu_dashboard.svg',
-            press: () {
-              controller.loadJobs();
-              controller.indexSelected(1);
-            },
+          ExpansionTile(
+            title: Transform.translate(
+              child: Text("Quản lý dự án"),
+              offset: Offset(-16, 0),
+            ),
+            leading: SvgPicture.asset(
+              'assets/icons/menu_task.svg',
+              color: Colors.black87,
+            ),
+            children: [
+              SubItem(title: 'Tổng dự án',svgSrc: 'assets/icons/menu_doc.svg',
+                press: () {
+                  controller.loadJobs();
+                  controller.indexSelected(1);
+                  if(enable) Get.back();
+                },
+              ),
+              SubItem(title: 'Quản lý yêu cầu',svgSrc: 'assets/icons/menu_notification.svg',
+                press: () {
+                  controller.loadRequest();
+                  controller.indexSelected(6);
+                  if(enable) Get.back();
+                },
+              ),
+            ],
+
           ),
+
+
           ExpansionTile(
             title: Transform.translate(
               child: Text("Quản lý chuyên ngành và dịch vụ cung cấp"),
@@ -62,7 +83,7 @@ class SideMenu extends GetWidget<AdminController> {
           ),
           DrawerListTile(
             title: 'Quản lý kỹ năng cung cấp',
-            svgSrc: 'assets/icons/menu_task.svg',
+            svgSrc: 'assets/icons/menu_tran.svg',
             press: () {
               controller.loadSkills();
               controller.indexSelected(4);
@@ -71,22 +92,14 @@ class SideMenu extends GetWidget<AdminController> {
           ),
           DrawerListTile(
             title: 'Quản lý tài khoản người dùng',
-            svgSrc: 'assets/icons/menu_doc.svg',
+            svgSrc: 'assets/icons/menu_profile.svg',
             press: () {
               controller.loadFreelancers();
               controller.indexSelected(5);
               if(enable) Get.back();
             },
           ),
-          DrawerListTile(
-            title: 'Báo cáo',
-            svgSrc: 'assets/icons/menu_store.svg',
-            press: () {
-              controller.indexSelected(6);
-              controller.loadRequest();
-              if(enable) Get.back();
-            },
-          ),
+
 
         ],
       ),

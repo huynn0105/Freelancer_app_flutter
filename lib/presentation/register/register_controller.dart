@@ -55,9 +55,7 @@ class RegisterController extends GetxController {
           name: name,
           email: email,
           phone: phone,
-          password: password,
-          role: roleSelected.value));
-      print('codeRegister ${response.statusCode}');
+          password: password));
       if (response.statusCode == 200) {
         registerState(sState.initial);
         var jsonObject = jsonDecode(response.body);

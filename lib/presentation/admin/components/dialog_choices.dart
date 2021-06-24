@@ -121,26 +121,7 @@ class _DiaLogChoicesState<T> extends State<DiaLogChoices> {
     return Obx(
       ()=> Expanded(
         child: Scrollbar(
-          child:  !_isSearch ? widget.listChoice.isNotEmpty ?  ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: widget.listChoice.length,
-              itemBuilder: (context, index) {
-                var item = widget.listChoice[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: CheckboxListTile(
-                      title: new Text(item.name),
-                      value: item.isValue,
-                      onChanged: (bool value) {
-                        if(item is Service)
-                        controller.changeValueService(
-                            item.copyWith(isValue: value));
-                        else if(item is Specialty)
-                          controller.changeValueSpecialty(
-                              item.copyWith(isValue: value));
-                      })
-                );
-              }) : _searchListView(): Center(child: CircularProgressIndicator(),),
+          child:  _searchListView(),
         ),
       ),
     );

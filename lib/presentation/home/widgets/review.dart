@@ -61,7 +61,6 @@ class Review extends StatelessWidget {
               ),
             ],
           ),
-          Divider(),
 
           // Text('Việc hoàn thành',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 17)),
           // SizedBox(height: 5,),

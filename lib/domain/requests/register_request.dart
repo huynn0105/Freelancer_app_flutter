@@ -3,14 +3,12 @@ class RegisterRequest {
   final String email;
   final String phone;
   final String password;
-  final int role;
 
   const RegisterRequest({
     this.name,
     this.email,
     this.password,
     this.phone,
-    this.role,
   });
 
   Map<String, dynamic> toJson() {
@@ -18,7 +16,6 @@ class RegisterRequest {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['email'] = this.email;
-    data['roleID '] = this.role;
     data['password'] = this.password;
     return data;
   }

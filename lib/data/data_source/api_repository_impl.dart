@@ -60,7 +60,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future register(RegisterRequest registerRequest) async {
 
-    print('register: ${registerRequest.toJson()}');
+
     return await HttpService.post(REGISTER, body: registerRequest.toJson());
   }
 

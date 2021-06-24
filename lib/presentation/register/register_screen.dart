@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10))),
                   child: Container(
                       width: 420,
-                      height: 600,
+                      height: 700,
                       padding: EdgeInsets.all(kDefaultPadding),
                       child: SingleChildScrollView(
                         child: Column(
@@ -325,34 +325,34 @@ class FormRegister extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          Obx(
-                () => Row(
-              children: [
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: RadioListTile(
-                    title: Text('Freelancer'),
-                    onChanged: (value) {
-                      controller.roleSelected.value = value;
-                    },
-                    value: 2,
-                    groupValue: controller.roleSelected.value,
-                  ),
-                ),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: RadioListTile(
-                    title: Text('Nhà tuyển dụng'),
-                    onChanged: (value) {
-                      controller.roleSelected.value = value;
-                    },
-                    value: 3,
-                    groupValue: controller.roleSelected.value,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Obx(
+          //       () => Row(
+          //     children: [
+          //       Flexible(
+          //         fit: FlexFit.loose,
+          //         child: RadioListTile(
+          //           title: Text('Freelancer'),
+          //           onChanged: (value) {
+          //             controller.roleSelected.value = value;
+          //           },
+          //           value: 2,
+          //           groupValue: controller.roleSelected.value,
+          //         ),
+          //       ),
+          //       Flexible(
+          //         fit: FlexFit.loose,
+          //         child: RadioListTile(
+          //           title: Text('Nhà tuyển dụng'),
+          //           onChanged: (value) {
+          //             controller.roleSelected.value = value;
+          //           },
+          //           value: 3,
+          //           groupValue: controller.roleSelected.value,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

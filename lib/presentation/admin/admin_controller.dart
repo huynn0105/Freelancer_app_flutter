@@ -130,7 +130,7 @@ class AdminController extends GetxController {
         services.assignAll(value);
         if(servicesSelected.isNotEmpty)
         services.forEach((element) {
-          specialtiesSelected.forEach((e) {
+          servicesSelected.forEach((e) {
             if (e.id == element.id) {
               element.isValue = true;
             }
@@ -196,12 +196,12 @@ class AdminController extends GetxController {
     try {
       await apiRepositoryInterface.getSpecialties().then((value){
         specialties.assignAll(value);
-        if(servicesSelected.isNotEmpty)
+        if(specialtiesSelected.isNotEmpty)
         value.forEach((element) {
-          servicesSelected.forEach((e) {
+          specialtiesSelected.forEach((e) {
             if (e.id == element.id) {
               element.isValue = true;
-              return;
+
             }
           });
         });

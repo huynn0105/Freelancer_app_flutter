@@ -16,7 +16,7 @@ class DashboardScreen extends GetWidget<AdminController> {
   @override
   Widget build(BuildContext context) {
 
-    final customTickFormatter = charts.BasicNumericTickFormatterSpec((num value) => 'Tháng $value');
+
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(kDefaultPadding),
@@ -28,13 +28,13 @@ class DashboardScreen extends GetWidget<AdminController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tổng số công việc',style: TEXT_STYLE_PRIMARY,),
+                  Text('Dự án',style: TEXT_STYLE_PRIMARY,),
                   SizedBox(height: 5,),
                   Responsive(mobile: Column(
                     children: [
                       Row(
                         children: [
-                          Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
+                          Expanded(child: ItemInfoCard(title: 'Tổng dự án',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
                           SizedBox(width: kDefaultPadding),
                           Expanded(child: ItemInfoCard(title: 'Đang giao',num: controller.dashboard.value.totalAssigned,color: Colors.amber,))
                         ],
@@ -51,7 +51,7 @@ class DashboardScreen extends GetWidget<AdminController> {
                   ),
                       desktop: Row(
                         children: [
-                          Expanded(child: ItemInfoCard(title: 'Tổng công việc',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
+                          Expanded(child: ItemInfoCard(title: 'Tổng dự án',num: controller.dashboard.value.totalJob,color: Colors.blue,)),
                           SizedBox(width: kDefaultPadding),
                           Expanded(child: ItemInfoCard(title: 'Hiện có',num: controller.dashboard.value.totalAssigned,color: Colors.amber,)),
                           SizedBox(width: kDefaultPadding),
@@ -84,7 +84,7 @@ class DashboardScreen extends GetWidget<AdminController> {
                 ],
               ),
             ),
-            Text('Công việc theo tháng',style: TEXT_STYLE_PRIMARY,),
+            Text('Biểu đồ dự án theo tháng',style: TEXT_STYLE_PRIMARY,),
             controller.dashboard.value.totalJobMonths!=null?
             Container(
               padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
@@ -104,7 +104,7 @@ class DashboardScreen extends GetWidget<AdminController> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: kDefaultPadding*2),
               height: 300,
-              child: charts.LineChart(
+              child: charts.TimeSeriesChart(
                 _createSampleData(controller.dashboard.value.totalUserMonths),
                 defaultRenderer: new charts.LineRendererConfig(includePoints: true),
                 animate: false,
@@ -127,13 +127,12 @@ class DashboardScreen extends GetWidget<AdminController> {
 _createSampleData(List<TotalUserMonths> totalUserMonths) {
   final userList = List.generate(totalUserMonths.length, (index) => LinearSales(DateFormat("yyyy-MM").parse(totalUserMonths[index].month), totalUserMonths[index].newUser));
   return [
-    charts.Series<LinearSales, int>(
-      id: 'User new',
+    new charts.Series<LinearSales, DateTime>(
+      id: 'Sales',
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      domainFn: (LinearSales sales, _) => sales.month.month,
+      domainFn: (LinearSales sales, _) => sales.month,
       measureFn: (LinearSales sales, _) => sales.sales,
       data: userList,
-      labelAccessorFn: (LinearSales sales, _) => 'Tháng ${sales.month.month}'
     )
   ];
 }
@@ -181,7 +180,7 @@ _createBarSampleData(List<TotalJobMonths> totalJobMonths) {
       measureFn: (OrdinalSales sales, _) => sales.sales,
       data: jonCancel,
       colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-      fillColorFn: (_, __) => charts.MaterialPalette.transparent,
+      fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
     ),
   ];
 }
