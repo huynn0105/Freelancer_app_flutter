@@ -54,7 +54,7 @@ class ReportScreen extends StatelessWidget {
                     ),
                   )
                 : Center(
-                    child: Text('Chưa có yêu cầu nào!'),
+                    child: Text('Hiện không có yêu cầu nào!',style: TextStyle(fontSize: 22),),
                   )
             : Center(child: CircularProgressIndicator()),
       ),
@@ -116,7 +116,7 @@ class ReportDetail extends StatelessWidget {
               job.name,
               style: TEXT_STYLE_PRIMARY,
             ),
-            SizedBox(height: kDefaultPadding),
+            SizedBox(height: kDefaultPadding/2),
             Row(
               children: [
                 Text('Chủ dự án:'),
@@ -130,7 +130,7 @@ class ReportDetail extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: kDefaultPadding),
+            SizedBox(height: kDefaultPadding/2),
             Row(
               children: [
                 Text('Freelancer:'),
@@ -144,7 +144,7 @@ class ReportDetail extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: kDefaultPadding),
+            SizedBox(height: kDefaultPadding/2),
             Row(
               children: [
                 Text('Số tiền thực hiện dự án'),
@@ -156,6 +156,7 @@ class ReportDetail extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: kDefaultPadding/2),
             Row(
               children: [
                 Text('Loại yêu cầu'),
@@ -175,7 +176,7 @@ class ReportDetail extends StatelessWidget {
               height: kDefaultPadding/3),
             Container(
               width: 800,
-              height: 350,
+              height: 300,
               decoration: BoxDecoration(
                   border: Border.all(width: 2, color: Colors.grey),
                   borderRadius: BorderRadius.all(Radius.circular(10))),

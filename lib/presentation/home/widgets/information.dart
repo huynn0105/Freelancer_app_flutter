@@ -40,7 +40,7 @@ class Information extends StatelessWidget {
             visualDensity: VisualDensity(horizontal: 0, vertical: -4),
             title: Text(location),
           ) : const SizedBox.shrink(),
-          contract.isNotEmpty ? ListTile(
+          contract != null ? ListTile(
             leading: Icon(Icons.link_sharp),
             visualDensity: VisualDensity(horizontal: 0, vertical: -4),
             title: Text(contract),

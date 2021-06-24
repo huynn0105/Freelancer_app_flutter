@@ -114,7 +114,7 @@ class HomeScreen extends GetWidget<HomeController> {
                               SizedBox(
                                 width: kDefaultPadding / 2,
                               ),
-                              if (!Responsive.isMobile(context))
+                              if (Responsive.isDesktop(context) )
                                 Text(
                                   '${controller.account.value.name}',
                                   style: TextStyle(fontSize: 16),

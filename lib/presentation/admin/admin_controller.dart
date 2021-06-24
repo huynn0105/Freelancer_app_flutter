@@ -322,6 +322,7 @@ class AdminController extends GetxController {
             args: <Object>[jobId, status, adminId, message]).then((value) {
           Get.back();
           Get.back();
+          loadRequest();
           Get.snackbar('Thành công', 'Gửi thành công',
               backgroundColor: Colors.green,
               colorText: Colors.white,

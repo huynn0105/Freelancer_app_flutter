@@ -21,7 +21,6 @@ class Header extends StatelessWidget {
           Spacer(
             flex: Responsive.isDesktop(context) ? 2 : 1,
           ),
-        Expanded(child: SearchField()),
         ProfileCard()
       ],
     );

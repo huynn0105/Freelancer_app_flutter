@@ -63,7 +63,6 @@ class LoginController extends GetxController {
               colorText: Colors.white,
               snackPosition: SnackPosition.TOP);
 
-
       }
       if (response.statusCode == 400) {
         var js = jsonDecode(response.body);
@@ -78,6 +77,11 @@ class LoginController extends GetxController {
       }
       else{
         loginState(sState.initial);
+        Get.snackbar('Lỗi','Server bận!!! Thử lại sau',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            maxWidth: 600,
+            snackPosition: SnackPosition.TOP);
       }
     } on Exception catch (e) {
       loginState(sState.initial);

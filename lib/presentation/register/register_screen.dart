@@ -318,13 +318,13 @@ class FormRegister extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text(
-            'Tôi muốn đăng ký làm',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          // Text(
+          //   'Tôi muốn đăng ký làm',
+          //   style: TextStyle(
+          //     fontSize: 16,
+          //     fontWeight: FontWeight.w500,
+          //   ),
+          // ),
           // Obx(
           //       () => Row(
           //     children: [
