@@ -563,6 +563,10 @@ class ConfirmPrice extends StatelessWidget {
                   'Xác nhận thành công, hãy bắt đầu dự án!',
                   style: TEXT_STYLE_ON_FOREGROUND,
                 ),
+              if (message.confirmation == 'Undo')
+                message.freelancerId != CURRENT_ID
+                    ? Text('Bạn đã thu hồi tiền của dự án')
+                    : Text('Chủ dự án đã thu hồi tiền đã nạp vào dự án'),
               if (message.confirmation == 'Decline')
                 message.freelancerId != CURRENT_ID
                     ? Text('Freelancer đã từ chối nhận dự án ')
@@ -648,7 +652,7 @@ class ConfirmAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ChatController>();
+    final df = new DateFormat('dd-MM HH:mm');
     return Flexible(
       child: Container(
           decoration: BoxDecoration(
@@ -657,32 +661,15 @@ class ConfirmAdmin extends StatelessWidget {
           ),
           margin: EdgeInsets.symmetric(horizontal: 16),
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          child: Column(children: [
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            crossAxisAlignment: WrapCrossAlignment.end,
+            children: [
               Text(message.message),
-              if (message.freelancerId == CURRENT_ID)
-                if(message.confirmation == 'Finished')
-                Text('Bạn sẽ sớm nhận được tiền từ hệ thống'),
-              if (controller.job.value.rating == null)
-                if (message.freelancerId != CURRENT_ID) ...[
-                  Text('Đánh giá freelancer nào!'),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => RatingScreen(
-                        freelancer: toUser,
-                        jobId: message.jobId,
-                      ));
-                    },
-                    child: Text(
-                      'Đánh giá',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: Size(300, 40),
-                        elevation: 0),
-                  ),
-                ],
+            Text(
+              df.format(message.time),
+              style: TextStyle(fontSize: 12, color: Colors.black87),
+            ),
             ],
            )),
     );
@@ -733,7 +720,6 @@ class ChatInputField extends StatelessWidget {
               ),
               child: TextField(
                 controller: ctrMessage,
-                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: 'Aa',
                   border: InputBorder.none,

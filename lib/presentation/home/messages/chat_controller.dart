@@ -99,6 +99,10 @@ class ChatController extends GetxController {
         loadMessageChat(data[0],data[1]);
         loadMessageUser();
       });
+      connection.on('Undo_Form', (data) {
+        loadMessageChat(data[0],data[1]);
+        loadMessageUser();
+      });
       connection.on('ConfirmRequest', (data) {
         ChatMessage message = ChatMessage.fromJson(data[0]);
         loadMessageChat(message.jobId, message.freelancerId);
@@ -165,6 +169,12 @@ class ChatController extends GetxController {
   Future seenMessage(int jobId, int freelancerId) async {
     if (connection.state == HubConnectionState.connected) {
       await connection.invoke("SeeMessage", args: <Object>[jobId,freelancerId,CURRENT_ID]);
+    }
+  }
+
+  Future undo(int jobId, int freelancerId) async {
+    if (connection.state == HubConnectionState.connected) {
+      await connection.invoke("Undo", args: <Object>[jobId,freelancerId,CURRENT_ID]);
     }
   }
 
