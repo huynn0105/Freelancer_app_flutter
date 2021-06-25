@@ -542,7 +542,8 @@ class JobDetailScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: RoundedButton(
-                                  onTap: null,
+                                  backgroundColor: Colors.grey,
+                                  onTap: (){},
                                   child: Text(
                                     'Chưa hoàn tất/ Đã huỷ',
                                     style: TEXT_STYLE_PRIMARY.copyWith(

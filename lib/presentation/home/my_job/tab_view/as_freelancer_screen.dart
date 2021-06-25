@@ -4,21 +4,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:freelance_app/constant.dart';
+import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/models/job_offer.dart';
 import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_detail_screen.dart';
-import 'package:freelance_app/presentation/home/browse/tab_view/jobs/job_detail/job_offers/job_offers_detail.dart';
 import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../responsive.dart';
-import 'as_employer_screen.dart';
 class AsFreelancerScreen extends GetWidget<HomeController> {
   @override
 
   Widget build(BuildContext context) {
     var _listTextTabToggle = ["Đã nhận", "Đang nhận", "Chào giá", "Đã qua"];
     var size = MediaQuery.of(context).size;
+    Color selectedColor(String status) {
+      switch (status) {
+        case 'Waiting':
+          return Color(0xFFEAB802);
+        case 'In progress':
+          return Colors.blue;
+        case 'Request rework':
+          return Colors.blue;
+        case 'Request cancellation':
+          return Colors.blue;
+        case 'Finished':
+          return Colors.green;
+        case 'Closed':
+          return Colors.black.withOpacity(0.6);
+        case 'Cancellation':
+          return Colors.black.withOpacity(0.6);
+        default:
+          return Colors.brown;
+      }
+    }
     return Obx(
       ()=> Scaffold(
         floatingActionButton: controller.tabSelectedFreelancer.value == 2 ? FloatingActionButton.extended(label: Text('Lịch sử chào giá'), onPressed: () {
@@ -70,7 +89,7 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
                         );
                         return MyJobCard(
                           job: controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index],
-                          color: controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index].status == 'In progress' ? Colors.blue : Colors.green,
+                          color:  selectedColor(controller.jobsFreelancer[controller.tabSelectedFreelancer.value][index].status),
                         );
                       }) : SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -114,6 +133,103 @@ class AsFreelancerScreen extends GetWidget<HomeController> {
   }
 
 }
+
+
+class MyJobCard extends StatelessWidget {
+  const MyJobCard({
+    Key key,
+    this.color,
+    @required this.job,
+  }) : super(key: key);
+  final Job job;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final formatter = new NumberFormat("#,###");
+    return InkWell(
+      onTap: () => Get.to(() => JobDetailScreen(jobId: job.id)),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: EdgeInsets.all(8),
+        elevation: 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color:  color,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  topLeft: Radius.circular(8),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding / 2, vertical: 8),
+              child: Text(
+                job.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TEXT_STYLE_PRIMARY.copyWith(
+                    fontSize: 16, color: Colors.white),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding / 2, vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${formatter.format(job.floorprice)} - ${formatter.format(job.cellingprice)} VNĐ',
+                        style: TextStyle(
+                            color: Colors.black87, fontWeight: FontWeight.w500),
+                      ),
+                      Spacer(),
+                      if(job.status == 'Closed')
+                        Text('Đã đóng'),
+                      if(job.status == 'In progress')
+                        Text('Đang giao'),
+                      if(job.status == 'Done')
+                        Text('Đã hoàn thành'),
+                      if(job.status == 'Waiting')
+                        Text(job.deadline.difference(DateTime.now()).inDays >= 0
+                            ? job.deadline.difference(DateTime.now()).inDays == 0
+                            ? job.deadline.difference(DateTime.now()).inHours <= 0
+                            ? 'Hết hạn nhận hồ sơ'
+                            : 'Đóng trong ${job.deadline.difference(DateTime.now()).inHours} giờ'
+                            : 'Đóng trong ${job.deadline.difference(DateTime.now()).inDays} ngày'
+                            : 'Hết hạn nhận hồ sơ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                        )
+                    ],
+                  ),
+                  SizedBox(
+                    height: kDefaultPadding / 2,
+                  ),
+                  if(job.status == 'Finished')
+                    Text('Đã hoàn thành bởi freelancer ${job.freelancer.name}'),
+                  if(job.status == 'In progress')
+                    Text('Đang thực hiện bởi freelancer ${job.freelancer.name}'),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class OfferHistories extends StatelessWidget {
   const OfferHistories({
