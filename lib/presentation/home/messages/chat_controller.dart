@@ -17,6 +17,8 @@ class ChatController extends GetxController {
 
   ChatController({this.apiRepositoryInterface});
 
+
+  RxInt star = 0.obs;
   HubConnection connection;
   var progress = sState.initial.obs;
   ScrollController scrollController = ScrollController();
@@ -270,7 +272,7 @@ class ChatController extends GetxController {
 
 
 
-  Future sendRating(int jobID,String comment, int star,freelancerId)async{
+  Future sendRating(int jobID,String comment, freelancerId)async{
     try{
       progress(sState.loading);
       await apiRepositoryInterface.postRating(
@@ -278,7 +280,7 @@ class ChatController extends GetxController {
             freelancerId: freelancerId,
             jobID: jobID,
             comment: comment,
-            star: star,
+            star: star.value,
           )
       ).then((value) => progress(sState.initial));
     }catch(e){

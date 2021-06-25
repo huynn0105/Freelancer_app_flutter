@@ -71,7 +71,7 @@ class RatingScreen extends StatelessWidget {
                       rating: 0,
                       size: 40,
                       onRated: (value){
-                        star = value.toInt();
+                        controller.star.value = value.toInt();
                       },
                       color: Colors.yellow,
                       borderColor: Colors.yellow,
@@ -80,10 +80,11 @@ class RatingScreen extends StatelessWidget {
                     InputText(
                       hint: 'Nhập bình luận...',
                       maxLines: 6,
+                      controller: ctrlComment,
                     ),
                     SizedBox(height: kDefaultPadding),
                     RoundedButton(onTap: (){
-                        controller.sendRating(jobId, ctrlComment.text, star, freelancer.id).then((value){
+                        controller.sendRating(jobId, ctrlComment.text, freelancer.id).then((value){
                           Get.to(()=> JobFinished());
                         });
                       }, child: Text('Gửi đánh giá',style: TEXT_STYLE_PRIMARY.copyWith(color: Colors.white),)),

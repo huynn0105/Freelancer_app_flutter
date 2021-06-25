@@ -567,6 +567,7 @@ class ApiRepositoryImpl extends ApiRepositoryInterface {
   @override
   Future postRating(request) async {
     var rs = await HttpService.post(RATING,body: request.toJson(),bearerToken: TOKEN);
+    print('đánh giá ${request.toJson()}');
     print('code rating ${rs.statusCode}');
     if(rs.statusCode == 200){
       print('dulieu: ${rs.body}');

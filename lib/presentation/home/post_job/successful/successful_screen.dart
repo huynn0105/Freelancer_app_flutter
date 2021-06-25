@@ -21,20 +21,7 @@ class SuccessfulScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10,bottom: 30),
                 child: Text('Thành công',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
               ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(()=> SuccessfulScreen());
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  minimumSize: Size(double.infinity, 50),
-                ),
-                child: Text(
-                  'Đề xuất',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
+
               SizedBox(height: 20,),
               ElevatedButton(
                 onPressed: () {
