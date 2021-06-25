@@ -9,6 +9,7 @@ import 'package:freelance_app/domain/models/account.dart';
 import 'package:freelance_app/domain/models/chat_message.dart';
 import 'package:freelance_app/domain/models/job.dart';
 import 'package:freelance_app/domain/services/http_service.dart';
+import 'package:freelance_app/presentation/home/home_controller.dart';
 import 'package:freelance_app/presentation/home/messages/chat_details_screen.dart';
 import 'package:freelance_app/presentation/home/messages/rating/rating_screen.dart';
 import 'package:freelance_app/presentation/routes/navigation.dart';
@@ -27,6 +28,7 @@ class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
+
     return Container(
       color:  Colors.grey[100],
       padding: EdgeInsets.symmetric(horizontal: Responsive.isMobile(context) ? 0.0 : 250),
@@ -330,6 +332,7 @@ class RequestFinished extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ChatController>();
+    final homeController = Get.find<HomeController>();
     final df = new DateFormat('dd-MM HH:mm');
     return Flexible(
         child: Container(
@@ -353,6 +356,7 @@ class RequestFinished extends StatelessWidget {
                 controller.currentStep(2);
                 controller.finishJob(message.jobId, message.id);
                 controller.loadMessageChat(message.jobId, message.freelancerId);
+                homeController.loadAccountFromToken();
               },
               child: Text(
                 'Hoàn thành',
@@ -628,11 +632,16 @@ class ConfirmFinish extends StatelessWidget {
                 ],
             ],
             if (message.confirmation == 'Request rework') ...[
-              if (message.freelancerId == CURRENT_ID)
-                Text('Bạn đã gửi yêu cầu làm lại dự án cho freelancer'),
               if (message.freelancerId != CURRENT_ID)
+                Text('Bạn đã gửi yêu cầu làm lại dự án cho freelancer'),
+              if (message.freelancerId == CURRENT_ID)
                 Text('Chủ dự án đã yêu cầu bạn làm lại'),
             ],
+            if (message.confirmation == 'Cancellation')
+              Text('Dự án đã bị huỷ bỏ'),
+            if (message.confirmation == 'In progress')
+              Text('Dự án sẽ được tiếp tục thực hiện'),
+
             if (message.confirmation == 'Request cancellation') ...[
               if (message.freelancerId != CURRENT_ID)
                 Text('Bạn đã gửi yêu cầu huỷ dự án cho freelancer'),

@@ -259,7 +259,7 @@ class ChatDetailsScreen extends StatelessWidget {
                               ElevatedButton.icon(
                                   icon: Icon(CupertinoIcons.clear_circled),
                                   onPressed: () {
-                                    controller.undo(controller.job.value.id, 0);
+                                    controller.undo(controller.job.value.id,freelancer.id );
                                     controller
                                         .loadMessageChat(controller.job.value.id,
                                         freelancer.id)

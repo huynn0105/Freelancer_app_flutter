@@ -17,7 +17,7 @@ class Header extends StatelessWidget {
 
     return Row(
       children: [
-        if (!Responsive.isMobile(context))
+
           Spacer(
             flex: Responsive.isDesktop(context) ? 2 : 1,
           ),

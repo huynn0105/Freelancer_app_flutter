@@ -144,9 +144,9 @@ class FreelancerDetailScreen extends StatelessWidget {
                                   controller.getCapacityProfiles(freelancer.id).then((value) => Get.to(() => CapacityProfilesScreen(capacityProfiles: controller.capacityProfiles,)));
 
                                 },
-                                child: freelancer.capacityProfiles.isNotEmpty
+                                child: freelancer.capacityProfiles !=null ? freelancer.capacityProfiles.isNotEmpty
                                     ? Text('Xem tất cả')
-                                    : const SizedBox.shrink(),
+                                    : const SizedBox.shrink() : const SizedBox.shrink(),
                               ),
                             ],
                           ),

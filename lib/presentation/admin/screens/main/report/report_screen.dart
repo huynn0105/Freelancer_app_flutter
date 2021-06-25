@@ -246,7 +246,7 @@ class ReportDetail extends StatelessWidget {
                                 )),
                                 TextButton(onPressed: (){
                                   controller.sendConfirmRequest(job.id,'Cancellation',CURRENT_ID,ctrlText.text);
-                                  print('data gửi: ${job.id}, Finished,$CURRENT_ID,${ctrlText.text}');
+                                  print('data gửi: ${job.id}, Cancellation,$CURRENT_ID,${ctrlText.text}');
                                   }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),
@@ -368,8 +368,8 @@ class ReportDetail extends StatelessWidget {
                                   child: Text('Huỷ',style: TextStyle(fontSize: 18),),
                                 )),
                                 TextButton(onPressed: (){
-                                  controller.sendConfirmRequest(job.id,'Finished',CURRENT_ID,ctrlText.text);
-                                  print('data gửi: ${job.id}, Finished,$CURRENT_ID,${ctrlText.text}');
+                                  controller.sendConfirmRequest(job.id,'In progress',CURRENT_ID,ctrlText.text);
+                                  print('data gửi: ${job.id}, In progress,$CURRENT_ID,${ctrlText.text}');
                                 }, child: Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text('Gửi yêu cầu',style: TextStyle(fontSize: 18,color: Colors.red),),

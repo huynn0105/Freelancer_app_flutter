@@ -100,6 +100,7 @@ class ChatController extends GetxController {
         loadMessageUser();
       });
       connection.on('Undo_Form', (data) {
+        print('nhận');
         loadMessageChat(data[0],data[1]);
         loadMessageUser();
       });
@@ -174,7 +175,8 @@ class ChatController extends GetxController {
 
   Future undo(int jobId, int freelancerId) async {
     if (connection.state == HubConnectionState.connected) {
-      await connection.invoke("Undo", args: <Object>[jobId,freelancerId,CURRENT_ID]);
+      print('undo: $jobId, $freelancerId, ');
+      await connection.invoke("Undo", args: <Object>[jobId,freelancerId,100]);
     }
   }
 
